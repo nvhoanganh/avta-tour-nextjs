@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import logo from '../public/favicon/AppImages/ios/512.png';
 
 export default function Header() {
 	return (
