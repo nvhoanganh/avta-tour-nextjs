@@ -7,7 +7,7 @@ export default function MoreStories({ posts }) {
 				More Stories
 			</h2>
 			<div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
-				{posts.splice(0, 4).map((post) => (
+				{posts.map((post) => (
 					<PostPreview
 						key={post.slug}
 						title={post.title}

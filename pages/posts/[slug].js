@@ -46,10 +46,15 @@ export default function Post({ post, morePosts, preview }) {
 								<PostBody content={post.content} />
 							</div>
 						</article>
-						<SectionSeparator />
+
+						<div className='max-w-5xl mx-auto'>
+							<SectionSeparator />
+						</div>
 
 						{morePosts && morePosts.length > 0 && (
-							<MoreStories posts={morePosts} />
+							<div className='max-w-5xl mx-auto'>
+								<MoreStories posts={morePosts} />
+							</div>
 						)}
 					</>
 				)}
@@ -60,7 +65,6 @@ export default function Post({ post, morePosts, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
 	const data = await getPostAndMorePosts(params.slug, preview);
-
 	return {
 		props: {
 			preview,
