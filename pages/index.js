@@ -36,17 +36,9 @@ export default function Index({
 						AVTA - Australia Vietnamese Tennis Association
 					</title>
 				</Head>
-
 				<Navbar />
-				<Intro />
-
-				
-
+				<Intro upcomingCompetition={upcomingCompetition} />
 				<Container>
-					{upcomingCompetition && (
-						<CompetitionPreview {...upcomingCompetition} />
-					)}
-
 					{heroPost && (
 						<HeroPost
 							title={heroPost.title}

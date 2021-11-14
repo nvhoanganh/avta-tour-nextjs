@@ -1,6 +1,19 @@
 import Link from 'next/link';
+import CompetitionPreview from './competition-preview';
 
-export default function Intro() {
+export default function Intro({ upcomingCompetition }) {
+	const {
+		title,
+		slug,
+		type,
+		club,
+		excerpt,
+		date,
+		maxPoint,
+		heroImage,
+		teamsCollection,
+	} = upcomingCompetition;
+
 	return (
 		<>
 			<div className='relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-45 '>
@@ -46,13 +59,14 @@ export default function Intro() {
 						y='0'
 					>
 						<polygon
-							className='text-white fill-current'
+							className=' text-gray-200 fill-current'
 							points='2560 0 2560 100 0 100'
 						></polygon>
 					</svg>
 				</div>
 			</div>
-			<section className='pb-20 bg-blueGray-200 -mt-24'>
+
+			<section className='pb-20 bg-gray-200 -mt-24'>
 				<div className='container mx-auto px-4'>
 					<div className='flex flex-wrap'>
 						<div className='lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center'>
@@ -64,7 +78,7 @@ export default function Intro() {
 									<h6 className='text-xl font-semibold'>
 										Phát triển
 									</h6>
-									<p className='mt-2 mb-4 text-blueGray-500'>
+									<p className='mt-2 mb-4 text-gray-500'>
 										Phát triển và đẩy mạnh phong trào tennis
 										trong cộng đồng
 									</p>
@@ -81,7 +95,7 @@ export default function Intro() {
 									<h6 className='text-xl font-semibold'>
 										Chuyên nghiệp
 									</h6>
-									<p className='mt-2 mb-4 text-blueGray-500'>
+									<p className='mt-2 mb-4 text-gray-500'>
 										Tạo cơ sân chơi lớn và chuyên nghiệp cho
 										các thành viên cọ sát
 									</p>
@@ -98,7 +112,7 @@ export default function Intro() {
 									<h6 className='text-xl font-semibold'>
 										Kết nối
 									</h6>
-									<p className='mt-2 mb-4 text-blueGray-500'>
+									<p className='mt-2 mb-4 text-gray-500'>
 										Kết nối đam mê tennis và mở rộng quan hệ
 										xã hội
 									</p>
@@ -106,6 +120,11 @@ export default function Intro() {
 							</div>
 						</div>
 					</div>
+
+					{/* upcomingCompetition */}
+					{upcomingCompetition && (
+						<CompetitionPreview {...upcomingCompetition} />
+					)}
 				</div>
 			</section>
 		</>
