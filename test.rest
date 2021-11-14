@@ -33,3 +33,32 @@ query {
     }
   }
 }
+
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  competitionCollection(order: date_DESC, preview: false) {
+    items {
+      title
+      slug
+      excerpt
+      date
+      maxPoint
+      club
+      active
+      type
+      heroImage {
+        url
+      }
+      teamsCollection(preview: false) {
+        items {
+          name
+        }
+      }
+    }
+  }
+}
