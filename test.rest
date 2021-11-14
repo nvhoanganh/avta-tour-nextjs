@@ -1,0 +1,35 @@
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  postCollection(preview: false) {
+    items {
+      slug
+      title
+    }
+  }
+}
+
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  playerCollection(order: avtaPoint_DESC, preview: false) {
+    items {
+      fullName
+      nickName
+      avtaPoint
+      userId
+      homeClub
+      coverImage {
+        url
+      }
+    }
+  }
+}
