@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { createPopper } from "@popperjs/core";
 
 const PagesDropdown = () => {
@@ -27,7 +27,7 @@ const PagesDropdown = () => {
           dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
         }}
       >
-        Demo Pages
+        Pages
       </a>
       <div
         ref={popoverDropdownRef}
@@ -44,7 +44,7 @@ const PagesDropdown = () => {
           Admin Layout
         </span>
         <Link
-          to="/admin/dashboard"
+          href="/admin/dashboard"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -52,7 +52,7 @@ const PagesDropdown = () => {
           Dashboard
         </Link>
         <Link
-          to="/admin/settings"
+          href="/admin/settings"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -60,7 +60,7 @@ const PagesDropdown = () => {
           Settings
         </Link>
         <Link
-          to="/admin/tables"
+          href="/admin/tables"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -68,7 +68,7 @@ const PagesDropdown = () => {
           Tables
         </Link>
         <Link
-          to="/admin/maps"
+          href="/admin/maps"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -84,7 +84,7 @@ const PagesDropdown = () => {
           Auth Layout
         </span>
         <Link
-          to="/auth/login"
+          href="/auth/login"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -92,7 +92,7 @@ const PagesDropdown = () => {
           Login
         </Link>
         <Link
-          to="/auth/register"
+          href="/auth/register"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -108,7 +108,7 @@ const PagesDropdown = () => {
           No Layout
         </span>
         <Link
-          to="/landing"
+          href="/landing"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -116,7 +116,7 @@ const PagesDropdown = () => {
           Landing
         </Link>
         <Link
-          to="/profile"
+          href="/profile"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }

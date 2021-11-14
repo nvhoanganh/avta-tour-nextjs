@@ -11,6 +11,7 @@ import {
 	getTop10Players,
 } from '../lib/api';
 import Head from 'next/head';
+import Navbar from '../components/Navbars/AuthNavbar.js';
 
 export default function Index({
 	preview,
@@ -34,7 +35,12 @@ export default function Index({
 						AVTA - Australia Vietnamese Tennis Association
 					</title>
 				</Head>
+
+				<Navbar />
 				<Intro />
+
+				
+
 				<Container>
 					{upcomingCompetition && (
 						<CompetitionPreview {...upcomingCompetition} />
