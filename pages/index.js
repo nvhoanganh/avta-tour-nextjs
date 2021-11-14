@@ -34,9 +34,8 @@ export default function Index({
 						AVTA - Australia Vietnamese Tennis Association
 					</title>
 				</Head>
+				<Intro />
 				<Container>
-					<Intro />
-
 					{upcomingCompetition && (
 						<CompetitionPreview {...upcomingCompetition} />
 					)}
