@@ -12,6 +12,7 @@ import {
 } from '../lib/api';
 import Head from 'next/head';
 import Navbar from '../components/Navbars/AuthNavbar.js';
+import Link from 'next/link';
 
 export default function Index({
 	preview,

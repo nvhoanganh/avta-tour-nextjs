@@ -7,7 +7,7 @@ export default function Layout({ preview, children }) {
 		<>
 			<Meta />
 			{preview && <Alert preview={preview} />}
-			<main>{children}</main>
+			{children}
 			<Footer />
 		</>
 	);
