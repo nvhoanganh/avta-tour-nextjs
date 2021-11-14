@@ -60,7 +60,7 @@ export default function Navbar(props) {
 							<li className='flex items-center'>
 								<a
 									className='lg:text-white lg:hover:text-gray-200 text-gray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold'
-									href='https://github.com/nvhoanganh/avta-tour'
+									href='https://github.com/nvhoanganh/avta-tour-nextjs'
 									target='_blank'
 								>
 									<i className='lg:text-gray-500 text-gray-500 fab fa-github text-lg leading-lg ' />
