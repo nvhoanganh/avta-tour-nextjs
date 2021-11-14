@@ -3,16 +3,13 @@ import Link from 'next/link';
 
 export default function Top10Players({ allPlayers }) {
 	return (
-		<section className='pt-20 pb-48'>
+		<section className='pt-32 pb-48'>
 			<div className='container mx-auto px-4'>
 				<div className='flex flex-wrap justify-center text-center mb-24'>
 					<div className='w-full lg:w-6/12 px-4'>
 						<h2 className='text-4xl font-semibold'>
-							Top 10 Players
+							Top 10 Active Players
 						</h2>
-						<p className='text-lg leading-relaxed m-4 text-blueGray-500'>
-							Players sorted by AVTA Score
-						</p>
 					</div>
 				</div>
 				<div className='flex flex-wrap'>
@@ -20,12 +17,14 @@ export default function Top10Players({ allPlayers }) {
 						{allPlayers.slice(0, 10).map((x) => (
 							<div key={x.nickName} className='px-6'>
 								{x.coverImage?.url ? (
-									<ContentfulImage
-										width={256}
-										height={256}
-										className='shadow-lg rounded-full mx-auto max-w-120-px'
-										src={x.coverImage.url}
-									/>
+									<div className='mx-auto max-w-120-px'>
+										<ContentfulImage
+											width={120}
+											height={120}
+											className='rounded-full mx-auto max-w-120-px'
+											src={x.coverImage.url}
+										/>
+									</div>
 								) : (
 									<img
 										alt={x.fullName}
