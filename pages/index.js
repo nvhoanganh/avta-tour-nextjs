@@ -4,6 +4,7 @@ import ContentfulImage from '../components/contentful-image';
 import HeroPost from '../components/hero-post';
 import CompetitionPreview from '../components/competition-preview';
 import PostPreview from '../components/post-preview';
+import Top10Players from '../components/top10players';
 import Intro from '../components/intro';
 import Layout from '../components/layout';
 import CoverImage from '../components/cover-image';
@@ -27,9 +28,7 @@ export default function Index({
 	const upcomingCompetition = competittions[0];
 	const morePosts = allPosts.slice(1);
 
-	console.log('players', allPlayers);
-	console.log('posts', morePosts);
-	console.log('competittions', competittions);
+	console.log('allPlayers', allPlayers);
 
 	return (
 		<>
@@ -42,7 +41,7 @@ export default function Index({
 				<Navbar />
 				<Intro upcomingCompetition={upcomingCompetition} />
 
-				<div className='container mx-auto mt-12'>
+				<section className='container mx-auto mt-12'>
 					<div className='flex flex-wrap items-center'>
 						<div className='w-10/12 md:w-6/12 lg:w-4/12 md:px-4 mr-auto ml-auto -mt-32'>
 							<HeroPost {...heroPost} />
@@ -52,7 +51,9 @@ export default function Index({
 							<MoreStories posts={morePosts} />
 						</div>
 					</div>
-				</div>
+				</section>
+
+				<Top10Players allPlayers={allPlayers} />
 			</Layout>
 		</>
 	);

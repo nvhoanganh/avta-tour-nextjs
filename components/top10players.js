@@ -1,0 +1,73 @@
+import ContentfulImage from './contentful-image';
+import Link from 'next/link';
+
+export default function Top10Players({ allPlayers }) {
+	return (
+		<section className='pt-20 pb-48'>
+			<div className='container mx-auto px-4'>
+				<div className='flex flex-wrap justify-center text-center mb-24'>
+					<div className='w-full lg:w-6/12 px-4'>
+						<h2 className='text-4xl font-semibold'>
+							Top 10 Players
+						</h2>
+						<p className='text-lg leading-relaxed m-4 text-blueGray-500'>
+							Players sorted by AVTA Score
+						</p>
+					</div>
+				</div>
+				<div className='flex flex-wrap'>
+					<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
+						{allPlayers.slice(0, 10).map((x) => (
+							<div key={x.nickName} className='px-6'>
+								{x.coverImage?.url ? (
+									<ContentfulImage
+										width={256}
+										height={256}
+										className='shadow-lg rounded-full mx-auto max-w-120-px'
+										src={x.coverImage.url}
+									/>
+								) : (
+									<img
+										alt={x.fullName}
+										src='https://via.placeholder.com/150'
+										className='shadow-lg rounded-full mx-auto max-w-120-px'
+									/>
+								)}
+
+								<div className='pt-6 text-center'>
+									<h5 className='text-xl font-bold'>
+										<Link href={`/players/${x.nickName}`}>
+											<a className='hover:underline'>
+												{x.fullName}
+											</a>
+										</Link>
+									</h5>
+									<p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
+										{x.avtaPoint}
+									</p>
+									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
+										{x.homeClub || 'Unknown Club'}
+									</p>
+									<div className='mt-6'>
+										<button
+											className='bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1'
+											type='button'
+										>
+											<i className='fas fa-thumbs-up'></i>
+										</button>
+										<button
+											className='bg-red-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1'
+											type='button'
+										>
+											<i className='fas fa-envelope-open-text'></i>
+										</button>
+									</div>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</div>
+		</section>
+	);
+}
