@@ -13,7 +13,9 @@ import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 
-export default function Post({ post, morePosts, preview }) {
+export default function Post({ data, preview }) {
+	const { post, morePosts } = data;
+	console.log('we have more posts:', data);
 	const router = useRouter();
 
 	if (!router.isFallback && !post) {
@@ -64,10 +66,8 @@ export async function getStaticProps({ params, preview = false }) {
 	return {
 		props: {
 			preview,
-			post: data?.post ?? null,
-			morePosts: data?.morePosts ?? null,
+			data: data,
 		},
-		revalidate: 60,
 	};
 }
 
