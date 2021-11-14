@@ -11,6 +11,7 @@ import Layout from '../../components/layout';
 import { getAllPostsWithSlug, getPostAndMorePosts } from '../../lib/api';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
+import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 
 export default function Post({ post, morePosts, preview }) {
 	const router = useRouter();
@@ -21,8 +22,8 @@ export default function Post({ post, morePosts, preview }) {
 
 	return (
 		<Layout preview={preview}>
+			<IndexNavbar />
 			<Container>
-				<Intro />
 				{router.isFallback ? (
 					<PostTitle>Loading…</PostTitle>
 				) : (
@@ -46,6 +47,7 @@ export default function Post({ post, morePosts, preview }) {
 							</div>
 						</article>
 						<SectionSeparator />
+
 						{morePosts && morePosts.length > 0 && (
 							<MoreStories posts={morePosts} />
 						)}
@@ -65,7 +67,7 @@ export async function getStaticProps({ params, preview = false }) {
 			post: data?.post ?? null,
 			morePosts: data?.morePosts ?? null,
 		},
-		revalidate: 60
+		revalidate: 60,
 	};
 }
 

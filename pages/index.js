@@ -44,34 +44,36 @@ export default function Index({
 
 				<div className='container mx-auto mt-12'>
 					<div className='flex flex-wrap items-center'>
-						<div className='w-10/12 md:w-6/12 lg:w-4/12 px-12 md:px-4 mr-auto ml-auto -mt-32'>
-							<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl border border-gray-100 rounded-lg bg-blue-500'>
-								<ContentfulImage
-									width={2000}
-									height={1000}
-									className='w-full align-middle rounded-t-lg'
-									src={heroPost.coverImage.url}
-								/>
-								<blockquote className='relative p-8 mb-4'>
-									<svg
-										preserveAspectRatio='none'
-										xmlns='http://www.w3.org/2000/svg'
-										viewBox='0 0 583 95'
-										className='absolute left-0 w-full block h-95-px -top-94-px'
-									>
-										<polygon
-											points='-30,95 583,95 583,65'
-											className='text-blue-500 fill-current'
-										></polygon>
-									</svg>
-									<h4 className='text-xl font-bold text-white'>
-										{heroPost?.title}
-									</h4>
-									<p className='text-md font-light mt-2 text-white'>
-										{heroPost.excerpt}
-									</p>
-								</blockquote>
-							</div>
+						<div className='w-10/12 md:w-6/12 lg:w-4/12 md:px-4 mr-auto ml-auto -mt-32'>
+							<Link href={`/posts/${heroPost.slug}`}>
+								<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl border border-gray-100 rounded-lg bg-blue-500 hover:shadow-2xl hover:cursor-pointer'>
+									<ContentfulImage
+										width={2000}
+										height={1000}
+										className='w-full align-middle rounded-t-lg'
+										src={heroPost.coverImage.url}
+									/>
+									<blockquote className='relative p-8 mb-4'>
+										<svg
+											preserveAspectRatio='none'
+											xmlns='http://www.w3.org/2000/svg'
+											viewBox='0 0 583 95'
+											className='absolute left-0 w-full block h-95-px -top-94-px'
+										>
+											<polygon
+												points='-30,95 583,95 583,65'
+												className='text-blue-500 fill-current'
+											></polygon>
+										</svg>
+										<h4 className='text-xl font-bold text-white'>
+											{heroPost.title}
+										</h4>
+										<p className='text-md font-light mt-2 text-white'>
+											{heroPost.excerpt}
+										</p>
+									</blockquote>
+								</div>
+							</Link>
 						</div>
 
 						<div className='w-full md:w-6/12 px-4'>

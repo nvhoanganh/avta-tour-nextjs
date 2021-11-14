@@ -18,7 +18,7 @@ export default function CompetitionPreview({
 }) {
 	return (
 		<>
-			<div className='flex flex-wrap items-center mt-32'>
+			<div className='flex flex-wrap items-center mt-32 space-y-3'>
 				<div className='w-full md:w-5/12 px-4 mr-auto ml-auto'>
 					<div className='flex items-center space-x-3 mb-6'>
 						<div className='text-yellow-400 p-3 text-center inline-flex items-center justify-center w-16 h-16 shadow-lg rounded-full bg-white'>
@@ -42,9 +42,7 @@ export default function CompetitionPreview({
 							</span>
 						</Link>
 						<Link href={`/competitions`}>
-							<span
-								className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'
-							>
+							<span className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'>
 								<i className='fas fa-history text-lg mr-1'></i>
 								<span>Past Events</span>
 							</span>
@@ -52,7 +50,7 @@ export default function CompetitionPreview({
 					</div>
 				</div>
 
-				<div className='w-full md:w-4/12 px-4 mr-auto ml-auto'>
+				<div className='w-full md:w-4/12 px-4 mr-auto ml-auto sm:pt-10'>
 					<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-blue-500'>
 						<ContentfulImage
 							width={1000}
@@ -109,7 +107,7 @@ export default function CompetitionPreview({
 										<div className='flex items-center'>
 											<div>
 												<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full text-white bg-blueGray-50 mr-3'>
-													<i className='far fa-text-height'></i>
+													<i className='fas fa-font'></i>
 												</span>
 											</div>
 											<div>
