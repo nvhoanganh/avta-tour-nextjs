@@ -59,14 +59,14 @@ export default function Intro({ upcomingCompetition }) {
 						y='0'
 					>
 						<polygon
-							className=' text-gray-200 fill-current'
+							className=' text-white fill-current'
 							points='2560 0 2560 100 0 100'
 						></polygon>
 					</svg>
 				</div>
 			</div>
 
-			<section className='pb-20 bg-gray-200 -mt-24'>
+			<section className='pb-48 -mt-24'>
 				<div className='container mx-auto px-4'>
 					<div className='flex flex-wrap'>
 						<div className='lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center'>

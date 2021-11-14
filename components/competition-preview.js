@@ -57,7 +57,7 @@ export default function CompetitionPreview({
 						<ContentfulImage
 							width={1000}
 							height={600}
-							className={cn('rounded-xl shadow-sm')}
+							className='rounded-xl shadow-sm'
 							src={heroImage?.url}
 						/>
 						<blockquote className='relative p-8 mb-4'>
