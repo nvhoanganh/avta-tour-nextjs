@@ -37,22 +37,18 @@ export default function CompetitionPreview({
 
 					<div className='sm:block flex flex-col mt-10'>
 						<Link href={`/competitions/${slug}`}>
-							<a
-								href='https://www.creative-tim.com/learning-lab/tailwind/react/overview/notus?ref=nr-index'
-								target='_blank'
-								className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
-							>
+							<span className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
 								View Event
-							</a>
+							</span>
 						</Link>
-						<a
-							href='https://github.com/creativetimofficial/notus-react?ref=nr-index'
-							target='_blank'
-							className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'
-						>
-							<i className='fas fa-history text-lg mr-1'></i>
-							<span>Past Events</span>
-						</a>
+						<Link href={`/competitions`}>
+							<span
+								className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'
+							>
+								<i className='fas fa-history text-lg mr-1'></i>
+								<span>Past Events</span>
+							</span>
+						</Link>
 					</div>
 				</div>
 
