@@ -193,7 +193,6 @@ export async function getStaticProps({ params, preview = false }) {
 			preview,
 			player: data,
 		},
-		revalidate: 60,
 	};
 }
 
