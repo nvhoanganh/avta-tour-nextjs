@@ -1,6 +1,7 @@
 import Container from '../components/container';
 import MoreStories from '../components/more-stories';
 import HeroPost from '../components/hero-post';
+import CompetitionPreview from '../components/competition-preview';
 import Intro from '../components/intro';
 import Layout from '../components/layout';
 import {
@@ -11,8 +12,14 @@ import {
 } from '../lib/api';
 import Head from 'next/head';
 
-export default function Index({ preview, allPosts, allPlayers, competittions }) {
+export default function Index({
+	preview,
+	allPosts,
+	allPlayers,
+	competittions,
+}) {
 	const heroPost = allPosts[0];
+	const upcomingCompetition = competittions[0];
 	const morePosts = allPosts.slice(1);
 
 	console.log('players', allPlayers);
@@ -29,6 +36,11 @@ export default function Index({ preview, allPosts, allPlayers, competittions }) 
 				</Head>
 				<Container>
 					<Intro />
+
+					{upcomingCompetition && (
+						<CompetitionPreview {...upcomingCompetition} />
+					)}
+
 					{heroPost && (
 						<HeroPost
 							title={heroPost.title}
@@ -50,6 +62,7 @@ export async function getStaticProps({ preview = false }) {
 	const allPosts = (await getAllPostsForHome(preview)) ?? [];
 	const allPlayers = (await getTop10Players(preview)) ?? [];
 	const competittions = (await getAllCompetitionsForHome(preview)) ?? [];
+
 	return {
 		props: { preview, allPosts, allPlayers, competittions },
 		revalidate: 60,
