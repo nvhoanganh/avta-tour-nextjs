@@ -28,8 +28,6 @@ export default function Index({
 	const upcomingCompetition = competittions[0];
 	const morePosts = allPosts.slice(1);
 
-	console.log('allPlayers', allPlayers);
-
 	return (
 		<>
 			<Layout preview={preview}>

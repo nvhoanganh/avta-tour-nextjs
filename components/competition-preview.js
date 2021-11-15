@@ -15,6 +15,8 @@ export default function CompetitionPreview({
 	maxPoint,
 	heroImage,
 	teamsCollection,
+	active,
+	applicationGForm,
 }) {
 	return (
 		<>
@@ -41,13 +43,24 @@ export default function CompetitionPreview({
 								View Event
 							</span>
 						</Link>
-						<Link href={`/`}>
-							<span className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'>
-								<i className='fas fa-history text-lg mr-1'></i>
-								<span>Past Events</span>
-							</span>
-						</Link>
+
+						{active && applicationGForm ? (
+							<a href={applicationGForm} target='_blank'>
+								<span className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'>
+									<i className='far fa-hand-point-right mr-3'></i>
+									<span>Apply Now</span>
+								</span>
+							</a>
+						) : null}
 					</div>
+
+					<p className='text-lg font-light leading-relaxed mt-8 mb-4 text-gray-600'>
+						<Link href={`/competitions`}>
+							<a className='hover:underline hover:cursor-pointer'>
+								All past events
+							</a>
+						</Link>
+					</p>
 				</div>
 
 				<div className='w-full md:w-4/12 px-4 mr-auto ml-auto sm:pt-10'>

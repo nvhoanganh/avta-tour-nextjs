@@ -36,6 +36,7 @@ module.exports = {
 			minHeight: {
 				'screen-75': '75vh',
 				'screen-45': '45vh',
+				'screen-25': '25vh',
 				'screen-60': '60vh',
 			},
 			fontSize: {
