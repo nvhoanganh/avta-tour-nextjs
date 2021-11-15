@@ -15,12 +15,12 @@ import Intro from '../../components/intro2';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import TournamentsTable from '../../components/Cards/TournamentsTable.js';
+import TournamentsCard from '../../components/Cards/TournamentsCard.js';
 
 export default function Competitions({ competitions, preview }) {
 	const router = useRouter();
 
-	console.log('comps', competitions);
-
+	console.log(competitions);
 	return (
 		<Layout preview={preview}>
 			<Navbar transparent />
@@ -40,8 +40,17 @@ export default function Competitions({ competitions, preview }) {
 							title='AVTA Tournaments'
 							bgImg='https://unsplash.com/photos/HkN64BISuQA/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM2OTU1MTkw&force=true&w=1920'
 						>
-							<div className='w-full mb-12 px-4'>
-								<TournamentsTable competitions={competitions} />
+							<div className='w-full mb-12'>
+								<div className='hidden container mx-auto md:block px-4'>
+									<TournamentsTable
+										competitions={competitions}
+									/>
+								</div>
+								<div className='md:hidden px-2 mx-auto'>
+									<TournamentsCard
+										competitions={competitions}
+									/>
+								</div>
 							</div>
 						</Intro>
 					</main>

@@ -45,11 +45,13 @@ export default function CompetitionPreview({
 						</Link>
 
 						{active && applicationGForm ? (
-							<a href={applicationGForm} target='_blank'>
-								<span className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'>
-									<i className='far fa-hand-point-right mr-3'></i>
-									<span>Apply Now</span>
-								</span>
+							<a
+								href={applicationGForm}
+								target='_blank'
+								className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'
+							>
+								<i className='far fa-hand-point-right mr-3'></i>
+								<span>Apply Now</span>
 							</a>
 						) : null}
 					</div>
@@ -57,7 +59,7 @@ export default function CompetitionPreview({
 					<p className='text-lg font-light leading-relaxed mt-8 mb-4 text-gray-600'>
 						<Link href={`/competitions`}>
 							<a className='hover:underline hover:cursor-pointer'>
-								All past events
+								View past events
 							</a>
 						</Link>
 					</p>

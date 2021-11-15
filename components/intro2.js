@@ -57,7 +57,7 @@ export default function Intro2({ children, bgImg, title, subtitle }) {
 			</div>
 
 			<section className='pb-48 -mt-24'>
-				<div className='container mx-auto px-4'>{children}</div>
+				<div>{children}</div>
 			</section>
 		</>
 	);
