@@ -1,0 +1,289 @@
+{
+	"title": "1375 - November 2021",
+	"slug": "1375-november-2021",
+	"description": {
+		"json": {
+			"data": {},
+			"content": [
+				{
+					"data": {},
+					"content": [
+						{
+							"data": {},
+							"marks": [{ "type": "bold" }],
+							"value": "Finally, the tournament you all waiting for is here, 1375 pt",
+							"nodeType": "text"
+						}
+					],
+					"nodeType": "paragraph"
+				},
+				{
+					"data": {},
+					"content": [
+						{
+							"data": {},
+							"marks": [],
+							"value": "Taking place at Heatherdale Tennis Club on Sunday the 21st of November. ",
+							"nodeType": "text"
+						}
+					],
+					"nodeType": "paragraph"
+				}
+			],
+			"nodeType": "document"
+		}
+	},
+	"date": "2021-11-21T00:00:00.000Z",
+	"maxPoint": 1375,
+	"club": "Heatherdale Tennis Club",
+	"active": true,
+	"applicationGForm": "https://docs.google.com/forms/d/e/1FAIpQLSdyCZej1q8yqa8KLF2vjjnOjdEdLeLLPHZ2FSL42TtiKVEXag/viewform?usp=sf_link",
+	"type": "Men Double",
+	"googleForm": "https://forms.gle/y9vJsYpodwvPjtbT8",
+	"resultSheets": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQx9LAZT8ZuEXFPEVpNwEo9h_GI9Sv0uNvYij32BMqZGe3xHSV16koU5JdY-0wA68eGwRHRuMtmhCqr/pub?gid=748942493&single=true&output=csv",
+	"rankingSheet": "https://docs.google.com/spreadsheets/d/e/2PACX-1vQx9LAZT8ZuEXFPEVpNwEo9h_GI9Sv0uNvYij32BMqZGe3xHSV16koU5JdY-0wA68eGwRHRuMtmhCqr/pub?gid=2145151230&single=true&output=csv",
+	"heroImage": {
+		"url": "https://images.ctfassets.net/012zf22jz69j/6uM1P3cgypJMhd8WZign3w/9168d3426f406b480df1559871c06853/0366EE73-DE94-4BE6-888D-5767D0AC4E0D.jpeg"
+	},
+	"teamsCollection": {
+		"items": [
+			{ "sys": { "id": "1gBlRpeGgsMPv4Kt8ObyOU" } },
+			{ "sys": { "id": "7E48zsTidnOJUi2n8j6xGM" } },
+			{ "sys": { "id": "5loph0taHoNG5rDS6zC3zC" } },
+			{ "sys": { "id": "7JrXIUOodbyZaPRYnhTSoT" } },
+			{ "sys": { "id": "2DA8HBqfTX6cQHif51v065" } },
+			{ "sys": { "id": "5vLg4ealEmKvC9WDdCFixW" } },
+			{ "sys": { "id": "4p4DX7KvEx7bOAQHU0Z3HG" } },
+			{ "sys": { "id": "7vzhtL0hEisct4AAEjyVRU" } },
+			{ "sys": { "id": "4DuarlV3QdlNvq8J3F6YhX" } }
+		]
+	},
+	"mediaCollection": {
+		"items": [
+			{
+				"url": "https://images.ctfassets.net/012zf22jz69j/3gP6k2du8CcxcmGZ3LYNQn/726ebae9ddf25a8e9ecd52114e556a1b/708B584F-EEE7-453F-B1B8-87E265422F45.jpeg"
+			},
+			{
+				"url": "https://images.ctfassets.net/012zf22jz69j/1CED3lhMXBRWib7zyt1XMy/47e2e18120101c09ef182e1b4e31f552/AA385DB2-B090-44DC-9BBB-28145EC57A13.jpeg"
+			},
+			{
+				"url": "https://images.ctfassets.net/012zf22jz69j/2aZ2pbx1TOzouUW9ssb0GL/8cb1af46d421c9f3f99e1ab1632e58e8/34593C6B-2A48-43B1-9A07-080634984B8A.jpeg"
+			},
+			{
+				"url": "https://images.ctfassets.net/012zf22jz69j/7kUvFxW1mF1e5J8Obfiu93/4c5aa7494097e273004e0191c5d830b3/AA548F4D-2EF8-4E89-8E52-218D461BFF92.jpeg"
+			},
+			{
+				"url": "https://images.ctfassets.net/012zf22jz69j/6uM1P3cgypJMhd8WZign3w/9168d3426f406b480df1559871c06853/0366EE73-DE94-4BE6-888D-5767D0AC4E0D.jpeg"
+			}
+		]
+	},
+	"teams": [
+		{
+			"name": "Hoang Anh + Vu Trinh",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "1osAleAorCse6ScgvmiUAq" },
+						"fullName": "Hoàng Anh",
+						"nickName": "Hoang Anh",
+						"avtaPoint": 725,
+						"userId": null,
+						"homeClub": "Keon Park Tennis Club"
+					},
+					{
+						"sys": { "id": "3P3Lf2Iqz9SOSuvRFalYq0" },
+						"fullName": "Vu Trinh",
+						"nickName": "Vu Trinh",
+						"avtaPoint": 650,
+						"userId": null,
+						"homeClub": "Kingsbury"
+					}
+				]
+			}
+		},
+		{
+			"name": "Tamas + Jason Duong",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "3aAMJFz0GYDpvX5fcAbvR6" },
+						"fullName": "Tamas",
+						"nickName": "Tamas",
+						"avtaPoint": 760,
+						"userId": null,
+						"homeClub": null
+					},
+					{
+						"sys": { "id": "2zNQ6g5QUpWm7feoUj5TYP" },
+						"fullName": "Jason Duong",
+						"nickName": "Jason Duong",
+						"avtaPoint": 615,
+						"userId": null,
+						"homeClub": null
+					}
+				]
+			}
+		},
+		{
+			"name": "Jimmy Binh + Justin Hai",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "1pW4vYyIz6f5THfqfCDEIp" },
+						"fullName": "Jimmy Binh",
+						"nickName": "Jimmy Binh",
+						"avtaPoint": 730,
+						"userId": null,
+						"homeClub": null
+					},
+					{
+						"sys": { "id": "1IswG4j9PeKO5eOzsyQJob" },
+						"fullName": "Justin Hai",
+						"nickName": "Justin Hai",
+						"avtaPoint": 645,
+						"userId": null,
+						"homeClub": null
+					}
+				]
+			}
+		},
+		{
+			"name": "Quan Fed + Luan",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "4fEN6c6UaGNkQhSw783ZfR" },
+						"fullName": "Quan Fed",
+						"nickName": "Quan Fed",
+						"avtaPoint": 670,
+						"userId": null,
+						"homeClub": null
+					},
+					{
+						"sys": { "id": "3MRRz4fRYC7I23fDdfwrnk" },
+						"fullName": "Luận",
+						"nickName": "Luan",
+						"avtaPoint": null,
+						"userId": null,
+						"homeClub": null
+					}
+				]
+			}
+		},
+		{
+			"name": "Hung Trambo + Luan Rau",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "UZrcfQ9FEvcy1Die5dyQ7" },
+						"fullName": "Hung",
+						"nickName": "Hung Trambo",
+						"avtaPoint": 640,
+						"userId": null,
+						"homeClub": null
+					},
+					{
+						"sys": { "id": "5ww88zWKWOS3L3YrRrEnQa" },
+						"fullName": "Luan",
+						"nickName": "Luan Rau",
+						"avtaPoint": 735,
+						"userId": null,
+						"homeClub": "Kingsbury"
+					}
+				]
+			}
+		},
+		{
+			"name": "Thang Donvale + Quan Kingsbury",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "71vj2nLi88fqsFpg31OeD7" },
+						"fullName": "Thang Nguyen",
+						"nickName": "Thang Donvale",
+						"avtaPoint": 715,
+						"userId": null,
+						"homeClub": "Heatherdale Tennis Club"
+					},
+					{
+						"sys": { "id": "65M6LizCliM6C4Ax1vVfBL" },
+						"fullName": "Quan",
+						"nickName": "Quan Kingsbury",
+						"avtaPoint": 655,
+						"userId": null,
+						"homeClub": "Kingsbury"
+					}
+				]
+			}
+		},
+		{
+			"name": "Tony Quach + Minh Le",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "q12qZlTMXuC16JOkAWWA0" },
+						"fullName": "Tony Quach",
+						"nickName": "Tony Quach",
+						"avtaPoint": 700,
+						"userId": null,
+						"homeClub": null
+					},
+					{
+						"sys": { "id": "64ADtLaTwM5lyBIINpeb12" },
+						"fullName": "Minh Le",
+						"nickName": "Minh Le",
+						"avtaPoint": 650,
+						"userId": null,
+						"homeClub": null
+					}
+				]
+			}
+		},
+		{
+			"name": "TX + TN",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "5GQ1bildQO0peqXNo2WIXC" },
+						"fullName": "Tony Phan",
+						"nickName": "TX",
+						"avtaPoint": 735,
+						"userId": null,
+						"homeClub": "Kingsbury"
+					},
+					{
+						"sys": { "id": "3yz3pxivn0pP4G0ymFYDXd" },
+						"fullName": "Tuấn Như",
+						"nickName": "TN",
+						"avtaPoint": 640,
+						"userId": null,
+						"homeClub": "Kingsbury"
+					}
+				]
+			}
+		},
+		{
+			"name": "TB + Cuong Kinsbury",
+			"playersCollection": {
+				"items": [
+					{
+						"sys": { "id": "2gSg7Ex6SnNOa7cpCkaOyy" },
+						"fullName": "Tu ",
+						"nickName": "TB",
+						"avtaPoint": 695,
+						"userId": null,
+						"homeClub": "Kingsbury"
+					},
+					{
+						"sys": { "id": "2S91kd681c6YxNsWlw55Tx" },
+						"fullName": "Cuong",
+						"nickName": "Cuong Kingsbury",
+						"avtaPoint": 670,
+						"userId": null,
+						"homeClub": null
+					}
+				]
+			}
+		}
+	]
+}

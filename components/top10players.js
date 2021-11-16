@@ -17,14 +17,16 @@ export default function Top10Players({ allPlayers }) {
 						{allPlayers.slice(0, 10).map((x) => (
 							<div key={x.nickName} className='px-6'>
 								{x.coverImage?.url ? (
-									<div className='mx-auto max-w-120-px'>
-										<ContentfulImage
-											width={120}
-											height={120}
-											className='rounded-full mx-auto max-w-120-px'
-											src={x.coverImage.url}
-										/>
-									</div>
+									<Link href={`/players/${x.nickName}`}>
+										<div className='mx-auto max-w-120-px'>
+											<ContentfulImage
+												width={120}
+												height={120}
+												className='rounded-full mx-auto max-w-120-px'
+												src={x.coverImage.url}
+											/>
+										</div>
+									</Link>
 								) : (
 									<img
 										alt={x.fullName}

@@ -62,3 +62,127 @@ query {
     }
   }
 }
+
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  competitionCollection(where: { slug: "1375-november-2021" }, preview: false) {
+    items {
+      title
+      slug
+      description {
+        json
+      }
+      date
+      maxPoint
+      club
+      active
+      applicationGForm
+      type
+      googleForm
+      resultSheets
+      rankingSheet
+      type
+      heroImage {
+        url
+      }
+      teamsCollection(preview: false) {
+        items {
+          sys {
+            id
+          }
+        }
+      }
+    }
+  }
+}
+
+# get comp by id and all of its media
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  competitionCollection(where: { slug: "1375-november-2021" }, preview: false) {
+    items {
+      mediaCollection(preview: false) {
+        items {
+          url
+        }
+      }
+    }
+  }
+}
+
+# get comp by id and all teams info
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  teamCollection(where: {
+    OR: [
+      { sys: { id : "1gBlRpeGgsMPv4Kt8ObyOU"} },
+      { sys: { id : "7E48zsTidnOJUi2n8j6xGM"} },
+      { sys: { id : "5loph0taHoNG5rDS6zC3zC"} },
+      { sys: { id : "7JrXIUOodbyZaPRYnhTSoT"} },
+      { sys: { id : "2DA8HBqfTX6cQHif51v065"} },
+      { sys: { id : "5vLg4ealEmKvC9WDdCFixW"} },
+      { sys: { id : "4p4DX7KvEx7bOAQHU0Z3HG"} },
+    ]
+   }, preview: false) {
+    items {
+      name
+      playersCollection(preview: false) {
+        items {
+          sys { id }
+          fullName
+          nickName
+          avtaPoint
+          userId
+          homeClub
+        }
+      }
+    }
+  }
+}
+
+# get user info
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
+  playerCollection(where: {
+    OR: [
+      { sys: { id : "1osAleAorCse6ScgvmiUAq"} },
+      { sys: { id : "7E48zsTidnOJUi2n8j6xGM"} },
+      { sys: { id : "5loph0taHoNG5rDS6zC3zC"} },
+      { sys: { id : "7JrXIUOodbyZaPRYnhTSoT"} },
+      { sys: { id : "2DA8HBqfTX6cQHif51v065"} },
+      { sys: { id : "5vLg4ealEmKvC9WDdCFixW"} },
+      { sys: { id : "4p4DX7KvEx7bOAQHU0Z3HG"} },
+    ]
+   }, preview: false) {
+    items {
+      fullName
+      nickName
+      avtaPoint
+      userId
+      homeClub
+      coverImage {
+        url
+      }
+    }
+  }
+}
