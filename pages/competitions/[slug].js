@@ -25,9 +25,9 @@ export default function Competition({ competition, preview }) {
 		return <ErrorPage statusCode={404} />;
 	}
 
-	const teamJoined = competition.teamsCollection?.items?.length || 0;
+	const teamJoined = competition?.teamsCollection?.items?.length || 0;
 
-	const totalPoints = competition.teams.reduce((previousTotal, team) => {
+	const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
 		return (
 			previousTotal +
 			team.playersCollection.items[0].avtaPoint +
