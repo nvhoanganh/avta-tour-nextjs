@@ -76,14 +76,12 @@ export default function Navbar(props) {
 							</li>
 
 							<li className='flex items-center'>
-								<a
-									className='bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'
-									href='https://www.facebook.com/groups/337037000979594'
-									target='_blank'
-								>
-									<i className='fas fa-arrow-alt-circle-down'></i>{' '}
-									Join Us
-								</a>
+								<Link href='/auth/login'>
+									<a className='bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+										<i className='fas fa-arrow-alt-circle-down'></i>{' '}
+										Join Us
+									</a>
+								</Link>
 							</li>
 						</ul>
 					</div>

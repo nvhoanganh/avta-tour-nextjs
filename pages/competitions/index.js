@@ -20,7 +20,6 @@ import TournamentsCard from '../../components/Cards/TournamentsCard.js';
 export default function Competitions({ competitions, preview }) {
 	const router = useRouter();
 
-	console.log(competitions);
 	return (
 		<Layout preview={preview}>
 			<Navbar transparent />
