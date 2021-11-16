@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import Head from 'next/head';
 import ErrorPage from 'next/error';
 import ContentfulImage from '../../components/contentful-image';
+import DateComponent from '../../components/date';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
 import MoreStories from '../../components/more-stories';
@@ -95,7 +96,8 @@ export default function Competition({ competition, preview }) {
 											<div className='flex flex-wrap justify-center'>
 												<div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
 													<div className='relative'>
-														<div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'>
+														<div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
+															<i className='fas fa-trophy text-6xl text-yellow-400'></i>
 															{
 																competition.maxPoint
 															}
@@ -147,16 +149,16 @@ export default function Competition({ competition, preview }) {
 												</div>
 											</div>
 
-											<div className='text-center mt-12'>
+											<div className='text-center mt-10'>
 												<h3 className='text-4xl font-semibold leading-normal mb-2 text-gray-700 mb-2'>
 													{competition.title}
 												</h3>
 												<div className='text-sm leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase'>
 													<i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
-													{competition.club}
-												</div>
-												<div className='mb-2 text-green-900 mt-10 text-6xl font-bold'>
-													{competition.date}
+													{competition.club},{' '}
+													<DateComponent
+														dateString={competition.date}
+													/>
 												</div>
 											</div>
 											<div className='mt-10 py-10 border-t border-gray-200 text-center'>
