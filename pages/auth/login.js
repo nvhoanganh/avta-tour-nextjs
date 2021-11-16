@@ -151,9 +151,9 @@ export default function Login() {
 									</div>
 									<div className='w-1/2 text-right'>
 										<Link href='/auth/register'>
-											<small className='text-gray-200'>
+											<a className='text-gray-200 text-sm'>
 												Create new account
-											</small>
+											</a>
 										</Link>
 									</div>
 								</div>
