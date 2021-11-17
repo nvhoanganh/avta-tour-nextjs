@@ -44,6 +44,8 @@ export default function Login() {
 
 	const loginFacebook = async () => {
 		const authObj = getAuth();
+		const provider = new FacebookAuthProvider();
+
 		signInWithPopup(authObj, provider)
 			.then((result) => {
 				// The signed-in user info.
