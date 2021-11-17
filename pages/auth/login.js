@@ -21,6 +21,8 @@ import {
 	signInWithRedirect,
 	GoogleAuthProvider,
 	FacebookAuthProvider,
+	signInWithPopup,
+	getAuth,
 	OAuthProvider,
 } from 'firebase/auth';
 import TournamentsCard from '../../components/Cards/TournamentsCard.js';
@@ -40,13 +42,27 @@ export default function Login() {
 		}
 	}, [user]);
 
+	const loginFacebook = async () => {
+		const authObj = getAuth();
+		signInWithPopup(authObj, provider)
+			.then((result) => {
+				// The signed-in user info.
+				const user = result.user;
+				if (user) {
+					console.log(user);
+					router.push('/');
+				}
+			})
+			.catch((error) => {
+				console.log(error);
+			});
+	};
+
 	const login = async (provider) => {
 		const getProvider = () => {
 			switch (provider) {
 				case 'google':
 					return new GoogleAuthProvider();
-				case 'facebook':
-					return new FacebookAuthProvider();
 				case 'yahoo':
 					return new OAuthProvider('yahoo.com');
 				default:
@@ -57,10 +73,8 @@ export default function Login() {
 		const p = getProvider();
 
 		// Start a sign in process for an unauthenticated user.
-		if (provider != 'facebook') {
-			p.addScope('profile');
-			p.addScope('email');
-		}
+		p.addScope('profile');
+		p.addScope('email');
 
 		return await signInWithRedirect(auth, p);
 	};
@@ -101,9 +115,7 @@ export default function Login() {
 										{!loadingAuth ? (
 											<div className='flex space-x-3 justify-center mb-6'>
 												<button
-													onClick={() =>
-														login('facebook')
-													}
+													onClick={loginFacebook}
 													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
 													type='button'
 												>
