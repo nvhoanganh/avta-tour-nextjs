@@ -1,13 +1,20 @@
 /*eslint-disable*/
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 
 // components
 
 import PagesDropdown from '../Dropdowns/PagesDropdown';
+import { useFirebaseAuth } from '../authhook';
 
 export default function Navbar(props) {
+	const { user, logout } = useFirebaseAuth();
 	const [navbarOpen, setNavbarOpen] = React.useState(false);
+
+	useEffect(() => {
+		console.log(user);
+	}, [user]);
+
 	return (
 		<>
 			<nav className='top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg'>
@@ -76,12 +83,22 @@ export default function Navbar(props) {
 							</li>
 
 							<li className='flex items-center'>
-								<Link href='/auth/login'>
-									<a className='bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
-										<i className='fas fa-arrow-alt-circle-down'></i>{' '}
-										Join Us
+								{!user ? (
+									<Link href='/auth/login'>
+										<a className='bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+											<i className='fas fa-arrow-alt-circle-down'></i>{' '}
+											Join Us
+										</a>
+									</Link>
+								) : (
+									<a
+										onClick={() => logout()}
+										className='bg-white text-blueGray-700 active:bg-blueGray-50 text-xs font-bold px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'
+									>
+										<i className='fas fa-sign-out-alt mr-2'></i>
+										Logout
 									</a>
-								</Link>
+								)}
 							</li>
 						</ul>
 					</div>

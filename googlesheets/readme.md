@@ -1,2 +1,5 @@
 https://docs.google.com/spreadsheets/d/e/2PACX-1vQx9LAZT8ZuEXFPEVpNwEo9h_GI9Sv0uNvYij32BMqZGe3xHSV16koU5JdY-0wA68eGwRHRuMtmhCqr/pub?gid=748942493&single=true&output=csv
 https://docs.google.com/spreadsheets/d/e/2PACX-1vQx9LAZT8ZuEXFPEVpNwEo9h_GI9Sv0uNvYij32BMqZGe3xHSV16koU5JdY-0wA68eGwRHRuMtmhCqr/pub?gid=2145151230&single=true&output=csv
+
+
+https://www.facebook.com/v8.0/dialog/oauth?response_type=code%2Cgranted_scopes&client_id=955095205088132&redirect_uri=https%3A%2F%2Favta-tour.firebaseapp.com%2F__%2Fauth%2Fhandler&state=AMbdmDnjyL2P_i9nAG5qY3W1xBxB5oWCEhgctdZIcufXTDb87L92Tq7U6YoJu9Q6QXKokjIS-X_XYGFnPXl59UIOoyeiHzRIaq3aN2u4_1DLGhOB5AaXy3am4wkcpzZwYcYbYH7DfO-hpkSL2AyVMzbhOXUuL1W-l4Ln6kYH-D_bAtq8IZDrtnKoefQoUK4RvPTJXZHm4Ce9fSJjVNXfikjnlSCFVGOiiqSQcIxJpKXsLw-19UfwmX4q-ulgN9a_8bMdZYvDuM446dP5PNOCKqaVG7wTrQPaOOZFYWmSHxckyhLUwYmuBGN23GuI7K3Qu2ItPVukT-X3ZZLi&scope=public_profile%2Cemail%2Cprofile&context_uri=http%3A%2F%2Flocalhost%3A3000

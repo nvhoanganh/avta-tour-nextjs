@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import Container from '../components/container';
 import MoreStories from '../components/more-stories';
 import ContentfulImage from '../components/contentful-image';
@@ -17,6 +18,7 @@ import {
 import Head from 'next/head';
 import Navbar from '../components/Navbars/AuthNavbar.js';
 import Link from 'next/link';
+import { useFirebaseAuth } from '../components/authhook';
 
 export default function Index({
 	preview,
@@ -24,6 +26,14 @@ export default function Index({
 	allPlayers,
 	competittions,
 }) {
+	const { user } = useFirebaseAuth();
+
+	useEffect(() => {
+		if (user) {
+			console.log(user);
+		}
+	}, [user]);
+
 	const heroPost = allPosts[0];
 	const upcomingCompetition = competittions[0];
 	const morePosts = allPosts.slice(1);
