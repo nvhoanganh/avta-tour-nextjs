@@ -11,10 +11,6 @@ export default function Navbar(props) {
 	const { user, logout } = useFirebaseAuth();
 	const [navbarOpen, setNavbarOpen] = React.useState(false);
 
-	useEffect(() => {
-		console.log(user);
-	}, [user]);
-
 	return (
 		<>
 			<nav className='top-0 absolute z-50 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg'>

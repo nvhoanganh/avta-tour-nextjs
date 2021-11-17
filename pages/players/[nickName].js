@@ -7,7 +7,6 @@ import PostBody from '../../components/post-body';
 import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
-import SectionSeparator from '../../components/section-separator';
 import Layout from '../../components/layout';
 import {
 	getAllPostsWithSlug,
