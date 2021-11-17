@@ -57,8 +57,10 @@ export default function Login() {
 		const p = getProvider();
 
 		// Start a sign in process for an unauthenticated user.
-		p.addScope('profile');
-		p.addScope('email');
+		if (provider != 'facebook') {
+			p.addScope('profile');
+			p.addScope('email');
+		}
 
 		return await signInWithRedirect(auth, p);
 	};
