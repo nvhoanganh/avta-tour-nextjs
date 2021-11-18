@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -22,6 +22,7 @@ import {
 	GoogleAuthProvider,
 	FacebookAuthProvider,
 	signInWithPopup,
+	getRedirectResult,
 	getAuth,
 	OAuthProvider,
 } from 'firebase/auth';
@@ -33,32 +34,9 @@ import { auth } from '../../lib/firebase';
 import { useFirebaseAuth } from '../../components/authhook';
 
 export default function Login() {
-	const { user, loadingAuth } = useFirebaseAuth();
+	const { loadingAuth } = useFirebaseAuth();
 	const router = useRouter();
-
-	useEffect(() => {
-		if (user) {
-			router.push('/');
-		}
-	}, [user]);
-
-	const loginFacebook = async () => {
-		const authObj = getAuth();
-		const provider = new FacebookAuthProvider();
-
-		signInWithPopup(authObj, provider)
-			.then((result) => {
-				// The signed-in user info.
-				const user = result.user;
-				if (user) {
-					console.log(user);
-					router.push('/');
-				}
-			})
-			.catch((error) => {
-				console.log(error);
-			});
-	};
+	const [loginError, setLoginError] = useState(null);
 
 	const login = async (provider) => {
 		const getProvider = () => {
@@ -67,19 +45,56 @@ export default function Login() {
 					return new GoogleAuthProvider();
 				case 'yahoo':
 					return new OAuthProvider('yahoo.com');
+				case 'facebook':
+					return new FacebookAuthProvider();
 				default:
 					return new GoogleAuthProvider();
 			}
 		};
+
+		localStorage.setItem('provider', provider);
+
 		// Sign in using a redirect.
 		const p = getProvider();
 
-		// Start a sign in process for an unauthenticated user.
-		p.addScope('profile');
-		p.addScope('email');
+		if (provider != 'facebook') {
+			// Start a sign in process for an unauthenticated user.
+			p.addScope('profile');
+			p.addScope('email');
+		}
 
 		return await signInWithRedirect(auth, p);
 	};
+
+	getRedirectResult(auth)
+		.then((result) => {
+			const getCredential = () => {
+				const provider = localStorage.getItem('provider');
+				switch (provider) {
+					case 'google':
+						return new GoogleAuthProvider();
+					case 'yahoo':
+						return new OAuthProvider('yahoo.com');
+					case 'facebook':
+						return new FacebookAuthProvider();
+					default:
+						return null;
+				}
+			};
+
+			// This gives you a Facebook Access Token. You can use it to access the Facebook API.
+			const credential = getCredential();
+			if (!credential) return;
+
+			const user = result?.user;
+			console.log('got result from redirect', user);
+			if (user) {
+				router.push('/');
+			}
+		})
+		.catch((error) => {
+			setLoginError(error.message);
+		});
 
 	return (
 		<>
@@ -111,14 +126,18 @@ export default function Login() {
 									<div className='rounded-t mb-0 px-3 py-6'>
 										<div className='text-center my-6'>
 											<h6 className='text-gray-500 text-lg font-bold'>
-												Sign in with
+												{loadingAuth
+													? 'Login you in. Please wait..'
+													: 'Sign in with'}
 											</h6>
 										</div>
 										{!loadingAuth ? (
-											<div className='flex space-x-3 justify-center mb-6'>
+											<div className='flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 justify-center mb-6 mx-4 md:mx-3'>
 												<button
-													onClick={loginFacebook}
-													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
+													onClick={() =>
+														login('facebook')
+													}
+													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
 													type='button'
 												>
 													<img
@@ -132,7 +151,7 @@ export default function Login() {
 													onClick={() =>
 														login('google')
 													}
-													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
+													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
 													type='button'
 												>
 													<img
@@ -146,7 +165,7 @@ export default function Login() {
 													onClick={() =>
 														login('yahoo')
 													}
-													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none mb-1 uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
+													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
 													type='button'
 												>
 													<img
@@ -157,9 +176,11 @@ export default function Login() {
 													Yahoo
 												</button>
 											</div>
-										) : (
-											<div className=' text-center '>
-												Loading...
+										) : null}
+
+										{loginError && (
+											<div className='text-center text-red-800'>
+												{loginError}
 											</div>
 										)}
 									</div>
