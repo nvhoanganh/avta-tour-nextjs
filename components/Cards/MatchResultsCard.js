@@ -1,6 +1,7 @@
 import React from "react";
 import Link from 'next/link';
 import PropTypes from "prop-types";
+import DateWithTimeComponent from '../dateWithTime';
 
 export default function MatchResultsCard({ results }) {
   return (
@@ -37,15 +38,22 @@ export default function MatchResultsCard({ results }) {
                   </div>
 
                   {/* icon */}
-                  <div className="relative w-auto pl-4 flex-initial">
-                    <div
-                      className="p-3 font-bold text-white text-center inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-green-500"
-                    >
-                      6
-                    </div>
+                  <div className="relative w-auto pl-4 flex-initial flex">
+                    <img
+                      src={result.winners.player1.coverImage?.url || 'https://via.placeholder.com/64'}
+                      alt='...'
+                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
+                    ></img>
+                    <img
+                      src={result.winners.player2.coverImage?.url || 'https://via.placeholder.com/64'}
+                      alt='...'
+                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
+                    ></img>
                   </div>
                 </div>
-
+                <div className="flex flex-col items-center justify-center">
+                  <div className=' text-gray-600 py-2 text-lg'>6-{result.score}</div>
+                </div>
                 <div className="flex flex-wrap mt-2">
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                     <div
@@ -72,14 +80,17 @@ export default function MatchResultsCard({ results }) {
                       GROUP {result.losers.groupName} - Team Point {result.losers.player1.avtaPoint + result.losers.player2.avtaPoint}
                     </div>
                   </div>
-                  <div className="relative w-auto pl-4 flex-initial">
-                    <div
-                      className={
-                        "p-3 font-bold text-center  inline-flex items-center justify-center w-12 h-12 shadow-lg rounded-full bg-gray-300"
-                      }
-                    >
-                      3
-                    </div>
+                  <div className="relative w-auto pl-4 flex-initial flex">
+                    <img
+                      src={result.losers.player1.coverImage?.url || 'https://via.placeholder.com/64'}
+                      alt='...'
+                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
+                    ></img>
+                    <img
+                      src={result.losers.player2.coverImage?.url || 'https://via.placeholder.com/64'}
+                      alt='...'
+                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
+                    ></img>
                   </div>
                 </div>
 

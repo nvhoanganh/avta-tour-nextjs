@@ -194,16 +194,6 @@ export default function Competition({ competition, preview }) {
 															.json
 													)}
 												</div>
-												<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-													Registered Teams
-												</h2>
-												<div className='mx-auto mt-10'>
-													<TeamsCard
-														teams={
-															competition.teams
-														}
-													/>
-												</div>
 
 												{
 													competition.matchResults?.length
@@ -227,6 +217,19 @@ export default function Competition({ competition, preview }) {
 														</div>
 													</section>
 												}
+
+												<section>
+													<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
+														Registered Teams
+													</h2>
+													<div className='mx-auto mt-10'>
+														<TeamsCard
+															teams={
+																competition.teams
+															}
+														/>
+													</div>
+												</section>
 											</div>
 										</div>
 									</div>
