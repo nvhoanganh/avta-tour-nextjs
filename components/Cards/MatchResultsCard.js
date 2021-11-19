@@ -2,6 +2,7 @@ import React from "react";
 import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
+import TeamAvatar from '../TeamAvatar';
 import { format } from 'date-fns'
 
 export default function MatchResultsCard({ results }) {
@@ -16,84 +17,41 @@ export default function MatchResultsCard({ results }) {
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                     <div
                       className=
-                      'font-bold flex space-x-1 text-gray-600 '
+                      'font-bold  text-gray-600 '
                     >
-
-                      <Link href={`/players/${result.winners.player1.nickName}`}>
-                        <a className="hover:underline">{result.winners.player1.fullName}</a>
-                      </Link>
-
-                      <span className='font-normal text-xs mb-2 text-green-600'>{result.winners.player1.avtaPoint}</span>
-
-                      <span className="px-1">&amp;</span>
-
-                      <Link href={`/players/${result.winners.player2.nickName}`}>
-                        <a className="hover:underline">{result.winners.player2.fullName}</a>
-                      </Link>
-
-                      <span className='font-normal text-xs mb-2 text-green-600'>{result.winners.player2.avtaPoint}</span>
+                      {result.winners.player1.nickName} + {result.winners.player2.nickName}
                     </div>
                     <div className='text-sm text-gray-600'>
-                      GROUP {result.winners.groupName} - Team Pt. {result.winners.player1.avtaPoint + result.winners.player2.avtaPoint} - {format(new Date(result.datetime), 'h:mm a')}
+                      GROUP {result.winners.groupName} - {format(new Date(result.datetime), 'h:mm a')}
                     </div>
                   </div>
 
-                  {/* icon */}
                   <div className="relative w-auto pl-4 flex-initial flex">
-                    <img
-                      src={result.winners.player1.coverImage?.url || 'https://via.placeholder.com/64'}
-                      alt='...'
-                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
-                    ></img>
-                    <img
-                      src={result.winners.player2.coverImage?.url || 'https://via.placeholder.com/64'}
-                      alt='...'
-                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
-                    ></img>
+                    <TeamAvatar team={result.winners} />
                   </div>
                 </div>
+
                 <div className="flex flex-col items-center justify-center">
-                  <div className=' text-gray-600 py-2 text-lg align-center'>
+                  <div className=' text-gray-600 text-lg align-center p-1 shadow px-4 border rounded border-gray-200'>
                     6-{result.score}
                   </div>
                 </div>
+
                 <div className="flex flex-wrap mt-2">
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                     <div
                       className=
-                      'font-bold flex space-x-1 text-gray-600'
+                      'font-bold  text-gray-600 '
                     >
-
-                      <Link href={`/players/${result.losers.player1.nickName}`}>
-                        <a className="hover:underline">{result.losers.player1.fullName}</a>
-                      </Link>
-
-                      <span className='font-normal text-xs mb-2 text-green-600'>{result.losers.player1.avtaPoint}</span>
-
-                      <span className="px-1">&amp;</span>
-
-
-                      <Link href={`/players/${result.losers.player2.nickName}`}>
-                        <a className="hover:underline">{result.losers.player2.fullName}</a>
-                      </Link>
-
-                      <span className='font-normal text-xs mb-2 text-green-600'>{result.losers.player2.avtaPoint}</span>
+                      {result.losers.player1.nickName} + {result.losers.player2.nickName}
                     </div>
                     <div className='text-sm text-gray-600'>
-                      GROUP {result.losers.groupName} - Team Pt. {result.losers.player1.avtaPoint + result.losers.player2.avtaPoint}
+                      GROUP {result.losers.groupName}
                     </div>
                   </div>
+
                   <div className="relative w-auto pl-4 flex-initial flex">
-                    <img
-                      src={result.losers.player1.coverImage?.url || 'https://via.placeholder.com/64'}
-                      alt='...'
-                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
-                    ></img>
-                    <img
-                      src={result.losers.player2.coverImage?.url || 'https://via.placeholder.com/64'}
-                      alt='...'
-                      className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
-                    ></img>
+                    <TeamAvatar team={result.losers} />
                   </div>
                 </div>
 

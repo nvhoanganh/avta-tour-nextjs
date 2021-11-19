@@ -3,6 +3,7 @@ import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
+import TeamAvatar from '../TeamAvatar';
 import { format } from 'date-fns'
 
 export default function TeamRankingCard({ team, index }) {
@@ -16,20 +17,7 @@ export default function TeamRankingCard({ team, index }) {
                 className=
                 'font-bold flex space-x-1 text-gray-600 '
               >
-                <span>{index + 1}.</span>
-                <Link href={`/players/${team.player1.nickName}`}>
-                  <a className="hover:underline">{team.player1.fullName}</a>
-                </Link>
-
-                <span className='font-normal text-xs mb-2 text-green-600'>{team.player1.avtaPoint}</span>
-
-                <span className="px-1">&amp;</span>
-
-                <Link href={`/players/${team.player2.nickName}`}>
-                  <a className="hover:underline">{team.player2.fullName}</a>
-                </Link>
-
-                <span className='font-normal text-xs mb-2 text-green-600'>{team.player2.avtaPoint}</span>
+                <span>{index + 1}. {team.player1.nickName} + {team.player2.nickName}</span>
               </div>
               <div className='text-sm text-gray-600 flex space-x-2'>
                 <span className='text-green-600'>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
@@ -48,16 +36,7 @@ export default function TeamRankingCard({ team, index }) {
             </div>
 
             <div className="relative w-auto pl-4 flex-initial flex">
-              <img
-                src={team.player1.coverImage?.url || 'https://via.placeholder.com/64'}
-                alt='...'
-                className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
-              ></img>
-              <img
-                src={team.player2.coverImage?.url || 'https://via.placeholder.com/64'}
-                alt='...'
-                className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
-              ></img>
+              <TeamAvatar team={team} />
             </div>
           </div>
         </div>

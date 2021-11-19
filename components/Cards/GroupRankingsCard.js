@@ -15,7 +15,7 @@ export default function GroupRankingsCard({ groups }) {
       return Number(b.SetWon) > Number(a.SetWon) ? 1 : -1;
     })
   };
-// group, order, team, stats
+
   return (
     <>
       <div className='flex flex-wrap'>
