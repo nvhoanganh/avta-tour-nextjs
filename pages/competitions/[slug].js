@@ -17,6 +17,7 @@ import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../components/Cards/TeamsCard.js';
+import MatchResultsCard from '../../components/Cards/MatchResultsCard';
 
 export default function Competition({ competition, preview }) {
 	const router = useRouter();
@@ -204,16 +205,28 @@ export default function Competition({ competition, preview }) {
 													/>
 												</div>
 
-												<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-													Latest Results
-												</h2>
-												<div className='mx-auto mt-10'>
-													<MatchResultsTable
-														results={
-															competition.matchResults
-														}
-													/>
-												</div>
+												{
+													competition.matchResults?.length
+													&& <section>
+														<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
+															Latest Results
+														</h2>
+														<div className='mx-auto mt-10 mb-20'>
+															<div className='hidden container mx-auto md:block px-4'>
+																<MatchResultsTable
+																	results={
+																		competition.matchResults
+																	}
+																/>
+															</div>
+															<div className='md:hidden mx-auto'>
+																<MatchResultsCard
+																	results={competition.matchResults}
+																/>
+															</div>
+														</div>
+													</section>
+												}
 											</div>
 										</div>
 									</div>

@@ -100,7 +100,7 @@ export default function MatchResultsTable({ color, results }) {
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${result.winners.player1.nickName}`}>
+												<Link href={`/players/${result.winners.player2.nickName}`}>
 													<a className="hover:underline">{result.winners.player2.fullName}</a>
 												</Link>
 
@@ -149,7 +149,7 @@ export default function MatchResultsTable({ color, results }) {
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${result.losers.player1.nickName}`}>
+												<Link href={`/players/${result.losers.player2.nickName}`}>
 													<a className="hover:underline">{result.losers.player2.fullName}</a>
 												</Link>
 
