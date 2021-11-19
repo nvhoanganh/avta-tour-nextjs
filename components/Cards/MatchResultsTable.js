@@ -30,7 +30,7 @@ export default function MatchResultsTable({ color, results }) {
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
-									&nbsp;
+									Winning Team
 								</th>
 								<th
 									className={
@@ -50,7 +50,7 @@ export default function MatchResultsTable({ color, results }) {
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
-									&nbsp;
+									Losing Team
 								</th>
 								<th
 									className={

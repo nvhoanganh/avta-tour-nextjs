@@ -31,16 +31,17 @@ export default function Competition({ competition, preview }) {
 		return <ErrorPage statusCode={404} />;
 	}
 
-	const teamJoined = competition?.teamsCollection?.items?.length || 0;
+	const teamJoined = competition?.teams?.length || 0;
 
 	const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
 		return (
 			previousTotal +
-			team.playersCollection.items[0].avtaPoint +
-			team.playersCollection.items[1].avtaPoint
+			team.players[0].avtaPoint +
+			team.players[1].avtaPoint
 		);
 	}, 0);
 
+	console.log(competition);
 	return (
 		<Layout preview={preview}>
 			<Navbar transparent />
@@ -167,7 +168,7 @@ export default function Competition({ competition, preview }) {
 																		totalPoints /
 																		teamJoined
 																	).toFixed(
-																		2
+																		1
 																	)
 																	: '-'}
 															</span>
@@ -189,13 +190,15 @@ export default function Competition({ competition, preview }) {
 											</div>
 											<div className='text-center'>
 												<div className='text-sm leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase'>
-													<i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
-													{competition.club},{' '}
-													<DateComponent
-														dateString={
-															competition.date
-														}
-													/>
+													<a href={`https://maps.google.com/?q=${competition.location?.lat},${competition.location?.lon}`} target='_blank' className='hover:underline'>
+														<i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
+														{competition.club},{' '}
+														<DateComponent
+															dateString={
+																competition.date
+															}
+														/>
+													</a>
 												</div>
 											</div>
 

@@ -28,12 +28,6 @@ export default function Index({
 }) {
 	const { user } = useFirebaseAuth();
 
-	useEffect(() => {
-		if (user) {
-			console.log(user);
-		}
-	}, [user]);
-
 	const heroPost = allPosts[0];
 	const upcomingCompetition = competittions[0];
 	const morePosts = allPosts.slice(1);

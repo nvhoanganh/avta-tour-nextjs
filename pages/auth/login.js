@@ -87,7 +87,6 @@ export default function Login() {
 			if (!credential) return;
 
 			const user = result?.user;
-			console.log('got result from redirect', user);
 			if (user) {
 				router.push('/');
 			}

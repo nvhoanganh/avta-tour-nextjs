@@ -28,7 +28,7 @@ export default function GroupRankingsCard({ groups }) {
               {sortTeams(groups[group]).map((team, index) =>
               (
                 <TeamRankingCard
-                  key={team.name}
+                  key={index}
                   team={team}
                   index={index}
                 />

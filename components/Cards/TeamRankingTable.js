@@ -40,7 +40,7 @@ export default function TeamRankingTable({ groups, color }) {
 							<tr>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
 										(color === 'light'
 											? 'bg-gray-50 text-gray-500 border-gray-100'
 											: 'bg-blue-800 text-blue-300 border-blue-700')
@@ -70,7 +70,7 @@ export default function TeamRankingTable({ groups, color }) {
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
 										(color === 'light'
 											? 'bg-gray-50 text-gray-500 border-gray-100'
 											: 'bg-blue-800 text-blue-300 border-blue-700')
@@ -80,7 +80,7 @@ export default function TeamRankingTable({ groups, color }) {
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
 										(color === 'light'
 											? 'bg-gray-50 text-gray-500 border-gray-100'
 											: 'bg-blue-800 text-blue-300 border-blue-700')
@@ -147,11 +147,11 @@ export default function TeamRankingTable({ groups, color }) {
 											</div>
 										</div>
 									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+									<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<span className='text-green-600'>{row.SetWon}</span>
 										&nbsp;/&nbsp;<span className='text-red-600'>{row.SetLost}</span>
 									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+									<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<span
 											className={cn({
 												'text-gray-600': Number(row.Difference) === 0,
