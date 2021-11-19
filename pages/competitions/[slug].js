@@ -18,6 +18,8 @@ import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../components/Cards/TeamsCard.js';
 import MatchResultsCard from '../../components/Cards/MatchResultsCard';
+import GroupRankingsCard from '../../components/Cards/GroupRankingsCard';
+import TeamRankingTable from '../../components/Cards/TeamRankingTable';
 
 export default function Competition({ competition, preview }) {
 	const router = useRouter();
@@ -35,8 +37,6 @@ export default function Competition({ competition, preview }) {
 			team.playersCollection.items[1].avtaPoint
 		);
 	}, 0);
-
-	console.log(competition);
 
 	return (
 		<Layout preview={preview}>
@@ -198,11 +198,11 @@ export default function Competition({ competition, preview }) {
 												{
 													competition.matchResults?.length
 													&& <section>
-														<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
+												GroupRankingsCard		<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
 															Latest Results
 														</h2>
 														<div className='mx-auto mt-10 mb-20'>
-															<div className='hidden container mx-auto md:block px-4'>
+															<div className='hidden container mx-auto md:block'>
 																<MatchResultsTable
 																	results={
 																		competition.matchResults
@@ -212,6 +212,29 @@ export default function Competition({ competition, preview }) {
 															<div className='md:hidden mx-auto'>
 																<MatchResultsCard
 																	results={competition.matchResults}
+																/>
+															</div>
+														</div>
+													</section>
+												}
+
+												{
+													competition.groupRanking
+													&& <section>
+														<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
+															Group Ranking
+														</h2>
+														<div className='mx-auto mt-10 mb-20'>
+															<div className='hidden container mx-auto md:block'>
+																<TeamRankingTable
+																	groups={
+																		competition.groupRanking
+																	}
+																/>
+															</div>
+															<div className='md:hidden mx-auto'>
+																<GroupRankingsCard
+																	groups={competition.groupRanking}
 																/>
 															</div>
 														</div>
