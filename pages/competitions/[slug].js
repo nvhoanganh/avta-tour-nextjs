@@ -1,6 +1,8 @@
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
+import React, { useState } from 'react';
 import ErrorPage from 'next/error';
 import ContentfulImage from '../../components/contentful-image';
 import DateComponent from '../../components/date';
@@ -23,6 +25,7 @@ import TeamRankingTable from '../../components/Cards/TeamRankingTable';
 
 export default function Competition({ competition, preview }) {
 	const router = useRouter();
+	const [activeTab, setActiveTab] = useState(0);
 
 	if (!router.isFallback && !competition) {
 		return <ErrorPage statusCode={404} />;
@@ -126,7 +129,7 @@ export default function Competition({ competition, preview }) {
 																		competition.applicationGForm
 																	}
 																	target='_blank'
-																	className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+																	className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
 																>
 																	Apply Now
 																</a>
@@ -139,7 +142,7 @@ export default function Competition({ competition, preview }) {
 																	competition.googleForm
 																}
 																target='_blank'
-																className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+																className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
 															>
 																Submit Score
 															</a>
@@ -207,65 +210,105 @@ export default function Competition({ competition, preview }) {
 													)}
 												</div>
 
-												{
-													competition.groupRanking
-													&& <section>
-														<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-															Group Ranking
-														</h2>
-														<div className='mx-auto mt-10 mb-20'>
-															<div className='hidden container mx-auto md:block'>
-																<TeamRankingTable
-																	groups={
-																		competition.groupRanking
-																	}
-																/>
-															</div>
-															<div className='md:hidden mx-auto'>
-																<GroupRankingsCard
-																	groups={competition.groupRanking}
-																/>
-															</div>
-														</div>
-													</section>
-												}
-
-												{
-													competition.matchResults?.length
-													&& (
-														<section>
-															<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-																Latest Results
-															</h2>
-															<div className='mx-auto mt-10 mb-20'>
-																<div className='hidden container mx-auto md:block'>
-																	<MatchResultsTable
-																		results={
-																			competition.matchResults
-																		}
-																	/>
-																</div>
-																<div className='md:hidden mx-auto'>
-																	<MatchResultsCard
-																		results={competition.matchResults}
-																	/>
-																</div>
-															</div>
-														</section>)
-												}
-
-												<section>
-													<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-														Registered Teams
-													</h2>
-													<div className='mx-auto mt-10'>
-														<TeamsCard
-															teams={
-																competition.teams
+												<div className='border-b-2 border-gray-300 mt-10'>
+													<ul className='flex cursor-pointer justify-around'>
+														<li className={cn(
+															'py-2 px-8 flex-grow text-center rounded-t-lg',
+															{
+																'bg-gray-200':
+																	activeTab === 0
 															}
-														/>
-													</div>
-												</section>
+														)}
+															onClick={(e) => setActiveTab(0)}
+														>Groups</li>
+														<li className={cn(
+															'py-2 px-8 flex-grow text-center rounded-t-lg',
+															{
+																'bg-gray-200':
+																	activeTab === 1
+															}
+														)}
+															onClick={(e) => setActiveTab(1)}
+														>Results</li>
+														<li className={cn(
+															'py-2 px-8 flex-grow text-center rounded-t-lg',
+															{
+																'bg-gray-200':
+																	activeTab === 2
+															}
+														)}
+															onClick={(e) => setActiveTab(2)}
+														>Teams</li>
+													</ul>
+												</div>
+
+												<div className="mx-auto mb-20">
+													{
+														activeTab === 0 &&
+														(
+															<>
+																{!competition.groupRanking ? <div className='text-center py-5 italic'>No record found</div> :
+																	<section>
+																		<div>
+																			<div className='hidden container md:block'>
+																				<TeamRankingTable
+																					groups={
+																						competition.groupRanking
+																					}
+																				/>
+																			</div>
+																			<div className='md:hidden mt-4 '>
+																				<GroupRankingsCard
+																					groups={competition.groupRanking}
+																				/>
+																			</div>
+																		</div>
+																	</section>
+																}
+															</>)
+													}
+
+													{
+														activeTab === 1
+														&& (
+															<>
+																{!competition.matchResults?.length ? <div className='text-center py-5 italic'>No record found</div> :
+																	<section>
+																		<div>
+																			<div className='hidden container md:block'>
+																				<MatchResultsTable
+																					results={
+																						competition.matchResults
+																					}
+																				/>
+																			</div>
+																			<div className='md:hidden mt-4 '>
+																				<MatchResultsCard
+																					results={competition.matchResults}
+																				/>
+																			</div>
+																		</div>
+																	</section>}
+															</>)
+													}
+
+													{
+														activeTab === 2
+														&& (
+															<>
+																{!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
+																	<section>
+																		<div className='mt-10 '>
+																			<TeamsCard
+																				teams={
+																					competition.teams
+																				}
+																			/>
+																		</div>
+																	</section>}
+															</>)
+													}
+												</div>
 											</div>
 										</div>
 									</div>

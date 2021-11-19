@@ -22,7 +22,7 @@ export default function GroupRankingsCard({ groups }) {
         <div className='w-full lg:w-6/12 xl:w-3/12'>
           {(Object.keys(groups || {})).map((group) => (
             <div key={group}>
-              <h2 className='mt-8 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto text-gray-500'>
+              <h2 className='text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto text-gray-500'>
                 Group {group}
               </h2>
               {sortTeams(groups[group]).map((team, index) =>
