@@ -7,10 +7,11 @@ import DateComponent from '../../components/date';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
 import MoreStories from '../../components/more-stories';
+import MatchResultsTable from '../../components/Cards/MatchResultsTable';
 import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
-import { getAllCompetitionsForHome, getCompetitionBySlug } from '../../lib/api';
+import { downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../lib/api';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
@@ -33,6 +34,8 @@ export default function Competition({ competition, preview }) {
 			team.playersCollection.items[1].avtaPoint
 		);
 	}, 0);
+
+	console.log(competition);
 
 	return (
 		<Layout preview={preview}>
@@ -145,11 +148,11 @@ export default function Competition({ competition, preview }) {
 															<span className='text-xl font-bold block uppercase tracking-wide text-green-700'>
 																{teamJoined > 0
 																	? (
-																			totalPoints /
-																			teamJoined
-																	  ).toFixed(
-																			2
-																	  )
+																		totalPoints /
+																		teamJoined
+																	).toFixed(
+																		2
+																	)
 																	: '-'}
 															</span>
 															<span className='text-sm text-gray-400'>
@@ -200,24 +203,17 @@ export default function Competition({ competition, preview }) {
 														}
 													/>
 												</div>
-												{/* <div className='mt-10 py-10 border-t border-gray-200 text-center'>
-												<div className='flex flex-wrap justify-center'>
-													<div className='w-full lg:w-9/12 px-4'>
-														<a
-															href={
-																competition.resultSheets
-															}
-															target='_blank'
-															className='font-normal text-blue-500'
-															onClick={(e) =>
-																e.preventDefault()
-															}
-														>
-															Show Results
-														</a>
-													</div>
+
+												<h2 className='mt-20 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
+													Latest Results
+												</h2>
+												<div className='mx-auto mt-10'>
+													<MatchResultsTable
+														results={
+															competition.matchResults
+														}
+													/>
 												</div>
-											</div> */}
 											</div>
 										</div>
 									</div>
@@ -232,7 +228,15 @@ export default function Competition({ competition, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const data = await getCompetitionBySlug(params.slug, preview);
+	let data = await getCompetitionBySlug(params.slug, preview);
+	if (data?.resultSheets) {
+		const matchResults = await downloadTournamentResults(data.resultSheets);
+		data = {
+			...data,
+			matchResults
+		};
+	}
+
 	return {
 		props: {
 			preview,
