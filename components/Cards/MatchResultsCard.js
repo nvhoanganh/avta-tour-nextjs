@@ -2,6 +2,7 @@ import React from "react";
 import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
+import { format } from 'date-fns'
 
 export default function MatchResultsCard({ results }) {
   return (
@@ -33,7 +34,7 @@ export default function MatchResultsCard({ results }) {
                       <span className='font-normal text-xs mb-2 text-green-600'>{result.winners.player2.avtaPoint}</span>
                     </div>
                     <div className='text-sm text-gray-600'>
-                      GROUP {result.winners.groupName} - Team Point {result.winners.player1.avtaPoint + result.winners.player2.avtaPoint}
+                      GROUP {result.winners.groupName} - Team Pt. {result.winners.player1.avtaPoint + result.winners.player2.avtaPoint} - {format(new Date(result.datetime), 'h:mm a')}
                     </div>
                   </div>
 
@@ -52,7 +53,9 @@ export default function MatchResultsCard({ results }) {
                   </div>
                 </div>
                 <div className="flex flex-col items-center justify-center">
-                  <div className=' text-gray-600 py-2 text-lg'>6-{result.score}</div>
+                  <div className=' text-gray-600 py-2 text-lg align-center'>
+                    6-{result.score}
+                  </div>
                 </div>
                 <div className="flex flex-wrap mt-2">
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -77,7 +80,7 @@ export default function MatchResultsCard({ results }) {
                       <span className='font-normal text-xs mb-2 text-green-600'>{result.losers.player2.avtaPoint}</span>
                     </div>
                     <div className='text-sm text-gray-600'>
-                      GROUP {result.losers.groupName} - Team Point {result.losers.player1.avtaPoint + result.losers.player2.avtaPoint}
+                      GROUP {result.losers.groupName} - Team Pt. {result.losers.player1.avtaPoint + result.losers.player2.avtaPoint}
                     </div>
                   </div>
                   <div className="relative w-auto pl-4 flex-initial flex">
