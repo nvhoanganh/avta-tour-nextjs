@@ -16,8 +16,8 @@ export default function TeamsCard({ color, teams }) {
 			<div className='grid grid-cols-1 md:grid-cols-3 md:gap-x-10 lg:gap-x-16 gap-y-5 mb-32'>
 				{teams.map((t) => {
 					const team = {
-						player1: t.playersCollection.items[0],
-						player2: t.playersCollection.items[1],
+						player1: t.players[0],
+						player2: t.players[1],
 					};
 
 					return (<div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">

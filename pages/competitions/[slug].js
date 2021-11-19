@@ -38,8 +38,6 @@ export default function Competition({ competition, preview }) {
 		);
 	}, 0);
 
-	console.log(competition);
-
 	return (
 		<Layout preview={preview}>
 			<Navbar transparent />
