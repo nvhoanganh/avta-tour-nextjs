@@ -1,6 +1,7 @@
 require("dotenv").config();
-
+const R = require('ramda');
 const fetch = require("isomorphic-unfetch");
+const csv = require('csvtojson')
 
 async function downloadMatchResult(query) {
   return fetch(query).then((response) => response.text());
@@ -24,26 +25,17 @@ async function fetchGraphQL(query, preview = false) {
 }
 
 async function test() {
-  const entries = await fetchGraphQL(
-    `query {
-      playerCollection(order: avtaPoint_DESC, preview: false) {
-        items {
-          sys { id }
-          fullName
-          nickName
-          avtaPoint
-          userId
-        }
-      }
-    }`
-  );
 
-  const players = entries.data.playerCollection.items;
 
-  const data = await downloadMatchResult('https://docs.google.com/spreadsheets/d/e/2PACX-1vQx9LAZT8ZuEXFPEVpNwEo9h_GI9Sv0uNvYij32BMqZGe3xHSV16koU5JdY-0wA68eGwRHRuMtmhCqr/pub?gid=748942493&single=true&output=csv');
+  const data = `Group,Team,SetWon,SetLost,GameWon,GameLost,Difference
+  A,A: Tony Quach + Minh Le,1,0,6,2,4
+  B,B: Thang Donvale + Quan Kingsbury,2,1,13,12,1
+  B,B: Quan Fed + Luan,2,0,12,5,7
+  A,A: TX + TN,1,1,8,6,2
+  B,B: Hung Trambo + Luan Rau,0,2,3,12,-9
+  B,B: Hoang Anh + Vu Trinh,0,2,7,12,-5`
 
-  var rows = data.split('\n');
-  let firstrow = true;
+  const rows = await csv().fromString(data);
 
   const findPlayer = name => {
     const found = players.find(p => p.nickName.toLowerCase() === name.toLowerCase());
@@ -72,27 +64,34 @@ async function test() {
     }
   };
 
+  const entries = await fetchGraphQL(
+    `query {
+      playerCollection(order: avtaPoint_DESC, preview: false) {
+        items {
+          sys { id }
+          fullName
+          nickName
+          avtaPoint
+          userId
+        }
+      }
+    }`
+  );
+
+  const players = entries.data.playerCollection.items;
+
   const result = rows.map(row => {
-    if (firstrow) {
-      firstrow = false
-      return null;
-    }
-
-    var cols = row.split(',');
-
-    const winners = parseTeam(cols[1]);
-    const losers = parseTeam(cols[2]);
-    const score = cols[3];
+    const team = parseTeam(row.Team);
 
     return {
-      message: `${winners.player1.displayName} and ${winners.player2.displayName} (group ${winners.groupName}) defeated ${losers.player1.displayName} and ${losers.player2.displayName} (group ${losers.groupName}) by 6-${score}`,
-      winners,
-      losers,
-      score: +score
+      ...row,
+      ...team
     }
-  }).filter(row => !!row);
+  });
 
-  console.log(result);
+  const groups = R.groupBy((x) => x.Group, result);
+
+  console.log(groups);
 }
 
 

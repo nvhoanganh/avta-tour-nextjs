@@ -11,7 +11,7 @@ import MatchResultsTable from '../../components/Cards/MatchResultsTable';
 import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
-import { downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../lib/api';
+import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../lib/api';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
@@ -250,6 +250,14 @@ export async function getStaticProps({ params, preview = false }) {
 		data = {
 			...data,
 			matchResults
+		};
+	}
+
+	if (data?.rankingSheet) {
+		const groupRanking = await downloadTournamentRankingResults(data.rankingSheet);
+		data = {
+			...data,
+			groupRanking
 		};
 	}
 

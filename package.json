@@ -13,10 +13,12 @@
     "@tailwindcss/forms": "0.3.4",
     "@tailwindcss/typography": "^0.4.1",
     "classnames": "2.3.1",
+    "csvtojson": "^2.0.10",
     "date-fns": "2.25.0",
     "firebase": "^9.4.1",
     "next": "latest",
     "prop-types": "^15.7.2",
+    "ramda": "^0.27.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
