@@ -59,83 +59,85 @@ export default function CompetitionPreview({
 					<p className='text-lg font-light leading-relaxed mt-8 mb-4 text-gray-600'>
 						<Link href={`/competitions`}>
 							<a className='hover:underline hover:cursor-pointer'>
-								View past events
+								View All Events
 							</a>
 						</Link>
 					</p>
 				</div>
 
 				<div className='w-full md:w-4/12 px-4 mr-auto ml-auto sm:pt-10'>
-					<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-blue-500'>
-						<ContentfulImage
-							width={1000}
-							height={600}
-							className='rounded-xl shadow-sm'
-							src={heroImage?.url}
-						/>
-						<blockquote className='relative p-8 mb-4'>
-							<svg
-								preserveAspectRatio='none'
-								xmlns='http://www.w3.org/2000/svg'
-								viewBox='0 0 583 95'
-								className='absolute left-0 w-full block h-95-px -top-94-px'
-							>
-								<polygon
-									points='-30,95 583,95 583,65'
-									className='text-blue-500 fill-current'
-								></polygon>
-							</svg>
-							<h4 className='text-xl font-bold text-white'>
-								<DateComponent dateString={date} />
-							</h4>
-							<p className='text-md font-light mt-2 text-white'>
-								<ul className='list-none mt-6'>
-									<li className='py-2'>
-										<div className='flex items-center'>
-											<div>
-												<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full text-white bg-blueGray-50 mr-3'>
-													<i className='fas fa-sort-numeric-down-alt'></i>
-												</span>
+					<Link href={`/competitions/${slug}`}>
+						<div className='relative flex hover:shadow-2xl hover:cursor-pointer flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-blue-500'>
+							<ContentfulImage
+								width={1000}
+								height={600}
+								className='rounded-xl shadow-sm'
+								src={heroImage?.url}
+							/>
+							<blockquote className='relative p-8 mb-4'>
+								<svg
+									preserveAspectRatio='none'
+									xmlns='http://www.w3.org/2000/svg'
+									viewBox='0 0 583 95'
+									className='absolute left-0 w-full block h-95-px -top-94-px'
+								>
+									<polygon
+										points='-30,95 583,95 583,65'
+										className='text-blue-500 fill-current'
+									></polygon>
+								</svg>
+								<h4 className='text-xl font-bold text-white'>
+									<DateComponent dateString={date} />
+								</h4>
+								<p className='text-md font-light mt-2 text-white'>
+									<ul className='list-none mt-6'>
+										<li className='py-2'>
+											<div className='flex items-center'>
+												<div>
+													<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full text-white bg-blueGray-50 mr-3'>
+														<i className='fas fa-sort-numeric-down-alt'></i>
+													</span>
+												</div>
+												<div>
+													<h4 className='text-blueGray-500'>
+														{maxPoint} pt.
+													</h4>
+												</div>
 											</div>
-											<div>
-												<h4 className='text-blueGray-500'>
-													{maxPoint} pt.
-												</h4>
+										</li>
+										<li className='py-2'>
+											<div className='flex items-center'>
+												<div>
+													<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full  text-white bg-blueGray-50 mr-3'>
+														<i className='fas fa-map-marked-alt'></i>
+													</span>
+												</div>
+												<div>
+													<h4 className='text-blueGray-500'>
+														{club}
+													</h4>
+												</div>
 											</div>
-										</div>
-									</li>
-									<li className='py-2'>
-										<div className='flex items-center'>
-											<div>
-												<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full  text-white bg-blueGray-50 mr-3'>
-													<i className='fas fa-map-marked-alt'></i>
-												</span>
+										</li>
+										<li className='py-2'>
+											<div className='flex items-center'>
+												<div>
+													<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full text-white bg-blueGray-50 mr-3'>
+														<i className='fas fa-font'></i>
+													</span>
+												</div>
+												<div>
+													<h4 className='text-blueGray-500'>
+														{type}
+													</h4>
+												</div>
 											</div>
-											<div>
-												<h4 className='text-blueGray-500'>
-													{club}
-												</h4>
-											</div>
-										</div>
-									</li>
-									<li className='py-2'>
-										<div className='flex items-center'>
-											<div>
-												<span className='text-md font-semibold inline-block py-1 px-2 uppercase rounded-full text-white bg-blueGray-50 mr-3'>
-													<i className='fas fa-font'></i>
-												</span>
-											</div>
-											<div>
-												<h4 className='text-blueGray-500'>
-													{type}
-												</h4>
-											</div>
-										</div>
-									</li>
-								</ul>
-							</p>
-						</blockquote>
-					</div>
+										</li>
+									</ul>
+								</p>
+							</blockquote>
+						</div>
+					</Link>
 				</div>
 			</div>
 		</>
