@@ -36,7 +36,7 @@ export default function Meta() {
         name="description"
         content={`Australia Vietnamese Tennis Association`}
       />
-      <meta property="og:image" content={HOME_OG_IMAGE_URL} />
+      <meta property="og:image" content="assets/img/AvtaMetaImgResize.png" />
       <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"></link>
     </Head>
   )

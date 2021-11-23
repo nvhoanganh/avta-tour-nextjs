@@ -18,7 +18,13 @@ export default function Navbar(props) {
 					<div className='w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start'>
 						<Link href='/'>
 							<span className='text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase'>
-								<a className='hover:underline'>AVTA Tour</a>
+								<a className='hover:underline'>
+									<img
+										src='/assets/img/AvtaLogoSmall.png'
+										alt='AVTA Tour'
+										width='120'
+									/>
+								</a>
 							</span>
 						</Link>
 						<button
