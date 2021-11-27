@@ -41,7 +41,6 @@ export default function Competition({ competition, preview }) {
 		);
 	}, 0);
 
-	console.log(competition);
 	return (
 		<Layout preview={preview}>
 			<Navbar transparent />
@@ -250,7 +249,7 @@ export default function Competition({ competition, preview }) {
 														activeTab === 0 &&
 														(
 															<>
-																{!competition.groupRanking ? <div className='text-center py-5 italic'>No record found</div> :
+																{!competition.groupRanking || Object.keys(competition.groupRanking).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
 																	<section>
 																		<div>
 																			<div className='hidden container md:block'>
@@ -275,7 +274,7 @@ export default function Competition({ competition, preview }) {
 														activeTab === 1
 														&& (
 															<>
-																{!competition.matchResults?.length ? <div className='text-center py-5 italic'>No record found</div> :
+																{!competition.matchResults?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
 																	<section>
 																		<div>
 																			<div className='hidden container md:block'>
