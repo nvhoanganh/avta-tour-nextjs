@@ -39,6 +39,8 @@ export default function Index({
 					<title>
 						AVTA - Australia Vietnamese Tennis Association
 					</title>
+					<script type="text/javascript" src="/newrelic.js">
+					</script>
 				</Head>
 				<Navbar />
 				<Intro upcomingCompetition={upcomingCompetition} />
