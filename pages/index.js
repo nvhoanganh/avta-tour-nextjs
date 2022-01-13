@@ -70,6 +70,6 @@ export async function getStaticProps({ preview = false }) {
 
 	return {
 		props: { preview, allPosts, allPlayers, competittions },
-		revalidate: 3600
+		revalidate: 60
 	};
 }

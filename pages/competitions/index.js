@@ -65,6 +65,6 @@ export async function getStaticProps({ params, preview = false }) {
 			preview,
 			competitions: data,
 		},
-		revalidate: 3600
+		revalidate: 60
 	};
 }
