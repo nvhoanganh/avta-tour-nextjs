@@ -29,7 +29,7 @@ export default function PlayersTable({ color, players }) {
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Name
+									Name (Nickname)
 								</th>
 								<th
 									className={
