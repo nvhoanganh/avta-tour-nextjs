@@ -41,7 +41,7 @@ export default function Navbar(props) {
 							<li className='flex items-center'>
 								<a
 									className='lg:text-white lg:hover:text-gray-200 text-gray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold'
-									href='https://www.facebook.com/groups/337037000979594'
+									href='https://www.facebook.com/groups/464135091348911'
 									target='_blank'
 								>
 									<i className='lg:text-gray-500 text-gray-500 fab fa-facebook text-lg leading-lg ' />
