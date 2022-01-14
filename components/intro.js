@@ -38,8 +38,8 @@ export default function Intro({ upcomingCompetition }) {
 								</h1>
 								<p className='mt-4 text-lg text-gray-200'>
 									AVTA, Australia Vietnamese Tennis
-									Association, sân chơi tennis phong trào lớn
-									mạnh nhất ở Melbourne/Australia
+									Association, cùng nhau tạo thành sân chơi tennis phong trào lớn
+									mạnh nhất ở Australia
 								</p>
 							</div>
 						</div>
