@@ -11,10 +11,10 @@ export default function PlayersCard({ allPlayers }) {
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{allPlayers.map(x => <div key={x.nickName} className='px-6'>
 						{x.coverImage?.url ? <Link href={`/players/${x.nickName}`}>
-							<div className='mx-auto max-w-120-px'>
-								<ContentfulImage width={120} height={120} className='rounded-full mx-auto max-w-120-px' src={x.coverImage.url} />
+							<div className='mx-auto max-w-100-px'>
+								<ContentfulImage width={100} height={100} className='rounded-full mx-auto max-w-100-px' src={x.coverImage.url} />
 							</div>
-						</Link> : <img alt={x.fullName} src='https://via.placeholder.com/150' className='shadow-lg rounded-full mx-auto max-w-120-px' />}
+						</Link> : <img alt={x.fullName} src='https://via.placeholder.com/100' className='shadow-lg rounded-full mx-auto max-w-100-px' />}
 
 						<div className='pt-6 text-center'>
 							<h5 className='text-xl font-bold'>
@@ -24,6 +24,9 @@ export default function PlayersCard({ allPlayers }) {
 									</a>
 								</Link>
 							</h5>
+							<p className='mt-1 text-blue-900 text-sm'>
+								({x.nickName})
+							</p>
 							<p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
 								{x.avtaPoint}
 							</p>

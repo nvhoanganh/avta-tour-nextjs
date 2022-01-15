@@ -43,26 +43,15 @@ export default function Top10Players({ allPlayers }) {
 											</a>
 										</Link>
 									</h5>
+									<p className='mt-1 text-blue-900 text-sm'>
+										({x.nickName})
+									</p>
 									<p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
 										{x.avtaPoint}
 									</p>
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
 										{x.homeClub || 'Unknown Club'}
 									</p>
-									<div className='mt-6'>
-										<button
-											className='bg-blue-400 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1'
-											type='button'
-										>
-											<i className='fas fa-thumbs-up'></i>
-										</button>
-										<button
-											className='bg-red-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1'
-											type='button'
-										>
-											<i className='fas fa-envelope-open-text'></i>
-										</button>
-									</div>
 								</div>
 							</div>
 						))}
