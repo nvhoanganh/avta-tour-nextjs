@@ -118,7 +118,7 @@ export default function Footer() {
 										<li>
 											<a
 												className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-												href='/'
+												href='tel:+61411306859'
 											>
 												Contact Us
 											</a>

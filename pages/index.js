@@ -6,6 +6,7 @@ import HeroPost from '../components/hero-post';
 import CompetitionPreview from '../components/competition-preview';
 import PostPreview from '../components/post-preview';
 import Top10Players from '../components/top10players';
+import TopSponsors from '../components/sponsors';
 import Intro from '../components/intro';
 import Layout from '../components/layout';
 import CoverImage from '../components/cover-image';
@@ -14,6 +15,7 @@ import {
 	getAllPostsForHome,
 	getAllPlayers,
 	getTop10Players,
+	getAllSponsors,
 } from '../lib/api';
 import Head from 'next/head';
 import Navbar from '../components/Navbars/AuthNavbar.js';
@@ -24,6 +26,7 @@ export default function Index({
 	preview,
 	allPosts,
 	allPlayers,
+	allSponsors,
 	competittions,
 }) {
 	const { user } = useFirebaseAuth();
@@ -57,7 +60,14 @@ export default function Index({
 					</div>
 				</section>
 
-				<Top10Players allPlayers={allPlayers} />
+				<section className='pt-20 pb-40'>
+					<TopSponsors sponsors={allSponsors} />
+				</section>
+
+				<section className='pb-40'>
+					<Top10Players allPlayers={allPlayers} />
+				</section>
+
 			</Layout>
 		</>
 	);
@@ -66,10 +76,11 @@ export default function Index({
 export async function getStaticProps({ preview = false }) {
 	const allPosts = (await getAllPostsForHome(preview)) ?? [];
 	const allPlayers = (await getTop10Players(preview)) ?? [];
+	const allSponsors = (await getAllSponsors(preview)) ?? [];
 	const competittions = (await getAllCompetitionsForHome(preview)) ?? [];
 
 	return {
-		props: { preview, allPosts, allPlayers, competittions },
+		props: { preview, allPosts, allPlayers, competittions, allSponsors },
 		revalidate: 60
 	};
 }
