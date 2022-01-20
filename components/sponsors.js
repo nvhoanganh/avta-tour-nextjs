@@ -2,7 +2,6 @@ import ContentfulImage from './contentful-image';
 import Link from 'next/link';
 
 export default function Sponsors({ sponsors }) {
-	console.log(sponsors);
 	return (
 		<div className='container mx-auto px-4'>
 			<div className='flex flex-wrap justify-center text-center mb-24'>

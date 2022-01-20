@@ -18,9 +18,19 @@ import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
+import { useFirebaseAuth } from '../../components/authhook';
 
 export default function Player({ player, preview }) {
 	const router = useRouter();
+	const { user } = useFirebaseAuth();
+
+	const claimProfile = () => {
+		if (!user) {
+			router.push('/auth/login');
+		} else {
+			console.log('show pop up');
+		}
+	}
 
 	if (!router.isFallback && !player) {
 		return <ErrorPage statusCode={404} />;
@@ -159,21 +169,17 @@ export default function Player({ player, preview }) {
 												{player.avtaPoint}
 											</div>
 										</div>
-										{/* <div className='mt-10 py-10 border-t border-gray-200 text-center'>
+										<div className='mt-10 py-10 border-t border-gray-200 text-center'>
 											<div className='flex flex-wrap justify-center'>
 												<div className='w-full lg:w-9/12 px-4'>
-													<a
-														href='#pablo'
-														className='font-normal text-blue-500'
-														onClick={(e) =>
-															e.preventDefault()
-														}
+													<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+														onClick={claimProfile}
 													>
-														Show Stats
+														Claim This Profile
 													</a>
 												</div>
 											</div>
-										</div> */}
+										</div>
 									</div>
 								</div>
 							</div>
