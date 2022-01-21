@@ -14,7 +14,7 @@ export default function Sponsors({ sponsors }) {
 			<div className='flex flex-wrap justify-center'>
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{sponsors.slice(0, 10).map((x) => (
-						<div key={x.name} className='px-6'>
+						<div key={x.name} className='px-6 text-center'>
 							<Link href={x.website}>
 								<a className='mx-auto max-w-120-px' target='_blank'>
 									<ContentfulImage
