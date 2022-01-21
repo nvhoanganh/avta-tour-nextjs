@@ -1,4 +1,5 @@
 import { getPreviewPostBySlug } from '../../lib/api';
+import { sendSms } from '../../lib/backendapi';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, CollectionReference } from 'firebase-admin/firestore'
@@ -36,7 +37,12 @@ export default async function sendsms(req, res) {
     console.log('token valid, user id is ' + uid);
     const otp = Math.floor(100000 + Math.random() * 900000);
     console.log('6 digit number is' + uid);
-    await db.collection("users").doc(uid).set({ otp, issueDate: (new Date()) })
+
+    await db.collection("users_otp").doc(uid).set({ otp, issueDate: (new Date()), mobile })
+
+    const msg = { body: `Hi, here is your one-time code. Your code is: ${otp}.`, to: mobile };
+    console.log('Sending', msg);
+
     // store in firestore
     res.status(200).json({ mobile, userid: uid })
     res.end()
