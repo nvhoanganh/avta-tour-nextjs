@@ -41,7 +41,7 @@ export default function Sponsors({ sponsors }) {
 			</div>
 			<div className='flex flex-wrap justify-center'>
 				<Link
-					href={`tel:+61411306859`}
+					href={`mailto:tonytuan.phan@gmail.com`}
 				>
 					<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
 						Contact Tony for Advertising opportunities
