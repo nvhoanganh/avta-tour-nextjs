@@ -14,7 +14,7 @@ export default function Top10Players({ allPlayers }) {
 			<div className='flex flex-wrap justify-center'>
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{allPlayers.slice(0, 10).map((x) => (
-						<div key={x.nickName} className='px-6'>
+						<div key={x.nickName} className='px-6 text-center'>
 							{x.coverImage?.url ? (
 								<Link href={`/players/${x.nickName}`}>
 									<div className='mx-auto max-w-120-px'>
