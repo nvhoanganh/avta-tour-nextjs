@@ -1,15 +1,58 @@
 import { useFirebaseAuth } from './authhook';
 import { useState } from 'react'
 
-export default function SendOtp({ mobileNumber }) {
-  const [otp, setOtp] = useState(null);
+export default function SendOtp({ mobileNumber, playerId, done }) {
+  const [otp, setOtp] = useState(false);
+  const [otpValue, setOtpValue] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
   const { user } = useFirebaseAuth();
+
+  const handleChange = (event) => {
+    setOtpValue(event.target.value);
+  }
 
   const sendOtpNow = () => {
     user.getIdToken().then(idtoken => {
-      const otp = Math.floor(100000 + Math.random() * 900000);
-      setOtp({ otp, time: new Date() });
-      console.log('sending ..', otp, idtoken, user);
+      setOtp(true);
+      return fetch(
+        `/api/sendotp?mobile=${encodeURIComponent(mobileNumber)}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${idtoken}`,
+          },
+        }
+      )
+        .then(response => response.json())
+        .then((rsp) => {
+          console.log('response', rsp);
+        });
+    })
+  }
+
+  const verifyOtpNow = () => {
+    user.getIdToken().then(idtoken => {
+      return fetch(
+        `/api/verifyotp?otp=${otpValue}&playerId=${playerId}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${idtoken}`,
+          },
+        }
+      )
+        .then(response => response.json())
+        .then((rsp) => {
+          if (rsp.success) {
+            setErrorMsg(null);
+            done();
+          } else {
+            setErrorMsg(rsp.message);
+          }
+        })
+        .catch((err) => {
+          console.log('error', err);
+        });
     })
   }
 
@@ -31,7 +74,7 @@ export default function SendOtp({ mobileNumber }) {
       <p className="py-6">
         {
           !otp
-          && <button className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+          && <button className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150' type="button"
             onClick={sendOtpNow}
           >
             Send Verification Code
@@ -46,11 +89,21 @@ export default function SendOtp({ mobileNumber }) {
             type="text"
             className="border-1 px-3 py-3 text-gray-600 bg-gray-100 rounded text-sm shadow-lg focus:outline-none focus:ring w-full border-red-900"
             placeholder="Enter Code"
+            length="6"
+            value={otpValue} onChange={handleChange}
           />
-          <button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+          <button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150' type="button"
+            onClick={verifyOtpNow}
           >
             Verify
           </button>
+        </div>
+      }
+
+      {
+        errorMsg
+        && <div className='flex items-center justify-center space-x-2 text-red-700'>
+          {errorMsg}
         </div>
       }
 

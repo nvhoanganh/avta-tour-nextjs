@@ -1,22 +1,12 @@
 import { getPreviewPostBySlug } from '../../lib/api';
-import { sendSms } from '../../lib/backendapi';
+import { sendSms, initFirebase } from '../../lib/backendapi';
 import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore, CollectionReference } from 'firebase-admin/firestore'
 
 
 export default async function sendsms(req, res) {
-  const apps = getApps();
-  if (!apps.length) {
-    initializeApp({
-      credential: cert({
-        projectId: process.env.FIREBASE_PROJECT,
-        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-        privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
-      })
-    });
-    console.log(`app ${process.env.FIREBASE_PROJECT} init with email ${process.env.FIREBASE_CLIENT_EMAIL}`);
-  }
+  initFirebase();
 
   const { mobile } = req.query;
 

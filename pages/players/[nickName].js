@@ -25,6 +25,7 @@ import { useState } from 'react'
 export default function Player({ player, preview }) {
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
+	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
 	const { user } = useFirebaseAuth();
 
 	const claimProfile = () => {
@@ -33,6 +34,12 @@ export default function Player({ player, preview }) {
 		} else {
 			setShowOtp(true);
 		}
+	}
+
+	const profileClaimed = () => {
+		console.log('profile linked');
+		setSuccessfullyClaimed(true);
+		setShowOtp(false);
 	}
 
 	if (!router.isFallback && !player) {
@@ -172,8 +179,9 @@ export default function Player({ player, preview }) {
 												{player.avtaPoint}
 											</div>
 										</div>
+
 										{
-											player?.mobileNumber && !showOtp
+											player?.mobileNumber && !showOtp && !successfullyClaimed
 											&& <div className='mt-10 py-10 border-t border-gray-200 text-center'>
 												<div className='flex flex-wrap justify-center'>
 													<div className='w-full lg:w-9/12 px-4'>
@@ -189,7 +197,12 @@ export default function Player({ player, preview }) {
 
 										{
 											showOtp
-											&& <SendOtp mobileNumber={player.mobileNumber}></SendOtp>
+											&& <SendOtp mobileNumber={player.mobileNumber} playerId={player.sys.id} done={profileClaimed}></SendOtp>
+										}
+
+										{
+											successfullyClaimed
+											&& <div className="text-center text-lg py-6 text-green-700">You have successfully claimed this player profile</div>
 										}
 									</div>
 								</div>
