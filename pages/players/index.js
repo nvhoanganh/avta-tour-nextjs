@@ -18,6 +18,7 @@ import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import TournamentsTable from '../../components/Cards/TournamentsTable.js';
 import TournamentsCard from '../../components/Cards/TournamentsCard.js';
+import { mergeUsersAndPlayersData } from "../../lib/backendapi";
 
 export default function Players({ allPlayers, preview }) {
 	const router = useRouter();
@@ -60,7 +61,8 @@ export default function Players({ allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const allPlayers = (await getAllPlayers(preview)) ?? [];
+	let allPlayers = (await getAllPlayers(preview)) ?? [];
+	allPlayers = await mergeUsersAndPlayersData(allPlayers);
 
 	return {
 		props: {

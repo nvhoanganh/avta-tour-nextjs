@@ -20,10 +20,10 @@ export default function UserProfile() {
   const [userProfile, setUserProfile] = useState(null);
 
   const onSubmit = async data => {
-    console.log('form value', data);
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
-    const updated = docSnap.exists ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
+    let updated = docSnap.exists ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
+    updated = { ...updated, photoURL: user.photoURL };
     console.log('new ', updated);
     await setDoc(docRef, updated);
     toast("Profile Updated");

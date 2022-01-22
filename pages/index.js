@@ -21,6 +21,7 @@ import Head from 'next/head';
 import Navbar from '../components/Navbars/AuthNavbar.js';
 import Link from 'next/link';
 import { useFirebaseAuth } from '../components/authhook';
+import { mergeUsersAndPlayersData } from "../lib/backendapi";
 
 export default function Index({
 	preview,
@@ -75,7 +76,8 @@ export default function Index({
 
 export async function getStaticProps({ preview = false }) {
 	const allPosts = (await getAllPostsForHome(preview)) ?? [];
-	const allPlayers = (await getTop10Players(preview)) ?? [];
+	let allPlayers = (await getTop10Players(preview)) ?? [];
+	allPlayers = await mergeUsersAndPlayersData(allPlayers);
 	const allSponsors = (await getAllSponsors(preview)) ?? [];
 	const competittions = (await getAllCompetitionsForHome(preview)) ?? [];
 

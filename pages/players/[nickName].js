@@ -11,7 +11,7 @@ import Layout from '../../components/layout';
 import {
 	getAllPostsWithSlug,
 	getAllPlayers,
-	getPlayerByNickName,
+	getPlayerById,
 	getPostAndMorePosts,
 } from '../../lib/api';
 import PostTitle from '../../components/post-title';
@@ -298,7 +298,7 @@ export default function Player({ player, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const data = await getPlayerByNickName(params.nickName, preview);
+	const data = await getPlayerById(params.nickName, preview);
 	return {
 		props: {
 			preview,

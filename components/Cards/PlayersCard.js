@@ -9,12 +9,13 @@ export default function PlayersCard({ allPlayers }) {
 		<div className='container mx-auto px-4'>
 			<div className='flex flex-wrap justify-center'>
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
-					{allPlayers.map(x => <div key={x.nickName} className='px-6'>
-						{x.coverImage?.url ? <Link href={`/players/${x.sys.id}`}>
-							<div className='mx-auto max-w-100-px'>
-								<ContentfulImage width={100} height={100} className='rounded-full mx-auto max-w-100-px' src={x.coverImage.url} />
-							</div>
-						</Link> : <img alt={x.fullName} src='https://via.placeholder.com/100' className='shadow-lg rounded-full mx-auto max-w-100-px' />}
+					{allPlayers.map(x => <div key={x.nickName} className='px-6 text-center'>
+						<ContentfulImage
+							width={120}
+							height={120}
+							className='rounded-full mx-auto max-w-120-px'
+							src={x.photoURL || x.coverImage?.url || 'https://via.placeholder.com/120'}
+						/>
 
 						<div className='pt-6 text-center'>
 							<h5 className='text-xl font-bold'>

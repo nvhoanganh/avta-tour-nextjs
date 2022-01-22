@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 
 export default function PlayersTable({ color, players }) {
-	console.log(players);
 	return (
 		<>
 			<div
@@ -72,7 +71,7 @@ export default function PlayersTable({ color, players }) {
 											<Link
 												href={`/players/${player.sys.id}`}
 											>
-												<ContentfulImage width={120} height={120} className='hover:cursor-pointer rounded-full mx-auto max-w-120-px' src={player.coverImage?.url || 'https://via.placeholder.com/120'} />
+												<ContentfulImage width={120} height={120} className='hover:cursor-pointer rounded-full mx-auto max-w-120-px' src={player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'} />
 											</Link>
 										</div>
 										<div className='flex flex-col'>

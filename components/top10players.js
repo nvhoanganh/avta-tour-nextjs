@@ -7,7 +7,7 @@ export default function Top10Players({ allPlayers }) {
 			<div className='flex flex-wrap justify-center text-center mb-24'>
 				<div className='w-full lg:w-6/12 px-4'>
 					<h2 className='text-4xl font-semibold'>
-						Our Top 10 Players
+						Top Players
 					</h2>
 				</div>
 			</div>
@@ -15,24 +15,16 @@ export default function Top10Players({ allPlayers }) {
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{allPlayers.slice(0, 10).map((x) => (
 						<div key={x.sys.id} className='px-6 text-center'>
-							{x.coverImage?.url ? (
-								<Link href={`/players/${x.sys.id}`}>
-									<div className='mx-auto max-w-120-px'>
-										<ContentfulImage
-											width={120}
-											height={120}
-											className='rounded-full mx-auto max-w-120-px'
-											src={x.coverImage.url}
-										/>
-									</div>
-								</Link>
-							) : (
-								<img
-									alt={x.fullName}
-									src='https://via.placeholder.com/150'
-									className='shadow-lg rounded-full mx-auto max-w-120-px'
-								/>
-							)}
+							<Link href={`/players/${x.sys.id}`}>
+								<div className='mx-auto max-w-120-px'>
+									<ContentfulImage
+										width={120}
+										height={120}
+										className='rounded-full mx-auto max-w-120-px'
+										src={x.photoURL || x.coverImage?.url || 'https://via.placeholder.com/120'}
+									/>
+								</div>
+							</Link>
 
 							<div className='pt-6 text-center'>
 								<h5 className='text-xl font-bold'>
