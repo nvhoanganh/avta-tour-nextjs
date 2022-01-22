@@ -84,6 +84,10 @@ export default function Navbar(props) {
 								</a>
 							</li>
 
+							<Link href='/editmyprofile'>
+								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>My Profile</a>
+							</Link>
+
 							<li className='flex items-center'>
 								{!user ? (
 									<Link href='/auth/login'>

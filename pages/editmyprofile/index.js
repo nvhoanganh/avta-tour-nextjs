@@ -24,7 +24,7 @@ export default function EditMyProfile() {
   const router = useRouter();
   const player = null;
   const { user } = useFirebaseAuth();
-  console.log(user);
+
   return (
     <Layout preview={false}>
       <Navbar transparent />
@@ -32,10 +32,6 @@ export default function EditMyProfile() {
       <article>
         <Head>
           <title>Edit Profile | AVTA.</title>
-          {/* <meta
-            property='og:image'
-            content={player.coverImage?.url}
-          /> */}
         </Head>
       </article>
 

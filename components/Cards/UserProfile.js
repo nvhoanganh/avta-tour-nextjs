@@ -7,17 +7,27 @@ import {
   getPlayerById,
 } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
+import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-
-export default function CardSettings() {
+export default function UserProfile() {
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
+
   const [userProfile, setUserProfile] = useState(null);
 
-  const onSubmit = data => console.log('form value', data);
+  const onSubmit = async data => {
+    console.log('form value', data);
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+    const updated = docSnap.exists ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
+    console.log('new ', updated);
+    await setDoc(docRef, updated);
+    toast("Profile Updated");
+  };
 
   useEffect(async () => {
     if (!loadingAuth && !user) {
@@ -39,9 +49,10 @@ export default function CardSettings() {
 
   return (
     <>
+      <ToastContainer />
       {
         loadingAuth || !userProfile
-          ? <div className="text-center text-xl py-24">Loading…</div> :
+          ? <div className="text-center text-xl py-24">Fetching information. Please wait...</div> :
           <UserForm onSubmit={onSubmit} userProfile={userProfile} />
       }
     </>
@@ -112,7 +123,7 @@ function UserForm({ onSubmit, userProfile }) {
               <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber", {
                 pattern: /\+614\d{8}/
               })}
-              placeholder="+61412345678"/>
+                placeholder="+61412345678" />
               {errors.mobileNumber && <span className="text-red-500">Australian Mobile, e.g +614XXXXXXXX</span>}
             </div>
           </div>

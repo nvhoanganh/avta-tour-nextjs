@@ -29,6 +29,7 @@ export default async function verifyotp(req, res) {
       if (savedOtp.otp.toString().trim() === otp.toString().trim()) {
         res.status(200).json({ success: true });
         await db.collection("users_otp").doc(uid).delete();
+
         const currentUser = await db.collection("users").doc(uid).get();
         if (currentUser.exists) {
           // update current user
