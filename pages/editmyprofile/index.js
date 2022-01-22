@@ -24,7 +24,7 @@ export default function EditMyProfile() {
   const router = useRouter();
   const player = null;
   const { user } = useFirebaseAuth();
-
+  console.log(user);
   return (
     <Layout preview={false}>
       <Navbar transparent />
@@ -81,16 +81,14 @@ export default function EditMyProfile() {
                 <div className='flex flex-wrap justify-center'>
                   <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
                     <div className='relative'>
-                      {player?.coverImage?.url ? (
+                      {user?.photoURL ? (
                         <div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'>
                           <ContentfulImage
                             width={250}
                             height={250}
                             className='rounded-full'
                             src={
-                              player
-                                .coverImage
-                                .url
+                              user?.photoURL
                             }
                           />
                         </div>
