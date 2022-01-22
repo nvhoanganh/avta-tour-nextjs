@@ -3,6 +3,9 @@ import PostTitle from '../../components/post-title';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
+import {
+  getPlayerById,
+} from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 
@@ -25,7 +28,11 @@ export default function CardSettings() {
     if (user) {
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-      const formData = docSnap.exists ? { ...user, ...docSnap.data() } : user;
+      let formData = docSnap.exists ? { ...user, ...docSnap.data() } : user;
+      if (formData.playerId) {
+        const contentfuldata = await getPlayerById(formData.playerId, false);
+        formData = { ...formData, ...contentfuldata, displayName: contentfuldata.fullName };
+      }
       setUserProfile(formData);
     }
   }, [user, loadingAuth]);
@@ -42,11 +49,13 @@ export default function CardSettings() {
 }
 
 function UserForm({ onSubmit, userProfile }) {
-  const { displayName, email, postcode, mobileNumber, suburb, allowContact, aboutMe, homeClub, nickName } = userProfile;
+  const { displayName, email, postcode, mobileNumber, suburb,
+    allowContact, aboutMe, homeClub, nickName, avtaPoint } = userProfile;
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
-      displayName, email, postcode, mobileNumber, suburb, allowContact, aboutMe, homeClub, nickName
+      displayName, email, postcode, mobileNumber,
+      suburb, allowContact, aboutMe, homeClub, nickName, avtaPoint
     }
   });
 
@@ -67,15 +76,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Display Name
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName")} />
-            </div>
-          </div>
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                Email address
-              </label>
-              <input type="email" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" readOnly {...register("email")} />
+              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName", { required: true })} />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
@@ -83,7 +84,15 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Nick Name
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName")} />
+              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName", { required: true })} />
+            </div>
+          </div>
+          <div className="w-full lg:w-6/12 px-4">
+            <div className="relative w-full mb-3">
+              <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                AVTA Score
+              </label>
+              <input type="text" readOnly className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("avtaPoint")} />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
@@ -105,7 +114,11 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Mobile
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber")} />
+              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber", {
+                pattern: /\+614\d{8}/
+              })}
+              placeholder="+61412345678"/>
+              {errors.mobileNumber && <span className="text-red-500">Australian Mobile, e.g +614XXXXXXXX</span>}
             </div>
           </div>
           <div className="w-full lg:w-4/12 px-4">
@@ -119,16 +132,16 @@ function UserForm({ onSubmit, userProfile }) {
           <div className="w-full lg:w-4/12 px-4">
             <div className="relative w-full mb-3">
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                Postcode
+                Email
               </label>
-              <input type="text" {...register("postcode")} className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+              <input type="text" {...register("email")} readOnly className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
             </div>
           </div>
           <div className="w-full lg:w-12/12 px-4 py-3">
             <div className="relative w-full mb-3">
               <label className="inline-flex items-center cursor-pointer">
                 <input id="customCheckLogin" type="checkbox" className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("allowContact")} />
-                <span className="ml-2 text-sm font-semibold text-blueGray-600">Other members can contact me via SMS</span>
+                <span className="ml-2 text-sm font-semibold text-blueGray-600">Allow other members can contact me via SMS</span>
               </label>
             </div>
           </div>

@@ -8,12 +8,6 @@ import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
-import {
-  getAllPostsWithSlug,
-  getAllPlayers,
-  getPlayerByNickName,
-  getPostAndMorePosts,
-} from '../../lib/api';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';

@@ -89,7 +89,7 @@ export default function Player({ player, preview }) {
 	}
 
 	const editProfile = () => {
-		router.push('/editmyprofile');
+		router.push('/editmyprofile/' + player.sys.id);
 	}
 
 	const profileClaimed = () => {
