@@ -148,7 +148,7 @@ function UserForm({ onSubmit, userProfile }) {
             <div className="relative w-full mb-3">
               <label className="inline-flex items-center cursor-pointer">
                 <input id="customCheckLogin" type="checkbox" className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("allowContact")} />
-                <span className="ml-2 text-sm font-semibold text-blueGray-600">Allow other members can contact me via SMS</span>
+                <span className="ml-2 text-sm font-semibold text-blueGray-600">Allow other members can contact me via SMS or Email</span>
               </label>
             </div>
           </div>

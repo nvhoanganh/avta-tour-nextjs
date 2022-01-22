@@ -22,6 +22,7 @@ import SendOtp from '../../components/sendotp';
 import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
+import { findLinkedUsers } from '../../lib/backendapi';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 
 const UNCLAIMED = 'UNCLAIMED';
@@ -34,6 +35,7 @@ const NOT_LOGGEDIN_CLAIMED = 'NOT_LOGGEDIN_CLAIMED';
 export default function Player({ player, preview }) {
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
+	const [showMobile, setShowMobile] = useState(false);
 	const [playerStatus, setPlayerStatus] = useState(null);
 	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
 	const { user } = useFirebaseAuth();
@@ -84,7 +86,7 @@ export default function Player({ player, preview }) {
 			localStorage.setItem('redirectAfterLogin', window.location.pathname);
 			router.push('/auth/login');
 		} else {
-			console.log('contact player');
+			setShowMobile(true);
 		}
 	}
 
@@ -159,40 +161,32 @@ export default function Player({ player, preview }) {
 										<div className='flex flex-wrap justify-center'>
 											<div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
 												<div className='relative'>
-													{player.coverImage?.url ? (
-														<div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'>
-															<ContentfulImage
-																width={250}
-																height={250}
-																className='rounded-full'
-																src={
-																	player
-																		.coverImage
-																		.url
-																}
-															/>
-														</div>
-													) : (
-														<img
-															alt={player.fullName}
-															src='https://via.placeholder.com/150'
-															className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'
+													<div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'>
+														<ContentfulImage
+															width={250}
+															height={250}
+															className='rounded-full'
+															src={
+																player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'}
 														/>
-													)}
+													</div>
 												</div>
 											</div>
 											<div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center'>
 												<div className='py-6 px-3 mt-32 sm:mt-0'>
-													{/* <button
-														className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-														type='button'
-													>
-														Connect
-													</button> */}
+													{
+														player.suburb
+														&& <button
+															className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+															type='button'
+														>
+															<i class="fas fa-map-marker-alt mx-2"></i> {player.suburb}
+														</button>
+													}
 												</div>
 											</div>
 											<div className='w-full lg:w-4/12 px-4 lg:order-1'>
-												<div className='flex justify-center py-4 lg:pt-4 pt-8'>
+												{/* <div className='flex justify-center py-4 lg:pt-4 pt-8'>
 													<div className='mr-4 p-3 text-center'>
 														<span className='text-xl font-bold block uppercase tracking-wide text-gray-600'>
 															22
@@ -217,7 +211,7 @@ export default function Player({ player, preview }) {
 															Loss
 														</span>
 													</div>
-												</div>
+												</div> */}
 											</div>
 										</div>
 										<div className='text-center mt-12'>
@@ -231,14 +225,27 @@ export default function Player({ player, preview }) {
 												</h3>
 											}
 											<div className='text-sm leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase'>
-												<i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
-												{player.homeClub ||
+												<i className='fas fa-home mr-2 text-lg text-gray-400'></i>{' '}
+												Home Club: {player.homeClub ||
 													'Unknown Club'}
 											</div>
 											<div className='mb-20 text-green-900 mt-10 text-6xl font-bold'>
 												{player.avtaPoint}
 											</div>
 										</div>
+
+										{
+											player.aboutMe
+											&& <div className="mt-10 py-10 border-t border-gray-200 text-center">
+												<div className="flex flex-wrap justify-center">
+													<div className="w-full lg:w-9/12 px-4">
+														<p className="mb-4 text-lg leading-relaxed text-gray-700">
+															{player.aboutMe}
+														</p>
+													</div>
+												</div>
+											</div>
+										}
 
 										<div className='mt-10 py-10 text-center'>
 											<div className='flex flex-wrap justify-center'>
@@ -269,15 +276,33 @@ export default function Player({ player, preview }) {
 														</a>
 													}
 
-													{/* {
+													{showMobile &&
+														<div className="mt-10 py-10 border-t border-gray-200 text-center">
+															<div className="flex flex-wrap justify-center">
+																<div className="w-full lg:w-9/12 px-4">
+																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
+																		Contact Me at:
+																	</p>
+																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
+																		<i class="fas fa-mobile-alt mx-2"></i> <a className="text-lg text-gray-800">{player.mobileNumber}</a>
+																	</p>
+																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
+																		<i class="fas fa-envelope"></i> <a className="text-lg text-gray-800">{player.email}</a>
+																	</p>
+																</div>
+															</div>
+														</div>}
+													{
 														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === CLAIMED_BY_OTHER || playerStatus === UNCLAIMED_BUT_USER_ALREADY_CLAIMED || playerStatus === NOT_LOGGEDIN_CLAIMED)
+														&& player?.allowContact
+														&& !showMobile
 														&&
-														<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+														<button className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
 															onClick={sendMessageToPlayer}
 														>
-															Contact Player
-														</a>
-													} */}
+															Show Contact Details
+														</button>
+													}
 												</div>
 											</div>
 										</div>
@@ -298,7 +323,15 @@ export default function Player({ player, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const data = await getPlayerById(params.nickName, preview);
+	let data = await getPlayerById(params.nickName, preview);
+	const linkedUser = await findLinkedUsers(params.nickName);
+	if (linkedUser) {
+		data = {
+			...data,
+			...linkedUser
+		}
+	}
+
 	return {
 		props: {
 			preview,
