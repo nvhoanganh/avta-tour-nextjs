@@ -29,8 +29,14 @@ export default async function verifyotp(req, res) {
       if (savedOtp.otp.toString().trim() === otp.toString().trim()) {
         res.status(200).json({ success: true });
         await db.collection("users_otp").doc(uid).delete();
-        // set up the relationship in Firebase
-        await db.collection("users").doc(uid).set({ uid, playerId });
+        const currentUser = await db.collection("users").doc(uid).get();
+        if (currentUser.exists) {
+          // update current user
+          const d = currentUser.data();
+          await db.collection("users").doc(uid).set({ ...d, uid, playerId });
+        } else {
+          await db.collection("users").doc(uid).set({ uid, playerId });
+        }
       } else {
         res.status(401).json({ message: 'Invalid One Time Password' })
       }

@@ -1,6 +1,29 @@
 import React from "react";
+import { useRouter } from 'next/router';
+import { useFirebaseAuth } from '../authhook';
+import { useState, useEffect } from 'react'
+import { db } from '../../lib/firebase';
+import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 
 export default function CardSettings() {
+  const { user, loadingAuth } = useFirebaseAuth();
+  const router = useRouter();
+  const [userProfile, setUserProfile] = useState(null);
+
+  useEffect(async () => {
+    if (!loadingAuth && !user) {
+      router.push('/auth/login');
+      return;
+    }
+
+    if (user) {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
+      setUserProfile(docSnap.data());
+      console.log(docSnap.data());
+    }
+  }, [user, loadingAuth]);
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6  border-0">
@@ -49,6 +72,7 @@ export default function CardSettings() {
                     type="email"
                     className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                     defaultValue="jesse@example.com"
+                    disabled
                   />
                 </div>
               </div>

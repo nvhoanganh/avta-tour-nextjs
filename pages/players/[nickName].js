@@ -39,16 +39,12 @@ export default function Player({ player, preview }) {
 	const { user } = useFirebaseAuth();
 
 	useEffect(async () => {
-		console.log('player is', player);
-		console.log('user', user);
-		console.log('finding player', player?.sys?.id);
 		const q = query(collection(db, "users"), where("playerId", "==", player?.sys?.id));
 		const querySnapshot = await getDocs(q);
 		const claimedPlayer = querySnapshot.size > 0 ? querySnapshot.docs[0].data() : null;
 
 		if (user) {
 			if (!claimedPlayer) {
-				console.log('no player found', player?.sys?.id);
 				const docRef = doc(db, "users", user.uid);
 				const docSnap = await getDoc(docRef);
 				console.log('user', docSnap.data());
