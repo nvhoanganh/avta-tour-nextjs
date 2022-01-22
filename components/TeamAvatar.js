@@ -7,7 +7,7 @@ import { format } from 'date-fns'
 export default function TeamAvatar({ team }) {
   return (
     <>
-      <Link href={`/players/${team.player1.nickName}`}>
+      <Link href={`/players/${team.player1.sys.id}`}>
         <div className="flex flex-col">
           <img
             src={team.player1.coverImage?.url || 'https://via.placeholder.com/64'}
@@ -17,7 +17,7 @@ export default function TeamAvatar({ team }) {
           <div className='text-green-600 text-xs text-center'>{team.player1.avtaPoint}</div>
         </div>
       </Link>
-      <Link href={`/players/${team.player2.nickName}`}>
+      <Link href={`/players/${team.player2.sys.id}`}>
         <div className="flex flex-col -ml-2">
           <img
             src={team.player2.coverImage?.url || 'https://via.placeholder.com/64'}

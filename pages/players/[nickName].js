@@ -20,26 +20,84 @@ import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import SendOtp from '../../components/sendotp';
 import { useFirebaseAuth } from '../../components/authhook';
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { db } from '../../lib/firebase';
+import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
+
+const UNCLAIMED = 'UNCLAIMED';
+const UNCLAIMED_BUT_USER_ALREADY_CLAIMED = 'UNCLAIMED_BUT_USER_ALREADY_CLAIMED';
+const CLAIMED_BY_OTHER = 'CLAIMED_BY_OTHER';
+const CLAIMED_BY_ME = 'CLAIMED_BY_ME';
+const NOT_LOGGEDIN_UNCLAIMED = 'NOT_LOGGEDIN_UNCLAIMED';
+const NOT_LOGGEDIN_CLAIMED = 'NOT_LOGGEDIN_CLAIMED';
 
 export default function Player({ player, preview }) {
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
+	const [playerStatus, setPlayerStatus] = useState(null);
 	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
 	const { user } = useFirebaseAuth();
 
+	useEffect(async () => {
+		console.log('player is', player);
+		console.log('user', user);
+		console.log('finding player', player?.sys?.id);
+		const q = query(collection(db, "users"), where("playerId", "==", player?.sys?.id));
+		const querySnapshot = await getDocs(q);
+		const claimedPlayer = querySnapshot.size > 0 ? querySnapshot.docs[0].data() : null;
+
+		if (user) {
+			if (!claimedPlayer) {
+				console.log('no player found', player?.sys?.id);
+				const docRef = doc(db, "users", user.uid);
+				const docSnap = await getDoc(docRef);
+				console.log('user', docSnap.data());
+
+				if (docSnap.exists() && docSnap.data().playerId) {
+					setPlayerStatus(UNCLAIMED_BUT_USER_ALREADY_CLAIMED);
+				} else {
+					setPlayerStatus(UNCLAIMED);
+				}
+			} else {
+				if (claimedPlayer.uid === user.uid) {
+					setPlayerStatus(CLAIMED_BY_ME);
+				} else {
+					setPlayerStatus(CLAIMED_BY_OTHER);
+				}
+			}
+		} else {
+			if (!claimedPlayer) {
+				setPlayerStatus(NOT_LOGGEDIN_UNCLAIMED);
+			} else {
+				setPlayerStatus(NOT_LOGGEDIN_CLAIMED);
+			}
+		}
+	}, [user, successfullyClaimed]);
+
 	const claimProfile = () => {
 		if (!user) {
+			localStorage.setItem('redirectAfterLogin', window.location.pathname);
 			router.push('/auth/login');
 		} else {
 			setShowOtp(true);
 		}
 	}
 
+	const sendMessageToPlayer = () => {
+		if (!user) {
+			localStorage.setItem('redirectAfterLogin', window.location.pathname);
+			router.push('/auth/login');
+		} else {
+			console.log('contact player');
+		}
+	}
+
+	const editProfile = () => {
+		router.push('/editmyprofile');
+	}
+
 	const profileClaimed = () => {
-		console.log('profile linked');
-		setSuccessfullyClaimed(true);
-		setShowOtp(false);
+		window.location.reload();
 	}
 
 	if (!router.isFallback && !player) {
@@ -170,6 +228,12 @@ export default function Player({ player, preview }) {
 											<h3 className='text-4xl font-semibold leading-normal mb-2 text-gray-700 mb-2'>
 												{player.fullName}
 											</h3>
+											{
+												player.fullName !== player.nickName
+												&& <h3 className='text-xl leading-normal mb-2 text-gray-700 mb-2'>
+													({player.nickName})
+												</h3>
+											}
 											<div className='text-sm leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase'>
 												<i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
 												{player.homeClub ||
@@ -180,29 +244,51 @@ export default function Player({ player, preview }) {
 											</div>
 										</div>
 
-										{
-											player?.mobileNumber && !showOtp && !successfullyClaimed
-											&& <div className='mt-10 py-10 border-t border-gray-200 text-center'>
-												<div className='flex flex-wrap justify-center'>
-													<div className='w-full lg:w-9/12 px-4'>
+										<div className='mt-10 py-10 text-center'>
+											<div className='flex flex-wrap justify-center'>
+												<div className='w-full lg:w-9/12 px-4'>
+													{
+														successfullyClaimed
+														&& <div className="text-center text-lg py-6 text-green-700">You have successfully claimed this player profile</div>
+													}
+
+													{
+														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === NOT_LOGGEDIN_UNCLAIMED)
+														&&
 														<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
 															onClick={claimProfile}
 														>
 															Claim This Player Profile
 														</a>
-													</div>
+													}
+
+
+													{
+														playerStatus === CLAIMED_BY_ME
+														&&
+														<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+															onClick={editProfile}
+														>
+															Edit Profile
+														</a>
+													}
+
+													{
+														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === CLAIMED_BY_OTHER || playerStatus === UNCLAIMED_BUT_USER_ALREADY_CLAIMED || playerStatus === NOT_LOGGEDIN_CLAIMED)
+														&&
+														<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+															onClick={sendMessageToPlayer}
+														>
+															Contact Player
+														</a>
+													}
 												</div>
 											</div>
-										}
+										</div>
 
 										{
 											showOtp
-											&& <SendOtp mobileNumber={player.mobileNumber} playerId={player.sys.id} done={profileClaimed}></SendOtp>
-										}
-
-										{
-											successfullyClaimed
-											&& <div className="text-center text-lg py-6 text-green-700">You have successfully claimed this player profile</div>
+											&& <SendOtp mobileNumber={player.mobileNumber} playerId={player?.sys?.id} done={profileClaimed}></SendOtp>
 										}
 									</div>
 								</div>
@@ -229,7 +315,7 @@ export async function getStaticProps({ params, preview = false }) {
 export async function getStaticPaths() {
 	const all = await getAllPlayers();
 	return {
-		paths: all?.map(({ nickName }) => `/players/${nickName}`) ?? [],
+		paths: all?.map(({ sys }) => `/players/${sys.id}`) ?? [],
 		fallback: true,
 	};
 }

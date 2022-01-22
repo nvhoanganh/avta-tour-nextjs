@@ -88,7 +88,13 @@ export default function Login() {
 
 			const user = result?.user;
 			if (user) {
-				router.push('/');
+				const redirectUrl = localStorage.getItem('redirectAfterLogin');
+				if (redirectUrl) {
+					localStorage.removeItem('redirectAfterLogin');
+					router.push(redirectUrl);
+				} else {
+					router.push('/');
+				}
 			}
 		})
 		.catch((error) => {

@@ -127,7 +127,7 @@ export default function TeamRankingTable({ groups, color }) {
 												}
 											>
 
-												<Link href={`/players/${row.player1.nickName}`}>
+												<Link href={`/players/${row.player1.sys.id}`}>
 													<a className="hover:underline">{row.player1.fullName}</a>
 												</Link>
 
@@ -136,7 +136,7 @@ export default function TeamRankingTable({ groups, color }) {
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${row.player2.nickName}`}>
+												<Link href={`/players/${row.player2.sys.id}`}>
 													<a className="hover:underline">{row.player2.fullName}</a>
 												</Link>
 

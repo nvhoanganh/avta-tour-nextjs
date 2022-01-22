@@ -10,7 +10,7 @@ export default function PlayersCard({ allPlayers }) {
 			<div className='flex flex-wrap justify-center'>
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{allPlayers.map(x => <div key={x.nickName} className='px-6'>
-						{x.coverImage?.url ? <Link href={`/players/${x.nickName}`}>
+						{x.coverImage?.url ? <Link href={`/players/${x.sys.id}`}>
 							<div className='mx-auto max-w-100-px'>
 								<ContentfulImage width={100} height={100} className='rounded-full mx-auto max-w-100-px' src={x.coverImage.url} />
 							</div>
@@ -18,7 +18,7 @@ export default function PlayersCard({ allPlayers }) {
 
 						<div className='pt-6 text-center'>
 							<h5 className='text-xl font-bold'>
-								<Link href={`/players/${x.nickName}`}>
+								<Link href={`/players/${x.sys.id}`}>
 									<a className='hover:underline'>
 										{x.fullName}
 									</a>

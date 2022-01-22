@@ -31,9 +31,10 @@ export default async function sendsms(req, res) {
     await db.collection("users_otp").doc(uid).set({ otp, issueDate: (new Date()), mobile })
 
     const msg = { body: `Hi, here is your one-time code. Your code is: ${otp}.`, to: mobile };
-    console.log('Sending', msg);
+    console.log('Sending SMS', msg);
+    const sendResult = await sendSms(msg);
+    console.log('SMS sent', sendResult);
 
-    // store in firestore
     res.status(200).json({ mobile, userid: uid })
     res.end()
   } catch (error) {

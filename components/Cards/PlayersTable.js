@@ -69,7 +69,11 @@ export default function PlayersTable({ color, players }) {
 											className='h-12 w-12 bg-white rounded-full border'
 											alt='...'
 										>
-											<ContentfulImage width={120} height={120} className='rounded-full mx-auto max-w-120-px' src={player.coverImage?.url || 'https://via.placeholder.com/120'} />
+											<Link
+												href={`/players/${player.sys.id}`}
+											>
+												<ContentfulImage width={120} height={120} className='hover:cursor-pointer rounded-full mx-auto max-w-120-px' src={player.coverImage?.url || 'https://via.placeholder.com/120'} />
+											</Link>
 										</div>
 										<div className='flex flex-col'>
 											<div
@@ -80,7 +84,11 @@ export default function PlayersTable({ color, players }) {
 														: 'text-white')
 												}
 											>
-												{player.fullName} ({player.nickName})
+												<Link
+													href={`/players/${player.sys.id}`}
+												>
+													<a className="hover:underline hover:cursor-pointer">{player.fullName} ({player.nickName})</a>
+												</Link>
 											</div>
 											<div className='ml-3 text-sm text-gray-600'>
 												{player.club}
@@ -95,7 +103,7 @@ export default function PlayersTable({ color, players }) {
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
-											href={`/players/${player.nickName}`}
+											href={`/players/${player.sys.id}`}
 										>
 											<a className='get-started text-white font-bold px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
 												View
