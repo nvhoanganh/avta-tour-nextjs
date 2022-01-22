@@ -18,6 +18,7 @@ import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
+import ProfileSettings from '../../components/Cards/UserProfile';
 import SendOtp from '../../components/sendotp';
 import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
@@ -117,8 +118,8 @@ export default function EditMyProfile() {
                     </div>
                   </div>
                 </div>
-                <div className='text-center mt-12'>
-                  Form goes here
+                <div className='mt-12'>
+                  <ProfileSettings></ProfileSettings>
                 </div>
               </div>
             </div>
