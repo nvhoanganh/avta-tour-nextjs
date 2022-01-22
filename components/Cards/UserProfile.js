@@ -61,12 +61,12 @@ export default function UserProfile() {
 }
 
 function UserForm({ onSubmit, userProfile }) {
-  const { displayName, email, postcode, mobileNumber, suburb,
+  const { displayName, email, mobileNumber, suburb,
     allowContact, aboutMe, homeClub, nickName, avtaPoint } = userProfile;
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
-      displayName, email, postcode, mobileNumber,
+      displayName, email, mobileNumber,
       suburb, allowContact, aboutMe, homeClub, nickName, avtaPoint
     }
   });
