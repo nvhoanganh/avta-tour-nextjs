@@ -31,6 +31,7 @@ export default function UserProfile() {
 
   useEffect(async () => {
     if (!loadingAuth && !user) {
+      localStorage.setItem('redirectAfterLogin', window.location.pathname);
       router.push('/auth/login');
       return;
     }
@@ -170,8 +171,8 @@ function UserForm({ onSubmit, userProfile }) {
         <div className="flex flex-wrap pt-5">
           <div className="w-full lg:w-12/12 px-4">
             <div className="relative w-full mb-3 text-center">
-              <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-8 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="submit">
-                Update
+              <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="submit">
+                Save Changes
               </button>
             </div>
           </div>

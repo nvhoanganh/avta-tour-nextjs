@@ -89,7 +89,7 @@ export default function Player({ player, preview }) {
 	}
 
 	const editProfile = () => {
-		router.push('/editmyprofile/' + player.sys.id);
+		router.push('/editmyprofile');
 	}
 
 	const profileClaimed = () => {
@@ -269,7 +269,7 @@ export default function Player({ player, preview }) {
 														</a>
 													}
 
-													{
+													{/* {
 														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === CLAIMED_BY_OTHER || playerStatus === UNCLAIMED_BUT_USER_ALREADY_CLAIMED || playerStatus === NOT_LOGGEDIN_CLAIMED)
 														&&
 														<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
@@ -277,7 +277,7 @@ export default function Player({ player, preview }) {
 														>
 															Contact Player
 														</a>
-													}
+													} */}
 												</div>
 											</div>
 										</div>

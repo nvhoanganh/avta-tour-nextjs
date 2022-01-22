@@ -132,7 +132,7 @@ export default function Login() {
 										<div className='text-center my-6'>
 											<h6 className='text-gray-500 text-lg font-bold'>
 												{loadingAuth
-													? 'Login you in. Please wait..'
+													? 'Logging you in. Please wait..'
 													: 'Sign in with'}
 											</h6>
 										</div>
