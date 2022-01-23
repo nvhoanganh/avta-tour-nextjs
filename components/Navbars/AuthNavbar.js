@@ -37,7 +37,7 @@ export default function Navbar(props) {
 					</div>
 					<div
 						className={
-							'lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none' +
+							'lg:flex flex-grow items-center bg-white lg:bg-opacity-0 lg:shadow-none z-50 bg-gray-100' +
 							(navbarOpen
 								? ' block rounded shadow-lg'
 								: ' hidden')
@@ -102,7 +102,7 @@ export default function Navbar(props) {
 							<li className='flex items-center'>
 								{!user ? (
 									<Link href='/auth/login'>
-										<a className='bg-gray-200 w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+										<a className='bg-blue-600 text-white md:bg-gray-200 md:text-black w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
 											<i className='fas fa-arrow-alt-circle-down'></i>{' '}
 											Join Us
 										</a>
