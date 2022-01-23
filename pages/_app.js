@@ -1,4 +1,5 @@
 import '../styles/index.css'
+import '../styles/minimal.css'
 import "@fortawesome/fontawesome-free/css/all.min.css"
 
 function MyApp({ Component, pageProps }) {
