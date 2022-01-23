@@ -33,7 +33,7 @@ export default function UserProfile() {
       await fetch(`/players/${updated.playerId}`);
       setTimeout(() => {
         fetch(`/players/${updated.playerId}`);
-      }, 1100);
+      }, 1500);
     } else {
       console.log('no linked player');
     }

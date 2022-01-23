@@ -26,6 +26,10 @@ export default function EditMyProfile() {
   const [linkedPlayer, setLinkedPlayer] = useState(null);
   const { user } = useFirebaseAuth();
 
+  const viewProfile = () => {
+    window.location.pathname = `/players/${linkedPlayer}`;
+  }
+
   useEffect(async () => {
     if (user) {
       const docRef = doc(db, "users", user.uid);
@@ -112,14 +116,13 @@ export default function EditMyProfile() {
                   <div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right lg:self-center'>
                     <div className='py-6 px-3 mt-32 sm:mt-0 w-full text-center md:text-right'>
                       {linkedPlayer &&
-                        <Link href={`/players/${linkedPlayer}`}>
-                          <a
-                            className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none 
+                        <a
+                          className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none 
                             focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                          >
-                            View Public Profile
-                          </a>
-                        </Link>
+                          onClick={viewProfile}
+                        >
+                          View Public Profile
+                        </a>
                       }
                     </div>
                   </div>
