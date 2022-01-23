@@ -17,16 +17,26 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function UserProfile() {
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
-
+  const [saving, setSaving] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
 
   const onSubmit = async data => {
+    setSaving(true)
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
     let updated = docSnap.exists() ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
     updated = { ...updated, photoURL: user.photoURL };
     await setDoc(docRef, updated);
+
+    if (updated.playerId) {
+      console.log('querying backend to force reload');
+      await fetch(`/players/${updated.playerId}`);
+    } else {
+      console.log('no linked player');
+    }
+
     toast("Profile Updated");
+    setSaving(false)
   };
 
   useEffect(async () => {
@@ -42,7 +52,12 @@ export default function UserProfile() {
       let formData = docSnap.exists() ? { ...user, ...docSnap.data() } : { ...user, allowContact: true };
       if (formData.playerId) {
         const contentfuldata = await getPlayerById(formData.playerId, false);
-        formData = { ...formData, ...contentfuldata, displayName: contentfuldata.fullName };
+        formData = {
+          ...formData, ...contentfuldata,
+          displayName: contentfuldata.fullName,
+          homeClub: formData.homeClub,
+          nickName: formData.nickName,
+        };
       }
 
       setUserProfile(formData);
@@ -55,13 +70,13 @@ export default function UserProfile() {
       {
         loadingAuth || !userProfile
           ? <div className="text-center text-xl py-24">Fetching information. Please wait...</div> :
-          <UserForm onSubmit={onSubmit} userProfile={userProfile} />
+          <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} />
       }
     </>
   );
 }
 
-function UserForm({ onSubmit, userProfile }) {
+function UserForm({ onSubmit, userProfile, saving }) {
   const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
     allowContact, aboutMe, homeClub, nickName, avtaPoint } = userProfile;
@@ -109,23 +124,31 @@ function UserForm({ onSubmit, userProfile }) {
 
               {showHowToGetPoint &&
                 <div className="py-3 my-4 border rounded shadow-xl px-3 bg-gray-50">
-                  Contact one of our members
-                  <Link href={`/players`}>
-                    <a target='_blank' className="underline cursor-pointer text-gray-600 mx-2">here</a>
-                  </Link>
-                  to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
-                  <Link href={`/competitions`}>
-                    <a target='_blank' className="underline cursor-pointer text-gray-600 mx-2">competitions</a>
-                  </Link>
-                  . Your official AVTA will be given to you by AVTA Skill Panel
+                  <p>
+                    If you believe a player profile has been created for you. You can find and link it <Link href={`/players`}>
+                      <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
+                    </Link>.
+                  </p>
 
-                  <br />
-                  <br />
-                  <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
-                    onClick={() => setShowHowToGetPoint(false)}
-                  >
-                    Got it!
-                  </button>
+                  <p className="pt-5">
+                    Otherwise, contact one of our members 
+                    <Link href={`/players`}>
+                      <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
+                    </Link>
+                    to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
+                    <Link href={`/competitions`}>
+                      <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">competitions</a>
+                    </Link>
+                    . Your official AVTA point will be given to you by AVTA Skill Review Panel
+
+                    <p className="pt-5">
+                      <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
+                        onClick={() => setShowHowToGetPoint(false)}
+                      >
+                        Got it!
+                      </button>
+                    </p>
+                  </p>
                 </div>}
             </div>
           </div>
@@ -200,8 +223,10 @@ function UserForm({ onSubmit, userProfile }) {
         <div className="flex flex-wrap pt-5">
           <div className="w-full lg:w-12/12 px-4">
             <div className="relative w-full mb-3 text-center">
-              <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="submit">
-                Save Changes
+              <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 disabled:bg-gray-200" type="submit"
+              disabled={saving}
+              >
+                {!saving ? 'Save Changes' : 'Saving...'}
               </button>
             </div>
           </div>
