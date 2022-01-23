@@ -6,20 +6,20 @@ import { getFirestore, CollectionReference } from 'firebase-admin/firestore'
 
 
 export default async function sendsms(req, res) {
-  initFirebase();
 
   const { mobile } = req.query;
 
   const { authorization } = req.headers;
-
-  const auth = getAuth();
-  const db = getFirestore();
 
   if (!authorization) {
     return res.status(401).json({ message: 'Access token missing' })
   }
 
   try {
+    initFirebase();
+    const auth = getAuth();
+    const db = getFirestore();
+
     const token = req.headers.authorization.split(' ')[1];
     console.log('checking token: ' + token);
     const { uid } = await auth.verifyIdToken(token);

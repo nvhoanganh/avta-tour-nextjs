@@ -6,19 +6,18 @@ import { getFirestore, CollectionReference } from 'firebase-admin/firestore'
 
 
 export default async function verifyotp(req, res) {
-  initFirebase();
-
   const { otp, playerId } = req.query;
   const { authorization } = req.headers;
-
-  const auth = getAuth();
-  const db = getFirestore();
 
   if (!authorization) {
     return res.status(401).json({ message: 'Access token missing' })
   }
 
   try {
+    initFirebase();
+    const auth = getAuth();
+    const db = getFirestore();
+
     const token = req.headers.authorization.split(' ')[1];
     const { uid } = await auth.verifyIdToken(token);
     const saved_otp = await db.collection("users_otp").doc(uid).get();
