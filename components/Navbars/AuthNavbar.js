@@ -102,7 +102,8 @@ export default function Navbar(props) {
 								) : (
 									<a
 										onClick={() => logout()}
-										className='bg-white text-gray-700 active:bg-gray-50 text-xs font-bold px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'
+										className=' bg-blue-600 w-full mx-3 text-center text-white md:bg-white md:text-black text-gray-700 active:bg-gray-50 text-xs font-bold px-4 py-2 rounded shadow 
+										hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'
 									>
 										<i className='fas fa-sign-out-alt mr-2'></i>
 										Logout

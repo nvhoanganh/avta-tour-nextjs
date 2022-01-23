@@ -22,9 +22,8 @@ export default function UserProfile() {
   const onSubmit = async data => {
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
-    let updated = docSnap.exists ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
+    let updated = docSnap.exists() ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
     updated = { ...updated, photoURL: user.photoURL };
-    console.log('new ', updated);
     await setDoc(docRef, updated);
     toast("Profile Updated");
   };
@@ -39,11 +38,13 @@ export default function UserProfile() {
     if (user) {
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
-      let formData = docSnap.exists ? { ...user, ...docSnap.data() } : user;
+      let formData = docSnap.exists() ? { ...user, ...docSnap.data() } : { ...user, allowContact: true };
       if (formData.playerId) {
         const contentfuldata = await getPlayerById(formData.playerId, false);
         formData = { ...formData, ...contentfuldata, displayName: contentfuldata.fullName };
       }
+
+      console.log('profile details', formData);
       setUserProfile(formData);
     }
   }, [user, loadingAuth]);
@@ -83,7 +84,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Display Name
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName", { required: true })} />
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName", { required: true })} />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
@@ -91,7 +92,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Nick Name
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName", { required: true })} />
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName", { required: true })} />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
@@ -99,7 +100,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 AVTA Score
               </label>
-              <input type="text" readOnly className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("avtaPoint")} />
+              <input type="text" readOnly className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("avtaPoint")} />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
@@ -107,7 +108,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Home Club
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("homeClub")} />
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("homeClub")} />
             </div>
           </div>
         </div>
@@ -121,7 +122,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Mobile
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber", {
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber", {
                 pattern: /\+614\d{8}/
               })}
                 placeholder="+61412345678" />
@@ -133,7 +134,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Suburb
               </label>
-              <input type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("suburb")} />
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("suburb")} />
             </div>
           </div>
           <div className="w-full lg:w-4/12 px-4">
@@ -141,14 +142,14 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Email
               </label>
-              <input type="text" {...register("email")} readOnly className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+              <input type="text" {...register("email")} readOnly className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
             </div>
           </div>
           <div className="w-full lg:w-12/12 px-4 py-3">
             <div className="relative w-full mb-3">
               <label className="inline-flex items-center cursor-pointer">
-                <input id="customCheckLogin" type="checkbox" className="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("allowContact")} />
-                <span className="ml-2 text-sm font-semibold text-blueGray-600">Show my contact details to other players (require authentication)</span>
+                <input id="customCheckLogin" type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("allowContact")} />
+                <span className="ml-2 text-sm font-semibold text-blueGray-600">Show my contact details to other logged in users</span>
               </label>
             </div>
           </div>
@@ -163,7 +164,7 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 About me
               </label>
-              <textarea type="text" className="border-0 px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4" {...register("aboutMe")}></textarea>
+              <textarea type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4" {...register("aboutMe")}></textarea>
             </div>
           </div>
         </div>
