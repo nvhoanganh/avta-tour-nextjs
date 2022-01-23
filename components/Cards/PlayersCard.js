@@ -29,9 +29,11 @@ export default function PlayersCard({ allPlayers }) {
 									</a>
 								</Link>
 							</h5>
-							<p className='mt-1 text-blue-900 text-sm'>
-								({x.nickName})
-							</p>
+							{x.fullName !== x.nickName &&
+								<p className='mt-1 text-blue-900 text-sm'>
+									({x.nickName})
+								</p>
+							}
 							<p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
 								{x.avtaPoint}
 							</p>

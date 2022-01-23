@@ -86,7 +86,11 @@ export default function PlayersTable({ color, players }) {
 												<Link
 													href={`/players/${player.sys.id}`}
 												>
-													<a className="hover:underline hover:cursor-pointer">{player.fullName} ({player.nickName})</a>
+													{player.fullName !== player.nickName ?
+														<a className="hover:underline hover:cursor-pointer">{player.fullName} ({player.nickName})</a>
+														:
+														<a className="hover:underline hover:cursor-pointer">{player.fullName}</a>
+													}
 												</Link>
 											</div>
 											<div className='ml-3 text-sm text-gray-600'>
