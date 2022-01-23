@@ -41,6 +41,15 @@ export default function Intro({ upcomingCompetition }) {
 									Association, cùng nhau tạo thành sân chơi tennis phong trào lớn
 									mạnh nhất ở Australia
 								</p>
+
+								<p className="text-center pt-12">
+									<Link href='/auth/login'>
+										<a className='bg-blue-600 text-white w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-6 py-4 
+										rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+											Join Us Today
+										</a>
+									</Link>
+								</p>
 							</div>
 						</div>
 					</div>
