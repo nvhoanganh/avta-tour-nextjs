@@ -36,7 +36,7 @@ export default async function sendsms(req, res) {
     const sendResult = await sendSms(msg);
     console.log('SMS sent', sendResult);
 
-    res.status(200).json({ mobile, userid: uid })
+    res.status(200).json({ mobile, userid: uid, sid: sendResult.sid })
     res.end()
   } catch (error) {
     console.log('Error is is', error);

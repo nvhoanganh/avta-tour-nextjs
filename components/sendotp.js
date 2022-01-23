@@ -27,6 +27,9 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
         .then(response => response.json())
         .then((rsp) => {
           console.log('response', rsp);
+        }).catch((err) => {
+          setOtp(false);
+          setErrorMsg('Something went wrong, please try again');
         });
     })
   }
@@ -101,7 +104,7 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
             onClick={verifyOtpNow}
             disabled={verifying}
           >
-            {!verifying ? 'Verify': 'Verifying...'}
+            {!verifying ? 'Verify' : 'Verifying...'}
           </button>
         </div>
       }
