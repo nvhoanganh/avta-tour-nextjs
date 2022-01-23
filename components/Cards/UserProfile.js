@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link'
 import PostTitle from '../../components/post-title';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
@@ -62,13 +63,14 @@ export default function UserProfile() {
 }
 
 function UserForm({ onSubmit, userProfile }) {
+  const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
     allowContact, aboutMe, homeClub, nickName, avtaPoint } = userProfile;
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       displayName, email, mobileNumber,
-      suburb, allowContact, aboutMe, homeClub, nickName, avtaPoint
+      suburb, allowContact, aboutMe, homeClub, nickName
     }
   });
 
@@ -100,7 +102,28 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 AVTA Score
               </label>
-              <input type="text" readOnly className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("avtaPoint")} />
+              {avtaPoint ? <span className="px-3 py-3 text-gray-600 text-4xl text-green-600">{avtaPoint} Pt.</span> :
+                <span className="py-3  text-red-600">Not Yet Assigned.
+                  <a className="underline cursor-pointer text-gray-600 mx-2" onClick={() => setShowHowToGetPoint(true)}>How do I get one?</a>
+                </span>
+              }
+
+              {showHowToGetPoint &&
+                <div className="py-3 my-4 border rounded shadow-xl px-3 bg-gray-50">
+                  Contact one of our members
+                  <Link href={`/players`}>
+                    <a className="underline cursor-pointer text-gray-600 mx-2">here</a>
+                  </Link>
+                  to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming tournament. Your official AVTA will be given to you by AVTA Skill Panel
+
+                  <br />
+                  <br />
+                  <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
+                    onClick={() => setShowHowToGetPoint(false)}
+                  >
+                    Got it!
+                  </button>
+                </div>}
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
@@ -180,5 +203,5 @@ function UserForm({ onSubmit, userProfile }) {
         </div>
       </div>
     </div>
-  </form>);
+  </form >);
 }
