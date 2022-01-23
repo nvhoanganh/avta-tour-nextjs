@@ -112,9 +112,13 @@ function UserForm({ onSubmit, userProfile }) {
                 <div className="py-3 my-4 border rounded shadow-xl px-3 bg-gray-50">
                   Contact one of our members
                   <Link href={`/players`}>
-                    <a className="underline cursor-pointer text-gray-600 mx-2">here</a>
+                    <a target='_blank' className="underline cursor-pointer text-gray-600 mx-2">here</a>
                   </Link>
-                  to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming tournament. Your official AVTA will be given to you by AVTA Skill Panel
+                  to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
+                  <Link href={`/competitions`}>
+                    <a target='_blank' className="underline cursor-pointer text-gray-600 mx-2">competitions</a>
+                  </Link>
+                  . Your official AVTA will be given to you by AVTA Skill Panel
 
                   <br />
                   <br />
@@ -131,7 +135,8 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Home Club
               </label>
-              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("homeClub")} />
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                {...register("homeClub", { required: true })} />
             </div>
           </div>
         </div>
@@ -157,7 +162,8 @@ function UserForm({ onSubmit, userProfile }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Suburb
               </label>
-              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("suburb")} />
+              <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                {...register("suburb", { required: true })} />
             </div>
           </div>
           <div className="w-full lg:w-4/12 px-4">

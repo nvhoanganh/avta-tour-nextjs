@@ -36,6 +36,9 @@ import { useFirebaseAuth } from '../../components/authhook';
 export default function Login() {
 	const { loadingAuth } = useFirebaseAuth();
 	const router = useRouter();
+	const { reason } = router.query;
+	console.log('reason', reason);
+
 	const [loginError, setLoginError] = useState(null);
 
 	const login = async (provider) => {
@@ -129,6 +132,18 @@ export default function Login() {
 							<div className='w-full lg:w-4/12 px-4'>
 								<div className='relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-200 border-0'>
 									<div className='rounded-t mb-0 px-3 py-6'>
+										{reason && !loadingAuth &&
+											<div className='text-center my-6'>
+												<h6 className='text-gray-500'>
+													{reason === 'claimprofile'
+														&& 'You need to login before you can claim player profile'
+													}
+													{reason === 'messagemember'
+														&& 'You need to login before we can show player contact details'
+													}
+												</h6>
+											</div>
+										}
 										<div className='text-center my-6'>
 											<h6 className='text-gray-500 text-lg font-bold'>
 												{loadingAuth

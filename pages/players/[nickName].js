@@ -77,7 +77,7 @@ export default function Player({ player, preview }) {
 	const claimProfile = () => {
 		if (!user) {
 			localStorage.setItem('redirectAfterLogin', window.location.pathname);
-			router.push('/auth/login');
+			router.push('/auth/login?reason=claimprofile');
 		} else {
 			setShowOtp(true);
 		}
@@ -86,7 +86,7 @@ export default function Player({ player, preview }) {
 	const sendMessageToPlayer = () => {
 		if (!user) {
 			localStorage.setItem('redirectAfterLogin', window.location.pathname);
-			router.push('/auth/login');
+			router.push('/auth/login?reason=messagemember');
 		} else {
 			setShowMobile(true);
 		}
@@ -233,7 +233,7 @@ export default function Player({ player, preview }) {
 												</>}
 
 											</div>
-											<div className='mb-20 text-green-900 mt-10 text-6xl font-bold'>
+											<div className='mb-20 text-green-600 mt-10 text-6xl font-bold'>
 												{player.avtaPoint} pt.
 											</div>
 										</div>
@@ -288,10 +288,10 @@ export default function Player({ player, preview }) {
 																		Contact Me at:
 																	</p>
 																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
-																		<i class="fas fa-mobile-alt mx-2"></i> <a className="text-lg text-gray-800">{player.mobileNumber}</a>
+																		<i class="fas fa-mobile-alt mx-2 text-green-600"></i> <a className="text-lg text-gray-800">{player.mobileNumber}</a>
 																	</p>
 																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
-																		<i class="fas fa-envelope"></i> <a className="text-lg text-gray-800">{player.email}</a>
+																		<i class="fas fa-envelope text-green-600"></i> <a className="text-lg text-gray-800">{player.email}</a>
 																	</p>
 																</div>
 															</div>
@@ -326,7 +326,7 @@ export default function Player({ player, preview }) {
 	);
 }
 
-export async function getStaticProps({ params, preview = false }) {
+export async function getServerSideProps({ params, preview = false }) {
 	let data = await getPlayerById(params.nickName, preview);
 	const linkedUser = await findLinkedUsers(params.nickName);
 	if (linkedUser) {
@@ -341,14 +341,14 @@ export async function getStaticProps({ params, preview = false }) {
 			preview,
 			player: data,
 		},
-		revalidate: 60
+		// revalidate: 60
 	};
 }
 
-export async function getStaticPaths() {
-	const all = await getAllPlayers();
-	return {
-		paths: all?.map(({ sys }) => `/players/${sys.id}`) ?? [],
-		fallback: true,
-	};
-}
+// export async function getStaticPaths() {
+// 	const all = await getAllPlayers();
+// 	return {
+// 		paths: all?.map(({ sys }) => `/players/${sys.id}`) ?? [],
+// 		fallback: true,
+// 	};
+// }

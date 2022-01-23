@@ -60,7 +60,7 @@ export default function Players({ allPlayers, preview }) {
 	);
 }
 
-export async function getStaticProps({ params, preview = false }) {
+export async function getServerSideProps({ params, preview = false }) {
 	let allPlayers = (await getAllPlayers(preview)) ?? [];
 	allPlayers = await mergeUsersAndPlayersData(allPlayers);
 
@@ -69,7 +69,7 @@ export async function getStaticProps({ params, preview = false }) {
 			preview,
 			allPlayers
 		},
-		revalidate: 60
+		// revalidate: 60
 	};
 }
 

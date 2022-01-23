@@ -16,7 +16,7 @@ export default function Top10Players({ allPlayers }) {
 					{allPlayers.slice(0, 10).map((x) => (
 						<div key={x.sys.id} className='px-6 text-center'>
 							<Link href={`/players/${x.sys.id}`}>
-								<div className='mx-auto max-w-120-px'>
+								<div className='mx-auto max-w-120-px cursor-pointer'>
 									<ContentfulImage
 										width={120}
 										height={120}
