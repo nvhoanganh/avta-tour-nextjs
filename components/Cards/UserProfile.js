@@ -29,8 +29,11 @@ export default function UserProfile() {
     await setDoc(docRef, updated);
 
     if (updated.playerId) {
-      console.log('querying backend to force reload');
+      // need to load this twice for Vercel to rebuild the app
       await fetch(`/players/${updated.playerId}`);
+      setTimeout(() => {
+        await fetch(`/players/${updated.playerId}`);
+      }, 1000);
     } else {
       console.log('no linked player');
     }
@@ -131,7 +134,7 @@ function UserForm({ onSubmit, userProfile, saving }) {
                   </p>
 
                   <p className="pt-5">
-                    Otherwise, contact one of our members 
+                    Otherwise, contact one of our members
                     <Link href={`/players`}>
                       <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
                     </Link>
@@ -224,7 +227,7 @@ function UserForm({ onSubmit, userProfile, saving }) {
           <div className="w-full lg:w-12/12 px-4">
             <div className="relative w-full mb-3 text-center">
               <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 disabled:bg-gray-200" type="submit"
-              disabled={saving}
+                disabled={saving}
               >
                 {!saving ? 'Save Changes' : 'Saving...'}
               </button>
