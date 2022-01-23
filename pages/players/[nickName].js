@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import Head from 'next/head';
 import ErrorPage from 'next/error';
 import ContentfulImage from '../../components/contentful-image';
@@ -23,7 +24,7 @@ import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
 import { findLinkedUsers } from '../../lib/backendapi';
-import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
+import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -92,14 +93,19 @@ export default function Player({ player, preview }) {
 		}
 	}
 
-	const editProfile = () => {
-		router.push('/editmyprofile');
-	}
+	const profileClaimed = async () => {
+		const docRef = doc(db, "users", user.uid);
+		const docSnap = await getDoc(docRef);
+		const updated = docSnap.exists() ?
+			{ ...docSnap.data(), uid: user.uid, playerId: player?.sys?.id } :
+			{ uid: user.uid, playerId: player?.sys?.id };
 
-	const profileClaimed = () => {
-		toast("Profile successfully linked");
+		await setDoc(docRef, updated);
+
 		setShowOtp(false);
 		setPlayerStatus(CLAIMED_BY_ME);
+
+		toast("Profile successfully linked");
 	}
 
 	if (!router.isFallback && !player) {
@@ -273,11 +279,12 @@ export default function Player({ player, preview }) {
 													{
 														playerStatus === CLAIMED_BY_ME
 														&&
-														<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
-															onClick={editProfile}
-														>
-															Edit Profile
-														</a>
+														<Link href='/editmyprofile'>
+															<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+															>
+																Edit Profile
+															</a>
+														</Link>
 													}
 
 													{showMobile &&
@@ -326,7 +333,7 @@ export default function Player({ player, preview }) {
 	);
 }
 
-export async function getServerSideProps({ params, preview = false }) {
+export async function getStaticProps({ params, preview = false }) {
 	let data = await getPlayerById(params.nickName, preview);
 	const linkedUser = await findLinkedUsers(params.nickName);
 	if (linkedUser) {
@@ -341,14 +348,14 @@ export async function getServerSideProps({ params, preview = false }) {
 			preview,
 			player: data,
 		},
-		// revalidate: 60
+		revalidate: 1
 	};
 }
 
-// export async function getStaticPaths() {
-// 	const all = await getAllPlayers();
-// 	return {
-// 		paths: all?.map(({ sys }) => `/players/${sys.id}`) ?? [],
-// 		fallback: true,
-// 	};
-// }
+export async function getStaticPaths() {
+	const all = await getAllPlayers();
+	return {
+		paths: all?.map(({ sys }) => `/players/${sys.id}`) ?? [],
+		fallback: true,
+	};
+}

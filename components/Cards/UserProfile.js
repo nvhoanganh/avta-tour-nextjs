@@ -45,7 +45,6 @@ export default function UserProfile() {
         formData = { ...formData, ...contentfuldata, displayName: contentfuldata.fullName };
       }
 
-      console.log('profile details', formData);
       setUserProfile(formData);
     }
   }, [user, loadingAuth]);

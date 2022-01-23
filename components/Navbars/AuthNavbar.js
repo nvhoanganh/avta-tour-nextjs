@@ -84,6 +84,14 @@ export default function Navbar(props) {
 								</a>
 							</li>
 
+							<Link href='/players'>
+								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Players</a>
+							</Link>
+
+							<Link href='/competitions'>
+								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Comps</a>
+							</Link>
+
 							{
 								user
 								&& <Link href='/editmyprofile'>
