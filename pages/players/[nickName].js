@@ -226,11 +226,11 @@ export default function Player({ player, preview }) {
 													({player.nickName})
 												</h3>
 											}
-											<div className='text-lg leading-normal mt-0 mb-2 text-gray-400 font-bold'>
+											<div className='text-lg leading-normal mt-0 mb-2 text-gray-400'>
 												{
 													player.suburb
 													&& <>
-														Live in {player.suburb},&nbsp;
+														Live in {player.suburb}.&nbsp;
 													</>
 												}
 

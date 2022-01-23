@@ -32,8 +32,8 @@ export default function UserProfile() {
       // need to load this twice for Vercel to rebuild the app
       await fetch(`/players/${updated.playerId}`);
       setTimeout(() => {
-        await fetch(`/players/${updated.playerId}`);
-      }, 1000);
+        fetch(`/players/${updated.playerId}`);
+      }, 1100);
     } else {
       console.log('no linked player');
     }
