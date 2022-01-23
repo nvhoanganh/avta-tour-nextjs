@@ -24,6 +24,8 @@ import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
 import { findLinkedUsers } from '../../lib/backendapi';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UNCLAIMED = 'UNCLAIMED';
 const UNCLAIMED_BUT_USER_ALREADY_CLAIMED = 'UNCLAIMED_BUT_USER_ALREADY_CLAIMED';
@@ -95,7 +97,9 @@ export default function Player({ player, preview }) {
 	}
 
 	const profileClaimed = () => {
-		window.location.reload();
+		toast("Profile successfully linked");
+		setShowOtp(false);
+		setPlayerStatus(CLAIMED_BY_ME);
 	}
 
 	if (!router.isFallback && !player) {
@@ -104,6 +108,7 @@ export default function Player({ player, preview }) {
 
 	return (
 		<Layout preview={preview}>
+			<ToastContainer />
 			<Navbar transparent />
 
 			{router.isFallback ? (

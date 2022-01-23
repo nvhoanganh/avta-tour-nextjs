@@ -5,6 +5,7 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
   const [otp, setOtp] = useState(false);
   const [otpValue, setOtpValue] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [verifying, setVerifying] = useState(false);
   const { user } = useFirebaseAuth();
 
   const handleChange = (event) => {
@@ -31,6 +32,7 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
   }
 
   const verifyOtpNow = () => {
+    setVerifying(true);
     user.getIdToken().then(idtoken => {
       return fetch(
         `/api/verifyotp?otp=${otpValue}&playerId=${playerId}`,
@@ -47,10 +49,13 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
             setErrorMsg(null);
             done();
           } else {
+            setVerifying(false);
             setErrorMsg(rsp.message);
           }
         })
         .catch((err) => {
+          setVerifying(false);
+          setErrorMsg('Something went wrong, please try again later');
           console.log('error', err);
         });
     })
@@ -92,10 +97,11 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
             length="6"
             value={otpValue} onChange={handleChange}
           />
-          <button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150' type="button"
+          <button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none disabled:bg-gray-200 mr-1 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150' type="button"
             onClick={verifyOtpNow}
+            disabled={verifying}
           >
-            Verify
+            {!verifying ? 'Verify': 'Verifying...'}
           </button>
         </div>
       }

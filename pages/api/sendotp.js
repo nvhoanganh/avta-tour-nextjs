@@ -32,8 +32,9 @@ export default async function sendsms(req, res) {
 
     const msg = { body: `Hi, here is your one-time code. Your code is: ${otp}.`, to: mobile };
     console.log('Sending SMS', msg);
-    const sendResult = await sendSms(msg);
-    console.log('SMS sent', sendResult);
+
+    // const sendResult = await sendSms(msg);
+    // console.log('SMS sent', sendResult);
 
     res.status(200).json({ mobile, userid: uid })
     res.end()
