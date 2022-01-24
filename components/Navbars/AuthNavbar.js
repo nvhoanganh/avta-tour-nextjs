@@ -104,7 +104,7 @@ export default function Navbar(props) {
 									<Link href='/auth/login'>
 										<a className='bg-blue-600 text-white md:bg-gray-200 md:text-black w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
 											<i className='fas fa-arrow-alt-circle-down'></i>{' '}
-											Join Us
+											Log in
 										</a>
 									</Link>
 								) : (
