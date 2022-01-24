@@ -42,9 +42,13 @@ export default function Player({ player, preview }) {
 	const [showMobile, setShowMobile] = useState(false);
 	const [playerStatus, setPlayerStatus] = useState(null);
 	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
-	const { user } = useFirebaseAuth();
+	const { user, loadingAuth } = useFirebaseAuth();
 
 	useEffect(async () => {
+		if (loadingAuth) {
+			return;
+		}
+
 		const q = query(collection(db, "users"), where("playerId", "==", player?.sys?.id));
 		const querySnapshot = await getDocs(q);
 		const claimedPlayer = querySnapshot.size > 0 ? querySnapshot.docs[0].data() : null;
@@ -74,7 +78,7 @@ export default function Player({ player, preview }) {
 				setPlayerStatus(NOT_LOGGEDIN_CLAIMED);
 			}
 		}
-	}, [user, successfullyClaimed]);
+	}, [user, loadingAuth]);
 
 	const claimProfile = () => {
 		if (!user) {

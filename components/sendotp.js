@@ -3,10 +3,11 @@ import SaveButton from './savebutton';
 import { useState } from 'react'
 
 export default function SendOtp({ mobileNumber, playerId, done }) {
-  const [otp, setOtp] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
   const [otpValue, setOtpValue] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [verifying, setVerifying] = useState(false);
+  const [sendingOtp, setSendingOtp] = useState(false);
   const { user } = useFirebaseAuth();
 
   const handleChange = (event) => {
@@ -14,8 +15,8 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
   }
 
   const sendOtpNow = () => {
+    setSendingOtp(true);
     user.getIdToken().then(idtoken => {
-      setOtp(true);
       return fetch(
         `/api/sendotp?mobile=${encodeURIComponent(mobileNumber)}`,
         {
@@ -27,9 +28,12 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
       )
         .then(response => response.json())
         .then((rsp) => {
+          setOtpSent(true);
+          setSendingOtp(false);
           console.log('response', rsp);
         }).catch((err) => {
-          setOtp(false);
+          setOtpSent(false);
+          setSendingOtp(false);
           setErrorMsg('Something went wrong, please try again');
         });
     })
@@ -68,7 +72,7 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
   return (
     <div className='flex items-center justify-center flex-col py-8'>
       {
-        !otp
+        !otpSent
           ? <p className="py-2 text-center">To claim this profile, a verification code will be sent to this mobile number
             <span className=" bold text-2xl mx-3">
               {mobileNumber.replace(/\d(?=\d{4})/g, "*")}
@@ -80,19 +84,18 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
             </span>
           </p>
       }
+
       <p className="py-6">
         {
-          !otp
-          && <button className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150' type="button"
-            onClick={sendOtpNow}
-          >
-            Send Verification Code
-          </button>
+          !otpSent
+          &&
+          <SaveButton onClick={sendOtpNow} saving={sendingOtp}
+            type="button">Send Verification Code</SaveButton>
         }
       </p>
 
       {
-        otp
+        otpSent
         &&
         <div className='flex items-center justify-center py-8 space-x-2'>
           <input
