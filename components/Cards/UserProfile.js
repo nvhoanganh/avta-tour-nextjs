@@ -1,11 +1,11 @@
 import React from "react";
 import Link from 'next/link'
 import PostTitle from '../../components/post-title';
-import Spinner from '../../components/spinner';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
+import Spinner from '../../components/spinner';
 import {
   getPlayerById,
 } from '../../lib/browserapi';
@@ -74,7 +74,7 @@ export default function UserProfile() {
       <ToastContainer />
       {
         loadingAuth || !userProfile
-          ? <div className="text-center text-xl py-24">Fetching information. Please wait...</div> :
+          ? <div className="text-center py-24"><Spinner size="lg" color="blue" /> Fetching information...</div> :
           <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} />
       }
     </>

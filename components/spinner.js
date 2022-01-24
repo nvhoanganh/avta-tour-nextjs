@@ -7,8 +7,8 @@ export default function Spinner({ color, size }) {
         'bg-blue-600': color === 'blue',
       })}
       style={{
-        width: size === 'sm' ? 16 : 26,
-        height: size === 'sm' ? 16 : 26,
+        width: size === 'sm' ? 16 : size === 'lg' ? 40 : 26,
+        height: size === 'sm' ? 16 : size === 'lg' ? 40 : 26,
       }}
     />
   )
