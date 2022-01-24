@@ -16,6 +16,7 @@ import Intro from '../../components/intro2';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import TournamentsTable from '../../components/Cards/TournamentsTable.js';
+import Spinner from '../../components/spinner';
 import {
 	signOut,
 	signInWithRedirect,
@@ -147,7 +148,7 @@ export default function Login() {
 										<div className='text-center my-6'>
 											<h6 className='text-gray-500 text-lg font-bold'>
 												{loadingAuth
-													? 'Logging you in. Please wait..'
+													? <div className='text-center'><Spinner color="blue"></Spinner> Logging you in. Please wait..</div>
 													: 'Sign in with'}
 											</h6>
 										</div>

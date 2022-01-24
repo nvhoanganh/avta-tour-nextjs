@@ -1,4 +1,5 @@
 import { useFirebaseAuth } from './authhook';
+import SaveButton from './savebutton';
 import { useState } from 'react'
 
 export default function SendOtp({ mobileNumber, playerId, done }) {
@@ -92,7 +93,8 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
 
       {
         otp
-        && <div className='flex items-center justify-center py-8 space-x-2'>
+        &&
+        <div className='flex items-center justify-center py-8 space-x-2'>
           <input
             type="text"
             className="border-1 px-3 py-3 text-gray-600 bg-gray-100 rounded text-sm shadow-lg focus:outline-none focus:ring w-full border-red-900"
@@ -100,12 +102,9 @@ export default function SendOtp({ mobileNumber, playerId, done }) {
             length="6"
             value={otpValue} onChange={handleChange}
           />
-          <button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none disabled:bg-gray-200 mr-1 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150' type="button"
-            onClick={verifyOtpNow}
-            disabled={verifying}
-          >
-            {!verifying ? 'Verify' : 'Verifying...'}
-          </button>
+
+          <SaveButton onClick={verifyOtpNow} saving={verifying}
+            type="button">Verify</SaveButton>
         </div>
       }
 

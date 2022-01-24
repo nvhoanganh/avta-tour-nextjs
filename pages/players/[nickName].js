@@ -9,6 +9,7 @@ import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
+import Spinner from '../../components/spinner';
 import {
 	getAllPostsWithSlug,
 	getAllPlayers,
@@ -261,6 +262,11 @@ export default function Player({ player, preview }) {
 											<div className='flex flex-wrap justify-center'>
 												<div className='w-full lg:w-9/12 px-4'>
 													{
+														playerStatus === null &&
+														<div className='text-center'><Spinner color="blue"></Spinner> Loading...</div>
+													}
+
+													{
 														successfullyClaimed
 														&& <div className="text-center text-lg py-6 text-green-700">You have successfully claimed this player profile</div>
 													}
@@ -322,6 +328,9 @@ export default function Player({ player, preview }) {
 											showOtp
 											&& <SendOtp mobileNumber={player.mobileNumber} playerId={player?.sys?.id} done={profileClaimed}></SendOtp>
 										}
+
+
+
 									</div>
 								</div>
 							</div>

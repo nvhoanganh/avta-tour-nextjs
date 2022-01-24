@@ -1,6 +1,8 @@
 import React from "react";
 import Link from 'next/link'
 import PostTitle from '../../components/post-title';
+import Spinner from '../../components/spinner';
+import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
@@ -226,11 +228,8 @@ function UserForm({ onSubmit, userProfile, saving }) {
         <div className="flex flex-wrap pt-5">
           <div className="w-full lg:w-12/12 px-4">
             <div className="relative w-full mb-3 text-center">
-              <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150 disabled:bg-gray-200" type="submit"
-                disabled={saving}
-              >
-                {!saving ? 'Save Changes' : 'Saving...'}
-              </button>
+              <SaveButton saving={saving}
+                type="submit">Update Profile</SaveButton>
             </div>
           </div>
         </div>
