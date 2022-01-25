@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ErrorPage from 'next/error';
 import ContentfulImage from '../../components/contentful-image';
 import DateComponent from '../../components/date';
@@ -14,6 +14,7 @@ import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../lib/api';
+import { db } from '../../lib/firebase';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
@@ -22,14 +23,30 @@ import TeamsCard from '../../components/Cards/TeamsCard2.js';
 import MatchResultsCard from '../../components/Cards/MatchResultsCard';
 import GroupRankingsCard from '../../components/Cards/GroupRankingsCard';
 import TeamRankingTable from '../../components/Cards/TeamRankingTable';
+import { useFirebaseAuth } from '../../components/authhook';
+import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 
 export default function Competition({ competition, preview }) {
+	const { user, loadingAuth } = useFirebaseAuth();
 	const router = useRouter();
 	const [activeTab, setActiveTab] = useState(0);
+	const [userRoles, setUserRoles] = useState(null);
 
 	if (!router.isFallback && !competition) {
 		return <ErrorPage statusCode={404} />;
 	}
+
+	useEffect(async () => {
+		if (user) {
+			const docRef = doc(db, "user_roles", user.uid);
+			const docSnap = await getDoc(docRef);
+			if (docSnap.exists()) {
+				setUserRoles(docSnap.data());
+			}
+		} else {
+			setUserRoles(null)
+		}
+	}, [user]);
 
 	const hasResults = competition?.matchResults?.length > 0;
 	const teamJoined = competition?.teams?.length || 0;
@@ -137,7 +154,7 @@ export default function Competition({ competition, preview }) {
 																: <span className='text-gray-500'>Tournament Completed</span>
 														}
 														{
-															competition.active
+															competition.active && userRoles?.superuser
 															&& <a
 																href={
 																	competition.googleForm
@@ -158,7 +175,7 @@ export default function Competition({ competition, preview }) {
 																{teamJoined}
 															</span>
 															<span className='text-sm text-gray-400'>
-																Teams
+																Teams Applied
 															</span>
 														</div>
 														<div className='mr-4 p-3 text-center'>
@@ -174,15 +191,6 @@ export default function Competition({ competition, preview }) {
 															</span>
 															<span className='text-sm text-gray-400'>
 																Avg Point
-															</span>
-														</div>
-														<div className='lg:mr-4 p-3 text-center'>
-															<span className='text-xl font-bold block uppercase tracking-wide text-red-600'>
-																{16 -
-																	teamJoined}
-															</span>
-															<span className='text-sm text-gray-400'>
-																Spots
 															</span>
 														</div>
 													</div>
