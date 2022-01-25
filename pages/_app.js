@@ -18,12 +18,7 @@ function MyApp({ Component, pageProps }) {
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css"></link>
 
       <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF25F4604L"></script>
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-KF25F4604L');
+      <script type="text/javascript" src="/ga.js">
       </script>
 
     </Head>
