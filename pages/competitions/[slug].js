@@ -31,6 +31,7 @@ export default function Competition({ competition, preview }) {
 		return <ErrorPage statusCode={404} />;
 	}
 
+	const hasResults = competition?.matchResults?.length > 0;
 	const teamJoined = competition?.teams?.length || 0;
 
 	const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
@@ -212,105 +213,121 @@ export default function Competition({ competition, preview }) {
 													)}
 												</div>
 
-												<div className='border-b-2 border-gray-300 mt-10'>
-													<ul className='flex cursor-pointer justify-around'>
-														<li className={cn(
-															'py-2 px-8 flex-grow text-center rounded-t-lg',
-															{
-																'bg-gray-200':
-																	activeTab === 0
-															}
-														)}
-															onClick={(e) => setActiveTab(0)}
-														>Groups</li>
-														<li className={cn(
-															'py-2 px-8 flex-grow text-center rounded-t-lg',
-															{
-																'bg-gray-200':
-																	activeTab === 1
-															}
-														)}
-															onClick={(e) => setActiveTab(1)}
-														>Results</li>
-														<li className={cn(
-															'py-2 px-8 flex-grow text-center rounded-t-lg',
-															{
-																'bg-gray-200':
-																	activeTab === 2
-															}
-														)}
-															onClick={(e) => setActiveTab(2)}
-														>Teams</li>
-													</ul>
-												</div>
-
-												<div className="mx-auto mb-20">
-													{
-														activeTab === 0 &&
-														(
-															<>
-																{!competition.groupRanking || Object.keys(competition.groupRanking).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
-																	<section>
-																		<div>
-																			<div className='hidden container md:block'>
-																				<TeamRankingTable
-																					groups={
-																						competition.groupRanking
-																					}
-																				/>
-																			</div>
-																			<div className='md:hidden mt-4 '>
-																				<GroupRankingsCard
-																					groups={competition.groupRanking}
-																				/>
-																			</div>
-																		</div>
-																	</section>
+												{hasResults ? <>
+													{/* tabs */}
+													<div className='border-b-2 border-gray-300 mt-10'>
+														<ul className='flex cursor-pointer justify-around'>
+															<li className={cn(
+																'py-2 px-8 flex-grow text-center rounded-t-lg',
+																{
+																	'bg-gray-200':
+																		activeTab === 0
 																}
-															</>)
-													}
+															)}
+																onClick={(e) => setActiveTab(0)}
+															>Groups</li>
+															<li className={cn(
+																'py-2 px-8 flex-grow text-center rounded-t-lg',
+																{
+																	'bg-gray-200':
+																		activeTab === 1
+																}
+															)}
+																onClick={(e) => setActiveTab(1)}
+															>Results</li>
+															<li className={cn(
+																'py-2 px-8 flex-grow text-center rounded-t-lg',
+																{
+																	'bg-gray-200':
+																		activeTab === 2
+																}
+															)}
+																onClick={(e) => setActiveTab(2)}
+															>Teams</li>
+														</ul>
+													</div>
 
-													{
-														activeTab === 1
-														&& (
-															<>
-																{!competition.matchResults?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
-																	<section>
-																		<div>
-																			<div className='hidden container md:block'>
-																				<MatchResultsTable
-																					results={
-																						competition.matchResults
+													{/* tabs content */}
+													<div className="mx-auto mb-20">
+														{
+															activeTab === 0 &&
+															(
+																<>
+																	{!competition.groupRanking || Object.keys(competition.groupRanking).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
+																		<section>
+																			<div>
+																				<div className='hidden container md:block'>
+																					<TeamRankingTable
+																						groups={
+																							competition.groupRanking
+																						}
+																					/>
+																				</div>
+																				<div className='md:hidden mt-4 '>
+																					<GroupRankingsCard
+																						groups={competition.groupRanking}
+																					/>
+																				</div>
+																			</div>
+																		</section>
+																	}
+																</>)
+														}
+
+														{
+															activeTab === 1
+															&& (
+																<>
+																	{!competition.matchResults?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
+																		<section>
+																			<div>
+																				<div className='hidden container md:block'>
+																					<MatchResultsTable
+																						results={
+																							competition.matchResults
+																						}
+																					/>
+																				</div>
+																				<div className='md:hidden mt-4 '>
+																					<MatchResultsCard
+																						results={competition.matchResults}
+																					/>
+																				</div>
+																			</div>
+																		</section>}
+																</>)
+														}
+
+														{
+															activeTab === 2
+															&& (
+																<>
+																	{!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
+																		<section>
+																			<div className='mt-10 '>
+																				<TeamsCard
+																					teams={
+																						competition.teams
 																					}
 																				/>
 																			</div>
-																			<div className='md:hidden mt-4 '>
-																				<MatchResultsCard
-																					results={competition.matchResults}
-																				/>
-																			</div>
-																		</div>
-																	</section>}
-															</>)
-													}
-
-													{
-														activeTab === 2
-														&& (
-															<>
-																{!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
-																	<section>
-																		<div className='mt-10 '>
-																			<TeamsCard
-																				teams={
-																					competition.teams
-																				}
-																			/>
-																		</div>
-																	</section>}
-															</>)
-													}
-												</div>
+																		</section>}
+																</>)
+														}
+													</div></> :
+													<>
+														{competition.teams?.length &&
+															<section>
+																<div className="text-3xl pt-6">Registered Teams</div>
+																<div className='mt-10'>
+																	<TeamsCard
+																		teams={
+																			competition.teams
+																		}
+																	/>
+																</div>
+															</section>}
+													</>}
 											</div>
 										</div>
 									</div>

@@ -91,7 +91,7 @@ export default function MatchResultsTable({ color, results }) {
 												}
 											>
 
-												<Link href={`/players/${result.winners.player1.sys.id}`}>
+												<Link href={`/players/${result.winners.player1?.sys?.id}`}>
 													<a className="hover:underline">{result.winners.player1.fullName}</a>
 												</Link>
 
@@ -100,7 +100,7 @@ export default function MatchResultsTable({ color, results }) {
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${result.winners.player2.sys.id}`}>
+												<Link href={`/players/${result.winners.player2?.sys?.id}`}>
 													<a className="hover:underline">{result.winners.player2.fullName}</a>
 												</Link>
 
@@ -140,7 +140,7 @@ export default function MatchResultsTable({ color, results }) {
 												}
 											>
 
-												<Link href={`/players/${result.losers.player1.sys.id}`}>
+												<Link href={`/players/${result.losers.player1?.sys?.id}`}>
 													<a className="hover:underline">{result.losers.player1.fullName}</a>
 												</Link>
 
@@ -149,7 +149,7 @@ export default function MatchResultsTable({ color, results }) {
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${result.losers.player2.sys.id}`}>
+												<Link href={`/players/${result.losers.player2?.sys?.id}`}>
 													<a className="hover:underline">{result.losers.player2.fullName}</a>
 												</Link>
 
