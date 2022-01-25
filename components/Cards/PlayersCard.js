@@ -4,53 +4,16 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 import DropDown from '../dropdown';
+import { getPlayers } from '../../lib/browserapi';
 
 export default function PlayersCard({ allPlayers }) {
 	const [sortBy, setSortBy] = useState('Point');
 	const [filter, setFilter] = useState(null);
 
-	const getDiff = (a, b) => {
-		var nameA = a?.toUpperCase();
-		var nameB = b?.toUpperCase();
-		if (nameA < nameB) {
-			return -1;
-		}
-		if (nameA > nameB) {
-			return 1;
-		}
-		return 0;
-	}
-
-	const getPlayers = () => {
-		const sorted = allPlayers.sort((a, b) => {
-			if (sortBy === 'Point') {
-				return b.avtaPoint > a.avtaPoint ? 1 : -1;
-			}
-			if (sortBy === 'Club') {
-				return getDiff(a.homeClub, b.homeClub);
-			}
-
-			if (sortBy === 'Name') {
-				return getDiff(a.fullName, b.fullName);
-			}
-		});
-
-		if (filter?.trim()) {
-			return sorted.filter(x =>
-				x.fullName.toLowerCase().startsWith(filter) ||
-				x.nickName.toLowerCase().startsWith(filter) ||
-				x.homeClub?.toLowerCase().startsWith(filter) ||
-				x.avtaPoint?.toString().startsWith(filter)
-			);
-		}
-
-		return sorted;
-	}
-
 	return (
 		<>
 			<div className='sticky py-3 rounded-lg shadow-lg opacity-95 bg-gray-300 flex space-x-1 justify-center items-center'>
-				<input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
+				<input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-60 ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
 					value={filter} onChange={(e) => { setFilter(e.target.value) }}
 				/>
 				<DropDown buttonText={
@@ -71,7 +34,7 @@ export default function PlayersCard({ allPlayers }) {
 				<div className='container mx-auto px-4'>
 					<div className='flex flex-wrap justify-center'>
 						<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
-							{getPlayers().map(x => <div key={x.nickName} className='px-6 text-center'>
+							{getPlayers(allPlayers, sortBy, filter).map(x => <div key={x.nickName} className='px-6 text-center'>
 								<Link href={`/players/${x.sys.id}`}>
 									<div className='mx-auto max-w-120-px cursor-pointer'>
 										<ContentfulImage

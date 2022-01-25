@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
+import { getPlayers } from '../../lib/browserapi';
 
 export default function PlayersTable({ color, players }) {
+	const [sortBy, setSortBy] = useState('Point');
+	const [filter, setFilter] = useState(null);
+
 	return (
 		<>
 			<div
@@ -22,46 +26,61 @@ export default function PlayersTable({ color, players }) {
 							<tr>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:cursor-pointer hover:underline ' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
+									onClick={() => setSortBy('Name')}
 								>
 									Name (Nickname)
+									{sortBy === 'Name' && <i class="fas fa-sort text-blue-600 ml-1"></i>}
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
+									onClick={() => setSortBy('Point')}
 								>
 									AVTA Point
+									{sortBy === 'Point' && <i class="fas fa-sort text-blue-600 ml-1"></i>}
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										(color === 'light'
+											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
+									}
+									onClick={() => setSortBy('Club')}
+								>
+									Club
+									{sortBy === 'Club' && <i class="fas fa-sort text-blue-600 ml-1"></i>}
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left ' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Club
+									<div className='text-right'>
+										Search
+										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150"
+											placeholder="Search Name, Club or Point"
+											value={filter} onChange={(e) => { setFilter(e.target.value) }}
+										/>
+									</div>
+
 								</th>
-								<th
-									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
-										(color === 'light'
-											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
-									}
-								></th>
 							</tr>
 						</thead>
 						<tbody>
-							{players.map((player) => (
+							{getPlayers(players, sortBy, filter).map((player) => (
 								<tr key={player.nickName}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div
