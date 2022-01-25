@@ -304,12 +304,18 @@ export default function Player({ player, preview }) {
 																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
 																		Contact Me at:
 																	</p>
-																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
-																		<i class="fas fa-mobile-alt mx-2 text-green-600"></i> <a className="text-lg text-gray-800">{player.mobileNumber}</a>
-																	</p>
-																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
-																		<i class="fas fa-envelope text-green-600"></i> <a className="text-lg text-gray-800">{player.email}</a>
-																	</p>
+
+																	{player.mobileNumber &&
+																		<p className="mb-4 text-lg leading-relaxed text-gray-700">
+																			<i class="fas fa-mobile-alt mx-2 text-green-600"></i> <a className="text-lg text-gray-800">{player.mobileNumber}</a>
+																		</p>
+																	}
+
+																	{player.email &&
+																		<p className="mb-4 text-lg leading-relaxed text-gray-700">
+																			<i class="fas fa-envelope text-green-600"></i> <a className="text-lg text-gray-800">{player.email}</a>
+																		</p>
+																	}
 																</div>
 															</div>
 														</div>}
