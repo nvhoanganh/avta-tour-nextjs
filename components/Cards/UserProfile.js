@@ -198,7 +198,12 @@ function UserForm({ onSubmit, userProfile, saving }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Email
               </label>
-              <input type="text" {...register("email")} readOnly className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-gray-100 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
+              <input type="email"
+                {...register("email", {
+                  pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                  required: true
+                })}
+                className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
             </div>
           </div>
           <div className="w-full lg:w-12/12 px-4 py-3">
