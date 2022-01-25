@@ -10,10 +10,22 @@ function MyApp({ Component, pageProps }) {
       <title>
         AVTA - Australia Vietnamese Tennis Association
       </title>
+
       <script type="text/javascript" src="/newrelic.js">
       </script>
+
       <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css"></link>
+
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZZC2EL62L"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-TZZC2EL62L');
+      </script>
+
     </Head>
     <Component {...pageProps} />
   </>
