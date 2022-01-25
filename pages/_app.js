@@ -17,13 +17,13 @@ function MyApp({ Component, pageProps }) {
       <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css"></link>
 
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZZC2EL62L"></script>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-KF25F4604L"></script>
       <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
 
-        gtag('config', 'G-TZZC2EL62L');
+        gtag('config', 'G-KF25F4604L');
       </script>
 
     </Head>
