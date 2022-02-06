@@ -20,7 +20,7 @@ export default function TeamsCard({ color, teams }) {
 						player2: t.players[1],
 					};
 
-					return (<div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
+					return (<div key={t.name} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
 						<div className="flex-auto p-4">
 							<div className="flex flex-wrap ">
 								<div className="relative w-full pr-4 max-w-full flex-grow flex-1">
