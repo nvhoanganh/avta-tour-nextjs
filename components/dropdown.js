@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import cn from 'classnames';
 
-export default function DropDown({ buttonText, items }) {
+export default function DropDown({ buttonText, items, align }) {
   const [show, setShow] = useState(false);
   const toggleShow = () => setShow(!show);
 
@@ -18,7 +19,12 @@ export default function DropDown({ buttonText, items }) {
       </div>
 
       {show &&
-        <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" ariaOrientation="vertical" ariaLabelledby="menu-button" tabindex="-1">
+        <div
+          className={cn('origin-top-right absolute  mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10', {
+            'left-0': align === 'left',
+            'right-0': align === 'right' || !align,
+          })}
+          role="menu" ariaOrientation="vertical" ariaLabelledby="menu-button" tabindex="-1">
           <div className="py-1" role="none">
             {items.map((item, index) => (<div onClick={() => {
               setShow(false);

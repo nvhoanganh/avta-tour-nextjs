@@ -115,7 +115,7 @@ export default function SubmitScore({ competition, preview }) {
                     <div className='py-6 px-3 mt-32 sm:mt-0 w-full text-center md:text-right'>
                       <a
                         className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none 
-                            focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                            focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer'
                         onClick={goback}
                       >
                         Go Back
