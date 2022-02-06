@@ -2,7 +2,7 @@ import React from "react";
 import { format } from 'date-fns'
 import Link from 'next/link'
 import PostTitle from '../../components/post-title';
-import TeamAvatar from '../../components/TeamAvatar';
+import TeamAvatar from '../../components/TeamAvatarNoLink';
 import cn from 'classnames';
 import DropDown from '../../components/dropdown';
 import SaveButton from '../../components/savebutton';
@@ -290,7 +290,7 @@ function TeamCard({ team, onSelect }) {
           </div>
         </div>
         <div className="relative w-auto pl-4 flex-initial flex">
-          <TeamAvatar team={players} />
+          <TeamAvatar team={players} disableLink />
         </div>
       </div>
     </div>
