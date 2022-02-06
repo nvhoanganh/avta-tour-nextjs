@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import cn from 'classnames';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
@@ -155,15 +156,13 @@ export default function Competition({ competition, preview }) {
                             }
                             {
                               competition.active && userRoles?.superuser
-                              && <a
-                                href={
-                                  competition.googleForm
-                                }
-                                target='_blank'
+                              &&
+                              <Link href={`/competitions/${competition.slug}/submitscore`}><a
                                 className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                               >
                                 Submit Score
                               </a>
+                              </Link>
                             }
                           </div>
                         </div>
