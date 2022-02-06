@@ -14,7 +14,7 @@ import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
 import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import ProfileSettings from '../../../components/Cards/UserProfile';
+import SubmitScoreForm from '../../../components/Cards/SubmitScore';
 import SendOtp from '../../../components/sendotp';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
@@ -132,9 +132,7 @@ export default function SubmitScore({ competition, preview }) {
                     loadingAuth
                       ?
                       <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                      <>
-                        Form goes here
-                      </>
+                      <SubmitScoreForm competition={competition}></SubmitScoreForm>
                   }
                 </div>
               </div>
