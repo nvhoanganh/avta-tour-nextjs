@@ -12,23 +12,49 @@ import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
 import {
   getPlayerById,
+  score
 } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
+import { query, collection, doc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function UserProfile({ competition }) {
+export default function SubmitScore({ competition }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
   const onSubmit = async data => {
     setSaving(true)
-    console.log('saving now', data);
     toast("Result submitted!");
-    // router.push(`/competitions/${competition.slug}`);
+
+    data = {
+      competitionId: competition?.sys?.id,
+      compDate: competition?.date,
+      maxPoint: competition?.maxPoint,
+      slug: competition?.slug,
+      title: competition?.title,
+      type: competition?.type,
+      active: competition?.active,
+      timestamp: (new Date()),
+
+      stage: data.stage,
+      gameWonByLoser: data.gameWonByLoser,
+      stage: data.stage,
+      knockoutRound: data.knockoutRound || '',
+      group: data.group || '',
+      losers: data.selectedLoser,
+      winners: data.selectedWinner,
+      loser1: data.selectedLoser.players[0].sys.id,
+      loser2: data.selectedLoser.players[1].sys.id,
+      winner1: data.selectedWinner.players[0].sys.id,
+      winner2: data.selectedWinner.players[1].sys.id,
+    };
+
+    console.log('saving now', data);
+    const docRef = await addDoc(collection(db, "competition_results"), data);
+
     setSaving(false)
   };
 
@@ -45,9 +71,6 @@ export default function UserProfile({ competition }) {
     </>
   );
 }
-
-const GROUP_STAGE = 'Group Stage'
-const KNOCKOUT_STAGE = 'Knockout Stage'
 
 function SubmitScoreForm({ onSubmit, competition, saving }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
@@ -68,8 +91,8 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
       && !!stage
       &&
       (
-        (stage === GROUP_STAGE && !!group) ||
-        (stage === KNOCKOUT_STAGE && !!knockoutRound)
+        (stage === score.GROUP_STAGE && !!group) ||
+        (stage === score.KNOCKOUT_STAGE && !!knockoutRound)
       )
   }
 
@@ -181,13 +204,13 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
                     <span className="px-3">{stage || 'Select..'}</span>
                   }
                     items={[
-                      <a onClick={() => setValue('stage', GROUP_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Group Stage</a>,
-                      <a onClick={() => setValue('stage', KNOCKOUT_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Knockout Stage</a>,
+                      <a onClick={() => setValue('stage', score.GROUP_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Group Stage</a>,
+                      <a onClick={() => setValue('stage', score.KNOCKOUT_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Knockout Stage</a>,
                     ]}
                   >
                   </DropDown>
 
-                  {stage && stage === GROUP_STAGE &&
+                  {stage && stage === score.GROUP_STAGE &&
                     <DropDown align='left' buttonText={
                       <span className="px-3">{group ? 'Group: ' + group : 'Select group'}</span>
                     }
@@ -204,7 +227,7 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
                     >
                     </DropDown>}
 
-                  {stage && stage === KNOCKOUT_STAGE &&
+                  {stage && stage === score.KNOCKOUT_STAGE &&
                     <DropDown align='left' buttonText={
                       <span className="px-3">{knockoutRound ? 'Round: ' + knockoutRound : 'Select round'}</span>
                     }

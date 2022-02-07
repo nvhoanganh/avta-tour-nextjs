@@ -39,8 +39,7 @@ export default function Competition({ competition, preview }) {
 
   useEffect(async () => {
     if (user) {
-      const docRef = doc(db, "user_roles", user.uid);
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(doc(db, "user_roles", user.uid));
       if (docSnap.exists()) {
         setUserRoles(docSnap.data());
       }
