@@ -15,6 +15,7 @@ import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
+import { geCompResults } from '../../../lib/backendapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -357,6 +358,12 @@ export async function getStaticProps({ params, preview = false }) {
       matchResults
     };
   }
+
+  // const matchScores = await geCompResults(data.sys.id);
+  // data = {
+  //   ...data,
+  //   matchScores
+  // };
 
   if (data?.rankingSheet) {
     const groupRanking = await downloadTournamentRankingResults(data.rankingSheet);
