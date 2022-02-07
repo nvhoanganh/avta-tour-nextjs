@@ -21,9 +21,11 @@ export default function UserProfile() {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [userProfile, setUserProfile] = useState(null);
+  const [userRoles, setUserRoles] = useState(null);
 
   const onSubmit = async data => {
     setSaving(true)
+
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
     let updated = docSnap.exists() ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
@@ -52,8 +54,7 @@ export default function UserProfile() {
     }
 
     if (user) {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(doc(db, "users", user.uid));
       let formData = docSnap.exists() ? { ...user, ...docSnap.data() } : { ...user, allowContact: true };
       if (formData.playerId) {
         const contentfuldata = await getPlayerById(formData.playerId, false);
@@ -66,6 +67,13 @@ export default function UserProfile() {
       }
 
       setUserProfile(formData);
+
+      const roleSnap = await getDoc(doc(db, "user_roles", user.uid));
+      if (roleSnap.exists()) {
+        setUserRoles(roleSnap.data());
+      }
+    } else {
+      setUserRoles(null)
     }
   }, [user, loadingAuth]);
 
@@ -75,13 +83,13 @@ export default function UserProfile() {
       {
         loadingAuth || !userProfile
           ? <div className="text-center py-24"><Spinner size="lg" color="blue" /> Fetching information...</div> :
-          <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} />
+          <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} userRoles={userRoles} />
       }
     </>
   );
 }
 
-function UserForm({ onSubmit, userProfile, saving }) {
+function UserForm({ onSubmit, userProfile, saving, userRoles }) {
   const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
     allowContact, aboutMe, homeClub, nickName, avtaPoint } = userProfile;
@@ -97,7 +105,7 @@ function UserForm({ onSubmit, userProfile, saving }) {
     <div className="relative flex flex-col min-w-0 break-words w-full mb-6  border-0">
       <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
         <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
-          User Information
+          User Information {userRoles?.superuser && ' [Admin User]'}
         </h6>
         <div className="flex flex-wrap">
           <div className="w-full lg:w-6/12 px-4">
