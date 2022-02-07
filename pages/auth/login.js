@@ -38,7 +38,6 @@ export default function Login() {
 	const { loadingAuth } = useFirebaseAuth();
 	const router = useRouter();
 	const { reason } = router.query;
-	console.log('reason', reason);
 
 	const [loginError, setLoginError] = useState(null);
 

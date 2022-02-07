@@ -57,7 +57,6 @@ export default function Player({ player, preview }) {
 			if (!claimedPlayer) {
 				const docRef = doc(db, "users", user.uid);
 				const docSnap = await getDoc(docRef);
-				console.log('user', docSnap.data());
 
 				if (docSnap.exists() && docSnap.data().playerId) {
 					setPlayerStatus(UNCLAIMED_BUT_USER_ALREADY_CLAIMED);

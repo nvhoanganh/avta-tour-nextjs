@@ -40,7 +40,6 @@ export default function Competition({ competition, preview }) {
 
   useEffect(async () => {
     if (user) {
-      console.log('user id', user.uid);
       const docSnap = await getDoc(doc(db, "user_roles", user.uid));
       if (docSnap.exists()) {
         setUserRoles(docSnap.data());
@@ -359,11 +358,11 @@ export async function getStaticProps({ params, preview = false }) {
     };
   }
 
-  // const matchScores = await geCompResults(data.sys.id);
-  // data = {
-  //   ...data,
-  //   matchScores
-  // };
+  const matchScores = await geCompResults(data.sys.id);
+  data = {
+    ...data,
+    matchScores
+  };
 
   if (data?.rankingSheet) {
     const groupRanking = await downloadTournamentRankingResults(data.rankingSheet);

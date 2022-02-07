@@ -52,7 +52,6 @@ export default function SubmitScore({ competition }) {
       winner2: data.selectedWinner.players[1].sys.id,
     };
 
-    console.log('saving now', data);
     const docRef = await addDoc(collection(db, "competition_results"), data);
 
     setSaving(false)
