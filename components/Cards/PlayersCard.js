@@ -59,8 +59,13 @@ export default function PlayersCard({ allPlayers }) {
 											({x.nickName})
 										</p>
 									}
-									<p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
-										{x.avtaPoint}
+									<p
+										className={cn('mt-1 text-xl  uppercase font-semibold', {
+											'text-green-600': !x.unofficialPoint,
+											'text-red-600': x.unofficialPoint,
+										})}
+									>
+										{x.avtaPoint} {x.unofficialPoint ? '[Unoffical]' : ''}
 									</p>
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
 										{x.homeClub || 'Unknown Club'}

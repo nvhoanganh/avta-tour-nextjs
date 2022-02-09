@@ -117,8 +117,13 @@ export default function PlayersTable({ color, players }) {
 											</div>
 										</div>
 									</th>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{player.avtaPoint} pt.
+									<td
+										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4', {
+											'text-green-600': !player.unofficialPoint,
+											'text-red-600': player.unofficialPoint,
+										})}
+									>
+										{player.avtaPoint} pt. {player.unofficialPoint ? '[Unoffical]' : ''}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{player.homeClub || 'Unknown Club'}

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
 import ErrorPage from 'next/error';
@@ -243,8 +244,16 @@ export default function Player({ player, preview }) {
 												</>}
 
 											</div>
-											<div className='mb-20 text-green-600 mt-10 text-6xl font-bold'>
+											<div
+												className={cn('mb-20 mt-10 text-6xl font-bold', {
+													'text-green-600': !player.unofficialPoint,
+													'text-red-600': player.unofficialPoint,
+												})}
+											>
 												{player.avtaPoint} pt.
+												{
+													player.unofficialPoint && <div className='text-sm pt-3'>Unoffical</div>
+												}
 											</div>
 										</div>
 
