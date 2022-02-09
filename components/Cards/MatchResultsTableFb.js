@@ -105,9 +105,11 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												</Link>
 
 												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.players[1]?.avtaPoint} [{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
+
+
 											</div>
-											<div className='ml-3 text-sm text-gray-600'>
-												<span className='font-bold mr-3'>{result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}</span>
+											<div className='ml-3 text-sm text-gray-600 mr-3'>
+												{result.winners.players[0]?.homeClub}
 											</div>
 										</div>
 									</td>
@@ -153,7 +155,10 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 													<a className="hover:underline">{result.losers.players[1]?.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.players[1]?.avtaPoint} [{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.players[1]?.avtaPoint} [{result.losers.players[0]?.avtaPoint + result.losers.players[1]?.avtaPoint}]</span>
+											</div>
+											<div className='ml-3 text-sm text-gray-600 mr-3'>
+												{result.losers.players[0]?.homeClub}
 											</div>
 										</div>
 									</td>
@@ -165,6 +170,9 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												Delete
 											</span>
 										}
+										<div className=' text-gray-600 mr-3'>
+											{result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}
+										</div>
 									</td>
 								</tr>
 							))}
