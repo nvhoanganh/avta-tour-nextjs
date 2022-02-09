@@ -10,7 +10,7 @@ import DateComponent from '../../../components/date';
 import Container from '../../../components/container';
 import PostBody from '../../../components/post-body';
 import MoreStories from '../../../components/more-stories';
-import MatchResultsTable from '../../../components/Cards/MatchResultsTable';
+import MatchResultsTable from '../../../components/Cards/MatchResultsTableFb';
 import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
@@ -49,7 +49,7 @@ export default function Competition({ competition, preview }) {
     }
   }, [user]);
 
-  const hasResults = competition?.matchResults?.length > 0;
+  const hasResults = competition?.matchResults?.length > 0 || competition?.matchScores?.length > 0;
   const teamJoined = competition?.teams?.length || 0;
 
   const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
@@ -285,13 +285,13 @@ export default function Competition({ competition, preview }) {
                               activeTab === 1
                               && (
                                 <>
-                                  {!competition.matchResults?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
+                                  {!competition.matchScores?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
                                     <section>
                                       <div>
                                         <div className='hidden container md:block'>
                                           <MatchResultsTable
                                             results={
-                                              competition.matchResults
+                                              competition.matchScores
                                             }
                                           />
                                         </div>
