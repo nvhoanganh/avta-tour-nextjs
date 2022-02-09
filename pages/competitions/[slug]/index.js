@@ -23,7 +23,7 @@ import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../../components/Cards/TeamsCard2.js';
 import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
-import GroupRankingsCard from '../../../components/Cards/GroupRankingsCard';
+import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
@@ -234,7 +234,7 @@ export default function Competition({ competition, preview }) {
                                 }
                               )}
                                 onClick={(e) => setActiveTab(0)}
-                              >Groups</li>
+                              >Results</li>
                               <li className={cn(
                                 'py-2 px-8 flex-grow text-center rounded-t-lg',
                                 {
@@ -243,7 +243,7 @@ export default function Competition({ competition, preview }) {
                                 }
                               )}
                                 onClick={(e) => setActiveTab(1)}
-                              >Results</li>
+                              >Groups</li>
                               <li className={cn(
                                 'py-2 px-8 flex-grow text-center rounded-t-lg',
                                 {
@@ -259,7 +259,7 @@ export default function Competition({ competition, preview }) {
                           {/* tabs content */}
                           <div className="mx-auto mb-20">
                             {
-                              activeTab === 0 &&
+                              activeTab === 1 &&
                               (
                                 <>
                                   {!competition.groupResult || Object.keys(competition.groupResult).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
@@ -274,7 +274,7 @@ export default function Competition({ competition, preview }) {
                                         </div>
                                         <div className='md:hidden mt-4 '>
                                           <GroupRankingsCard
-                                            groups={competition.groupRanking}
+                                            groups={competition.groupResult}
                                           />
                                         </div>
                                       </div>
@@ -284,7 +284,7 @@ export default function Competition({ competition, preview }) {
                             }
 
                             {
-                              activeTab === 1
+                              activeTab === 0
                               && (
                                 <>
                                   {!competition.matchScores?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
@@ -366,16 +366,6 @@ export async function getStaticProps({ params, preview = false }) {
     matchScores,
     groupResult: getGroupStageStanding(matchScores)
   };
-
-
-  if (data?.rankingSheet) {
-    const groupRanking = await downloadTournamentRankingResults(data.rankingSheet);
-    data = {
-      ...data,
-      groupRanking
-    };
-  }
-
 
   return {
     props: {
