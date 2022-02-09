@@ -11,7 +11,7 @@ export default function GroupRankingsCard({ groups }) {
     <>
       <div className='flex flex-wrap'>
         <div className='w-full lg:w-6/12 xl:w-3/12'>
-          {(Object.keys(groups)).map((group) => (
+          {(Object.keys(groups)).sort().map((group) => (
             <div key={group}>
               <h2 className='text-xl pt-5 md:text-3xl font-bold tracking-tighter leading-tight mx-auto text-gray-500'>
                 Group {group}
