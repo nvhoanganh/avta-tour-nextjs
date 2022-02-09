@@ -320,7 +320,7 @@ export default function Competition({ competition, preview }) {
                               }
                             </div>
 
-                            <div className='prose text-lg mt-10'>
+                            <div className='prose text-lg my-10'>
                               {documentToReactComponents(
                                 competition.description
                                   .json
