@@ -105,9 +105,7 @@ export default function MatchResultsTable({ color, results }) {
 													<a className="hover:underline">{result.winners.players[1]?.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.players[1]?.avtaPoint}</span>
-
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.players[1]?.avtaPoint} [{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
 											</div>
 											<div className='ml-3 text-sm text-gray-600'>
 												<span className='font-bold mr-3'>{result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}</span>
@@ -156,9 +154,7 @@ export default function MatchResultsTable({ color, results }) {
 													<a className="hover:underline">{result.losers.players[1]?.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.players[1]?.avtaPoint}</span>
-
-												<span className='font-bold ml-2'>[{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.players[1]?.avtaPoint} [{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
 											</div>
 										</div>
 									</td>
