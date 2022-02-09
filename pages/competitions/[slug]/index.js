@@ -215,116 +215,128 @@ export default function Competition({ competition, preview }) {
                         <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
                           {competition.title}
                         </h3>
-                        <div className='prose text-lg mt-10'>
-                          {documentToReactComponents(
-                            competition.description
-                              .json
-                          )}
-                        </div>
 
-                        {hasResults ? <>
-                          {/* tabs */}
-                          <div className='border-b-2 border-gray-300 mt-10'>
-                            <ul className='flex cursor-pointer justify-around'>
-                              <li className={cn(
-                                'py-2 px-8 flex-grow text-center rounded-t-lg',
-                                {
-                                  'bg-gray-200':
-                                    activeTab === 0
-                                }
-                              )}
-                                onClick={(e) => setActiveTab(0)}
-                              >Results</li>
-                              <li className={cn(
-                                'py-2 px-8 flex-grow text-center rounded-t-lg',
-                                {
-                                  'bg-gray-200':
-                                    activeTab === 1
-                                }
-                              )}
-                                onClick={(e) => setActiveTab(1)}
-                              >Groups</li>
-                              <li className={cn(
-                                'py-2 px-8 flex-grow text-center rounded-t-lg',
-                                {
-                                  'bg-gray-200':
-                                    activeTab === 2
-                                }
-                              )}
-                                onClick={(e) => setActiveTab(2)}
-                              >Teams</li>
-                            </ul>
-                          </div>
-
-                          {/* tabs content */}
-                          <div className="mx-auto mb-20">
-                            {
-                              activeTab === 1 &&
-                              (
-                                <>
-                                  {!competition.groupResult || Object.keys(competition.groupResult).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
-                                    <section>
-                                      <div>
-                                        <div className='hidden container md:block'>
-                                          <TeamRankingTable
-                                            groups={
-                                              competition.groupResult
-                                            }
-                                          />
-                                        </div>
-                                        <div className='md:hidden mt-4 '>
-                                          <GroupRankingsCard
-                                            groups={competition.groupResult}
-                                          />
-                                        </div>
-                                      </div>
-                                    </section>
-                                  }
-                                </>)
-                            }
-
-                            {
-                              activeTab === 0
-                              && (
-                                <>
-                                  {!competition.matchScores?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
-                                    <section>
-                                      <div>
-                                        <div className='hidden container md:block'>
-                                          <MatchResultsTable
-                                            results={
-                                              competition.matchScores
-                                            }
-                                          />
-                                        </div>
-                                        <div className='md:hidden mt-4 '>
-                                          <MatchResultsCard
-                                            results={competition.matchScores}
-                                          />
-                                        </div>
-                                      </div>
-                                    </section>}
-                                </>)
-                            }
-
-                            {
-                              activeTab === 2
-                              && (
-                                <>
-                                  {!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
-                                    <section>
-                                      <div className='mt-10 '>
-                                        <TeamsCard
-                                          teams={
-                                            competition.teams
-                                          }
-                                        />
-                                      </div>
-                                    </section>}
-                                </>)
-                            }
-                          </div></> :
+                        {hasResults ?
                           <>
+                            {/* tabs */}
+                            <div className='border-b-2 border-gray-300 mt-10'>
+                              <ul className='flex cursor-pointer justify-around'>
+                                <li className={cn(
+                                  'py-2 px-8 flex-grow text-center rounded-t-lg',
+                                  {
+                                    'bg-gray-200':
+                                      activeTab === 0
+                                  }
+                                )}
+                                  onClick={(e) => setActiveTab(0)}
+                                >Results</li>
+                                <li className={cn(
+                                  'py-2 px-8 flex-grow text-center rounded-t-lg',
+                                  {
+                                    'bg-gray-200':
+                                      activeTab === 1
+                                  }
+                                )}
+                                  onClick={(e) => setActiveTab(1)}
+                                >Groups</li>
+                                <li className={cn(
+                                  'py-2 px-8 flex-grow text-center rounded-t-lg',
+                                  {
+                                    'bg-gray-200':
+                                      activeTab === 2
+                                  }
+                                )}
+                                  onClick={(e) => setActiveTab(2)}
+                                >Teams</li>
+                              </ul>
+                            </div>
+
+                            {/* tabs content */}
+                            <div className="mx-auto mb-20">
+                              {
+                                activeTab === 1 &&
+                                (
+                                  <>
+                                    {!competition.groupResult || Object.keys(competition.groupResult).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
+                                      <section>
+                                        <div>
+                                          <div className='hidden container md:block'>
+                                            <TeamRankingTable
+                                              groups={
+                                                competition.groupResult
+                                              }
+                                            />
+                                          </div>
+                                          <div className='md:hidden mt-4 '>
+                                            <GroupRankingsCard
+                                              groups={competition.groupResult}
+                                            />
+                                          </div>
+                                        </div>
+                                      </section>
+                                    }
+                                  </>)
+                              }
+
+                              {
+                                activeTab === 0
+                                && (
+                                  <>
+                                    {!competition.matchScores?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
+                                      <section>
+                                        <div>
+                                          <div className='hidden container md:block'>
+                                            <MatchResultsTable
+                                              results={
+                                                competition.matchScores
+                                              }
+                                            />
+                                          </div>
+                                          <div className='md:hidden mt-4 '>
+                                            <MatchResultsCard
+                                              results={competition.matchScores}
+                                            />
+                                          </div>
+                                        </div>
+                                      </section>}
+                                  </>)
+                              }
+
+                              {
+                                activeTab === 2
+                                && (
+                                  <>
+                                    {!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
+                                      <section>
+                                        <div className='mt-10 '>
+                                          <TeamsCard
+                                            teams={
+                                              competition.teams
+                                            }
+                                          />
+                                        </div>
+                                      </section>}
+                                  </>)
+                              }
+                            </div>
+
+                            <div className='prose text-lg mt-10'>
+                              {documentToReactComponents(
+                                competition.description
+                                  .json
+                              )}
+                            </div>
+
+                          </>
+                          :
+                          <>
+                            <div className='prose text-lg mt-10'>
+                              {documentToReactComponents(
+                                competition.description
+                                  .json
+                              )}
+                            </div>
+
                             {competition.teams?.length &&
                               <section>
                                 <div className="text-3xl pt-6">Registered Teams</div>
