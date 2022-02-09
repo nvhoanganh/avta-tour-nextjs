@@ -22,7 +22,7 @@ import Intro from '../../../components/intro';
 import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../../components/Cards/TeamsCard2.js';
-import MatchResultsCard from '../../../components/Cards/MatchResultsCard';
+import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCard';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTable';
 import { useFirebaseAuth } from '../../../components/authhook';
@@ -297,7 +297,7 @@ export default function Competition({ competition, preview }) {
                                         </div>
                                         <div className='md:hidden mt-4 '>
                                           <MatchResultsCard
-                                            results={competition.matchResults}
+                                            results={competition.matchScores}
                                           />
                                         </div>
                                       </div>
