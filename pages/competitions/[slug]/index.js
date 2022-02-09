@@ -14,7 +14,7 @@ import MatchResultsTable from '../../../components/Cards/MatchResultsTableFb';
 import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
+import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding } from '../../../lib/api';
 import { getCompResults } from '../../../lib/backendapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
@@ -33,6 +33,8 @@ export default function Competition({ competition, preview }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState(0);
   const [userRoles, setUserRoles] = useState(null);
+
+  console.log(competition.groupResult);
 
   if (!router.isFallback && !competition) {
     return <ErrorPage statusCode={404} />;
@@ -361,8 +363,10 @@ export async function getStaticProps({ params, preview = false }) {
   const matchScores = await getCompResults(data.sys.id);
   data = {
     ...data,
-    matchScores
+    matchScores,
+    groupResult: getGroupStageStanding(matchScores)
   };
+
 
   if (data?.rankingSheet) {
     const groupRanking = await downloadTournamentRankingResults(data.rankingSheet);
@@ -371,6 +375,7 @@ export async function getStaticProps({ params, preview = false }) {
       groupRanking
     };
   }
+
 
   return {
     props: {
