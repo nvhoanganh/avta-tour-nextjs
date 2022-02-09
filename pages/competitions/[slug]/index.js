@@ -24,7 +24,7 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../../components/Cards/TeamsCard2.js';
 import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCard';
-import TeamRankingTable from '../../../components/Cards/TeamRankingTable';
+import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 
@@ -262,13 +262,13 @@ export default function Competition({ competition, preview }) {
                               activeTab === 0 &&
                               (
                                 <>
-                                  {!competition.groupRanking || Object.keys(competition.groupRanking).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
+                                  {!competition.groupResult || Object.keys(competition.groupResult).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
                                     <section>
                                       <div>
                                         <div className='hidden container md:block'>
                                           <TeamRankingTable
                                             groups={
-                                              competition.groupRanking
+                                              competition.groupResult
                                             }
                                           />
                                         </div>
