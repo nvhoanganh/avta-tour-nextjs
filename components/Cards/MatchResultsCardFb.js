@@ -5,7 +5,7 @@ import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
 
-export default function MatchResultsCard({ results }) {
+export default function MatchResultsCard({ results, is_superuser, deleteMatch }) {
   return (
     <>
       <div className='flex flex-wrap'>
@@ -32,8 +32,15 @@ export default function MatchResultsCard({ results }) {
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
-                  <div className=' text-gray-600 text-lg align-center p-1 shadow px-4 border rounded border-gray-200'>
+                  <div className=' text-gray-600 text-lg align-center p-1 shadow px-4 border rounded border-gray-200'
+                    onClick={() => deleteMatch && deleteMatch(result)}
+                  >
                     6-{result.gameWonByLoser}
+                    {is_superuser &&
+                      <span className="ml-3 text-red-500 cursor-pointer">
+                        Delete
+                      </span>
+                    }
                   </div>
                 </div>
 

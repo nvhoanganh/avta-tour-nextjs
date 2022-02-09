@@ -26,7 +26,9 @@ import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import { useFirebaseAuth } from '../../../components/authhook';
-import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 
 export default function Competition({ competition, preview }) {
   const { user, loadingAuth } = useFirebaseAuth();
@@ -34,7 +36,18 @@ export default function Competition({ competition, preview }) {
   const [activeTab, setActiveTab] = useState(0);
   const [userRoles, setUserRoles] = useState(null);
 
-  console.log(competition.groupResult);
+  const deleteResult = async (record) => {
+    if (!userRoles?.superuser) return;
+
+    if (confirm('Are you sure you want to delete?')) {
+      try {
+        await deleteDoc(doc(db, "competition_results", record.id));
+        toast("Deleted!, You need to TWICE for the change to take effect!");
+      } catch (error) {
+        toast.error("Delete failed! Reload page and try again, this record might be already deleted");
+      }
+    }
+  }
 
   if (!router.isFallback && !competition) {
     return <ErrorPage statusCode={404} />;
@@ -51,7 +64,7 @@ export default function Competition({ competition, preview }) {
     }
   }, [user]);
 
-  const hasResults = competition?.matchResults?.length > 0 || competition?.matchScores?.length > 0;
+  const hasResults = competition?.matchScores?.length > 0;
   const teamJoined = competition?.teams?.length || 0;
 
   const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
@@ -64,6 +77,7 @@ export default function Competition({ competition, preview }) {
 
   return (
     <Layout preview={preview}>
+      <ToastContainer />
       <Navbar transparent />
 
       {router.isFallback ? (
@@ -287,6 +301,8 @@ export default function Competition({ competition, preview }) {
                                         <div>
                                           <div className='hidden container md:block'>
                                             <MatchResultsTable
+                                              is_superuser={userRoles?.superuser}
+                                              deleteMatch={deleteResult}
                                               results={
                                                 competition.matchScores
                                               }
@@ -294,6 +310,8 @@ export default function Competition({ competition, preview }) {
                                           </div>
                                           <div className='md:hidden mt-4 '>
                                             <MatchResultsCard
+                                              is_superuser={userRoles?.superuser}
+                                              deleteMatch={deleteResult}
                                               results={competition.matchScores}
                                             />
                                           </div>
@@ -364,13 +382,6 @@ export default function Competition({ competition, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
-  if (data?.resultSheets) {
-    const matchResults = await downloadTournamentResults(data.resultSheets);
-    data = {
-      ...data,
-      matchResults
-    };
-  }
 
   const matchScores = await getCompResults(data.sys.id);
   data = {

@@ -6,8 +6,7 @@ import ContentfulImage from '../contentful-image';
 import DateWithTimeComponent from '../dateWithTime';
 import Avatar from '../avatar';
 
-export default function MatchResultsTable({ color, results }) {
-	console.log(results);
+export default function MatchResultsTable({ color, results, is_superuser, deleteMatch }) {
 	return (
 		<>
 			<div
@@ -160,6 +159,12 @@ export default function MatchResultsTable({ color, results }) {
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateWithTimeComponent dateString={result.timestamp} />
+										{is_superuser &&
+											<span onClick={() => deleteMatch && deleteMatch(result)}
+												className="ml-3 text-red-500 cursor-pointer p-3 rounded border hover:bg-gray-200">
+												Delete
+											</span>
+										}
 									</td>
 								</tr>
 							))}
