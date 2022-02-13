@@ -20,7 +20,7 @@ export default function TeamRankingTable({ groups, color }) {
 			>
 				<div className='block w-full overflow-x-auto'>
 					{Object.keys(groups).sort().map((group, index) => (
-						<>
+						<div key={group}>
 							<div className='uppercase font-bold text-gray-500 py-3 px-3'>Group {group}:</div>
 							<table className='items-center w-full bg-transparent border-collapse'>
 								<thead>
@@ -137,7 +137,7 @@ export default function TeamRankingTable({ groups, color }) {
 									))}
 								</tbody>
 							</table>
-						</>
+						</div>
 					))}
 
 				</div>

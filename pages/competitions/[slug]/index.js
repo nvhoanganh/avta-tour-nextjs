@@ -35,6 +35,7 @@ import fileDownload from 'js-file-download';
 export default function Competition({ competition, preview }) {
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
+  const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
   const [userRoles, setUserRoles] = useState(null);
 
@@ -50,6 +51,7 @@ export default function Competition({ competition, preview }) {
       }
     }
   }
+
 
   const exportGroupMatches = () => {
     const output = getAllGroupMatches(competition.groupsAllocation)
@@ -97,6 +99,18 @@ export default function Competition({ competition, preview }) {
     teams && teams.scrollIntoView();
     setActiveTab(2);
   };
+
+  if (view) {
+    setTimeout(() => {
+      switch (view) {
+        case 'teams':
+          viewTeams();
+          break;
+        default:
+          break;
+      }
+    }, 100);
+  }
 
   const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
     return (
@@ -228,9 +242,9 @@ export default function Competition({ competition, preview }) {
                               <span className='text-xl font-bold block uppercase tracking-wide text-gray-600'>
                                 {teamJoined}
                               </span>
-                              <span className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewTeams}>
+                              <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewTeams}>
                                 View Teams
-                              </span>
+                              </a>
                             </div>
                             <div className='mr-4 p-3 text-center'>
                               <span className='text-xl font-bold block uppercase tracking-wide text-green-700'>
