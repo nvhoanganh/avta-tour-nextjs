@@ -15,7 +15,8 @@ import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding } from '../../../lib/api';
-import { getCompResults } from '../../../lib/backendapi';
+import { getCompResults, getCompGroupsAllocation } from '../../../lib/backendapi';
+import { getCompGroups } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -36,6 +37,8 @@ export default function Competition({ competition, preview }) {
   const [activeTab, setActiveTab] = useState(0);
   const [userRoles, setUserRoles] = useState(null);
 
+  console.log(competition?.groupsAllocation);
+
   const deleteResult = async (record) => {
     if (!userRoles?.superuser) return;
 
@@ -46,6 +49,18 @@ export default function Competition({ competition, preview }) {
       } catch (error) {
         toast.error("Delete failed! Reload page and try again, this record might be already deleted");
       }
+    }
+  }
+
+
+  const getCompetitionSchedule = async () => {
+    if (confirm('This will overwrite current groups allocation. Are you sure?')) {
+      const teamsInEachGroup = prompt('Enter number of teams per group (e.g. 4)');
+      const groups = getCompGroups(competition?.teams, parseInt(teamsInEachGroup));
+      await setDoc(doc(db, "competition_groups", competition.sys.id), groups);
+      alert('Groups created, please reload this page again in 15 seconds');
+
+      window.location.reload();
     }
   }
 
@@ -177,14 +192,22 @@ export default function Competition({ competition, preview }) {
                                 : <span className='text-gray-500'>Tournament Completed</span>
                             }
                             {
-                              competition.active && userRoles?.superuser
-                              &&
-                              <Link href={`/competitions/${competition.slug}/submitscore`}><a
-                                className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                              >
-                                Submit Score
-                              </a>
-                              </Link>
+                              competition.active && userRoles?.superuser && competition?.groupsAllocation
+                                ?
+                                <Link href={`/competitions/${competition.slug}/submitscore`}><a
+                                  className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                >
+                                  Submit Score
+                                </a>
+                                </Link>
+                                :
+                                competition?.teams?.length > 8 && !competition?.groupsAllocation && <button
+                                  className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                  onClick={getCompetitionSchedule}
+                                  type='button'
+                                >
+                                  Create Schedule
+                                </button>
                             }
                           </div>
                         </div>
@@ -228,6 +251,8 @@ export default function Competition({ competition, preview }) {
                               }
                             />
                           </a>
+
+
                         </div>
                       </div>
 
@@ -361,8 +386,8 @@ export default function Competition({ competition, preview }) {
                               )}
                             </div>
 
-                            {competition.teams?.length &&
-                              <section>
+                            {competition.teams?.length && !competition?.groupsAllocation &&
+                              < section >
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
                                 <div className='mt-10'>
                                   <TeamsCard
@@ -372,6 +397,26 @@ export default function Competition({ competition, preview }) {
                                   />
                                 </div>
                               </section>}
+
+                            {competition?.groupsAllocation &&
+                              <section>
+                                <div id="teams" className="text-3xl pt-6">Registered Teams</div>
+                                <div className="pt-5">
+                                  <div className='hidden container md:block'>
+                                    <TeamRankingTable
+                                      groups={
+                                        competition.groupsAllocation
+                                      }
+                                    />
+                                  </div>
+                                  <div className='md:hidden mt-4 '>
+                                    <GroupRankingsCard
+                                      groups={competition.groupsAllocation}
+                                    />
+                                  </div>
+                                </div>
+                              </section>
+                            }
                           </>}
                       </div>
                     </div>
@@ -381,8 +426,9 @@ export default function Competition({ competition, preview }) {
             </main>
           </main>
         </>
-      )}
-    </Layout>
+      )
+      }
+    </Layout >
   );
 }
 
@@ -394,6 +440,13 @@ export async function getStaticProps({ params, preview = false }) {
     ...data,
     matchScores,
     groupResult: getGroupStageStanding(matchScores)
+  };
+
+  const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
+  data = {
+    ...data,
+    matchScores,
+    groupsAllocation: groupsAllocation
   };
 
   return {
