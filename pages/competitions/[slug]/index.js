@@ -67,6 +67,12 @@ export default function Competition({ competition, preview }) {
   const hasResults = competition?.matchScores?.length > 0;
   const teamJoined = competition?.teams?.length || 0;
 
+  const viewTeams = () => {
+    const teams = document.getElementById("teams");
+    teams && teams.scrollIntoView();
+    setActiveTab(2);
+  };
+
   const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
     return (
       previousTotal +
@@ -189,8 +195,8 @@ export default function Competition({ competition, preview }) {
                               <span className='text-xl font-bold block uppercase tracking-wide text-gray-600'>
                                 {teamJoined}
                               </span>
-                              <span className='text-sm text-gray-400'>
-                                Teams Applied
+                              <span className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewTeams}>
+                                View Teams
                               </span>
                             </div>
                             <div className='mr-4 p-3 text-center'>
@@ -357,7 +363,7 @@ export default function Competition({ competition, preview }) {
 
                             {competition.teams?.length &&
                               <section>
-                                <div className="text-3xl pt-6">Registered Teams</div>
+                                <div id="teams" className="text-3xl pt-6">Registered Teams</div>
                                 <div className='mt-10'>
                                   <TeamsCard
                                     teams={
