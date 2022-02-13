@@ -54,14 +54,17 @@ export default function Competition({ competition, preview }) {
 
 
   const getCompetitionSchedule = async () => {
-    if (confirm('This will overwrite current groups allocation. Are you sure?')) {
-      const teamsInEachGroup = prompt('Enter number of teams per group (e.g. 4)');
-      const groups = getCompGroups(competition?.teams, parseInt(teamsInEachGroup));
-      await setDoc(doc(db, "competition_groups", competition.sys.id), groups);
-      alert('Groups created, please reload this page again in 15 seconds');
-
-      window.location.reload();
+    const teamsInEachGroup = prompt('Enter number of teams per group (e.g. 4)');
+    if (!teamsInEachGroup || parseInt(teamsInEachGroup) <= 1) {
+      alert('Please enter a number larger than 1');
+      return;
     }
+
+    const groups = getCompGroups(competition?.teams, parseInt(teamsInEachGroup));
+    await setDoc(doc(db, "competition_groups", competition.sys.id), groups);
+    alert('Groups created, please reload this page again in 15 seconds');
+
+    window.location.reload();
   }
 
   if (!router.isFallback && !competition) {
