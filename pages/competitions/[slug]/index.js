@@ -16,7 +16,7 @@ import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding } from '../../../lib/api';
 import { getCompResults, getCompGroupsAllocation } from '../../../lib/backendapi';
-import { getCompGroups } from '../../../lib/browserapi';
+import { getAllGroupMatches, exportGroupsAllocation, getCompGroups } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -37,8 +37,6 @@ export default function Competition({ competition, preview }) {
   const [activeTab, setActiveTab] = useState(0);
   const [userRoles, setUserRoles] = useState(null);
 
-  console.log(competition?.groupsAllocation);
-
   const deleteResult = async (record) => {
     if (!userRoles?.superuser) return;
 
@@ -52,6 +50,14 @@ export default function Competition({ competition, preview }) {
     }
   }
 
+  const exportGroupAllocation = () => {
+    console.log(competition.groupsAllocation);
+    const output = getAllGroupMatches(competition.groupsAllocation)
+    const txt = output.map(group => {
+      return `Group ${group.group}:\n${group.matches.join('\n')}`;
+    }).join('\n\n');;
+    alert(txt);
+  }
 
   const getCompetitionSchedule = async () => {
     const teamsInEachGroup = prompt('Enter number of teams per group (e.g. 4)');
@@ -255,7 +261,18 @@ export default function Competition({ competition, preview }) {
                             />
                           </a>
 
-
+                          {
+                            userRoles?.superuser && competition?.groupsAllocation
+                            &&
+                            <div className="py-4"><button
+                              className='d-block bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                              onClick={exportGroupAllocation}
+                              type='button'
+                            >
+                              Export Group Stage Matches
+                            </button>
+                            </div>
+                          }
                         </div>
                       </div>
 
