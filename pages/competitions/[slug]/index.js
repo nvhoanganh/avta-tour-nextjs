@@ -30,6 +30,7 @@ import { useFirebaseAuth } from '../../../components/authhook';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
+import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
   const { user, loadingAuth } = useFirebaseAuth();
@@ -50,16 +51,16 @@ export default function Competition({ competition, preview }) {
     }
   }
 
-  const exportGroupAllocation = () => {
-    console.log(competition.groupsAllocation);
+  const exportGroupMatches = () => {
     const output = getAllGroupMatches(competition.groupsAllocation)
     const txt = output.map(group => {
       return `Group ${group.group}:\n${group.matches.join('\n')}`;
     }).join('\n\n');;
-    alert(txt);
+
+    fileDownload(txt, `${competition.slug} - matches.txt`);
   }
 
-  const getCompetitionSchedule = async () => {
+  const allocateTeamsToGroups = async () => {
     const teamsInEachGroup = prompt('Enter number of teams per group (e.g. 4)');
     if (!teamsInEachGroup || parseInt(teamsInEachGroup) <= 1) {
       alert('Please enter a number larger than 1');
@@ -212,7 +213,7 @@ export default function Competition({ competition, preview }) {
                                 :
                                 competition?.teams?.length > 8 && !competition?.groupsAllocation && <button
                                   className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                                  onClick={getCompetitionSchedule}
+                                  onClick={allocateTeamsToGroups}
                                   type='button'
                                 >
                                   Create Schedule
@@ -260,19 +261,6 @@ export default function Competition({ competition, preview }) {
                               }
                             />
                           </a>
-
-                          {
-                            userRoles?.superuser && competition?.groupsAllocation
-                            &&
-                            <div className="py-4"><button
-                              className='d-block bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                              onClick={exportGroupAllocation}
-                              type='button'
-                            >
-                              Export Group Stage Matches
-                            </button>
-                            </div>
-                          }
                         </div>
                       </div>
 
@@ -421,6 +409,12 @@ export default function Competition({ competition, preview }) {
                             {competition?.groupsAllocation &&
                               <section>
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
+                                <div className="py-2"><a
+                                  onClick={exportGroupMatches}
+                                  className="text-sm underline hover:cursor-pointer">
+                                  Matches Schedule
+                                </a>
+                                </div>
                                 <div className="pt-5">
                                   <div className='hidden container md:block'>
                                     <TeamRankingTable
