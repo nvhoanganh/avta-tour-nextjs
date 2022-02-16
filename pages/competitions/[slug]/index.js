@@ -314,7 +314,7 @@ export default function Competition({ competition, preview }) {
                                   }
                                 )}
                                   onClick={(e) => setActiveTab(2)}
-                                >Teams</li>
+                                >Schedule</li>
                               </ul>
                             </div>
 
