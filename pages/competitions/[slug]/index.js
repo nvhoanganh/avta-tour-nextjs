@@ -253,7 +253,7 @@ export default function Competition({ competition, preview }) {
                                     totalPoints /
                                     teamJoined
                                   ).toFixed(
-                                    1
+                                    0
                                   )
                                   : '-'}
                               </span>
