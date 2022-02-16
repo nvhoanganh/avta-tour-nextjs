@@ -14,7 +14,11 @@ export default function TeamAvatar({ team }) {
             alt='...'
             className='w-10 hover:cursor-pointer hover:shadow-xl hover:border-gray-700 h-10 rounded-full border-2 border-gray-50 shadow'
           ></img>
-          <div className='text-green-600 text-xs text-center'>{team.player1.avtaPoint}</div>
+          <div
+            className={cn('text-green-600 text-xs text-center', {
+              'text-red-600': team.player1.unofficialPoint,
+            })}
+          >{team.player1.avtaPoint}</div>
         </div>
       </Link>
       <Link href={`/players/${team.player2.sys?.id}`}>
@@ -24,7 +28,9 @@ export default function TeamAvatar({ team }) {
             alt='...'
             className='w-10 hover:cursor-pointer hover:shadow-xl hover:border-gray-700 h-10 rounded-full border-2 border-gray-50 shadow'
           ></img>
-          <div className='text-green-600 text-xs text-center'>{team.player2.avtaPoint}</div>
+          <div className={cn('text-green-600 text-xs text-center', {
+            'text-red-600': team.player2.unofficialPoint,
+          })}>{team.player2.avtaPoint}</div>
         </div>
       </Link>
     </>
