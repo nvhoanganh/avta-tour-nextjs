@@ -112,7 +112,7 @@ export default function TeamRankingTable({ groups, color }) {
 															<a className="hover:underline">{team.players[1].fullName}</a>
 														</Link>
 
-														<PlayerPoint player={team.players[1]} className="ml-1"/>
+														<PlayerPoint player={team.players[1]} className="ml-1" />
 													</div>
 													<div className='ml-3 text-sm text-gray-600'>
 														{team.players[0].homeClub} - {team.players[0].avtaPoint + team.players[1].avtaPoint} pt.
@@ -120,18 +120,23 @@ export default function TeamRankingTable({ groups, color }) {
 												</div>
 											</td>
 											<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
-												<span className='text-green-600'>{team.win}</span>
-												&nbsp;/&nbsp;<span className='text-red-600'>{team.lost}</span>
+												{team.win + team.lost > 0 ?
+													<>
+														<span className='text-green-600'>{team.win}</span>
+														&nbsp;/&nbsp;<span className='text-red-600'>{team.lost}</span>
+													</> : '-'
+												}
 											</td>
 											<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
-												<span
-													className={cn({
-														'text-gray-600': Number(team.diff) === 0,
-														'text-green-600': Number(team.diff) > 0,
-														'text-red-600': Number(team.diff) < 0,
-													})}
-												>{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span>
-
+												{team.diff > -1000 &&
+													<span
+														className={cn({
+															'text-gray-600': Number(team.diff) === 0,
+															'text-green-600': Number(team.diff) > 0,
+															'text-red-600': Number(team.diff) < 0,
+														})}
+													>{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span>
+												}
 											</td>
 										</tr>
 									))}
