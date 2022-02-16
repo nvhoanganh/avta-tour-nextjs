@@ -379,12 +379,26 @@ export default function Competition({ competition, preview }) {
                                   <>
                                     {!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
                                       <section>
-                                        <div className='mt-10 '>
-                                          <TeamsCard
-                                            teams={
-                                              competition.teams
-                                            }
-                                          />
+                                        <div className='pt-5'>
+                                          <a
+                                            onClick={exportGroupMatches}
+                                            className="text-sm underline hover:cursor-pointer ">
+                                            Download Schedule
+                                          </a>
+                                        </div>
+                                        <div className='mt-5'>
+                                          <div className='hidden container md:block'>
+                                            <TeamRankingTable
+                                              groups={
+                                                competition.groupsAllocation
+                                              }
+                                            />
+                                          </div>
+                                          <div className='md:hidden mt-4 '>
+                                            <GroupRankingsCard
+                                              groups={competition.groupsAllocation}
+                                            />
+                                          </div>
                                         </div>
                                       </section>}
                                   </>)
@@ -426,7 +440,7 @@ export default function Competition({ competition, preview }) {
                                 <div className="py-2"><a
                                   onClick={exportGroupMatches}
                                   className="text-sm underline hover:cursor-pointer">
-                                  Matches Schedule
+                                  Download Schedule
                                 </a>
                                 </div>
                                 <div className="pt-5">
