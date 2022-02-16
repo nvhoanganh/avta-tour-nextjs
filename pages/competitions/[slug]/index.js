@@ -122,6 +122,41 @@ export default function Competition({ competition, preview }) {
     window.location.reload();
   }
 
+  const ConfigureSchedule = () => (
+    <>
+      {competition.schedule ?
+        <div className='text-center py-5'>
+          <div className='hidden md:block'>
+            <MatchScheduleGrid
+              schedule={competition.schedule}
+            />
+          </div>
+          <div className='md:hidden mt-4 '>
+            <MatchScheduleCard
+              schedule={competition.schedule}
+            />
+          </div>
+        </div> :
+        <section>
+          <div className='py-8 text-center'>
+            <button
+              tupe="button"
+              onClick={editMatchSchedule}
+              className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+              Configure Schedule
+            </button>
+          </div>
+          {
+            courtNames &&
+            <div className='mt-5'>
+              <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
+                saveSchedule={saveSchedule}
+              ></MatchScheduler>
+            </div>
+          }
+        </section>}
+    </>);
+
   if (view) {
     setTimeout(() => {
       switch (view) {
@@ -265,7 +300,7 @@ export default function Competition({ competition, preview }) {
                                 {teamJoined}
                               </span>
                               <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewTeams}>
-                                View Teams
+                                {competition.schedule ? "Match Schedule" : "View Teams"}
                               </a>
                             </div>
                             <div className='mr-4 p-3 text-center'>
@@ -398,43 +433,8 @@ export default function Competition({ competition, preview }) {
                               {
                                 activeTab === 2
                                 && (
-                                  <>
-                                    {competition.schedule ?
-                                      <div className='text-center py-5'>
-                                        <section>
-                                          <div>
-                                            <div className='hidden md:block'>
-                                              <MatchScheduleGrid
-                                                schedule={competition.schedule}
-                                              />
-                                            </div>
-                                            <div className='md:hidden mt-4 '>
-                                              <MatchScheduleCard
-                                                schedule={competition.schedule}
-                                              />
-                                            </div>
-                                          </div>
-                                        </section>
-                                      </div> :
-                                      <section>
-                                        <div className='py-8 text-center'>
-                                          <button
-                                            tupe="button"
-                                            onClick={editMatchSchedule}
-                                            className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
-                                            Configure Schedule2
-                                          </button>
-                                        </div>
-                                        {
-                                          courtNames &&
-                                          <div className='mt-5'>
-                                            <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
-                                              saveSchedule={saveSchedule}
-                                            ></MatchScheduler>
-                                          </div>
-                                        }
-                                      </section>}
-                                  </>)
+                                  <ConfigureSchedule></ConfigureSchedule>
+                                )
                               }
                             </div>
 
@@ -469,15 +469,12 @@ export default function Competition({ competition, preview }) {
 
                             {competition?.groupsAllocation &&
                               <section>
+                                {competition.schedule &&
+                                  <div id="teams" className="text-3xl pt-6">Match Schedule</div>
+                                }
+
+                                <ConfigureSchedule></ConfigureSchedule>
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
-                                <div className="py-5 text-center">
-                                  <button
-                                    tupe="button"
-                                    onClick={editMatchSchedule}
-                                    className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
-                                    Configure Schedule
-                                  </button>
-                                </div>
                                 {
                                   courtNames &&
                                   <div className='mt-5'>
