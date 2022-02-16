@@ -38,6 +38,7 @@ export default function Competition({ competition, preview }) {
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
+  const [courtNames, setCourtNames] = useState('');
   const [userRoles, setUserRoles] = useState(null);
 
   const deleteResult = async (record) => {
@@ -61,6 +62,15 @@ export default function Competition({ competition, preview }) {
     }).join('\n\n');;
 
     fileDownload(txt, `${competition.slug} - matches.txt`);
+  }
+
+  const editMatchSchedule = () => {
+    const courts = prompt('Enter courts available, separated by comma. E.g. 1,2,3,4,5 or 2,4,7,8');
+    if (!courts) {
+      alert('Invalid courts! Enter courts available, separated by comma. E.g. 1,2,3,4,5 or 2,4,7,8');
+      return;
+    }
+    setCourtNames(courts);
   }
 
   const allocateTeamsToGroups = async () => {
@@ -382,13 +392,13 @@ export default function Competition({ competition, preview }) {
                                       <section>
                                         <div className='pt-5'>
                                           <a
-                                            onClick={exportGroupMatches}
+                                            onClick={editMatchSchedule}
                                             className="text-sm underline hover:cursor-pointer ">
                                             Download Schedule
                                           </a>
                                         </div>
                                         <div className='mt-5'>
-                                          <MatchScheduler groupsAllocation={competition.groupsAllocation}></MatchScheduler>
+                                          <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}></MatchScheduler>
                                         </div>
                                       </section>}
                                   </>)

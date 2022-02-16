@@ -16,12 +16,12 @@ function Widget({ widget, index }) {
   return (
     <Draggable draggableId={widget.id} index={index}>
       {provided => (
-        <div className="border border-solid border-grey-100"
+        <div className="border border-solid border-grey-100 p-2"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {widget.id}
+          {widget.group} : {widget.between[0].name} vs {widget.between[1].name}
         </div>
       )}
     </Draggable>
@@ -39,7 +39,7 @@ function Column({ droppableId, widgets }) {
   return (
     <Droppable droppableId={droppableId}>
       {provided => (
-        <div className="w-64 border border-solid border-gray-300 rounded shadow-md" ref={provided.innerRef} {...provided.droppableProps}>
+        <div className="w-64 border border-solid border-gray-300 rounded shadow-md flex flex-col space-y-2 p-2" ref={provided.innerRef} {...provided.droppableProps}>
           <WidgetList widgets={widgets} />
           {provided.placeholder}
         </div>
@@ -48,13 +48,13 @@ function Column({ droppableId, widgets }) {
   );
 }
 
-export default function DashboardApp({ groupsAllocation }) {
+export default function DashboardApp({ groupsAllocation, courts }) {
+  console.log("🚀 ~ file: MatchScheduler.js ~ line 52 ~ DashboardApp ~ courts", courts)
   const allMatches = getAllGroupMatchesfull(groupsAllocation);
-  console.log("🚀 ~ file: MatchScheduler.js ~ line 53 ~ DashboardApp ~ allMatches", allMatches)
 
   const [state, setState] = useState({ widgets: allMatches });
 
-  const groups = Object.keys(groupsAllocation || {});
+  const groups = Object.keys(groupsAllocation || {}).sort();
 
   console.log("🚀 ~ file: MatchScheduler.js ~ line 91 ~ DashboardApp ~ groups", groups)
 
