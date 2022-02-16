@@ -26,6 +26,7 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../../components/Cards/TeamsCard2.js';
 import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
 import MatchScheduleCard from '../../../components/Cards/MatchScheduleCard';
+import MatchScheduleGrid from '../../../components/Cards/MatchScheduleGrid';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import { useFirebaseAuth } from '../../../components/authhook';
@@ -402,7 +403,10 @@ export default function Competition({ competition, preview }) {
                                       <div className='text-center py-5'>
                                         <section>
                                           <div>
-                                            <div className='hidden container md:block'>
+                                            <div className='hidden md:block'>
+                                              <MatchScheduleGrid
+                                                schedule={competition.schedule}
+                                              />
                                             </div>
                                             <div className='md:hidden mt-4 '>
                                               <MatchScheduleCard
