@@ -21,7 +21,7 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-export default function SubmitScore({ competition }) {
+export default function SubmitScore({ competition, groupsAllocation }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -66,14 +66,15 @@ export default function SubmitScore({ competition }) {
       {
         saving
           ? <><div className="text-center py-24"><Spinner size="lg" color="blue" /> Loading...</div> :</>
-          : <SubmitScoreForm onSubmit={onSubmit} saving={saving} competition={competition} />
+          : <SubmitScoreForm onSubmit={onSubmit} saving={saving}
+            competition={competition} groupsAllocation={groupsAllocation} />
       }
 
     </>
   );
 }
 
-function SubmitScoreForm({ onSubmit, competition, saving }) {
+function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 
   const gameWonByLoser = watch('gameWonByLoser');
@@ -84,6 +85,14 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
   const knockoutRound = watch('knockoutRound');
   const selectedWinner = watch('selectedWinner');
   const selectedLoser = watch('selectedLoser');
+  const groupsNames = Object.keys(groupsAllocation).sort();
+
+  useEffect(() => {
+    // reset
+    setValue('selectedWinner', null);
+    setValue('selectedLoser', null);
+  }, [group, stage]);
+
 
   const isValid = () => {
     return !!selectedWinner && !!selectedLoser
@@ -98,6 +107,8 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
   }
 
   const getFilteredTeams = (teams, query) => {
+    if (stage === score.GROUP_STAGE && !!group) return groupsAllocation[group];
+
     if (!query) return [];
 
     return teams.filter(team => {
@@ -125,6 +136,74 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
             Submit Result for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
           </h6>
           <div className="flex flex-wrap">
+            <div className="w-full lg:w-6/12 px-4 py-4">
+              <div className="relative w-full mb-3">
+                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                  Stage
+                </label>
+
+                <div className="flex space-x-2">
+                  <DropDown align='left' buttonText={
+                    <span className="px-3">{stage || 'Select..'}</span>
+                  }
+                    items={[
+                      <a onClick={() => setValue('stage', score.GROUP_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Group Stage</a>,
+                      <a onClick={() => setValue('stage', score.KNOCKOUT_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Knockout Stage</a>,
+                    ]}
+                  >
+                  </DropDown>
+
+                  {stage && stage === score.GROUP_STAGE &&
+                    <DropDown align='left' buttonText={
+                      <span className="px-3">{group ? 'Group: ' + group : 'Select group'}</span>
+                    }
+                      items={groupsNames.map(groupName =>
+                        <a key={groupName} onClick={() => setValue('group', groupName)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">{groupName}</a>
+                      )}
+                    >
+                    </DropDown>}
+
+                  {stage && stage === score.KNOCKOUT_STAGE &&
+                    <DropDown align='left' buttonText={
+                      <span className="px-3">{knockoutRound ? 'Round: ' + knockoutRound : 'Select round'}</span>
+                    }
+                      items={[
+                        <a onClick={() => setValue('knockoutRound', 'Quarter')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Quarter Final</a>,
+                        <a onClick={() => setValue('knockoutRound', 'Semi')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Semi Final</a>,
+                        <a onClick={() => setValue('knockoutRound', 'Final')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Final</a>,
+                        <a onClick={() => setValue('knockoutRound', '16')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 16</a>,
+                        <a onClick={() => setValue('knockoutRound', '32')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 32</a>,
+                        <a onClick={() => setValue('knockoutRound', '64')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 64</a>,
+                        <a onClick={() => setValue('knockoutRound', '128')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 128</a>,
+                      ]}
+                    >
+                    </DropDown>}
+                </div>
+              </div>
+            </div>
+
+            <div className="w-full lg:w-6/12 px-4 py-4">
+              <div className="relative w-full mb-3">
+                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                  Game won by losing team
+                </label>
+
+                <DropDown align='left' buttonText={
+                  <span className="px-3">{gameWonByLoser || 'Select..'}</span>
+                }
+                  items={[
+                    <a onClick={() => setValue('gameWonByLoser', 1)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">1</a>,
+                    <a onClick={() => setValue('gameWonByLoser', 2)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">2</a>,
+                    <a onClick={() => setValue('gameWonByLoser', 3)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">3</a>,
+                    <a onClick={() => setValue('gameWonByLoser', 4)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">4</a>,
+                    <a onClick={() => setValue('gameWonByLoser', 5)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">5</a>,
+                    <a onClick={() => setValue('gameWonByLoser', 6)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">6</a>,
+                  ]}
+                >
+                </DropDown>
+              </div>
+            </div>
+
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
@@ -133,7 +212,11 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
 
                 {!selectedWinner ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("winner", { required: true })} placeholder="Start typing to search.." />
+                    {
+                      stage === score.KNOCKOUT_STAGE &&
+                      <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("winner", { required: true })} placeholder="Start typing to search.." />
+                    }
+
                     <div className='flex flex-col space-y-2 py-5'>
                       {getFilteredTeams(competition?.teams, winner).map((team) => (
                         <TeamCard
@@ -151,6 +234,7 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
 
               </div>
             </div>
+
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
@@ -164,7 +248,11 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
                     && selectedWinner.name === selectedLoser.name)
                   ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("loser", { required: true })} placeholder="Start typing to search.." />
+                    {
+                      stage === score.KNOCKOUT_STAGE &&
+                      <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("loser", { required: true })} placeholder="Start typing to search.." />
+                    }
+
                     <div className='flex flex-col space-y-2 py-5'>
 
                       {selectedWinner && selectedLoser
@@ -194,79 +282,10 @@ function SubmitScoreForm({ onSubmit, competition, saving }) {
 
               </div>
             </div>
-            <div className="w-full lg:w-6/12 px-4 py-4">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Stage
-                </label>
 
-                <div className="flex space-x-2">
-                  <DropDown align='left' buttonText={
-                    <span className="px-3">{stage || 'Select..'}</span>
-                  }
-                    items={[
-                      <a onClick={() => setValue('stage', score.GROUP_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Group Stage</a>,
-                      <a onClick={() => setValue('stage', score.KNOCKOUT_STAGE)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Knockout Stage</a>,
-                    ]}
-                  >
-                  </DropDown>
 
-                  {stage && stage === score.GROUP_STAGE &&
-                    <DropDown align='left' buttonText={
-                      <span className="px-3">{group ? 'Group: ' + group : 'Select group'}</span>
-                    }
-                      items={[
-                        <a onClick={() => setValue('group', 'A')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">A</a>,
-                        <a onClick={() => setValue('group', 'B')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">B</a>,
-                        <a onClick={() => setValue('group', 'C')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">C</a>,
-                        <a onClick={() => setValue('group', 'D')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">D</a>,
-                        <a onClick={() => setValue('group', 'E')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">E</a>,
-                        <a onClick={() => setValue('group', 'F')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">F</a>,
-                        <a onClick={() => setValue('group', 'G')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">G</a>,
-                        <a onClick={() => setValue('group', 'H')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">H</a>,
-                      ]}
-                    >
-                    </DropDown>}
 
-                  {stage && stage === score.KNOCKOUT_STAGE &&
-                    <DropDown align='left' buttonText={
-                      <span className="px-3">{knockoutRound ? 'Round: ' + knockoutRound : 'Select round'}</span>
-                    }
-                      items={[
-                        <a onClick={() => setValue('knockoutRound', 'Quarter')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Quarter Final</a>,
-                        <a onClick={() => setValue('knockoutRound', 'Semi')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Semi Final</a>,
-                        <a onClick={() => setValue('knockoutRound', 'Final')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Final</a>,
-                        <a onClick={() => setValue('knockoutRound', '16')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 16</a>,
-                        <a onClick={() => setValue('knockoutRound', '32')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 32</a>,
-                        <a onClick={() => setValue('knockoutRound', '64')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 64</a>,
-                        <a onClick={() => setValue('knockoutRound', '128')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 128</a>,
-                      ]}
-                    >
-                    </DropDown>}
-                </div>
-              </div>
-            </div>
-            <div className="w-full lg:w-6/12 px-4 py-4">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Game won by losing team
-                </label>
 
-                <DropDown align='left' buttonText={
-                  <span className="px-3">{gameWonByLoser || 'Select..'}</span>
-                }
-                  items={[
-                    <a onClick={() => setValue('gameWonByLoser', 1)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">1</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 2)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">2</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 3)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">3</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 4)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">4</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 5)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">5</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 6)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">6</a>,
-                  ]}
-                >
-                </DropDown>
-              </div>
-            </div>
           </div>
 
           <div className="flex flex-wrap pt-10">

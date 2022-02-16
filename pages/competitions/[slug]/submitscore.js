@@ -19,11 +19,12 @@ import SendOtp from '../../../components/sendotp';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
+import { getCompGroupsAllocation } from '../../../lib/backendapi';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
 
 
-export default function SubmitScore({ competition, preview }) {
+export default function SubmitScore({ competition, groupsAllocation, preview }) {
   const router = useRouter();
   const { user, loadingAuth } = useFirebaseAuth();
 
@@ -136,7 +137,7 @@ export default function SubmitScore({ competition, preview }) {
                         loadingAuth
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <SubmitScoreForm competition={competition}></SubmitScoreForm>
+                          <SubmitScoreForm competition={competition} groupsAllocation={groupsAllocation}></SubmitScoreForm>
                       }
                     </div>
                   </div>
@@ -151,11 +152,13 @@ export default function SubmitScore({ competition, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
+  const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
 
   return {
     props: {
       preview,
       competition: data,
+      groupsAllocation: groupsAllocation
     },
     revalidate: 60
   };
