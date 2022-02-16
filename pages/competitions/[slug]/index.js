@@ -16,7 +16,7 @@ import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding } from '../../../lib/api';
-import { getCompResults, getCompGroupsAllocation } from '../../../lib/backendapi';
+import { getCompResults, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
 import { getAllGroupMatches, exportGroupsAllocation, getCompGroups } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
@@ -34,6 +34,8 @@ import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } fro
 import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
+console.log("🚀 ~ file: index.js ~ line 37 ~ Competition ~ competition", competition.schedule)
+  
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
   const { view } = router.query;
@@ -67,10 +69,9 @@ export default function Competition({ competition, preview }) {
   const editMatchSchedule = () => {
     const courts = prompt('Enter courts available, separated by comma. E.g. 1,2,3,4,5 or 2,4,7,8');
     if (!courts) {
-      alert('Invalid courts! Enter courts available, separated by comma. E.g. 1,2,3,4,5 or 2,4,7,8');
       return;
     }
-    setCourtNames(courts);
+    setCourtNames(courts.split(',').filter(x => !!x).join(','));
   }
 
   const allocateTeamsToGroups = async () => {
@@ -110,6 +111,14 @@ export default function Competition({ competition, preview }) {
     teams && teams.scrollIntoView();
     setActiveTab(2);
   };
+
+  const saveSchedule = async (data) => {
+    console.log("🚀 ~ file: index.js ~ line 115 ~ saveSchedule ~ data", data)
+    await setDoc(doc(db, "competition_schedule", competition.sys.id), data);
+    alert('Schedule created, please reload this page again in 15 seconds');
+
+    window.location.reload();
+  }
 
   if (view) {
     setTimeout(() => {
@@ -390,17 +399,20 @@ export default function Competition({ competition, preview }) {
                                   <>
                                     {!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
                                       <section>
-                                        <div className='pt-5'>
-                                          <a
+                                        <div className='py-8 text-center'>
+                                          <button
+                                            tupe="button"
                                             onClick={editMatchSchedule}
-                                            className="text-sm underline hover:cursor-pointer ">
+                                            className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
                                             Configure Schedule
-                                          </a>
+                                          </button>
                                         </div>
                                         {
                                           courtNames &&
                                           <div className='mt-5'>
-                                            <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}></MatchScheduler>
+                                            <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
+                                              saveSchedule={saveSchedule}
+                                            ></MatchScheduler>
                                           </div>
                                         }
                                       </section>}
@@ -440,17 +452,20 @@ export default function Competition({ competition, preview }) {
                             {competition?.groupsAllocation &&
                               <section>
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
-                                <div className="py-2">
-                                  <a
+                                <div className="py-5 text-center">
+                                  <button
+                                    tupe="button"
                                     onClick={editMatchSchedule}
-                                    className="text-sm underline hover:cursor-pointer">
+                                    className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
                                     Configure Schedule
-                                  </a>
+                                  </button>
                                 </div>
                                 {
                                   courtNames &&
                                   <div className='mt-5'>
-                                    <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}></MatchScheduler>
+                                    <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
+                                      saveSchedule={saveSchedule}
+                                    ></MatchScheduler>
                                   </div>
                                 }
                                 <div className="pt-5">
@@ -488,19 +503,15 @@ export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
 
   const matchScores = await getCompResults(data.sys.id);
+  const schedule = await getCompSchedule(data.sys.id);
   const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
 
   data = {
     ...data,
     matchScores,
+    schedule,
+    groupsAllocation: groupsAllocation,
     groupResult: getGroupStageStanding(matchScores || [], groupsAllocation || {})
-  };
-
-
-  data = {
-    ...data,
-    matchScores,
-    groupsAllocation: groupsAllocation
   };
 
   return {

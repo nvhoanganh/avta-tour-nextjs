@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getAllGroupMatchesfull } from '../lib/browserapi';
 
@@ -16,7 +16,7 @@ function Widget({ widget, index }) {
   return (
     <Draggable draggableId={widget.id} index={index}>
       {provided => (
-        <div className="border border-solid border-grey-100 p-2"
+        <div className="border border-solid border-gray-300 p-2 bg-white shadow"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -35,11 +35,11 @@ const WidgetList = React.memo(function WidgetList({ widgets }) {
 });
 
 
-function Column({ droppableId, widgets }) {
+function Column({ droppableId, widgets, readonly }) {
   return (
-    <Droppable droppableId={droppableId}>
+    <Droppable droppableId={droppableId} isDragDisabled={readonly}>
       {provided => (
-        <div className="w-64 border border-solid border-gray-300 rounded shadow-md flex flex-col space-y-2 p-2" ref={provided.innerRef} {...provided.droppableProps}>
+        <div className="w-64 border border-solid border-gray-300 rounded shadow-md flex flex-col space-y-2 p-2 py-4 bg-gray-50" ref={provided.innerRef} {...provided.droppableProps}>
           <WidgetList widgets={widgets} />
           {provided.placeholder}
         </div>
@@ -48,10 +48,13 @@ function Column({ droppableId, widgets }) {
   );
 }
 
-export default function DashboardApp({ groupsAllocation, courts }) {
-  const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
+export default function DashboardApp({ groupsAllocation, courts, saveSchedule, readonly }) {
+  const [state, setState] = useState({ widgets: {} });
 
-  const [state, setState] = useState({ widgets: allMatches });
+  useEffect(() => {
+    const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
+    setState({ widgets: allMatches });
+  }, [courts, groupsAllocation]);
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -95,16 +98,44 @@ export default function DashboardApp({ groupsAllocation, courts }) {
     }
   }
 
+  const save = () => { saveSchedule && saveSchedule(state.widgets) }
+
+  const reset = () => {
+    const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
+    setState({ widgets: allMatches });
+  }
+
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex space-x-3">
-        {Object.keys(state.widgets).sort().map((group, index) => (
-          <div>
-            <div className="text-bold text-lg py-3">Court {group}</div>
-            <Column widgets={state.widgets[group]} droppableId={group} />
-          </div>
-        ))}
+    <div>
+      <div className="flex space-x-1">
+        <button
+          tupe="button"
+          onClick={save}
+          className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+          Save
+        </button>
+
+        <button
+          tupe="button"
+          onClick={reset}
+          className="bg-gray-500 active:bg-gray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+          Reset
+        </button>
+
       </div>
-    </DragDropContext>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div className="flex space-x-3">
+          {Object.keys(state.widgets).sort().map((group, index) => (
+            <div key={group}>
+              <div className="text-bold text-xl text-center py-3">{group}</div>
+              <Column widgets={state.widgets[group]} droppableId={group} readonly={readonly} />
+            </div>
+          ))}
+        </div>
+      </DragDropContext>
+
+    </div>
+
+
   );
 };
