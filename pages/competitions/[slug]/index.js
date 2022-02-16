@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import ErrorPage from 'next/error';
 import ContentfulImage from '../../../components/contentful-image';
 import DateComponent from '../../../components/date';
+import MatchScheduler from '../../../components/MatchScheduler';
 import Container from '../../../components/container';
 import PostBody from '../../../components/post-body';
 import MoreStories from '../../../components/more-stories';
@@ -387,18 +388,7 @@ export default function Competition({ competition, preview }) {
                                           </a>
                                         </div>
                                         <div className='mt-5'>
-                                          <div className='hidden container md:block'>
-                                            <TeamRankingTable
-                                              groups={
-                                                competition.groupsAllocation
-                                              }
-                                            />
-                                          </div>
-                                          <div className='md:hidden mt-4 '>
-                                            <GroupRankingsCard
-                                              groups={competition.groupsAllocation}
-                                            />
-                                          </div>
+                                          <MatchScheduler></MatchScheduler>
                                         </div>
                                       </section>}
                                   </>)
