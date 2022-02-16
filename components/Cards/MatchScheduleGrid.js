@@ -9,7 +9,7 @@ export default function MatchScheduleGrid({ schedule }) {
   return (
     <div className="flex space-x-4">
       {Object.keys(schedule).sort().map((court) => (
-        <div>
+        <div key={court}>
           <div className="text-bold text-xl text-center py-3">{court}</div>
           <div className=' border border-solid border-gray-200 rounded flex flex-col space-y-2 p-2 py-4' style={{ width: 270 }}>
             {schedule[court].map((match, index) => (
