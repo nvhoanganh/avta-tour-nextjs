@@ -49,14 +49,9 @@ function Column({ droppableId, widgets }) {
 }
 
 export default function DashboardApp({ groupsAllocation, courts }) {
-  console.log("🚀 ~ file: MatchScheduler.js ~ line 52 ~ DashboardApp ~ courts", courts)
-  const allMatches = getAllGroupMatchesfull(groupsAllocation);
+  const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
 
   const [state, setState] = useState({ widgets: allMatches });
-
-  const groups = Object.keys(groupsAllocation || {}).sort();
-
-  console.log("🚀 ~ file: MatchScheduler.js ~ line 91 ~ DashboardApp ~ groups", groups)
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -103,9 +98,9 @@ export default function DashboardApp({ groupsAllocation, courts }) {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex space-x-3">
-        {groups.map((group, index) => (
+        {Object.keys(state.widgets).sort().map((group, index) => (
           <div>
-            <div className="text-bold text-lg py-3">Court {index + 1}</div>
+            <div className="text-bold text-lg py-3">Court {group}</div>
             <Column widgets={state.widgets[group]} droppableId={group} />
           </div>
         ))}

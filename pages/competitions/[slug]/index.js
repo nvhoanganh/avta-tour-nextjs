@@ -394,12 +394,15 @@ export default function Competition({ competition, preview }) {
                                           <a
                                             onClick={editMatchSchedule}
                                             className="text-sm underline hover:cursor-pointer ">
-                                            Download Schedule
+                                            Configure Schedule
                                           </a>
                                         </div>
-                                        <div className='mt-5'>
-                                          <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}></MatchScheduler>
-                                        </div>
+                                        {
+                                          courtNames &&
+                                          <div className='mt-5'>
+                                            <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}></MatchScheduler>
+                                          </div>
+                                        }
                                       </section>}
                                   </>)
                               }
@@ -437,12 +440,19 @@ export default function Competition({ competition, preview }) {
                             {competition?.groupsAllocation &&
                               <section>
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
-                                <div className="py-2"><a
-                                  onClick={exportGroupMatches}
-                                  className="text-sm underline hover:cursor-pointer">
-                                  Download Schedule
-                                </a>
+                                <div className="py-2">
+                                  <a
+                                    onClick={editMatchSchedule}
+                                    className="text-sm underline hover:cursor-pointer">
+                                    Configure Schedule
+                                  </a>
                                 </div>
+                                {
+                                  courtNames &&
+                                  <div className='mt-5'>
+                                    <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}></MatchScheduler>
+                                  </div>
+                                }
                                 <div className="pt-5">
                                   <div className='hidden container md:block'>
                                     <TeamRankingTable
