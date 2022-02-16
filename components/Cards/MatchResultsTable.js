@@ -4,6 +4,7 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 import DateWithTimeComponent from '../dateWithTime';
+import PlayerPoint from '../PlayerPoint';
 import Avatar from '../avatar';
 
 export default function MatchResultsTable({ color, results }) {
@@ -96,7 +97,7 @@ export default function MatchResultsTable({ color, results }) {
 												</Link>
 
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.player1.avtaPoint}</span>
+												<PlayerPoint player={result.winners.player1} className="ml-1" />
 
 												<span className="mx-3">&amp;</span>
 
@@ -104,7 +105,7 @@ export default function MatchResultsTable({ color, results }) {
 													<a className="hover:underline">{result.winners.player2.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.player2.avtaPoint}</span>
+												<PlayerPoint player={result.winners.player2} className="ml-1" />
 											</div>
 											<div className='ml-3 text-sm text-gray-600'>
 												GROUP {result.winners.groupName} - Team Point {result.winners.player1.avtaPoint + result.winners.player2.avtaPoint}
@@ -144,8 +145,7 @@ export default function MatchResultsTable({ color, results }) {
 													<a className="hover:underline">{result.losers.player1.fullName}</a>
 												</Link>
 
-
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.player1.avtaPoint}</span>
+												<PlayerPoint player={result.losers.player1} className="ml-1" />
 
 												<span className="mx-3">&amp;</span>
 
@@ -153,7 +153,7 @@ export default function MatchResultsTable({ color, results }) {
 													<a className="hover:underline">{result.losers.player2.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.player2.avtaPoint}</span>
+												<PlayerPoint player={result.losers.player2} className="ml-1" />
 											</div>
 											<div className='ml-3 text-sm text-gray-600'>
 												GROUP {result.losers.groupName} - Team Point {result.losers.player1.avtaPoint + result.losers.player2.avtaPoint}

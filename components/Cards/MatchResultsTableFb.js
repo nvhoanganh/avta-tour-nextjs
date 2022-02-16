@@ -4,6 +4,7 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 import DateWithTimeComponent from '../dateWithTime';
+import PlayerPoint from '../PlayerPoint';
 import Avatar from '../avatar';
 
 export default function MatchResultsTable({ color, results, is_superuser, deleteMatch }) {
@@ -96,7 +97,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												</Link>
 
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.players[0]?.avtaPoint}</span>
+												<PlayerPoint player={result.winners.players[0]} className="ml-1 mb-2" />
 
 												<span className="mx-3">&amp;</span>
 
@@ -104,7 +105,9 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 													<a className="hover:underline">{result.winners.players[1]?.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.winners.players[1]?.avtaPoint} [{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
+												<PlayerPoint player={result.winners.players[1]} className="ml-1 mb-2" />
+
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{result.winners.players[0]?.avtaPoint + result.winners.players[1]?.avtaPoint}]</span>
 
 
 											</div>
@@ -147,7 +150,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												</Link>
 
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.players[0]?.avtaPoint}</span>
+												<PlayerPoint player={result.losers.players[0]} className="ml-1 mb-2" />
 
 												<span className="mx-3">&amp;</span>
 
@@ -155,7 +158,8 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 													<a className="hover:underline">{result.losers.players[1]?.fullName}</a>
 												</Link>
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{result.losers.players[1]?.avtaPoint} [{result.losers.players[0]?.avtaPoint + result.losers.players[1]?.avtaPoint}]</span>
+												<PlayerPoint player={result.losers.players[1]} className="ml-1 mb-2" />
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{result.losers.players[0]?.avtaPoint + result.losers.players[1]?.avtaPoint}]</span>
 											</div>
 											<div className='ml-3 text-sm text-gray-600 mr-3'>
 												{result.losers.players[0]?.homeClub}
