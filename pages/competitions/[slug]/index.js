@@ -478,13 +478,15 @@ export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
 
   const matchScores = await getCompResults(data.sys.id);
+  const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
+
   data = {
     ...data,
     matchScores,
-    groupResult: getGroupStageStanding(matchScores)
+    groupResult: getGroupStageStanding(matchScores || [], groupsAllocation || {})
   };
 
-  const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
+
   data = {
     ...data,
     matchScores,

@@ -46,6 +46,8 @@ export default function SubmitScore({ competition }) {
       group: data.group || '',
       losers: data.selectedLoser,
       winners: data.selectedWinner,
+      loserTeamId: data.selectedLoser.sys.id,
+      winnerTeamId: data.selectedWinner.sys.id,
       loser1: data.selectedLoser.players[0].sys.id,
       loser2: data.selectedLoser.players[1].sys.id,
       winner1: data.selectedWinner.players[0].sys.id,
