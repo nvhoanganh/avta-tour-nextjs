@@ -3,7 +3,7 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getAllGroupMatchesfull } from '../lib/browserapi';
 
 const grid = 8;
-
+const colors = ['']
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
@@ -21,7 +21,7 @@ function Widget({ widget, index }) {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {widget.group} : {widget.between[0].name} vs {widget.between[1].name}
+          {widget.group}{ index + 1 } : {widget.between[0].name} vs {widget.between[1].name}
         </div>
       )}
     </Draggable>

@@ -138,14 +138,17 @@ export default function Competition({ competition, preview }) {
           </div>
         </div> :
         <section>
-          <div className='py-8 text-center'>
-            <button
-              tupe="button"
-              onClick={editMatchSchedule}
-              className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
-              Configure Schedule
-            </button>
-          </div>
+          {
+            userRoles?.superuser
+            && <div className='py-8 text-center'>
+              <button
+                tupe="button"
+                onClick={editMatchSchedule}
+                className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+                Configure Schedule
+              </button>
+            </div>
+          }
           {
             courtNames &&
             <div className='mt-5'>
@@ -472,17 +475,9 @@ export default function Competition({ competition, preview }) {
                                 {competition.schedule &&
                                   <div id="teams" className="text-3xl pt-6">Match Schedule</div>
                                 }
-
                                 <ConfigureSchedule></ConfigureSchedule>
+
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
-                                {
-                                  courtNames &&
-                                  <div className='mt-5'>
-                                    <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
-                                      saveSchedule={saveSchedule}
-                                    ></MatchScheduler>
-                                  </div>
-                                }
                                 <div className="pt-5">
                                   <div className='hidden container md:block'>
                                     <TeamRankingTable
