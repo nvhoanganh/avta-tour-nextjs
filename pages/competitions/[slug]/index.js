@@ -36,8 +36,6 @@ import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } fro
 import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
-  console.log("🚀 ~ file: index.js ~ line 37 ~ Competition ~ competition", competition.schedule)
-
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
   const { view } = router.query;
@@ -124,7 +122,7 @@ export default function Competition({ competition, preview }) {
 
   const ConfigureSchedule = () => (
     <>
-      {competition.schedule ?
+      {competition?.schedule ?
         <div className='text-center py-5'>
           <div className='hidden md:block'>
             <MatchScheduleGrid
@@ -303,7 +301,7 @@ export default function Competition({ competition, preview }) {
                                 {teamJoined}
                               </span>
                               <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewTeams}>
-                                {competition.schedule ? "Match Schedule" : "View Teams"}
+                                {competition?.schedule ? "Match Schedule" : "View Teams"}
                               </a>
                             </div>
                             <div className='mr-4 p-3 text-center'>
@@ -472,7 +470,7 @@ export default function Competition({ competition, preview }) {
 
                             {competition?.groupsAllocation &&
                               <section>
-                                {competition.schedule &&
+                                {competition?.schedule &&
                                   <div id="teams" className="text-3xl pt-6">Match Schedule</div>
                                 }
                                 <ConfigureSchedule></ConfigureSchedule>
