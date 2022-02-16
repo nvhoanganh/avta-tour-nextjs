@@ -388,7 +388,7 @@ export default function Competition({ competition, preview }) {
                                           </a>
                                         </div>
                                         <div className='mt-5'>
-                                          <MatchScheduler></MatchScheduler>
+                                          <MatchScheduler groupsAllocation={competition.groupsAllocation}></MatchScheduler>
                                         </div>
                                       </section>}
                                   </>)

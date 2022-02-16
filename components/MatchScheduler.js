@@ -13,14 +13,14 @@ const reorder = (list, startIndex, endIndex) => {
 
 function Widget({ widget, index }) {
   return (
-    <Draggable draggableId={widget.id} index={index}>
+    <Draggable draggableId={widget.sys.id} index={index}>
       {provided => (
         <div className="border border-solid border-grey-100"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {widget.content}
+          {widget.name}
         </div>
       )}
     </Draggable>
@@ -29,7 +29,7 @@ function Widget({ widget, index }) {
 
 const WidgetList = React.memo(function WidgetList({ widgets }) {
   return widgets.map((widget, index) => (
-    <Widget widget={widget} index={index} key={widget.id} />
+    <Widget widget={widget} index={index} key={widget.sys.id} />
   ));
 });
 
@@ -38,7 +38,7 @@ function Column({ droppableId, widgets }) {
   return (
     <Droppable droppableId={droppableId}>
       {provided => (
-        <div className="w-64" ref={provided.innerRef} {...provided.droppableProps}>
+        <div className="w-64 border border-solid border-gray-300 rounded shadow-md" ref={provided.innerRef} {...provided.droppableProps}>
           <WidgetList widgets={widgets} />
           {provided.placeholder}
         </div>
@@ -47,42 +47,14 @@ function Column({ droppableId, widgets }) {
   );
 }
 
-const initial = {
-  "column-1": [
-    {
-      id: "widget-1",
-      content: "hello"
-    },
-    {
-      id: "widget-2",
-      content: "this"
-    },
-    {
-      id: "widget-3",
-      content: "is"
-    },
-    {
-      id: "widget-4",
-      content: "so99ynoodles"
-    }
-  ],
-  "column-2": [
-    {
-      id: "widget-5",
-      content: "I am"
-    },
-    {
-      id: "widget-6",
-      content: "a Web"
-    },
-    {
-      id: "widget-7",
-      content: "developer"
-    }
-  ]
-};
-export default function DashboardApp() {
-  const [state, setState] = useState({ widgets: initial });
+export default function DashboardApp({ groupsAllocation }) {
+  console.log("🚀 ~ file: MatchScheduler.js ~ line 85 ~ DashboardApp ~ groupsAllocation", groupsAllocation)
+
+  const [state, setState] = useState({ widgets: groupsAllocation });
+
+  const groups = Object.keys(groupsAllocation || {});
+
+  console.log("🚀 ~ file: MatchScheduler.js ~ line 91 ~ DashboardApp ~ groups", groups)
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -125,11 +97,13 @@ export default function DashboardApp() {
       setState(updateState);
     }
   }
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex">
-        <Column widgets={state.widgets["column-1"]} droppableId="column-1" />
-        <Column widgets={state.widgets["column-2"]} droppableId="column-2" />
+      <div className="flex space-x-2">
+        {groups.map(group => (
+          <Column widgets={state.widgets[group]} droppableId={group} />
+        ))}
       </div>
     </DragDropContext>
   );
