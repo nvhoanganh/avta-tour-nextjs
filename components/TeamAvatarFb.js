@@ -3,6 +3,7 @@ import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from "prop-types";
 import { format } from 'date-fns'
+import PlayerPoint from './PlayerPoint';
 
 export default function TeamAvatar({ team }) {
   return (
@@ -14,7 +15,7 @@ export default function TeamAvatar({ team }) {
             alt='...'
             className='w-10 hover:cursor-pointer hover:shadow-xl hover:border-gray-700 h-10 rounded-full border-2 border-gray-50 shadow'
           ></img>
-          <div className='text-green-600 text-xs text-center'>{team.players[0]?.avtaPoint}</div>
+          <PlayerPoint player={team.players[0]} />
         </div>
       </Link>
       <Link href={`/players/${team.players[1]?.sys?.id}`}>
@@ -24,7 +25,7 @@ export default function TeamAvatar({ team }) {
             alt='...'
             className='w-10 hover:cursor-pointer hover:shadow-xl hover:border-gray-700 h-10 rounded-full border-2 border-gray-50 shadow'
           ></img>
-          <div className='text-green-600 text-xs text-center'>{team.players[1]?.avtaPoint}</div>
+          <PlayerPoint player={team.players[1]} />
         </div>
       </Link>
     </>

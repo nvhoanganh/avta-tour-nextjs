@@ -3,6 +3,7 @@ import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
+import PlayerPoint from '../PlayerPoint';
 import DateWithTimeComponent from '../dateWithTime';
 import Avatar from '../avatar';
 
@@ -103,8 +104,7 @@ export default function TeamRankingTable({ groups, color }) {
 															<a className="hover:underline">{team.players[0].fullName}</a>
 														</Link>
 
-
-														<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{team.players[0].avtaPoint}</span>
+														<PlayerPoint player={team.players[0]} className="ml-1" />
 
 														<span className="mx-3">&amp;</span>
 
@@ -112,7 +112,7 @@ export default function TeamRankingTable({ groups, color }) {
 															<a className="hover:underline">{team.players[1].fullName}</a>
 														</Link>
 
-														<span className='font-normal text-xs mb-2 ml-1 text-green-600'>{team.players[1].avtaPoint}</span>
+														<PlayerPoint player={team.players[1]} className="ml-1"/>
 													</div>
 													<div className='ml-3 text-sm text-gray-600'>
 														{team.players[0].homeClub} - {team.players[0].avtaPoint + team.players[1].avtaPoint} pt.
