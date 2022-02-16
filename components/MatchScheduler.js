@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { getAllGroupMatchesfull } from '../lib/browserapi';
 
 const grid = 8;
 
@@ -13,14 +14,14 @@ const reorder = (list, startIndex, endIndex) => {
 
 function Widget({ widget, index }) {
   return (
-    <Draggable draggableId={widget.sys.id} index={index}>
+    <Draggable draggableId={widget.id} index={index}>
       {provided => (
         <div className="border border-solid border-grey-100"
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {widget.name}
+          {widget.id}
         </div>
       )}
     </Draggable>
@@ -29,7 +30,7 @@ function Widget({ widget, index }) {
 
 const WidgetList = React.memo(function WidgetList({ widgets }) {
   return widgets.map((widget, index) => (
-    <Widget widget={widget} index={index} key={widget.sys.id} />
+    <Widget widget={widget} index={index} key={widget.id} />
   ));
 });
 
@@ -48,9 +49,10 @@ function Column({ droppableId, widgets }) {
 }
 
 export default function DashboardApp({ groupsAllocation }) {
-  console.log("🚀 ~ file: MatchScheduler.js ~ line 85 ~ DashboardApp ~ groupsAllocation", groupsAllocation)
+  const allMatches = getAllGroupMatchesfull(groupsAllocation);
+  console.log("🚀 ~ file: MatchScheduler.js ~ line 53 ~ DashboardApp ~ allMatches", allMatches)
 
-  const [state, setState] = useState({ widgets: groupsAllocation });
+  const [state, setState] = useState({ widgets: allMatches });
 
   const groups = Object.keys(groupsAllocation || {});
 
@@ -100,9 +102,12 @@ export default function DashboardApp({ groupsAllocation }) {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex space-x-2">
-        {groups.map(group => (
-          <Column widgets={state.widgets[group]} droppableId={group} />
+      <div className="flex space-x-3">
+        {groups.map((group, index) => (
+          <div>
+            <div className="text-bold text-lg py-3">Court {index + 1}</div>
+            <Column widgets={state.widgets[group]} droppableId={group} />
+          </div>
         ))}
       </div>
     </DragDropContext>
