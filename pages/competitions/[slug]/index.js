@@ -25,6 +25,7 @@ import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import TeamsCard from '../../../components/Cards/TeamsCard2.js';
 import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
+import MatchScheduleCard from '../../../components/Cards/MatchScheduleCard';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import { useFirebaseAuth } from '../../../components/authhook';
@@ -34,8 +35,8 @@ import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } fro
 import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
-console.log("🚀 ~ file: index.js ~ line 37 ~ Competition ~ competition", competition.schedule)
-  
+  console.log("🚀 ~ file: index.js ~ line 37 ~ Competition ~ competition", competition.schedule)
+
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
   const { view } = router.query;
@@ -397,14 +398,27 @@ console.log("🚀 ~ file: index.js ~ line 37 ~ Competition ~ competition", compe
                                 activeTab === 2
                                 && (
                                   <>
-                                    {!competition.teams?.length ? <div className='text-center py-5 italic'>No record found</div> :
+                                    {competition.schedule ?
+                                      <div className='text-center py-5'>
+                                        <section>
+                                          <div>
+                                            <div className='hidden container md:block'>
+                                            </div>
+                                            <div className='md:hidden mt-4 '>
+                                              <MatchScheduleCard
+                                                schedule={competition.schedule}
+                                              />
+                                            </div>
+                                          </div>
+                                        </section>
+                                      </div> :
                                       <section>
                                         <div className='py-8 text-center'>
                                           <button
                                             tupe="button"
                                             onClick={editMatchSchedule}
                                             className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
-                                            Configure Schedule
+                                            Configure Schedule2
                                           </button>
                                         </div>
                                         {
