@@ -110,6 +110,8 @@ export default function Competition({ competition, preview }) {
     const teams = document.getElementById("teams");
     teams && teams.scrollIntoView();
     setActiveTab(2);
+    const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?view=teams';
+    window.history.pushState({ path: newurl }, '', newurl);
   };
 
   const saveSchedule = async (data) => {
