@@ -113,7 +113,6 @@ export default function Competition({ competition, preview }) {
   };
 
   const saveSchedule = async (data) => {
-    console.log("🚀 ~ file: index.js ~ line 115 ~ saveSchedule ~ data", data)
     await setDoc(doc(db, "competition_schedule", competition.sys.id), data);
     alert('Schedule created, please reload this page again in 15 seconds');
 
@@ -129,7 +128,7 @@ export default function Competition({ competition, preview }) {
               schedule={competition.schedule}
             />
           </div>
-          <div className='md:hidden mt-4 '>
+          <div className='md:hidden mt-2'>
             <MatchScheduleCard
               schedule={competition.schedule}
             />
