@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import { getAllGroupMatchesfull } from '../lib/browserapi';
+import { GroupsColours, getAllGroupMatchesfull } from '../lib/browserapi';
 
 const grid = 8;
 const colors = ['']
@@ -16,12 +16,15 @@ function Widget({ widget, index }) {
   return (
     <Draggable draggableId={widget.id} index={index}>
       {provided => (
-        <div className="border border-solid border-gray-300 p-2 bg-white shadow"
+        <div className={`border border-solid border-gray-300 p-2 shadow bg-${GroupsColours[widget.group]}-50`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          {widget.group}{ index + 1 } : {widget.between[0].name} vs {widget.between[1].name}
+          <div className={`flex pl-2 pt-1 font-bold tex-xl text-${GroupsColours[widget.group]}-600`} >{widget.group}
+            <span className="text-sm">{index + 1}</span>
+          </div>
+          {widget.between[0].name} vs {widget.between[1].name}
         </div>
       )}
     </Draggable>
