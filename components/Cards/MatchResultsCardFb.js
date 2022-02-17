@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
+import { getFilteredMatches } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
 export default function MatchResultsCard({ results, is_superuser, deleteMatch }) {
+  const [filter, setFilter] = useState(null);
   return (
     <>
+      <div className='sticky py-2 mb-5 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center'>
+        <input type="text"
+          className="border px-2 py-1 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full mx-3 ease-linear transition-all duration-150"
+          placeholder="Search by name/nickname"
+          value={filter} onChange={(e) => { setFilter(e.target.value) }}
+        />
+      </div>
       <div className='flex flex-wrap'>
         <div className='w-full lg:w-6/12 xl:w-3/12'>
-          {(results || []).map((result) => (
+          {getFilteredMatches(results || [], filter).map((result) => (
             <div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
               <div className="flex-auto p-4">
                 <div className="flex flex-wrap ">
