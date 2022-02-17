@@ -354,7 +354,7 @@ export default function Competition({ competition, preview }) {
                                   }
                                 )}
                                   onClick={(e) => setActiveTab(0)}
-                                >Results</li>
+                                >Ranking</li>
                                 <li className={cn(
                                   'py-2 px-8 flex-grow text-center rounded-t-lg',
                                   {
@@ -363,7 +363,7 @@ export default function Competition({ competition, preview }) {
                                   }
                                 )}
                                   onClick={(e) => setActiveTab(1)}
-                                >Groups</li>
+                                >Results</li>
                                 <li className={cn(
                                   'py-2 px-8 flex-grow text-center rounded-t-lg',
                                   {
@@ -379,7 +379,7 @@ export default function Competition({ competition, preview }) {
                             {/* tabs content */}
                             <div className="mx-auto mb-20">
                               {
-                                activeTab === 1 &&
+                                activeTab === 0 &&
                                 (
                                   <>
                                     {!competition.groupResult || Object.keys(competition.groupResult).length === 0 ? <div className='text-center py-5 italic'>Waiting for first result</div> :
@@ -404,7 +404,7 @@ export default function Competition({ competition, preview }) {
                               }
 
                               {
-                                activeTab === 0
+                                activeTab === 1
                                 && (
                                   <>
                                     {!competition.matchScores?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :

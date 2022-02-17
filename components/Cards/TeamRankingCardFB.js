@@ -21,16 +21,24 @@ export default function TeamRankingCard({ team, index }) {
               </div>
               <div className='text-sm text-gray-600 flex space-x-2'>
                 <span className='text-green-600'>{team.players[0].avtaPoint + team.players[1].avtaPoint} pt.</span>
-                <span>Set: <span className='text-green-600'>{team.win}</span>
-                  /<span className='text-red-600'>{team.lost}</span></span>
 
-                <span>Game: <span
-                  className={cn({
-                    'text-gray-600': Number(team.diff) === 0,
-                    'text-green-600': Number(team.diff) > 0,
-                    'text-red-600': Number(team.diff) < 0,
-                  })}
-                >{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span></span>
+                {team.win + team.lost > 0 ?
+                  <>
+                    <span>Set: <span className='text-green-600'>{team.win}</span>
+                      /<span className='text-red-600'>{team.lost}</span></span>
+                  </> : ''
+                }
+
+                {team.diff > -1000 &&
+                  <span>Game: <span
+                    className={cn({
+                      'text-gray-600': Number(team.diff) === 0,
+                      'text-green-600': Number(team.diff) > 0,
+                      'text-red-600': Number(team.diff) < 0,
+                    })}
+                  >{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span></span>
+                }
+
 
               </div>
             </div>
