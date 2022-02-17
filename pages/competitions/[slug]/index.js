@@ -122,13 +122,13 @@ export default function Competition({ competition, preview }) {
   const ConfigureSchedule = () => (
     <>
       {competition?.schedule ?
-        <div className='text-center py-5'>
+        <div>
           <div className='hidden md:block'>
             <MatchScheduleGrid
               schedule={competition.schedule}
             />
           </div>
-          <div className='md:hidden mt-2'>
+          <div className='md:hidden mt-4 '>
             <MatchScheduleCard
               schedule={competition.schedule}
             />
@@ -407,26 +407,25 @@ export default function Competition({ competition, preview }) {
                                 && (
                                   <>
                                     {!competition.matchScores?.length ? <div className='text-center py-5 italic'>Waiting for first result</div> :
-                                      <section>
-                                        <div>
-                                          <div className='hidden container md:block'>
-                                            <MatchResultsTable
-                                              is_superuser={userRoles?.superuser}
-                                              deleteMatch={deleteResult}
-                                              results={
-                                                competition.matchScores
-                                              }
-                                            />
-                                          </div>
-                                          <div className='md:hidden mt-4 '>
-                                            <MatchResultsCard
-                                              is_superuser={userRoles?.superuser}
-                                              deleteMatch={deleteResult}
-                                              results={competition.matchScores}
-                                            />
-                                          </div>
+                                      <div>
+                                        <div className='hidden container md:block'>
+                                          <MatchResultsTable
+                                            is_superuser={userRoles?.superuser}
+                                            deleteMatch={deleteResult}
+                                            results={
+                                              competition.matchScores
+                                            }
+                                          />
                                         </div>
-                                      </section>}
+                                        <div className='md:hidden mt-4 '>
+                                          <MatchResultsCard
+                                            is_superuser={userRoles?.superuser}
+                                            deleteMatch={deleteResult}
+                                            results={competition.matchScores}
+                                          />
+                                        </div>
+                                      </div>
+                                    }
                                   </>)
                               }
 

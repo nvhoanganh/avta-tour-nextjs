@@ -11,7 +11,7 @@ export default function MatchScheduleCard({ schedule }) {
 
   return (
     <>
-      <div className='sticky py-2 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center'>
+      <div className='sticky py-2 mb-5 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center'>
         <input type="text"
           className="border px-2 py-1 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full mx-3 ease-linear transition-all duration-150"
           placeholder="Search by name/nickname"
