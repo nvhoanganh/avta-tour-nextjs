@@ -26,7 +26,7 @@ export default function MatchScheduleCard({ schedule }) {
             {getSchedules(schedule[court], filter).map((match, index) => (
               <div key={match.id} className={`relative flex min-w-0 break-words rounded mb-3 xl:mb-0 shadow bg-${GroupsColours[match.group]}-50`}>
                 <div className={`flex pl-2 pt-1 font-bold tex-xl text-${GroupsColours[match.group]}-600`} >{match.group}
-                  <span className="text-sm">{index + 1}</span>
+                  <span className="text-sm">{match.matchOrder + 1}</span>
                 </div>
                 <div className="flex-auto py-2">
                   <div className="flex flex-wrap">
