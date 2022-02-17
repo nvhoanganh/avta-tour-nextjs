@@ -20,7 +20,7 @@ export default function MatchScheduleCard({ schedule }) {
       </div>
 
       {Object.keys(schedule).sort().map((court) => (
-        <div className='flex flex-wrap'>
+        <div key={court} className='flex flex-wrap'>
           <div className="text-bold text-xl text-center py-3">{court}</div>
           <div className='w-full lg:w-6/12 xl:w-3/12'>
             {getSchedules(schedule[court], filter).map((match, index) => (
