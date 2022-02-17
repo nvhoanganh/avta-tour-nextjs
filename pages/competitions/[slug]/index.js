@@ -75,7 +75,7 @@ export default function Competition({ competition, preview }) {
   }
 
   const allocateTeamsToGroups = async () => {
-    const teamsInEachGroup = prompt('Enter number of teams per group (e.g. 4)');
+    const teamsInEachGroup = prompt('Enter Minimum number of teams per group (e.g. 4)');
     if (!teamsInEachGroup || parseInt(teamsInEachGroup) <= 1) {
       alert('Please enter a number larger than 1');
       return;
