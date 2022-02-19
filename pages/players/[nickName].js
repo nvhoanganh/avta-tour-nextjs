@@ -293,6 +293,15 @@ export default function Player({ player, preview }) {
 														</a>
 													}
 
+													{
+														!player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === NOT_LOGGEDIN_UNCLAIMED) && user
+														&&
+														<a className='text-red-600'
+														>
+															This player has no mobile number configured. If you're trying to claim this player's profile, contact our administrators and get your mobile number added first.
+														</a>
+													}
+
 
 													{
 														playerStatus === CLAIMED_BY_ME
