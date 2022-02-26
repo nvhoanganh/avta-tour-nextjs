@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
+import PlayerWithIcon from '../../components/PlayerWithIcon';
 import {
   getPlayerById,
   score,
@@ -79,11 +80,12 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
 
   const player1 = watch('player1');
   const player2 = watch('player2');
+  const selectedPlayer1 = watch('selectedPlayer1');
+  const selectedPlayer2 = watch('selectedPlayer2');
 
   const isValid = () => {
     return !!player1 && !!player2
   }
-
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,6 +93,9 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
           <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
             Apply for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
+          </h6>
+          <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
+            Total Point:
           </h6>
           <div className="flex flex-wrap">
 
@@ -100,13 +105,20 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                   Player 1
                 </label>
 
-                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Start typing to search.." />
+                {!selectedPlayer1 ?
+                  <>
+                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Start typing to search.." />
 
-                <div className='flex flex-col space-y-2 py-5'>
-                  {getPlayers(players, 'Point', player1).map((player) => (
-                    <div>Player {player.nickName}</div>
-                  ))}
-                </div>
+                    <div className='flex flex-wrap justify-center pt-5'>
+                      <div className='grid grid-cols-2 gap-y-20 mb-32'>
+                        {getPlayers(players, 'Point', player1).map((player) => (
+                          <PlayerWithIcon player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer1', player)} />
+                        ))}
+                      </div>
+                    </div>
+                  </> :
+                  <PlayerWithIcon player={selectedPlayer1} size="md" />
+                }
               </div>
             </div>
 
@@ -116,13 +128,20 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                   Player 2
                 </label>
 
-                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Start typing to search.." />
+                {!selectedPlayer2 ?
+                  <>
+                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Start typing to search.." />
 
-                <div className='flex flex-col space-y-2 py-5'>
-                  {getPlayers(players, 'Point', player2).map((player) => (
-                    <div>Player {player.nickName}</div>
-                  ))}
-                </div>
+                    <div className='flex flex-wrap justify-center pt-5'>
+                      <div className='grid grid-cols-2 gap-y-20 mb-32'>
+                        {getPlayers(players, 'Point', player2).map((player) => (
+                          <PlayerWithIcon player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer2', player)} />
+                        ))}
+                      </div>
+                    </div>
+                  </> :
+                  <PlayerWithIcon player={selectedPlayer2} size="md" />
+                }
               </div>
             </div>
           </div>
