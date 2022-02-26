@@ -14,19 +14,22 @@ import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
 import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import SubmitScoreForm from '../../../components/Cards/SubmitScore';
+import ApplyForCompForm from '../../../components/Cards/Apply';
 import SendOtp from '../../../components/sendotp';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
+import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
+import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 
 
-export default function Apply({ competition, preview }) {
+export default function Apply({ competition, allPlayers, preview }) {
   const router = useRouter();
   const { user, loadingAuth } = useFirebaseAuth();
   const [userRole, setUserRole] = useState(null);
+
+  console.log("🚀 ~ file: apply.js ~ line 28 ~ Apply ~ allPlayers", allPlayers)
 
   const goback = () => {
     router.push(`/competitions/${router.query.slug}`);
@@ -140,7 +143,7 @@ export default function Apply({ competition, preview }) {
                         loadingAuth
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <div>Apply now</div>
+                          <ApplyForCompForm competition={competition} players={allPlayers}></ApplyForCompForm>
                       }
                     </div>
                   </div>
@@ -156,10 +159,14 @@ export default function Apply({ competition, preview }) {
 export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
 
+  let allPlayers = (await getAllPlayers(preview)) ?? [];
+  allPlayers = await mergeUsersAndPlayersData(allPlayers);
+
   return {
     props: {
       preview,
       competition: data,
+      allPlayers
     },
     revalidate: 60
   };
