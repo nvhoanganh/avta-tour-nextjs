@@ -138,6 +138,9 @@ export default function Login() {
 													{reason === 'claimprofile'
 														&& 'You need to login before you can claim player profile'
 													}
+													{reason === 'apply'
+														&& 'You will need to login to apply'
+													}
 													{reason === 'messagemember'
 														&& 'You need to login before we can show player contact details'
 													}
