@@ -20,6 +20,24 @@ Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
 X-REQUEST-TYPE: GraphQL
 
 query {
+  rulesCollection(where: { sys: { id: "3ic20LuQ7B8HjFiWMfU28v" } }, preview: false) {
+    items {
+      sys { id }
+      name
+      rule {
+        json
+      }
+    }
+  }
+}
+
+###
+POST https://graphql.contentful.com/content/v1/spaces/{{$dotenv CONTENTFUL_SPACE_ID}}
+Content-Type: application/json
+Authorization: Bearer {{$dotenv CONTENTFUL_ACCESS_TOKEN}}
+X-REQUEST-TYPE: GraphQL
+
+query {
   playerCollection(order: avtaPoint_DESC, preview: false) {
     items {
       fullName

@@ -6,6 +6,7 @@ import TeamAvatar from '../../components/TeamAvatarNoLink';
 import TeamCard from './TeamCard';
 import cn from 'classnames';
 import DropDown from '../../components/dropdown';
+import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
@@ -32,7 +33,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function ApplyForCompetition({ competition, players }) {
+export default function ApplyForCompetition({ competition, players, rule }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [registeredTeam, setRegisteredTeam] = useState(null);
@@ -88,7 +89,7 @@ export default function ApplyForCompetition({ competition, players }) {
       {
         !registeredTeam &&
         <ApplyForCompForm onSubmit={onSubmit} saving={saving}
-          competition={competition} players={avaiPlayers} />
+          competition={competition} players={avaiPlayers} rule={rule} />
       }
 
       {registeredTeam &&
@@ -118,9 +119,10 @@ export default function ApplyForCompetition({ competition, players }) {
   );
 }
 
-function ApplyForCompForm({ onSubmit, competition, saving, players }) {
+function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 
+  const agreed = watch('agreed');
   const player1 = watch('player1');
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
@@ -130,6 +132,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
     return !!selectedPlayer1 && !!selectedPlayer2 &&
       selectedPlayer1?.sys?.id !== selectedPlayer2?.sys?.id
       && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= competition.maxPoint
+      && !!agreed
   }
 
   return (
@@ -200,6 +203,28 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
           <div className="flex flex-wrap pt-16">
             <div className="w-full lg:w-12/12 px-4">
               <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
+                <div>
+                  <PostBody content={rule} />
+                </div>
+                <div>
+                  <label className='inline-flex items-center cursor-pointer'>
+                    <input
+                      type='checkbox'
+                      {...register("agreed", { required: true })}
+                      className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
+                    />
+                    <span className='ml-2 text-sm font-semibold text-gray-600'>
+                      I have read terms and conditions
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap pt-16">
+            <div className="w-full lg:w-12/12 px-4">
+              <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
                 {
                   isValid() && <SaveButton saving={saving} className="w-full sm:w-32"
                     type="submit">Submit</SaveButton>
@@ -213,6 +238,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </form >);
