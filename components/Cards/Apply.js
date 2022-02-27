@@ -27,6 +27,7 @@ import 'react-toastify/dist/ReactToastify.css';
 export default function ApplyForCompetition({ competition, players }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [avaiPlayers, setAvaiPlayers] = useState(players);
 
   const onSubmit = async data => {
     setSaving(true)
@@ -54,6 +55,21 @@ export default function ApplyForCompetition({ competition, players }) {
     router.push(`/competitions/${router.query.slug}`);
   };
 
+  useEffect(async () => {
+    if (competition) {
+      const q = query(collection(db, "competition_applications"), where("competitionId", "==", competition?.sys?.id));
+
+      const querySnapshot = await getDocs(q);
+      const registeredTeams = querySnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+
+      const avaiPlayers = players.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id));
+      setAvaiPlayers(avaiPlayers);
+    }
+  }, [competition]);
+
   return (
     <>
       <ToastContainer />
@@ -61,7 +77,7 @@ export default function ApplyForCompetition({ competition, players }) {
         saving
           ? <><div className="text-center py-24"><Spinner size="lg" color="blue" /> Loading...</div> :</>
           : <ApplyForCompForm onSubmit={onSubmit} saving={saving}
-            competition={competition} players={players} />
+            competition={competition} players={avaiPlayers} />
       }
 
     </>
@@ -107,7 +123,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                 {!selectedPlayer1 ?
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Search by name, point or club" />
-                    <div className="text-gray-400 text-sm italic text-center">Showing only players with Max Point: {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
+                    <div className="text-gray-400 text-sm py-2 italic text-center">Available players with Point less than {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
                         {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)).map((player) => (
@@ -131,7 +147,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Search by name, point or club" />
 
-                    <div className="text-gray-400 text-sm italic text-center">Showing only players with Max Point: {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}</div>
+                    <div className="text-gray-400 text-sm py-2 italic text-center">Available players with Point less than {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}:</div>
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
                         {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)).map((player) => (
