@@ -21,13 +21,14 @@ import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
-import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 
 
 export default function Apply({ competition, allPlayers, preview }) {
   const router = useRouter();
   const { user, loadingAuth } = useFirebaseAuth();
   const [userRole, setUserRole] = useState(null);
+  const [applicationState, setApplicationState] = useState(null);
+  const [paymentError, setPaymentError] = useState(null);
 
   const goback = () => {
     router.push(`/competitions/${router.query.slug}`);
@@ -53,6 +54,34 @@ export default function Apply({ competition, allPlayers, preview }) {
       }
     }
   }, [user, loadingAuth]);
+
+  useEffect(async () => {
+    // Check to see if this is a redirect back from Checkout
+    // http://localhost:3000/competitions/kingsbury-1400-may-2022/postpayment?success=true&session_id=cs_test_a1k5mSjpfGcc5oMhTrhv57EYOhPzgKOhOAqEZz9ox4r6KyIxkct08ykPJn&applicationId=PagSnS4LwEGSNVZ8FwYp
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('success')) {
+      const session_id = query.get('session_id');
+      const applicationId = query.get('applicationId');
+      return fetch(`/api/get_session?session_id=${query.get('session_id')}`)
+        .then(response => response.json())
+        .then((rsp) => {
+          if (rsp.success) {
+            setApplicationState({
+              applicationId,
+              customer: rsp.customer
+            })
+          }
+        }).catch((err) => {
+          setPaymentError('Oops! Something went wrong. Please try again');
+        });
+    }
+
+    // http://localhost:3000/competitions/kingsbury-1400-may-2022/postpayment?canceled=true&session_id=cs_test_a1k5mSjpfGcc5oMhTrhv57EYOhPzgKOhOAqEZz9ox4r6KyIxkct08ykPJn&applicationId=PagSnS4LwEGSNVZ8FwYp
+    if (query.get('canceled')) {
+      setPaymentError('It looks like you click Cancelled button. Please try again');
+    }
+  }, []);
+
 
   return (
     <Layout preview={false}>
@@ -122,10 +151,36 @@ export default function Apply({ competition, allPlayers, preview }) {
                     </div>
                     <div className='mt-24'>
                       {
-                        loadingAuth
-                          ?
-                          <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <ApplyForCompForm competition={competition} players={allPlayers}></ApplyForCompForm>
+                        loadingAuth && <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div>
+                      }
+
+                      {
+                        applicationState && <div className='mb-8 text-center'>
+                          <p className="uppercase py-2 h1">Payment Received</p>
+                          <p className="text-gray-400 text-sm pb-6">Thanks {applicationState?.customer?.name}!</p>
+                          <p className="text-gray-400 text-sm pb-6">We have received payment for your application (Ref Id: {applicationState?.applicationId})</p>
+
+                          <Link href={`/competitions/${competition.slug}`}>
+                            <a
+                              className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'
+                            >
+                              Go Back to Competition
+                            </a></Link>
+                        </div>
+                      }
+
+                      {
+                        paymentError && <div className='mb-8 text-center'>
+                          <p className="uppercase py-2 h1 text-red-500">Payment Error</p>
+                          <p className="text-gray-400 text-sm py-8">{paymentError}!</p>
+
+                          <Link href={`/competitions/${competition.slug}`}>
+                            <a
+                              className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'
+                            >
+                              Go Back to Competition
+                            </a></Link>
+                        </div>
                       }
                     </div>
                   </div>
@@ -141,14 +196,10 @@ export default function Apply({ competition, allPlayers, preview }) {
 export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
 
-  let allPlayers = (await getAllPlayers(preview)) ?? [];
-  allPlayers = await mergeUsersAndPlayersData(allPlayers);
-
   return {
     props: {
       preview,
       competition: data,
-      allPlayers
     },
     revalidate: 60
   };
@@ -157,7 +208,7 @@ export async function getStaticProps({ params, preview = false }) {
 export async function getStaticPaths() {
   const all = await getAllCompetitionsForHome();
   return {
-    paths: all?.map(({ slug }) => `/competitions/${slug}/apply`) ?? [],
+    paths: all?.map(({ slug }) => `/competitions/${slug}/postpayment`) ?? [],
     fallback: true,
   };
 }

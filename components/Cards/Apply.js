@@ -3,6 +3,7 @@ import { format } from 'date-fns'
 import Link from 'next/link'
 import PostTitle from '../../components/post-title';
 import TeamAvatar from '../../components/TeamAvatarNoLink';
+import TeamCard from './TeamCard';
 import cn from 'classnames';
 import DropDown from '../../components/dropdown';
 import SaveButton from '../../components/savebutton';
@@ -11,6 +12,7 @@ import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
 import PlayerWithIcon from '../../components/PlayerWithIcon';
+import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
 import {
   getPlayerById,
@@ -24,14 +26,20 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+);
+
 export default function ApplyForCompetition({ competition, players }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
 
   const onSubmit = async data => {
     setSaving(true)
-    toast("Application submitted!");
 
     data = {
       competitionId: competition?.sys?.id,
@@ -47,12 +55,16 @@ export default function ApplyForCompetition({ competition, players }) {
       player2: data.selectedPlayer2,
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
+      paid: false,
     };
 
     const docRef = await addDoc(collection(db, "competition_applications"), data);
     setSaving(false);
-    // go back
-    router.push(`/competitions/${router.query.slug}`);
+
+    setRegisteredTeam({
+      id: docRef.id,
+      ...data
+    });
   };
 
   useEffect(async () => {
@@ -74,12 +86,34 @@ export default function ApplyForCompetition({ competition, players }) {
     <>
       <ToastContainer />
       {
-        saving
-          ? <><div className="text-center py-24"><Spinner size="lg" color="blue" /> Loading...</div> :</>
-          : <ApplyForCompForm onSubmit={onSubmit} saving={saving}
-            competition={competition} players={avaiPlayers} />
+        !registeredTeam &&
+        <ApplyForCompForm onSubmit={onSubmit} saving={saving}
+          competition={competition} players={avaiPlayers} />
       }
 
+      {registeredTeam &&
+        <>
+          <form action={`/api/checkout_sessions?applicationId=${registeredTeam.id}&competition=${router.query.slug}`} method="POST"
+            className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
+          >
+            <p className="uppercase py-2 h1">Application received</p>
+
+            <div className="form-group w-96 py-3">
+              <TeamCard team={registeredTeam} />
+            </div>
+
+            <p className="text-gray-400 text-sm pb-6">Application Id: {registeredTeam.id}</p>
+            <p className="text-gray-400 text-sm pb-6">Status: <strong>Not Paid</strong></p>
+            <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200">
+              Pay ${competition.costPerTeam}.00 now using Stripe
+            </button>
+
+            <p className="pt-3 pb-6 text-gray-400 text-sm">Note: Payment is required to guarantee your spot</p>
+          </form>
+        </>
+      }
     </>
   );
 }
@@ -100,10 +134,10 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative flex flex-col min-w-0 break-words w-full mb-6  border-0">
+      <div className="relative flex flex-col min-w-0 break-words w-full mb-6 border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
           <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
-            Applying for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
+            Application Form - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
           </h6>
           <h6 className="text-lg mt-3 mb-6 text-center">
             Current Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> -
@@ -163,55 +197,23 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
             </div>
           </div>
 
-          <div className="flex flex-wrap pt-10">
+          <div className="flex flex-wrap pt-16">
             <div className="w-full lg:w-12/12 px-4">
-              <div className="relative w-full mb-3 text-left lg:text-right">
+              <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
                 {
                   isValid() && <SaveButton saving={saving} className="w-full sm:w-32"
-                    type="submit">Apply</SaveButton>
+                    type="submit">Submit</SaveButton>
                 }
+
+                <Link href={`/competitions/${competition.slug}`}><a
+                  className='bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center'
+                >
+                  Cancel
+                </a></Link>
               </div>
             </div>
           </div>
         </div>
       </div>
     </form >);
-}
-
-
-function TeamCard({ team, onSelect }) {
-  const players = {
-    player1: team.players[0],
-    player2: team.players[1],
-  };
-
-  return (<div
-    className='relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg cursor-pointer hover:bg-gray-100'
-    onClick={() => onSelect && onSelect(team)}
-  >
-    <div className="flex-auto p-4">
-      <div className="flex flex-wrap ">
-        <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-          <div
-            className=
-            'font-bold flex space-x-1 text-gray-600 '
-          >
-            <span>{team.name}</span>
-          </div>
-          <div
-            className=
-            'text-gray-600 '
-          >
-            {players.player1.homeClub || 'Unknown Club'}
-          </div>
-          <div className='text-sm text-gray-600 flex space-x-2'>
-            <span className='text-green-600'>{players.player1.avtaPoint + players.player2.avtaPoint} pt.</span>
-          </div>
-        </div>
-        <div className="relative w-auto pl-4 flex-initial flex">
-          <TeamAvatar team={players} disableLink />
-        </div>
-      </div>
-    </div>
-  </div>)
 }
