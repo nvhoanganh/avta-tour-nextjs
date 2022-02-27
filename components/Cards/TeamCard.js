@@ -17,8 +17,16 @@ export default function TeamCard({
           </div>
           <div className='text-sm text-gray-600 flex space-x-2'>
             <span className='text-green-600'>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
-
+            {!team.paidOn && (<form action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}`} method="POST"
+              className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
+            >
+              <button type="submit" className='text-sm text-red-600 flex space-x-2 hover:underline hover:cursor-pointer font-bold'>
+                Pay Now
+              </button>
+            </form>)
+            }
           </div>
+
         </div>
         <div className="relative w-auto pl-4 flex-initial flex">
           <TeamAvatar team={team} />
