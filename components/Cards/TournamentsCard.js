@@ -24,7 +24,7 @@ export default function TournamentsCard({ color, competitions }) {
 							statPercent={comp.maxPoint + ' pt.'}
 							statPercentColor='text-emerald-500'
 							statDescripiron={
-								comp.teamsCollection?.items.length + ' Teams'
+								(comp.teamsCollection?.items.length || comp.appliedTeams?.length) + ' Teams'
 							}
 							statIconName={
 								comp.active

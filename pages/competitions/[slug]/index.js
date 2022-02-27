@@ -104,7 +104,7 @@ export default function Competition({ competition, preview }) {
   }, [user]);
 
   const hasResults = competition?.matchScores?.length > 0;
-  const teamJoined = competition?.appliedTeams?.length || 0;
+  const teamJoined = competition?.appliedTeams?.length || competition?.teams?.length || 0;
 
   const viewTeams = () => {
     const teams = document.getElementById("teams");
@@ -177,7 +177,14 @@ export default function Competition({ competition, preview }) {
       team.player1.avtaPoint +
       team.player2.avtaPoint
     );
-  }, 0);
+  }, 0)
+    || competition?.teams?.reduce((previousTotal, team) => {
+      return (
+        previousTotal +
+        team.players[0].avtaPoint +
+        team.players[1].avtaPoint
+      );
+    }, 0);
 
   return (
     <Layout preview={preview}>

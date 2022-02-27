@@ -9,6 +9,7 @@ import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
 import { getAllCompetitionsForHome } from '../../lib/api';
+import { getAppliedTeamsForComps } from '../../lib/backendapi';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
@@ -59,7 +60,15 @@ export default function Competitions({ competitions, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const data = await getAllCompetitionsForHome(preview);
+	let data = await getAllCompetitionsForHome(preview);
+	const teams = await getAppliedTeamsForComps(data.map(c => c.sys.id));
+	data = data.map(comp => {
+		return {
+			...comp,
+			appliedTeams: teams.filter(x => x.competitionId === comp.sys.id)
+		}
+	});
+
 	return {
 		props: {
 			preview,

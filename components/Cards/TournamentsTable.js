@@ -9,6 +9,13 @@ import ContentfulImage from '../contentful-image';
 import TableDropdown from '../Dropdowns/TableDropdown.js';
 
 export default function TournamentsTable({ color, competitions }) {
+	const getPercentageRegistered = (comp) => (
+		(comp.teamsCollection?.items.length || comp.appliedTeams?.length) /
+		(comp.minimumNumberOfTeams || 16)) * 100;
+
+	const getNumberOfRegistered = (comp) => (
+		comp.teamsCollection?.items.length || comp.appliedTeams?.length);
+
 	return (
 		<>
 			<div
@@ -53,16 +60,6 @@ export default function TournamentsTable({ color, competitions }) {
 									}
 								>
 									Status
-								</th>
-								<th
-									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
-										(color === 'light'
-											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
-									}
-								>
-									Players
 								</th>
 								<th
 									className={
@@ -133,35 +130,10 @@ export default function TournamentsTable({ color, competitions }) {
 										{comp.active ? 'Open' : 'Completed'}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										<div className='flex'>
-											<img
-												src='https://via.placeholder.com/64'
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-blueGray-50 shadow'
-											></img>
-											<img
-												src='https://via.placeholder.com/64'
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4'
-											></img>
-											<img
-												src='https://via.placeholder.com/64'
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4'
-											></img>
-											<img
-												src='https://via.placeholder.com/64'
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4'
-											></img>
-										</div>
-									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<div className='flex items-center'>
 											<span className='mr-2'>
 												{
-													comp.teamsCollection?.items
-														.length
+													getNumberOfRegistered(comp)
 												}{' '}
 												Teams
 											</span>
@@ -171,12 +143,7 @@ export default function TournamentsTable({ color, competitions }) {
 														<div
 															style={{
 																width:
-																	(comp
-																		.teamsCollection
-																		?.items
-																		.length /
-																		16) *
-																		100 +
+																	getPercentageRegistered(comp) +
 																	'%',
 															}}
 															className='shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500'
