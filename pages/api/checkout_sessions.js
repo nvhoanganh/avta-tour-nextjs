@@ -8,8 +8,7 @@ export default async function handler(req, res) {
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
-            // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
-            price: 'price_1KXlwrBPoOGe9JMqsiZbW69S',
+            price: process.env.STRIPE_PRICE,
             quantity: 1,
           },
         ],
