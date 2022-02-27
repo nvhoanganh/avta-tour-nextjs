@@ -146,12 +146,20 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <h6 className=" text-3xl uppercase mt-3 mb-8 text-center">
+          <h6 className=" text-3xl uppercase mt-3 text-center">
             Application Form
           </h6>
-          <p className="text-gray-400 text-sm mt-3 mb-6 text-center">{format(new Date(competition.date), 'LLLL	d, yyyy')} @ {competition.club}</p>
+          <p className="text-gray-400 text-sm text-center mb-12">
+            <Link href={`/competitions/${competition.slug}`}><a
+              className='underline ml-2'
+            >
+              Go Back
+            </a></Link>
+          </p>
+          <p className="text-gray-400 text-sm mt-3 mb-6 text-center">{format(new Date(competition.date), 'LLLL	d, yyyy')} @ {competition.club}
+          </p>
           <h6 className="text-sm mt-3 mb-14 text-center">
-            Current/Avail. Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
+            Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
           </h6>
           {selectedPlayer1 && selectedPlayer2
             && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
@@ -161,7 +169,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Player 1
+                  {selectedPlayer1?.sys?.id === linkedPlayerId ? 'Player 1 (You)' : 'Player 1'}
                 </label>
 
                 {!selectedPlayer1 ?
@@ -184,7 +192,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
             <div className="w-full lg:w-6/12 px-4 mt-8 sm:mt-0">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Player 2
+                  {selectedPlayer2?.sys?.id === linkedPlayerId ? 'Player 2 (You)' : 'Player 2'}
                 </label>
 
                 {!selectedPlayer2 ?
