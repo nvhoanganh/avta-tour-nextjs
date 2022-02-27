@@ -15,12 +15,7 @@ export default function TeamsCard({ color, teams }) {
 		<>
 			<div className='grid grid-cols-1 md:grid-cols-3 md:gap-x-10 lg:gap-x-16 gap-y-5 mb-32'>
 				{teams.map((t) => {
-					const team = {
-						player1: t.players[0],
-						player2: t.players[1],
-					};
-
-					return (<div key={t.name} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
+					return (<div key={t.id} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
 						<div className="flex-auto p-4">
 							<div className="flex flex-wrap ">
 								<div className="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -28,20 +23,20 @@ export default function TeamsCard({ color, teams }) {
 										className=
 										'font-bold flex space-x-1 text-gray-600 '
 									>
-										<span>{t.name}</span>
+										<span>{t.player1.fullName} &amp; {t.player2.fullName} </span>
 									</div>
 									<div
 										className=
 										'text-gray-600 '
 									>
-										{team.player1.homeClub || 'Unknown Club'}
+										{t.player1.homeClub || t.player2.homeClub || 'Unknown Club'}
 									</div>
 									<div className='text-sm text-gray-600 flex space-x-2'>
-										<span className='text-green-600'>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
+										<span className='text-green-600'>{t.player1.avtaPoint + t.player2.avtaPoint} pt.</span>
 									</div>
 								</div>
 								<div className="relative w-auto pl-4 flex-initial flex">
-									<TeamAvatar team={team} />
+									<TeamAvatar team={t} />
 								</div>
 							</div>
 						</div>

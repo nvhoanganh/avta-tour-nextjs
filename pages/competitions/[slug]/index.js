@@ -16,7 +16,7 @@ import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding } from '../../../lib/api';
-import { getCompResults, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
+import { getCompResults, getAppliedTeams, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
 import { getAllGroupMatches, exportGroupsAllocation, getCompGroups } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
@@ -104,7 +104,7 @@ export default function Competition({ competition, preview }) {
   }, [user]);
 
   const hasResults = competition?.matchScores?.length > 0;
-  const teamJoined = competition?.teams?.length || 0;
+  const teamJoined = competition?.appliedTeams?.length || 0;
 
   const viewTeams = () => {
     const teams = document.getElementById("teams");
@@ -171,11 +171,11 @@ export default function Competition({ competition, preview }) {
     }, 100);
   }
 
-  const totalPoints = competition?.teams?.reduce((previousTotal, team) => {
+  const totalPoints = competition?.appliedTeams?.reduce((previousTotal, team) => {
     return (
       previousTotal +
-      team.players[0].avtaPoint +
-      team.players[1].avtaPoint
+      team.player1.avtaPoint +
+      team.player2.avtaPoint
     );
   }, 0);
 
@@ -453,13 +453,13 @@ export default function Competition({ competition, preview }) {
                               )}
                             </div>
 
-                            {competition.teams?.length && !competition?.groupsAllocation &&
+                            {competition.appliedTeams?.length && !competition?.groupsAllocation &&
                               < section >
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
                                 <div className='mt-10'>
                                   <TeamsCard
                                     teams={
-                                      competition.teams
+                                      competition.appliedTeams
                                     }
                                   />
                                 </div>
@@ -508,6 +508,7 @@ export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
 
   const matchScores = await getCompResults(data.sys.id);
+  const appliedTeams = await getAppliedTeams(data.sys.id);
   const schedule = await getCompSchedule(data.sys.id);
   const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
 
@@ -515,6 +516,7 @@ export async function getStaticProps({ params, preview = false }) {
     ...data,
     matchScores,
     schedule,
+    appliedTeams,
     groupsAllocation: groupsAllocation,
     groupResult: getGroupStageStanding(matchScores || [], groupsAllocation || {})
   };
