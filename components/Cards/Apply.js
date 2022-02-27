@@ -168,7 +168,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
           <div className="flex flex-wrap">
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
-                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password" id="player1">
                   {selectedPlayer1?.sys?.id === linkedPlayerId ? 'Player 1 (You)' : 'Player 1'}
                 </label>
 
@@ -179,7 +179,13 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
                         {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)).map((player) => (
-                          <PlayerCard player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer1', player)} />
+                          <PlayerCard player={player} key={player.sys.id} size="md" showSelect onSelect={(player) => {
+                            setValue('selectedPlayer1', player);
+                            setTimeout(() => {
+                              const lbl = document.getElementById("player1");
+                              lbl && lbl.scrollIntoView();
+                            }, 100);
+                          }} />
                         ))}
                       </div>
                     </div>
@@ -203,7 +209,14 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
                         {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)).map((player) => (
-                          <PlayerCard player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer2', player)} />
+                          <PlayerCard player={player} size="md" key={player.sys.id} showSelect onSelect={(player) => {
+                            setValue('selectedPlayer2', player);
+                            setTimeout(() => {
+                              const lbl = document.getElementById("rule");
+                              lbl && lbl.scrollIntoView();
+                            }, 100);
+
+                          }} />
                         ))}
                       </div>
                     </div>
@@ -216,7 +229,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
 
           <div className="flex flex-wrap pt-16">
             <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
-              <div>
+              <div id="rule">
                 <PostBody content={rule} />
               </div>
               <div>
