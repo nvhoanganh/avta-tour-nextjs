@@ -110,7 +110,7 @@ export default function ApplyForCompetition({ competition, players }) {
               Pay ${competition.costPerTeam}.00 now using Stripe
             </button>
 
-            <p className="pt-3 pb-6 text-gray-400 text-sm">Note: Payment is required to guarantee your spot</p>
+            <p className="pt-3 pb-6 text-gray-400 text-sm">Note: You will be taken to checkout.stripe.com to make this payment</p>
           </form>
         </>
       }
