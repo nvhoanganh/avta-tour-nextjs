@@ -29,8 +29,6 @@ export default function Apply({ competition, allPlayers, preview }) {
   const { user, loadingAuth } = useFirebaseAuth();
   const [userRole, setUserRole] = useState(null);
 
-  console.log("🚀 ~ file: apply.js ~ line 28 ~ Apply ~ allPlayers", allPlayers)
-
   const goback = () => {
     router.push(`/competitions/${router.query.slug}`);
   }

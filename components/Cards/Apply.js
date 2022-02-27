@@ -30,7 +30,7 @@ export default function ApplyForCompetition({ competition, players }) {
 
   const onSubmit = async data => {
     setSaving(true)
-    toast("Result submitted!");
+    toast("Application submitted!");
 
     data = {
       competitionId: competition?.sys?.id,
@@ -42,24 +42,16 @@ export default function ApplyForCompetition({ competition, players }) {
       active: competition?.active,
       timestamp: (new Date()),
 
-      stage: data.stage,
-      gameWonByLoser: data.gameWonByLoser,
-      stage: data.stage,
-      knockoutRound: data.knockoutRound || '',
-      group: data.group || '',
-      losers: data.selectedLoser,
-      winners: data.selectedWinner,
-      loserTeamId: data.selectedLoser.sys.id,
-      winnerTeamId: data.selectedWinner.sys.id,
-      loser1: data.selectedLoser.players[0].sys.id,
-      loser2: data.selectedLoser.players[1].sys.id,
-      winner1: data.selectedWinner.players[0].sys.id,
-      winner2: data.selectedWinner.players[1].sys.id,
+      player1: data.selectedPlayer1,
+      player2: data.selectedPlayer2,
+      player1Id: data.selectedPlayer1.sys.id,
+      player2Id: data.selectedPlayer2.sys.id,
     };
 
-    const docRef = await addDoc(collection(db, "competition_results"), data);
-
-    setSaving(false)
+    const docRef = await addDoc(collection(db, "competition_applications"), data);
+    setSaving(false);
+    // go back
+    router.push(`/competitions/${router.query.slug}`);
   };
 
   return (
