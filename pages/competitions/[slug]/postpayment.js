@@ -175,7 +175,7 @@ export default function Apply({ competition, allPlayers, preview }) {
                           <p className="uppercase py-2 h1 text-red-500">Payment Error</p>
                           <p className="text-gray-400 text-sm py-8">{paymentError}!</p>
 
-                          <Link href={`/competitions/${competition.slug}`}>
+                          <Link href={`/competitions/${competition.slug}?view=teams`}>
                             <a
                               className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'
                             >
