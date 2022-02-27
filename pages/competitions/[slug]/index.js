@@ -465,6 +465,7 @@ export default function Competition({ competition, preview }) {
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
                                 <div className='mt-10'>
                                   <TeamsCard
+                                    is_superuser={userRoles?.superuser}
                                     teams={
                                       competition.appliedTeams
                                     }

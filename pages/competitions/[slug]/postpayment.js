@@ -68,7 +68,7 @@ export default function Apply({ competition, allPlayers, preview }) {
           if (rsp.success) {
             setApplicationState({
               applicationId,
-              customer: rsp.customer
+              ...rsp
             })
           }
         }).catch((err) => {
@@ -158,7 +158,8 @@ export default function Apply({ competition, allPlayers, preview }) {
                         applicationState && <div className='mb-8 text-center'>
                           <p className="uppercase py-2 h1">Payment Received</p>
                           <p className="text-gray-400 text-sm pb-6">Thanks {applicationState?.customer?.name}!</p>
-                          <p className="text-gray-400 text-sm pb-6">We have received payment for your application (Ref Id: {applicationState?.applicationId})</p>
+                          <p className="text-gray-400 text-sm pb-6">We have received ${applicationState.amount_total / 100}.00 for your application</p>
+                          <p className="text-gray-400 text-sm pb-6">Ref Id: {applicationState?.applicationId}</p>
 
                           <Link href={`/competitions/${competition.slug}`}>
                             <a
