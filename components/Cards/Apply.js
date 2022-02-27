@@ -83,11 +83,11 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
   const selectedPlayer2 = watch('selectedPlayer2');
-  console.log("🚀 ~ file: Apply.js ~ line 85 ~ ApplyForCompForm ~ selectedPlayer2", selectedPlayer2)
-
 
   const isValid = () => {
-    return !!player1 && !!player2 && selectedPlayer1.sys.id !== selectedPlayer1.sys.id
+    return !!selectedPlayer1 && !!selectedPlayer2 &&
+      selectedPlayer1?.sys?.id !== selectedPlayer2?.sys?.id
+      && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= competition.maxPoint
   }
 
   return (
@@ -98,7 +98,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
             Apply for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
           </h6>
           <h6 className="text-lg mt-3 mb-6 text-center">
-            Total Point for Team: {((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || ''}
+            Total Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || ''}</span>
           </h6>
           {selectedPlayer1 && selectedPlayer2
             && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
@@ -114,11 +114,11 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
 
                 {!selectedPlayer1 ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Start typing to search.." />
-
+                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Search by name, point or club" />
+                    <div className="text-gray-400 text-sm italic text-center">Showing Players with Max Point: {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
-                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 mb-32'>
-                        {getPlayers(players, 'Point', player1).map((player) => (
+                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
+                        {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)).map((player) => (
                           <PlayerCard player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer1', player)} />
                         ))}
                       </div>
@@ -137,11 +137,12 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
 
                 {!selectedPlayer2 ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Start typing to search.." />
+                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Search by name, point or club" />
 
+                    <div className="text-gray-400 text-sm italic text-center">Showing Players with Max Point: {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}</div>
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
-                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 mb-32'>
-                        {getPlayers(players, 'Point', player2).map((player) => (
+                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
+                        {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)).map((player) => (
                           <PlayerCard player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer2', player)} />
                         ))}
                       </div>
@@ -156,10 +157,9 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
           <div className="flex flex-wrap pt-10">
             <div className="w-full lg:w-12/12 px-4">
               <div className="relative w-full mb-3 text-left lg:text-right">
-                <button type="button" onClick={() => reset()} className="bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">Reset</button>
                 {
                   isValid() && <SaveButton saving={saving}
-                    type="submit">Submit Score</SaveButton>
+                    type="submit">Apply</SaveButton>
                 }
               </div>
             </div>
