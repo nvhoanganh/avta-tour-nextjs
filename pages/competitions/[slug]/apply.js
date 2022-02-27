@@ -20,7 +20,7 @@ import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
+import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug, getRulebyId } from '../../../lib/api';
 import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 
 
@@ -144,10 +144,15 @@ export async function getStaticProps({ params, preview = false }) {
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
 
+  // to do we might need to create a different one here
+  const rule = await getRulebyId('3Ktsd6k62IWkqwrqQq1qXz');
+  console.log("🚀 ~ file: apply.js ~ line 149 ~ getStaticProps ~ rule", rule)
+
   return {
     props: {
       preview,
       competition: data,
+      rule: rule,
       allPlayers
     },
     revalidate: 60
