@@ -95,7 +95,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6  border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
           <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
-            Apply for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
+            Applying for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
           </h6>
           <h6 className="text-lg mt-3 mb-6 text-center">
             Total Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || ''}</span>
@@ -115,7 +115,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                 {!selectedPlayer1 ?
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Search by name, point or club" />
-                    <div className="text-gray-400 text-sm italic text-center">Showing Players with Max Point: {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
+                    <div className="text-gray-400 text-sm italic text-center">Showing only players with Max Point: {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
                         {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)).map((player) => (
@@ -139,7 +139,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Search by name, point or club" />
 
-                    <div className="text-gray-400 text-sm italic text-center">Showing Players with Max Point: {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}</div>
+                    <div className="text-gray-400 text-sm italic text-center">Showing only players with Max Point: {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}</div>
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
                         {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)).map((player) => (
@@ -158,7 +158,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
             <div className="w-full lg:w-12/12 px-4">
               <div className="relative w-full mb-3 text-left lg:text-right">
                 {
-                  isValid() && <SaveButton saving={saving}
+                  isValid() && <SaveButton saving={saving} className="w-full sm:w-32"
                     type="submit">Apply</SaveButton>
                 }
               </div>
