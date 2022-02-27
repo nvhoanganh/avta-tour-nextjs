@@ -123,7 +123,7 @@ export default function PlayersTable({ color, players }) {
 											'text-red-600': player.unofficialPoint,
 										})}
 									>
-										{player.avtaPoint} pt. {player.unofficialPoint ? '[Unoffical]' : ''}
+										{player.avtaPoint} pt. {player.unofficialPoint ? '[Unofficial]' : ''}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{player.homeClub || 'Unknown Club'}

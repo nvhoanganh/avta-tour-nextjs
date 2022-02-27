@@ -65,7 +65,7 @@ export default function PlayersCard({ allPlayers }) {
 											'text-red-600': x.unofficialPoint,
 										})}
 									>
-										{x.avtaPoint} {x.unofficialPoint ? '[Unoffical]' : ''}
+										{x.avtaPoint} {x.unofficialPoint ? '[Unofficial]' : ''}
 									</p>
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
 										{x.homeClub || 'Unknown Club'}

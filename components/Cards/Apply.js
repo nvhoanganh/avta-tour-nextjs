@@ -33,7 +33,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function ApplyForCompetition({ competition, players, rule }) {
+export default function ApplyForCompetition({ competition, players, rule, linkedPlayerId, userRole }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [registeredTeam, setRegisteredTeam] = useState(null);
@@ -88,8 +88,8 @@ export default function ApplyForCompetition({ competition, players, rule }) {
       <ToastContainer />
       {
         !registeredTeam &&
-        <ApplyForCompForm onSubmit={onSubmit} saving={saving}
-          competition={competition} players={avaiPlayers} rule={rule} />
+        <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
+          competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} />
       }
 
       {registeredTeam &&
@@ -119,7 +119,7 @@ export default function ApplyForCompetition({ competition, players, rule }) {
   );
 }
 
-function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
+function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 
   const agreed = watch('agreed');
@@ -127,6 +127,13 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
   const selectedPlayer2 = watch('selectedPlayer2');
+
+  useEffect(() => {
+    if (linkedPlayerId) {
+      const currentLinkedPlayer = players?.find(x => x.sys.id === linkedPlayerId);
+      setValue('selectedPlayer1', currentLinkedPlayer)
+    }
+  }, [linkedPlayerId]);
 
   const isValid = () => {
     return !!selectedPlayer1 && !!selectedPlayer2 &&
@@ -139,18 +146,18 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
-            Application Form - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
+          <h6 className=" text-3xl uppercase mt-3 mb-8 text-center">
+            Application Form
           </h6>
-          <h6 className="text-lg mt-3 mb-6 text-center">
-            Current/Remaining Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
+          <p className="text-gray-400 text-sm mt-3 mb-6 text-center">{format(new Date(competition.date), 'LLLL	d, yyyy')} @ {competition.club}</p>
+          <h6 className="text-sm mt-3 mb-14 text-center">
+            Current/Avail. Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
           </h6>
           {selectedPlayer1 && selectedPlayer2
             && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
               Select a different player
             </div>}
           <div className="flex flex-wrap">
-
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
@@ -174,7 +181,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
               </div>
             </div>
 
-            <div className="w-full lg:w-6/12 px-4">
+            <div className="w-full lg:w-6/12 px-4 mt-8 sm:mt-0">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Player 2

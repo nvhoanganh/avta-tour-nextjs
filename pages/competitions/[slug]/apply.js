@@ -28,6 +28,7 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
   const router = useRouter();
   const { user, loadingAuth } = useFirebaseAuth();
   const [userRole, setUserRole] = useState(null);
+  const [linkedPlayerId, setLinkedPlayerId] = useState(null);
 
   const goback = () => {
     router.push(`/competitions/${router.query.slug}`);
@@ -45,11 +46,16 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
         return;
       }
 
-      const docRef = doc(db, "user_roles", user.uid);
-      const docSnap = await getDoc(docRef);
+      const docSnap = await getDoc(doc(db, "user_roles", user.uid));
       if (docSnap.exists()) {
         const userRoles = docSnap.data();
         setUserRole(userRoles)
+      }
+
+      const usersSnap = await getDoc(doc(db, "users", user.uid));
+      if (usersSnap.exists()) {
+        const { playerId } = usersSnap.data();
+        setLinkedPlayerId(playerId);
       }
     }
   }, [user, loadingAuth]);
@@ -125,7 +131,7 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
                         loadingAuth
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <ApplyForCompForm competition={competition} players={allPlayers} rule={rule}></ApplyForCompForm>
+                          <ApplyForCompForm competition={competition} players={allPlayers} rule={rule} linkedPlayerId={linkedPlayerId} userRole={userRole}></ApplyForCompForm>
                       }
                     </div>
                   </div>

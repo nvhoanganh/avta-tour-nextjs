@@ -252,7 +252,7 @@ export default function Player({ player, preview }) {
 											>
 												{player.avtaPoint} pt.
 												{
-													player.unofficialPoint && <div className='text-sm pt-3'>Unoffical</div>
+													player.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
 												}
 											</div>
 										</div>
