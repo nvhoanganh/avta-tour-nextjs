@@ -11,6 +11,7 @@ import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
 import PlayerWithIcon from '../../components/PlayerWithIcon';
+import PlayerCard from '../../components/PlayerCard';
 import {
   getPlayerById,
   score,
@@ -82,9 +83,11 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
   const selectedPlayer2 = watch('selectedPlayer2');
+  console.log("🚀 ~ file: Apply.js ~ line 85 ~ ApplyForCompForm ~ selectedPlayer2", selectedPlayer2)
+
 
   const isValid = () => {
-    return !!player1 && !!player2
+    return !!player1 && !!player2 && selectedPlayer1.sys.id !== selectedPlayer1.sys.id
   }
 
   return (
@@ -94,9 +97,13 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
           <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
             Apply for {competition.maxPoint} - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
           </h6>
-          <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
-            Total Point:
+          <h6 className="text-lg mt-3 mb-6 text-center">
+            Total Point for Team: {((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || ''}
           </h6>
+          {selectedPlayer1 && selectedPlayer2
+            && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
+              Select a different player
+            </div>}
           <div className="flex flex-wrap">
 
             <div className="w-full lg:w-6/12 px-4">
@@ -109,15 +116,15 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Start typing to search.." />
 
-                    <div className='flex flex-wrap justify-center pt-5'>
-                      <div className='grid grid-cols-2 gap-y-20 mb-32'>
+                    <div className='flex flex-wrap justify-center pt-5 items-center'>
+                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 mb-32'>
                         {getPlayers(players, 'Point', player1).map((player) => (
-                          <PlayerWithIcon player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer1', player)} />
+                          <PlayerCard player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer1', player)} />
                         ))}
                       </div>
                     </div>
                   </> :
-                  <PlayerWithIcon player={selectedPlayer1} size="md" />
+                  <PlayerCard player={selectedPlayer1} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer1', null)} />
                 }
               </div>
             </div>
@@ -132,15 +139,15 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Start typing to search.." />
 
-                    <div className='flex flex-wrap justify-center pt-5'>
-                      <div className='grid grid-cols-2 gap-y-20 mb-32'>
+                    <div className='flex flex-wrap justify-center pt-5 items-center'>
+                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 mb-32'>
                         {getPlayers(players, 'Point', player2).map((player) => (
-                          <PlayerWithIcon player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer2', player)} />
+                          <PlayerCard player={player} size="md" showSelect onSelect={(player) => setValue('selectedPlayer2', player)} />
                         ))}
                       </div>
                     </div>
                   </> :
-                  <PlayerWithIcon player={selectedPlayer2} size="md" />
+                  <PlayerCard player={selectedPlayer2} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer2', null)} />
                 }
               </div>
             </div>
@@ -150,8 +157,10 @@ function ApplyForCompForm({ onSubmit, competition, saving, players }) {
             <div className="w-full lg:w-12/12 px-4">
               <div className="relative w-full mb-3 text-left lg:text-right">
                 <button type="button" onClick={() => reset()} className="bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">Reset</button>
-                {isValid() && <SaveButton saving={saving}
-                  type="submit">Submit Score</SaveButton>}
+                {
+                  isValid() && <SaveButton saving={saving}
+                    type="submit">Submit Score</SaveButton>
+                }
               </div>
             </div>
           </div>

@@ -6,6 +6,7 @@ export default function PlayerWithIcon({
   player,
   size,
   showSelect,
+  buttonText,
   onSelect
 }) {
   const sz = size === 'sm' ? 40 : size === 'md' ? 80 : 120;
@@ -37,12 +38,12 @@ export default function PlayerWithIcon({
         {player.homeClub || 'Unknown Club'}
       </p>
       {showSelect &&
-        <button className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-8 mt-3 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+        <button className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-8 mt-3 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150' type='button'
           onClick={() => {
             onSelect && onSelect(player)
           }}
         >
-          Select
+          {buttonText || "Select"}
         </button>
       }
     </div>
