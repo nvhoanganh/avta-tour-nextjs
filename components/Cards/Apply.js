@@ -143,8 +143,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
             Application Form - {format(new Date(competition.date), 'LLLL	d, yyyy')} - {competition.club}
           </h6>
           <h6 className="text-lg mt-3 mb-6 text-center">
-            Current Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> -
-            Remaining Point: <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || competition.maxPoint}</span>
+            Current/Remaining Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
           </h6>
           {selectedPlayer1 && selectedPlayer2
             && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
@@ -201,23 +200,21 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule }) {
           </div>
 
           <div className="flex flex-wrap pt-16">
-            <div className="w-full lg:w-12/12 px-4">
-              <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
-                <div>
-                  <PostBody content={rule} />
-                </div>
-                <div>
-                  <label className='inline-flex items-center cursor-pointer'>
-                    <input
-                      type='checkbox'
-                      {...register("agreed", { required: true })}
-                      className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
-                    />
-                    <span className='ml-2 text-sm font-semibold text-gray-600'>
-                      I have read terms and conditions
-                    </span>
-                  </label>
-                </div>
+            <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
+              <div>
+                <PostBody content={rule} />
+              </div>
+              <div>
+                <label className='inline-flex items-center cursor-pointer'>
+                  <input
+                    type='checkbox'
+                    {...register("agreed", { required: true })}
+                    className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
+                  />
+                  <span className='ml-2 text-sm font-semibold text-gray-600'>
+                    I have read terms and conditions
+                  </span>
+                </label>
               </div>
             </div>
           </div>
