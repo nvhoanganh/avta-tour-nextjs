@@ -150,7 +150,7 @@ export async function getStaticProps({ params, preview = false }) {
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
 
-  const rule = await getRulebyId(data.ruleId || '3ic20LuQ7B8HjFiWMfU28v', preview);
+  const rule = await getRulebyId(data.ruleId || process.env.DEFAULT_RULE, preview);
 
   return {
     props: {

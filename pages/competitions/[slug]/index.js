@@ -15,7 +15,7 @@ import MatchResultsTable from '../../../components/Cards/MatchResultsTableFb';
 import Header from '../../../components/header';
 import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding } from '../../../lib/api';
+import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding, getRulebyId } from '../../../lib/api';
 import { getCompResults, getAppliedTeams, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
 import { getAllGroupMatches, exportGroupsAllocation, getCompGroups } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
@@ -42,6 +42,8 @@ export default function Competition({ competition, preview }) {
   const [activeTab, setActiveTab] = useState(0);
   const [courtNames, setCourtNames] = useState('');
   const [userRoles, setUserRoles] = useState(null);
+  const [hideRules, setHideRules] = useState(false);
+  const [hideContacts, setHideContacts] = useState(false);
 
   const deleteResult = async (record) => {
     if (!userRoles?.superuser) return;
@@ -56,6 +58,8 @@ export default function Competition({ competition, preview }) {
     }
   }
 
+  const toogleRules = () => setHideRules(!hideRules);
+  const toogleContacts = () => setHideContacts(!hideContacts);
 
   const exportGroupMatches = () => {
     const output = getAllGroupMatches(competition.groupsAllocation)
@@ -460,6 +464,24 @@ export default function Competition({ competition, preview }) {
                               )}
                             </div>
 
+                            <div className="py-5">
+                              <div>
+                                <a className='text-sm underline uppercase hover:cursor-pointer font-bold' onClick={toogleContacts}>
+                                  {hideContacts ? <><i className="fas fa-angle-double-down"></i> Hide </> : <><i className="fas fa-angle-double-right"></i> Show </>}
+                                  Organizer Contact Details
+                                </a></div>
+                              {hideContacts && <div className='py-6'>{competition.organizerContactDetails}</div>}
+                            </div>
+
+                            <div className="py-5">
+                              <div>
+                                <a className='text-sm underline uppercase hover:cursor-pointer font-bold' onClick={toogleRules}>
+                                  {hideRules ? <><i className="fas fa-angle-double-down"></i> Hide </> : <><i className="fas fa-angle-double-right"></i> Show </>}
+                                  REGULATIONS AND CODE OF BEHAVIOUR
+                                </a></div>
+                              {hideRules && <div className='py-6'><PostBody content={competition.rule} /></div>}
+                            </div>
+
                             {competition.appliedTeams?.length && !competition?.groupsAllocation &&
                               < section >
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
@@ -519,12 +541,14 @@ export async function getStaticProps({ params, preview = false }) {
   const appliedTeams = await getAppliedTeams(data.sys.id);
   const schedule = await getCompSchedule(data.sys.id);
   const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
+  const rule = await getRulebyId(data.ruleId || process.env.DEFAULT_RULE, preview);
 
   data = {
     ...data,
     matchScores,
     schedule,
     appliedTeams,
+    rule: rule[0].rule,
     groupsAllocation: groupsAllocation,
     groupResult: getGroupStageStanding(matchScores || [], groupsAllocation || {})
   };
