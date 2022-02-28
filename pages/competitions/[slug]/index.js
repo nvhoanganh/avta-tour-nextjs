@@ -281,6 +281,7 @@ export default function Competition({ competition, preview }) {
                                 </a></Link>
                                 : <span className='text-gray-500'>Tournament Completed</span>
                             }
+
                             {
                               competition.active && userRoles?.superuser && competition?.groupsAllocation
                                 ?
@@ -291,7 +292,7 @@ export default function Competition({ competition, preview }) {
                                 </a>
                                 </Link>
                                 :
-                                competition?.teams?.length > 8 && !competition?.groupsAllocation && <button
+                                competition.active && competition?.teams?.length > 8 && !competition?.groupsAllocation && <button
                                   className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                   onClick={allocateTeamsToGroups}
                                   type='button'
