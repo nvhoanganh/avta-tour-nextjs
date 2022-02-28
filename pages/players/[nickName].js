@@ -372,7 +372,7 @@ export default function Player({ player, preview }) {
 export async function getStaticProps({ params, preview = false }) {
 	let data = await getPlayerById(params.nickName, preview);
 	const linkedUser = await findLinkedUsers(data.sys.id);
-	console.log("🚀 ~ file: [nickName].js ~ line 375 ~ getStaticProps ~ linkedUser", linkedUser)
+
 	if (linkedUser) {
 		data = {
 			...data,
