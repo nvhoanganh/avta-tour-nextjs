@@ -60,7 +60,7 @@ export default function UserProfile() {
         const contentfuldata = await getPlayerById(formData.playerId, false);
         formData = {
           ...formData, ...contentfuldata,
-          displayName: contentfuldata.fullName,
+          displayName: formData.displayName || contentfuldata.fullName,
           homeClub: formData.homeClub,
           nickName: formData.nickName,
         };
