@@ -45,14 +45,11 @@ export default function CompetitionPreview({
 						</Link>
 
 						{active && applicationGForm ? (
-							<a
-								href={applicationGForm}
-								target='_blank'
+							<Link href={`/competitions/${slug}/apply`}><a
 								className='github-star sm:ml-1 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-1 bg-gray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg'
 							>
-								<i className='far fa-hand-point-right mr-3'></i>
-								<span>Apply Now</span>
-							</a>
+								Apply Now
+							</a></Link>
 						) : null}
 					</div>
 
