@@ -472,8 +472,8 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            {competition.appliedTeams?.length && !competition?.groupsAllocation &&
-                              < section >
+                            {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
+                              <section>
                                 <div id="teams" className="text-3xl pt-6">Registered Teams</div>
                                 <div className='mt-10'>
                                   <TeamsCard
