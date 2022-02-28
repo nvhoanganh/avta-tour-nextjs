@@ -1,3 +1,5 @@
+import ToggleContactDetails from '../../../components/ToggleContactDetails';
+import ToggleTournamentRule from '../../../components/ToggleTournamentRule';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import cn from 'classnames';
@@ -57,9 +59,6 @@ export default function Competition({ competition, preview }) {
       }
     }
   }
-
-  const toogleRules = () => setHideRules(!hideRules);
-  const toogleContacts = () => setHideContacts(!hideContacts);
 
   const exportGroupMatches = () => {
     const output = getAllGroupMatches(competition.groupsAllocation)
@@ -454,6 +453,10 @@ export default function Competition({ competition, preview }) {
                               )}
                             </div>
 
+                            <div className="py-5">
+                              <ToggleContactDetails competition={competition} />
+                              <ToggleTournamentRule competition={competition} />
+                            </div>
                           </>
                           :
                           <>
@@ -465,21 +468,8 @@ export default function Competition({ competition, preview }) {
                             </div>
 
                             <div className="py-5">
-                              <div>
-                                <a className='text-sm underline uppercase hover:cursor-pointer font-bold' onClick={toogleContacts}>
-                                  {hideContacts ? <><i className="fas fa-angle-double-down"></i> Hide </> : <><i className="fas fa-angle-double-right"></i> Show </>}
-                                  Organizer Contact Details
-                                </a></div>
-                              {hideContacts && <div className='py-6'>{competition.organizerContactDetails}</div>}
-                            </div>
-
-                            <div className="py-5">
-                              <div>
-                                <a className='text-sm underline uppercase hover:cursor-pointer font-bold' onClick={toogleRules}>
-                                  {hideRules ? <><i className="fas fa-angle-double-down"></i> Hide </> : <><i className="fas fa-angle-double-right"></i> Show </>}
-                                  REGULATIONS AND CODE OF BEHAVIOUR
-                                </a></div>
-                              {hideRules && <div className='py-6'><PostBody content={competition.rule} /></div>}
+                              <ToggleContactDetails competition={competition} />
+                              <ToggleTournamentRule competition={competition} />
                             </div>
 
                             {competition.appliedTeams?.length && !competition?.groupsAllocation &&
