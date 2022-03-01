@@ -3,11 +3,10 @@ import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
-import { getPlayers } from '../../lib/browserapi';
+import useFilterPlayers from '../../lib/useFilterhook';
 
 export default function PlayersTable({ color, players }) {
-	const [sortBy, setSortBy] = useState('Point');
-	const [filter, setFilter] = useState(null);
+	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
 
 	return (
 		<>
@@ -20,6 +19,7 @@ export default function PlayersTable({ color, players }) {
 				}
 			>
 				<div className='block w-full overflow-x-auto'>
+
 					{/* Projects table */}
 					<table className='items-center w-full bg-transparent border-collapse'>
 						<thead>
@@ -69,6 +69,7 @@ export default function PlayersTable({ color, players }) {
 									}
 								>
 									<div className='text-right'>
+										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}</div>
 										Search
 										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150"
 											placeholder="Search Name, Club or Point"
@@ -80,7 +81,7 @@ export default function PlayersTable({ color, players }) {
 							</tr>
 						</thead>
 						<tbody>
-							{getPlayers(players, sortBy, filter).map((player) => (
+							{filteredPlayers.map((player) => (
 								<tr key={player.nickName}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div
