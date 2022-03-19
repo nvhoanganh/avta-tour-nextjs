@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import AvatarEditor from "react-avatar-editor";
 import Link from 'next/link';
 import Head from 'next/head';
+import { ToastContainer, toast } from 'react-toastify';
 import ErrorPage from 'next/error';
 import ContentfulImage from '../../components/contentful-image';
 import Container from '../../components/container';
@@ -20,7 +21,7 @@ import SendOtp from '../../components/sendotp';
 import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState, useRef } from 'react'
 import { db } from '../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
+import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 
 
 export default function EditMyProfile() {
@@ -54,13 +55,20 @@ export default function EditMyProfile() {
     setUserAvatar(curr => ({ ...curr, [field]: value }));
   };
 
-  const updateUserProfilePhoto = () => {
+  const updateUserProfilePhoto = async () => {
     const dataUrl = avatarRef.current.getImageScaledToCanvas().toDataURL();
-    console.log('saving', dataUrl);
+
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
+    const updated = docSnap.exists() ? { ...docSnap.data(), photoURL: dataUrl } : { uid: user.uid, photoURL: dataUrl };
+    await setDoc(docRef, updated);
+
+    toast("Avatar Updated");
   };
 
   return (
     <Layout preview={false}>
+      <ToastContainer />
       <Navbar transparent />
 
       <article>

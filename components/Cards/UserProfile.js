@@ -38,8 +38,6 @@ export default function UserProfile() {
       setTimeout(() => {
         fetch(`/players/${updated.playerId}`);
       }, 1500);
-    } else {
-      console.log('no linked player');
     }
 
     toast("Profile Updated");
