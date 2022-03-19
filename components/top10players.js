@@ -15,7 +15,7 @@ export default function Top10Players({ allPlayers }) {
 			<div className='flex flex-wrap justify-center'>
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{allPlayers.slice(0, 10).map((player) => (
-						<PlayerWithIcon key={player.id} player={player} size="lg"/>
+						<PlayerWithIcon key={player.uid} player={player} size="lg"/>
 					))}
 				</div>
 			</div>
