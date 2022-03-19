@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import AvatarEditor from "react-avatar-editor";
+import SaveButton from '../../components/savebutton';
 import Link from 'next/link';
 import Head from 'next/head';
 import { ToastContainer, toast } from 'react-toastify';
@@ -27,6 +28,7 @@ import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase
 export default function EditMyProfile() {
   const router = useRouter();
   const avatarRef = useRef(null);
+  const [saving, setSaving] = useState(false);
   const [userprofile, setUserprofile] = useState(null);
   const [linkedPlayer, setLinkedPlayer] = useState(null);
   const [userAvatar, setUserAvatar] = useState({
@@ -58,6 +60,8 @@ export default function EditMyProfile() {
   };
 
   const updateUserProfilePhoto = async () => {
+    setSaving(true)
+
     const dataUrl = avatarRef.current.getImageScaledToCanvas().toDataURL();
 
     const docRef = doc(db, "users", user.uid);
@@ -65,7 +69,18 @@ export default function EditMyProfile() {
     const updated = docSnap.exists() ? { ...docSnap.data(), photoURL: dataUrl } : { uid: user.uid, photoURL: dataUrl };
     await setDoc(docRef, updated);
 
+    if (updated.playerId) {
+      // need to load this twice for Vercel to rebuild the app
+      await fetch(`/players/${updated.playerId}`);
+      setTimeout(() => {
+        fetch(`/players/${updated.playerId}`);
+      }, 1500);
+    }
+
+    saveProfilePhoto('photo', null);
+    setUserprofile(curr => ({ ...curr, photoURL: dataUrl }));
     toast("Avatar Updated");
+    setSaving(false)
   };
 
   return (
@@ -227,18 +242,15 @@ export default function EditMyProfile() {
 
                     {/* Allow user to edit the icon */}
                     <div className="flex justify-center pt-1 space-x-2">
-                      <button
+                      <SaveButton
                         onClick={updateUserProfilePhoto}
-                        className='uppercase bg-blue-600 text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none 
-                            focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                      >
-                        Save
-                      </button>
+                        saving={saving}
+                        type="button">Save</SaveButton>
                       <button
                         onClick={() => { saveProfilePhoto('photo', null) }}
                         type="button"
-                        className="uppercase bg-gray-200  font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none
-                          focus:outline-none mb-1 ease-linear transition-all duration-150"
+                        className="bg-gray-300 active:bg-blue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+                        disabled:cursor-wait whitespace-nowrap"
                       >
                         Cancel
                       </button>
