@@ -244,6 +244,19 @@ export default function Player({ player, preview }) {
 												</>}
 
 											</div>
+											<div className='leading-normal text-sm mt-5 mb-2 text-gray-700'>
+												{
+													player.playStyle
+													&& <>
+														Play Style: {player.playStyle}.&nbsp;
+													</>
+												}
+
+												{player.perfectPartner && <>
+													Perfect Partner: {player.perfectPartner}.
+												</>}
+
+											</div>
 											<div
 												className={cn('mb-20 mt-10 text-6xl font-bold', {
 													'text-green-600': !player.unofficialPoint,

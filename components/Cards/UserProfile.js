@@ -61,6 +61,7 @@ export default function UserProfile() {
         formData = {
           ...formData, ...contentfuldata,
           displayName: formData.displayName || contentfuldata.fullName,
+          // home club and nick Name comes from what user type in the form, not from contentful
           homeClub: formData.homeClub,
           nickName: formData.nickName,
         };
@@ -92,12 +93,13 @@ export default function UserProfile() {
 function UserForm({ onSubmit, userProfile, saving, userRoles }) {
   const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
-    allowContact, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint } = userProfile;
+    allowContact, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner } = userProfile;
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       displayName, email, mobileNumber,
-      suburb, allowContact, aboutMe, homeClub, nickName
+      suburb, allowContact, aboutMe, homeClub, nickName,
+      playStyle, perfectPartner
     }
   });
 
@@ -227,6 +229,44 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
         <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
           About Me
         </h6>
+        <div className="flex flex-wrap">
+          <div className="w-full lg:w-4/12 px-4">
+            <div className="relative w-full mb-3">
+              <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                Play Style
+              </label>
+              <select class="appearance-none
+      border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
+                {...register("playStyle", { required: true })}
+              >
+                <option value="All-Court" selected>All-Court</option>
+                <option value="Baseliner">Baseliner</option>
+                <option value="Serve and Volley">Serve and Volley</option>
+                <option value="Pusher">Pusher</option>
+              </select>
+            </div>
+          </div>
+          <div className="w-full lg:w-4/12 px-4">
+            <div className="relative w-full mb-3">
+              <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
+                Perfect Partner
+              </label>
+              <select class="appearance-none
+      border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
+                {...register("perfectPartner", { required: true })}
+              >
+                <option value="All-Court" selected>All-Court</option>
+                <option value="Baseliner">Baseliner</option>
+                <option value="Serve and Volley">Serve and Volley</option>
+                <option value="Pusher">Pusher</option>
+              </select>
+            </div>
+          </div>
+          <div className="w-full lg:w-4/12 px-4">
+            <div className="relative w-full mb-3">
+            </div>
+          </div>
+        </div>
         <div className="flex flex-wrap">
           <div className="w-full lg:w-12/12 px-4">
             <div className="relative w-full mb-3">
