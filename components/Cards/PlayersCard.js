@@ -18,7 +18,7 @@ export default function PlayersCard({ allPlayers }) {
 					/>
 
 					<DropDown buttonText={
-						<span><i class="fas fa-sort-amount-down-alt mr-1"></i>{sortBy}</span>
+						<span><i className="fas fa-sort-amount-down-alt mr-1"></i>{sortBy}</span>
 					}
 						items={[
 							<a onClick={() => setSortBy('Point')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Point</a>,

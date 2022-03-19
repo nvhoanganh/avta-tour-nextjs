@@ -235,7 +235,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Play Style
               </label>
-              <select class="appearance-none
+              <select className="appearance-none
       border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
                 {...register("playStyle", { required: true })}
               >
@@ -251,11 +251,11 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 Perfect Partner
               </label>
-              <select class="appearance-none
+              <select className="appearance-none
       border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
                 {...register("perfectPartner", { required: true })}
               >
-                <option value="All-Court" selected>All-Court</option>
+                <option value="All-Court">All-Court</option>
                 <option value="Baseliner">Baseliner</option>
                 <option value="Serve and Volley">Serve and Volley</option>
                 <option value="Pusher">Pusher</option>

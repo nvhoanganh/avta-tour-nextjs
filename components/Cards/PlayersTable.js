@@ -34,7 +34,7 @@ export default function PlayersTable({ color, players }) {
 									onClick={() => setSortBy('Name')}
 								>
 									Name (Nickname)
-									{sortBy === 'Name' && <i class="fas fa-sort text-blue-600 ml-1"></i>}
+									{sortBy === 'Name' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
 								</th>
 								<th
 									className={
@@ -46,7 +46,7 @@ export default function PlayersTable({ color, players }) {
 									onClick={() => setSortBy('Point')}
 								>
 									AVTA Point
-									{sortBy === 'Point' && <i class="fas fa-sort text-blue-600 ml-1"></i>}
+									{sortBy === 'Point' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
 								</th>
 								<th
 									className={
@@ -58,7 +58,7 @@ export default function PlayersTable({ color, players }) {
 									onClick={() => setSortBy('Club')}
 								>
 									Club
-									{sortBy === 'Club' && <i class="fas fa-sort text-blue-600 ml-1"></i>}
+									{sortBy === 'Club' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
 								</th>
 								<th
 									className={
