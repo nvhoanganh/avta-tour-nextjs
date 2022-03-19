@@ -27,6 +27,7 @@ import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase
 export default function EditMyProfile() {
   const router = useRouter();
   const avatarRef = useRef(null);
+  const [userprofile, setUserprofile] = useState(null);
   const [linkedPlayer, setLinkedPlayer] = useState(null);
   const [userAvatar, setUserAvatar] = useState({
     rotate: 0,
@@ -48,6 +49,7 @@ export default function EditMyProfile() {
       if (formData.playerId) {
         setLinkedPlayer(formData.playerId);
       }
+      setUserprofile(formData);
     }
   }, [user]);
 
@@ -119,14 +121,14 @@ export default function EditMyProfile() {
                 <div className='flex flex-wrap justify-center'>
                   <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
                     <div className='relative'>
-                      {user?.photoURL ? (
+                      {userprofile?.photoURL ? (
                         <div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px text-center'>
                           <ContentfulImage
                             width={250}
                             height={250}
                             className='rounded-full'
                             src={
-                              user?.photoURL
+                              userprofile?.photoURL
                             }
                           />
 
@@ -148,7 +150,7 @@ export default function EditMyProfile() {
                         </div>
                       ) : (
                         <img
-                          alt={user?.displayName}
+                          alt={userprofile?.displayName}
                           src='https://via.placeholder.com/150'
                           className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'
                         />
