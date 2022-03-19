@@ -14,7 +14,7 @@ const FloatingFileInput = ({
   useEffect(() => {
     inputRef.current.setCustomValidity(!isValid ? "weak" : "");
     setClassName(
-      classNames({
+      classNames('w-40', {
         "is-invalid": !isValid
       })
     );
