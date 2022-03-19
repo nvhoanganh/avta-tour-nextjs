@@ -17,6 +17,7 @@
     "classnames": "2.3.1",
     "csvtojson": "^2.0.10",
     "date-fns": "2.25.0",
+    "diacritic": "^0.0.2",
     "firebase": "^9.4.1",
     "firebase-admin": "^10.0.1",
     "js-file-download": "^0.4.12",
