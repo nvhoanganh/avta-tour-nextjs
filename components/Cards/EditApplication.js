@@ -13,7 +13,6 @@ import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
 import PlayerWithIcon from '../../components/PlayerWithIcon';
-import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
 import {
   getPlayerById,
@@ -21,136 +20,120 @@ import {
   getPlayers
 } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
+import { query, collection, doc, setDoc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
-
-export default function EditApplicationCompetition({ competition, players, rule, linkedPlayerId, userRole, editTeamId }) {
-  console.log("🚀 ~ file: Apply.js ~ line 37 ~ ApplyForCompetition ~ editTeamId", editTeamId)
+export default function EditApplicationCompetition({ competition, players, rule, linkedPlayerId, userRole, editTeamId, currentUser }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
 
+  const goback = () => {
+    router.push(`/competitions/${router.query.slug}`);
+  }
+
   const onSubmit = async data => {
     setSaving(true)
 
     data = {
-      competitionId: competition?.sys?.id,
-      compDate: competition?.date,
-      maxPoint: competition?.maxPoint,
-      slug: competition?.slug,
-      title: competition?.title,
-      type: competition?.type,
-      active: competition?.active,
-      timestamp: (new Date()),
-
+      ...registeredTeam,
       player1: data.selectedPlayer1,
       player2: data.selectedPlayer2,
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
-      paid: false,
+      changedByUser: currentUser.uid
     };
 
-    const docRef = await addDoc(collection(db, "competition_applications"), data);
+
+    // update groupsAllocation
+    const groupRef = doc(db, "competition_groups", competition.sys.id);
+    const groups = await getDoc(groupRef);
+    const groupData = groups.data();
+    const updatedGroupAlloc = Object.keys(groupData).reduce((pre, currGroup) => {
+      const updatedTeams = groupData[currGroup].map(x => {
+        if (x.id === editTeamId) {
+          return {
+            ...x,
+            ...data,
+            paidOn: data.paidOn.toDate().toISOString(),
+            timestamp: data.timestamp.toDate().toISOString(),
+          }
+        }
+        return x;
+      });
+
+      return {
+        ...pre,
+        [currGroup]: updatedTeams
+      }
+    }, {});
+    await setDoc(groupRef, updatedGroupAlloc);
+
+    // update application
+    const applicationRef = doc(db, "competition_applications", editTeamId);
+    await setDoc(applicationRef, data);
+
     setSaving(false);
 
-    setRegisteredTeam({
-      id: docRef.id,
-      ...data
-    });
+    // go back
+    toast("Team updated successfully");
+
+    goback();
   };
 
   useEffect(async () => {
-    if (competition) {
-      const q = query(collection(db, "competition_applications"), where("competitionId", "==", competition?.sys?.id));
-
-      const querySnapshot = await getDocs(q);
-      const registeredTeams = querySnapshot.docs.map(doc => ({
-        ...doc.data(),
-        id: doc.id
-      }));
-
-      const avaiPlayers = players.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id));
-      setAvaiPlayers(avaiPlayers);
+    if (editTeamId) {
+      const docSnap = await getDoc(doc(db, "competition_applications", editTeamId));
+      if (docSnap.exists()) {
+        setRegisteredTeam(docSnap.data());
+      }
     }
-  }, [competition]);
+  }, [editTeamId]);
 
   return (
     <>
       <ToastContainer />
       {
-        !registeredTeam &&
-        <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
-          competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} />
-      }
-
-      {registeredTeam &&
-        <>
-          <form action={`/api/checkout_sessions?applicationId=${registeredTeam.id}&competition=${router.query.slug}`} method="POST"
-            className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
-          >
-            <p className="uppercase py-2 h1">Application received</p>
-
-            <div className="form-group w-96 py-3">
-              <TeamCard team={registeredTeam} />
-            </div>
-
-            <p className="text-gray-400 text-sm pb-6">Application Id: {registeredTeam.id}</p>
-            <p className="text-gray-400 text-sm pb-6">Status: <strong>Not Paid</strong></p>
-            <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
-    disabled:cursor-wait whitespace-nowrap
-             disabled:bg-gray-200">
-              Pay ${competition.costPerTeam}.00 now using Stripe
-            </button>
-
-            <p className="pt-3 pb-6 text-gray-400 text-sm">Note: You will be taken to checkout.stripe.com to make this payment</p>
-          </form>
-        </>
+        registeredTeam &&
+        <div className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center">
+          <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
+            competition={competition} players={players} rule={rule} userRole={userRole}
+            currentPlayer1={registeredTeam.player1} currentPlayer2={registeredTeam.player2}
+          />
+        </div>
       }
     </>
   );
 }
 
-function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole }) {
-  const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole, currentPlayer1, currentPlayer2 }) {
+  const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+    defaultValues: {
+      selectedPlayer1: currentPlayer1, selectedPlayer2: currentPlayer2,
+    }
+  });
 
-  const agreed = watch('agreed');
   const player1 = watch('player1');
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
   const selectedPlayer2 = watch('selectedPlayer2');
 
-  useEffect(() => {
-    if (linkedPlayerId) {
-      const currentLinkedPlayer = players?.find(x => x.sys.id === linkedPlayerId);
-      if (currentLinkedPlayer) {
-        setValue('selectedPlayer1', currentLinkedPlayer)
-      }
-    }
-  }, [linkedPlayerId]);
-
   const isValid = () => {
     return !!selectedPlayer1 && !!selectedPlayer2 &&
       selectedPlayer1?.sys?.id !== selectedPlayer2?.sys?.id
-      && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= competition.maxPoint
-      && !!agreed
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+          {/* header */}
           <h6 className=" text-3xl uppercase mt-3 text-center">
-            Application Form
+            Edit Team
           </h6>
           <p className="text-gray-400 text-sm text-center mb-12">
             <Link href={`/competitions/${competition.slug}`}><a
@@ -167,7 +150,10 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
           {selectedPlayer1 && selectedPlayer2
             && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
               Select a different player
-            </div>}
+            </div>
+          }
+
+          {/* Form */}
           <div className="flex flex-wrap">
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
@@ -193,7 +179,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                       </div>
                     </div>
                   </> :
-                  <PlayerCard player={selectedPlayer1} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer1', null)} />
+                  <PlayerCard player={selectedPlayer1} size="md" showSelect buttonText="Replace" buttonColor="bg-gray-500" onSelect={(player) => setValue('selectedPlayer1', null)} />
                 }
               </div>
             </div>
@@ -214,38 +200,13 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                         {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)).map((player) => (
                           <PlayerCard player={player} size="md" key={player.sys.id} showSelect onSelect={(player) => {
                             setValue('selectedPlayer2', player);
-                            setTimeout(() => {
-                              const lbl = document.getElementById("rule");
-                              lbl && lbl.scrollIntoView();
-                            }, 100);
-
                           }} />
                         ))}
                       </div>
                     </div>
                   </> :
-                  <PlayerCard player={selectedPlayer2} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer2', null)} />
+                  <PlayerCard player={selectedPlayer2} size="md" showSelect buttonText="Replace" buttonColor="bg-gray-500" onSelect={(player) => setValue('selectedPlayer2', null)} />
                 }
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap pt-16">
-            <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
-              <div id="rule">
-                <PostBody content={rule} />
-              </div>
-              <div>
-                <label className='inline-flex items-center cursor-pointer'>
-                  <input
-                    type='checkbox'
-                    {...register("agreed", { required: true })}
-                    className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
-                  />
-                  <span className='ml-2 text-sm font-semibold text-gray-600'>
-                    I have read terms and conditions
-                  </span>
-                </label>
               </div>
             </div>
           </div>
@@ -255,7 +216,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
               <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
                 {
                   isValid() && <SaveButton saving={saving} className="w-full sm:w-32"
-                    type="submit">Submit</SaveButton>
+                    type="submit">Update</SaveButton>
                 }
 
                 <Link href={`/competitions/${competition.slug}`}><a

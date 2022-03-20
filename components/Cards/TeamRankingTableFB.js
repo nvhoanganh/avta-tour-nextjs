@@ -115,6 +115,9 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 														</Link>
 
 														<PlayerPoint player={getPlayers(team)[1]} className="ml-1" />
+
+														{team.paidOn &&
+															<i className="ml-1 fas fa-money-bill text-green-600" title={`Paid on ${team.paidOn}`}></i>}
 													</div>
 													<div className='ml-3 text-sm text-gray-600'>
 														{getPlayers(team)[0].homeClub} - {getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.

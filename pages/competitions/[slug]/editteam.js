@@ -42,7 +42,6 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
     }
   }, []);
 
-
   const gotoLogin = () => {
     localStorage.setItem('redirectAfterLogin', window.location.pathname);
     router.push('/auth/login?reason=apply');
@@ -57,8 +56,11 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
 
       const docSnap = await getDoc(doc(db, "user_roles", user.uid));
       if (docSnap.exists()) {
-        const userRoles = docSnap.data();
-        setUserRole(userRoles)
+        const userRole = docSnap.data();
+        setUserRole(userRole)
+        if (!userRole.superuser) goback();
+      } else {
+        goback();
       }
 
       const usersSnap = await getDoc(doc(db, "users", user.uid));
@@ -140,7 +142,7 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
                         loadingAuth
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <EditApplication competition={competition} players={allPlayers} rule={rule} linkedPlayerId={linkedPlayerId} userRole={userRole} editTeamId={teamId}></EditApplication>
+                          <EditApplication competition={competition} players={allPlayers} rule={rule} currentUser={user} linkedPlayerId={linkedPlayerId} userRole={userRole} editTeamId={teamId}></EditApplication>
                       }
                     </div>
                   </div>
