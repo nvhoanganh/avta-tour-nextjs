@@ -124,6 +124,11 @@ export default function Competition({ competition, preview }) {
     window.location.reload();
   }
 
+  const editTeam = async (team) => {
+    console.log("🚀 ~ file: index.js ~ line 128 ~ editTeam ~ team", team)
+
+  }
+
   const ConfigureSchedule = () => (
     <>
       {competition?.schedule ?
@@ -497,6 +502,8 @@ export default function Competition({ competition, preview }) {
                                 <div className="pt-5">
                                   <div className='hidden container md:block'>
                                     <TeamRankingTable
+                                      is_superuser={userRoles?.superuser}
+                                      editTeam={editTeam}
                                       groups={
                                         competition.groupsAllocation
                                       }
@@ -504,6 +511,8 @@ export default function Competition({ competition, preview }) {
                                   </div>
                                   <div className='md:hidden mt-4 '>
                                     <GroupRankingsCard
+                                      is_superuser={userRoles?.superuser}
+                                      editTeam={editTeam}
                                       groups={competition.groupsAllocation}
                                     />
                                   </div>

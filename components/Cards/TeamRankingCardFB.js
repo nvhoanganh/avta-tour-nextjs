@@ -6,7 +6,7 @@ import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
 
-export default function TeamRankingCard({ team, index }) {
+export default function TeamRankingCard({ team, index, is_superuser, editTeam }) {
   const players = team.players ? team.players : [team.player1, team.player2];
   return (
     <>
@@ -40,6 +40,12 @@ export default function TeamRankingCard({ team, index }) {
                   >{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span></span>
                 }
 
+                {is_superuser &&
+                  <div onClick={() => editTeam && editTeam(team)}
+                    className="ml-2 underline cursor-pointer hover:text-blue-600">
+                    Edit
+                  </div>
+                }
 
               </div>
             </div>

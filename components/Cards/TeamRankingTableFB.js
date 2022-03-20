@@ -7,7 +7,7 @@ import PlayerPoint from '../PlayerPoint';
 import DateWithTimeComponent from '../dateWithTime';
 import Avatar from '../avatar';
 
-export default function TeamRankingTable({ groups, color }) {
+export default function TeamRankingTable({ groups, color, is_superuser, editTeam }) {
 
 	const getPlayers = (team) => team.players ? team.players : [team.player1, team.player2];
 
@@ -118,6 +118,13 @@ export default function TeamRankingTable({ groups, color }) {
 													</div>
 													<div className='ml-3 text-sm text-gray-600'>
 														{getPlayers(team)[0].homeClub} - {getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.
+
+														{is_superuser &&
+															<span onClick={() => editTeam && editTeam(team)}
+																className="ml-2 underline cursor-pointer hover:text-blue-600">
+																Edit
+															</span>
+														}
 													</div>
 												</div>
 											</td>
@@ -139,6 +146,8 @@ export default function TeamRankingTable({ groups, color }) {
 														})}
 													>{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span>
 												}
+
+
 											</td>
 										</tr>
 									))}
