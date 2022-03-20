@@ -4,9 +4,11 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 import useFilterPlayers from '../../lib/useFilterhook';
+import PlayerProfileStatus from '../../components/playerprofilestatus';
 
 export default function PlayersTable({ color, players }) {
 	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
+	console.log("🚀 ~ file: PlayersTable.js ~ line 10 ~ PlayersTable ~ players", players)
 
 	return (
 		<>
@@ -112,6 +114,7 @@ export default function PlayersTable({ color, players }) {
 														<a className="hover:underline hover:cursor-pointer">{player.fullName}</a>
 													}
 												</Link>
+												<PlayerProfileStatus player={player}></PlayerProfileStatus>
 											</div>
 											<div className='ml-3 text-sm text-gray-600'>
 												{player.club}

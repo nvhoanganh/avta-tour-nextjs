@@ -2,6 +2,7 @@ import React from "react";
 import ContentfulImage from './contentful-image';
 import Link from 'next/link';
 import PlayerPoint from './PlayerPoint';
+import PlayerProfileStatus from './playerprofilestatus';
 
 export default function PlayerCard({
   player,
@@ -34,6 +35,7 @@ export default function PlayerCard({
 
       <div className='text-sm text-gray-600'>
         {player.homeClub || 'Unknown Club'}
+        <PlayerProfileStatus player={player}></PlayerProfileStatus>
       </div>
 
       {showSelect &&
