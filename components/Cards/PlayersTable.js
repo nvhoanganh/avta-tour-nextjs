@@ -8,7 +8,6 @@ import PlayerProfileStatus from '../../components/playerprofilestatus';
 
 export default function PlayersTable({ color, players }) {
 	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
-	console.log("🚀 ~ file: PlayersTable.js ~ line 10 ~ PlayersTable ~ players", players)
 
 	return (
 		<>
