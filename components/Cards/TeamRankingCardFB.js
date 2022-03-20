@@ -39,14 +39,12 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam })
                     })}
                   >{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span></span>
                 }
-
                 {is_superuser &&
                   <div onClick={() => editTeam && editTeam(team)}
                     className="ml-2 underline cursor-pointer hover:text-blue-600">
                     Edit
                   </div>
                 }
-
               </div>
             </div>
 
