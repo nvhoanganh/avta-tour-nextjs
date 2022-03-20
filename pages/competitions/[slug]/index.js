@@ -84,7 +84,7 @@ export default function Competition({ competition, preview }) {
       return;
     }
 
-    const groups = getCompGroups(competition?.teams, parseInt(teamsInEachGroup));
+    const groups = getCompGroups(competition.appliedTeams, parseInt(teamsInEachGroup));
     await setDoc(doc(db, "competition_groups", competition.sys.id), groups);
     alert('Groups created, please reload this page again in 15 seconds');
 
@@ -292,7 +292,7 @@ export default function Competition({ competition, preview }) {
                                 </a>
                                 </Link>
                                 :
-                                competition.active && competition?.teams?.length > 8 && !competition?.groupsAllocation && <button
+                                competition.active && userRoles?.superuser && !competition.groupsAllocation && <button
                                   className='bg-gray-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                   onClick={allocateTeamsToGroups}
                                   type='button'
