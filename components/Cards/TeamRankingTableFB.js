@@ -9,6 +9,8 @@ import Avatar from '../avatar';
 
 export default function TeamRankingTable({ groups, color }) {
 
+	const getPlayers = (team) => team.players ? team.players : [team.player1, team.player2];
+
 	return (
 		<>
 			<div
@@ -79,12 +81,12 @@ export default function TeamRankingTable({ groups, color }) {
 											<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 												<div className='flex'>
 													<img
-														src={team.players[0].coverImage?.url || 'https://via.placeholder.com/64'}
+														src={getPlayers(team)[0].coverImage?.url || 'https://via.placeholder.com/64'}
 														alt='...'
 														className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
 													></img>
 													<img
-														src={team.players[1].coverImage?.url || 'https://via.placeholder.com/64'}
+														src={getPlayers(team)[1].coverImage?.url || 'https://via.placeholder.com/64'}
 														alt='...'
 														className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
 													></img>
@@ -100,22 +102,22 @@ export default function TeamRankingTable({ groups, color }) {
 														}
 													>
 
-														<Link href={`/players/${team.players[0].sys?.id}`}>
-															<a className="hover:underline">{team.players[0].fullName}</a>
+														<Link href={`/players/${getPlayers(team)[0].sys?.id}`}>
+															<a className="hover:underline">{getPlayers(team)[0].fullName}</a>
 														</Link>
 
-														<PlayerPoint player={team.players[0]} className="ml-1" />
+														<PlayerPoint player={getPlayers(team)[0]} className="ml-1" />
 
 														<span className="mx-3">&amp;</span>
 
-														<Link href={`/players/${team.players[1].sys?.id}`}>
-															<a className="hover:underline">{team.players[1].fullName}</a>
+														<Link href={`/players/${getPlayers(team)[1].sys?.id}`}>
+															<a className="hover:underline">{getPlayers(team)[1].fullName}</a>
 														</Link>
 
-														<PlayerPoint player={team.players[1]} className="ml-1" />
+														<PlayerPoint player={getPlayers(team)[1]} className="ml-1" />
 													</div>
 													<div className='ml-3 text-sm text-gray-600'>
-														{team.players[0].homeClub} - {team.players[0].avtaPoint + team.players[1].avtaPoint} pt.
+														{getPlayers(team)[0].homeClub} - {getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.
 													</div>
 												</div>
 											</td>

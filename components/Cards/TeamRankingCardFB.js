@@ -7,6 +7,7 @@ import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
 
 export default function TeamRankingCard({ team, index }) {
+  const players = team.players ? team.players : [team.player1, team.player2];
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
@@ -17,10 +18,10 @@ export default function TeamRankingCard({ team, index }) {
                 className=
                 'font-bold flex space-x-1 text-gray-600 '
               >
-                <span>{index + 1}. {team.players[0].nickName} + {team.players[1].nickName}</span>
+                <span>{index + 1}. {players[0].nickName} + {players[1].nickName}</span>
               </div>
               <div className='text-sm text-gray-600 flex space-x-2'>
-                <span className='text-green-600'>{team.players[0].avtaPoint + team.players[1].avtaPoint} pt.</span>
+                <span className='text-green-600'>{players[0].avtaPoint + players[1].avtaPoint} pt.</span>
 
                 {team.win + team.lost > 0 ?
                   <>
