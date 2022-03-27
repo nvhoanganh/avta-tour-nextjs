@@ -60,8 +60,6 @@ export default function Groups({ groups, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
 	const data = await getAllGroups();
-	console.log("🚀 ~ file: index.js ~ line 63 ~ getStaticProps ~ data", data);
-
 
 	return {
 		props: {
