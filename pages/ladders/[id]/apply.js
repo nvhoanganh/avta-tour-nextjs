@@ -94,9 +94,9 @@ export default function Apply({ ladder, allPlayers, preview }) {
                             {fullProfile?.playerId ?
                               <div>
                                 {
-                                  ladder.players.map(player => player.playerId).indexOf(fullProfile?.playerId) >= 0 ?
+                                  ladder.players.map(player => player.playerId).indexOf(fullProfile?.uid) >= 0 ?
                                     <div className="text-center py-8">You already joined this ladder
-                                      <div className="py-4">
+                                      <div className="py-10">
                                         <Link href={`/ladders/${ladder.id}`}><a
                                           className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                         >

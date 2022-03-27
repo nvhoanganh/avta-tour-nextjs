@@ -6,6 +6,7 @@ import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import LaddersTable from '../../components/Cards/LaddersTable';
+import LaddersCard from '../../components/Cards/LadderCard';
 
 export default function Groups({ ladders, preview }) {
 	const router = useRouter();
@@ -36,9 +37,9 @@ export default function Groups({ ladders, preview }) {
 									/>
 								</div>
 								<div className='md:hidden px-2 mx-auto'>
-									{/* <TournamentsCard
-										competitions={competitions}
-									/> */}
+									<LaddersCard
+										ladders={ladders}
+									/>
 								</div>
 							</div>
 						</Intro>

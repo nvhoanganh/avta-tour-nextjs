@@ -1,20 +1,20 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import Layout from '../../../components/layout';
-import { getLadderDetails, getAllLadders } from '../../../lib/backendapi';
-import { db } from '../../../lib/firebase';
+import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { doc, getDoc } from "firebase/firestore";
+import { getAllPlayers } from '../../../lib/api';
 
-export default function Competition({ ladder, preview }) {
+export default function Competition({ ladder, allPlayers, preview }) {
+  console.log("🚀 ~ file: index.js ~ line 17 ~ Competition ~ allPlayers", allPlayers)
   const { fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
@@ -89,7 +89,7 @@ export default function Competition({ ladder, preview }) {
                     <div className='px-6 pb-20'>
                       <div className='flex flex-wrap justify-center'>
                         <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
-                          <div className='relative'>
+                        <div className='relative'>
                             <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
                               <i className='fas fa-medal text-6xl text-yellow-400'></i>
                               <i className="fas fa-baseball-ball text-green-400 block"></i>
@@ -185,10 +185,14 @@ export default function Competition({ ladder, preview }) {
 export async function getStaticProps({ params, preview = false }) {
   const data = await getLadderDetails(params.id, preview);
 
+  let allPlayers = (await getAllPlayers(preview)) ?? [];
+  allPlayers = await mergeUsersAndPlayersData(allPlayers);
+
   return {
     props: {
       preview,
       ladder: data,
+      allPlayers
     },
     revalidate: 1
   };
