@@ -92,6 +92,10 @@ export default function Navbar(props) {
 								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Comps</a>
 							</Link>
 
+							<Link href='/ladders'>
+								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Ladders</a>
+							</Link>
+
 							{
 								user
 								&& <Link href='/editmyprofile'>
