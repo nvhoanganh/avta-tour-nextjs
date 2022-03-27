@@ -24,8 +24,8 @@ export default function Competition({ ladder, allPlayers, preview }) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const registeredPlayersUid = ladder.players.map(u => u.playerId);
-  const registeredPlayers = allPlayers.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1);
+  const registeredPlayersUid = ladder?.players.map(u => u.playerId) || [];
+  const registeredPlayers = allPlayers?.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1) || [];
   const totalPoints = registeredPlayers.reduce((previousTotal, player) => {
     return (
       previousTotal +

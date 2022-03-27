@@ -18,12 +18,16 @@ export default function Apply({ ladder, allPlayers, preview }) {
   const router = useRouter();
   const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
 
+  if (!router.isFallback && !ladder) {
+    return <ErrorPage statusCode={404} />;
+  }
+
   const goback = () => {
     router.push(`/ladders/${router.query.id}`);
   }
 
-  const registeredPlayersUid = ladder.players.map(u => u.playerId);
-  const registeredPlayers = allPlayers.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1);
+  const registeredPlayersUid = ladder?.players.map(u => u.playerId) || [];
+  const registeredPlayers = allPlayers?.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1);
 
   return (
     <Layout preview={false}>
