@@ -17,7 +17,7 @@ export default function Apply({ ladder, preview }) {
   const [applicationState, setApplicationState] = useState(null);
   const [paymentError, setPaymentError] = useState(null);
 
-  const goback = () => {
+  const goback = async () => {
     // force refresh
     await fetch(`/ladders/${router.query.id}`);
     router.push(`/ladders/${router.query.id}`);

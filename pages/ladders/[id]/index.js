@@ -45,11 +45,11 @@ export default function Competition({ ladder, allPlayers, preview }) {
           <article>
             <Head>
               <title>
-                {ladder.name} - {ladder.homeGroup} | AVTA.
+                {ladder.name} - {ladder.homeClub} | AVTA.
               </title>
               <meta
                 name='description'
-                content={`Australia Vietnamese Tennis Association - ${ladder.name} - ${ladder.homeGroup}`}
+                content={`Australia Vietnamese Tennis Association - ${ladder.name} - ${ladder.homeClub}`}
               />
             </Head>
           </article>
