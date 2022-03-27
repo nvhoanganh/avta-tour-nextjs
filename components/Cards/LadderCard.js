@@ -19,13 +19,13 @@ export default function LadderCard({ color, ladders }) {
 						<CardStats
 							key={ladder.id}
 							link={`/ladders/${ladder.id}`}
-							statSubtitle={ladder.name}
-							statTitle={ladder.homeClub}
+							statSubtitle={ladder.homeClub}
+							statTitle={ladder.name}
 							statArrow=''
 							statPercent=''
 							statPercentColor='text-emerald-500'
 							statDescripiron={
-								`${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')}`
+								`Fee: $${ladder.joiningFee}, ${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')}`
 							}
 							statIconName={
 								ladder.active

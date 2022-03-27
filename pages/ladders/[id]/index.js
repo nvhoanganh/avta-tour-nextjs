@@ -101,9 +101,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                           <div className='relative'>
                             <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
                               <i className='fas fa-award text-6xl text-yellow-400'></i>
-                              {registeredPlayers.length > 0 ? <>
-                                ${registeredPlayers.length * ladder.joiningFee}
-                              </> : <><i className="fas fa-baseball-ball text-6xl block text-green-400"></i></>}
+                              ${ladder.joiningFee}
                             </div>
                           </div>
                         </div>
@@ -172,25 +170,23 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               dateString={
                                 ladder.endDate
                               }
-                            />{' '}
-                            {ladder.joiningFee && <>, Fee ${ladder.joiningFee}.00</>}
+                            />
                           </a>
                         </div>
                       </div>
 
                       <div className='mx-0 md:mx-4 pt-8'>
-                        <h3 className='mt-10 text-3xl pt-6 mx-auto'>
+                        <h3 className='mt-10 text-3xl pt-6 mx-auto uppercase'>
                           {ladder.name}
                         </h3>
                       </div>
 
-                      <div className='mx-0 md:mx-4 mt-10'>
-                        {ladder.rule}
+                      <div className='mx-0 md:mx-4 mt-10' dangerouslySetInnerHTML={{ __html: ladder?.rule?.replace(/\\n/g, '<br />') }}>
                       </div>
 
                       {ladder.players?.length > 0 &&
                         <section className="mx-0 md:mx-4">
-                          <div id="teams" className="text-2xl pt-6">Registered Players</div>
+                          <div id="teams" className="text-2xl pt-10">Registered Players</div>
                           <PlayersCard allPlayers={registeredPlayers} hideSearch />
                         </section>}
                     </div>

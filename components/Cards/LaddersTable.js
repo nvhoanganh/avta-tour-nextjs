@@ -50,7 +50,17 @@ export default function GroupsTable({ color, ladders }) {
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Date
+									Joining Fee
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										(color === 'light'
+											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
+									}
+								>
+									Start - End Date
 								</th>
 								<th
 									className={
@@ -81,6 +91,9 @@ export default function GroupsTable({ color, ladders }) {
 									</th>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{ladder.homeClub}
+									</td>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+										${ladder.joiningFee}.00
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateComponent dateString={ladder.startDate} /> - <DateComponent dateString={ladder.endDate} />

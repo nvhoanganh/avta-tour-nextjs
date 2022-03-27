@@ -87,9 +87,7 @@ export default function Apply({ ladder, allPlayers, preview }) {
                         <div className='relative'>
                           <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 -ml-16 max-w-300-px text-4xl p-6 text-center'>
                             <i className='fas fa-award text-6xl text-yellow-400'></i>
-                            {registeredPlayers.length > 0 ? <>
-                              ${registeredPlayers.length * ladder.joiningFee}
-                            </> : <><i className="fas fa-baseball-ball text-5xl block text-green-400"></i></>}
+                            ${ladder.joiningFee}
                           </div>
                         </div>
                       </div>

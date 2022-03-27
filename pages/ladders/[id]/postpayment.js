@@ -18,6 +18,8 @@ export default function Apply({ ladder, preview }) {
   const [paymentError, setPaymentError] = useState(null);
 
   const goback = () => {
+    // force refresh
+    await fetch(`/ladders/${router.query.id}`);
     router.push(`/ladders/${router.query.id}`);
   }
 
@@ -105,7 +107,7 @@ export default function Apply({ ladder, preview }) {
                         <div className='relative'>
                           <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
                             <i className='fas fa-medal text-6xl text-yellow-400'></i>
-                            <i className="fas fa-baseball-ball text-green-400 block"></i>
+                            ${ladder.joiningFee}
                           </div>
                         </div>
                       </div>
