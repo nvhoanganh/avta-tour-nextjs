@@ -1,30 +1,18 @@
-import React from "react";
 import { format } from 'date-fns'
 import Link from 'next/link'
-import PostTitle from '../../components/post-title';
-import TeamAvatar from '../../components/TeamAvatarNoLink';
 import TeamCard from './TeamCard';
-import cn from 'classnames';
-import DropDown from '../../components/dropdown';
 import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
-import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
-import Spinner from '../../components/spinner';
-import PlayerWithIcon from '../../components/PlayerWithIcon';
 import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
-import {
-  getPlayerById,
-  score,
-  getPlayers
-} from '../../lib/browserapi';
+import { getPlayers } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
+import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid

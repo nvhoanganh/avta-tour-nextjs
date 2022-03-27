@@ -1,64 +1,26 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import ErrorPage from 'next/error';
-import ContentfulImage from '../../../components/contentful-image';
-import Container from '../../../components/container';
 import Spinner from '../../../components/spinner';
-import PostBody from '../../../components/post-body';
-import MoreStories from '../../../components/more-stories';
-import Header from '../../../components/header';
-import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
-import Intro from '../../../components/intro';
-import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import ApplyForCompForm from '../../../components/Cards/Apply';
-import SendOtp from '../../../components/sendotp';
-import { useFirebaseAuth } from '../../../components/authhook';
+import JoinAndPay from '../../../components/Cards/JoinAndPay';
+import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug, getRulebyId } from '../../../lib/api';
-import { getGroupDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
+import { doc, getDoc } from "firebase/firestore";
+import { getAllPlayers } from '../../../lib/api';
+import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 
 
-export default function Apply({ group, allPlayers, preview }) {
+export default function Apply({ ladder, allPlayers, preview }) {
   const router = useRouter();
-  const { user, loadingAuth } = useFirebaseAuth();
-  const [userRole, setUserRole] = useState(null);
-  const [linkedPlayerId, setLinkedPlayerId] = useState(null);
+  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
 
   const goback = () => {
-    router.push(`/groups/${router.query.id}`);
+    router.push(`/ladders/${router.query.id}`);
   }
-
-  const gotoLogin = () => {
-    localStorage.setItem('redirectAfterLogin', window.location.pathname);
-    router.push('/auth/login?reason=apply');
-  }
-
-  useEffect(async () => {
-    if (!loadingAuth) {
-      if (!user) {
-        gotoLogin();
-        return;
-      }
-
-      const docSnap = await getDoc(doc(db, "user_roles", user.uid));
-      if (docSnap.exists()) {
-        const userRoles = docSnap.data();
-        setUserRole(userRoles)
-      }
-
-      const usersSnap = await getDoc(doc(db, "users", user.uid));
-      if (usersSnap.exists()) {
-        const { playerId } = usersSnap.data();
-        setLinkedPlayerId(playerId);
-      }
-    }
-  }, [user, loadingAuth]);
 
   return (
     <Layout preview={false}>
@@ -70,7 +32,7 @@ export default function Apply({ group, allPlayers, preview }) {
         <>
           <article>
             <Head>
-              <title>Apply - {group.name} - Starting {group.startDate} | AVTA.</title>
+              <title>Apply - {ladder.name} - Starting {ladder.startDate} | AVTA.</title>
             </Head>
           </article>
 
@@ -124,13 +86,29 @@ export default function Apply({ group, allPlayers, preview }) {
                     </div>
                     <div className='mt-24'>
                       {
-                        loadingAuth
+                        loading
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
                           <div>
-                            {linkedPlayerId ?
-                              <div>You can join</div> :
-                              <div>You can't join this group until you have connected your profile</div>
+                            {fullProfile?.playerId ?
+                              <div>
+                                {
+                                  ladder.players.map(player => player.playerId).indexOf(fullProfile?.playerId) >= 0 ?
+                                    <div className="text-center py-8">You already joined this ladder
+                                      <div className="py-4">
+                                        <Link href={`/ladders/${ladder.id}`}><a
+                                          className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                        >
+                                          Go Back
+                                        </a></Link>
+                                      </div>
+                                    </div> :
+                                    <div>
+                                      <JoinAndPay ladder={ladder} players={allPlayers} fullProfile={fullProfile}></JoinAndPay>
+                                    </div>
+                                }
+                              </div> :
+                              <div className="text-red-600 text-center py-8">Please link your player profile first before joining this ladder</div>
                             }
                           </div>
                       }
@@ -146,14 +124,14 @@ export default function Apply({ group, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const data = await getGroupDetails(params.id, preview);
+  const data = await getLadderDetails(params.id, preview);
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
 
   return {
     props: {
       preview,
-      group: data,
+      ladder: data,
       allPlayers
     },
     revalidate: 60
@@ -163,7 +141,7 @@ export async function getStaticProps({ params, preview = false }) {
 export async function getStaticPaths() {
   const all = await getAllLadders();
   return {
-    paths: all?.map(({ id }) => `/groups/${id}/apply`) ?? [],
+    paths: all?.map(({ id }) => `/ladders/${id}/apply`) ?? [],
     fallback: true,
   };
 }

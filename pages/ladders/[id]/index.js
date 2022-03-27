@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { doc, getDoc } from "firebase/firestore";
 
 export default function Competition({ ladder, preview }) {
-  const { user, loadingAuth } = useFirebaseAuth();
+  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
@@ -98,11 +98,14 @@ export default function Competition({ ladder, preview }) {
 
                         <div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right text-center lg:self-center'>
                           <div className='py-6 mt-24 sm:mt-0 flex flex-col sm:flex-row justify-end'>
-                            <Link href={`/ladders/${ladder.id}/apply`}><a
-                              className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                            >
-                              Join Now
-                            </a></Link>
+                            {
+                              ladder.players.map(player => player.playerId).indexOf(fullProfile?.playerId) < 0
+                              && <Link href={`/ladders/${ladder.id}/apply`}><a
+                                className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                              >
+                                Join Now
+                              </a></Link>
+                            }
                           </div>
                         </div>
 
