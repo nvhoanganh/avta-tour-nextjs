@@ -36,14 +36,16 @@ export function useFirebaseAuth({ protectedRoute, reason }) {
 
 	useEffect(async () => {
 		if (!loadingAuth) {
-			if (!user && protectedRoute) {
+			if (protectedRoute && !user) {
 				gotoLogin();
 				return;
 			}
 
-			const usersSnap = await getDoc(doc(db, "users", user.uid));
-			if (usersSnap.exists()) {
-				setFullProfile(usersSnap.data());
+			if (user) {
+				const usersSnap = await getDoc(doc(db, "users", user.uid));
+				if (usersSnap.exists()) {
+					setFullProfile(usersSnap.data());
+				}
 			}
 
 			setLoading(false);

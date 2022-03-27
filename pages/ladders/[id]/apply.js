@@ -78,9 +78,9 @@ export default function Apply({ ladder, allPlayers, preview }) {
                     <div className='flex flex-wrap justify-center'>
                       <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
                         <div className='relative'>
-                          <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
+                          <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 -ml-16 max-w-300-px text-4xl p-6 text-center'>
                             <i className='fas fa-medal text-6xl text-yellow-400'></i>
-                            Ladder
+                            <i className="fas fa-baseball-ball text-green-400 block"></i>
                           </div>
                         </div>
                       </div>
@@ -109,7 +109,16 @@ export default function Apply({ ladder, allPlayers, preview }) {
                                     </div>
                                 }
                               </div> :
-                              <div className="text-red-600 text-center py-8">Please link your player profile first before joining this ladder</div>
+                              <div className="text-red-600 text-center py-8">
+                                Please link your player profile before joining this ladder
+                                <p className="py-8">
+                                  <Link href={`/editmyprofile`}><a
+                                    className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                  >
+                                    View my profile
+                                  </a></Link>
+                                </p>
+                              </div>
                             }
                           </div>
                       }

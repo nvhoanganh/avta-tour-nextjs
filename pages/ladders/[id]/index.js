@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { doc, getDoc } from "firebase/firestore";
 
 export default function Competition({ ladder, preview }) {
-  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
+  const { fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
@@ -23,9 +23,6 @@ export default function Competition({ ladder, preview }) {
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
   }
-
-  console.log("🚀 ~ file: index.js ~ line 18 ~ Competition ~ players", ladder.players)
-  console.log("🚀 ~ file: index.js ~ line 18 ~ Competition ~ profile", fullProfile)
 
   return (
     <Layout preview={preview}>
@@ -95,7 +92,7 @@ export default function Competition({ ladder, preview }) {
                           <div className='relative'>
                             <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
                               <i className='fas fa-medal text-6xl text-yellow-400'></i>
-                              Ladder
+                              <i className="fas fa-baseball-ball text-green-400 block"></i>
                             </div>
                           </div>
                         </div>
