@@ -9,7 +9,7 @@ import { getLadderDetails, getAllLadders } from '../../../lib/backendapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import { useFirebaseAuth } from '../../../components/authhook';
+import { useFirebaseAuth } from '../../../components/authhook2';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { doc, getDoc } from "firebase/firestore";
@@ -23,6 +23,9 @@ export default function Competition({ ladder, preview }) {
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
   }
+
+  console.log("🚀 ~ file: index.js ~ line 18 ~ Competition ~ players", ladder.players)
+  console.log("🚀 ~ file: index.js ~ line 18 ~ Competition ~ profile", fullProfile)
 
   return (
     <Layout preview={preview}>
@@ -100,12 +103,13 @@ export default function Competition({ ladder, preview }) {
                         <div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right text-center lg:self-center'>
                           <div className='py-6 mt-24 sm:mt-0 flex flex-col sm:flex-row justify-end'>
                             {
-                              ladder.players.map(player => player.playerId).indexOf(fullProfile?.playerId) < 0
-                              && <Link href={`/ladders/${ladder.id}/apply`}><a
-                                className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                              >
-                                Join Now
-                              </a></Link>
+                              ladder.players.map(player => player.playerId).indexOf(fullProfile?.uid) < 0
+                                ? <Link href={`/ladders/${ladder.id}/apply`}><a
+                                  className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                >
+                                  Join Now
+                                </a></Link> :
+                                <span className="bg-gray-500 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i class="fas fa-sign-in-alt"></i>&nbsp; Joined</span>
                             }
                           </div>
                         </div>
@@ -114,7 +118,7 @@ export default function Competition({ ladder, preview }) {
                           <div className='flex justify-center py-4 lg:pt-4 pt-8'>
                             <div className='mr-4 p-3 text-center'>
                               <span className='text-xl font-bold block uppercase tracking-wide text-gray-600'>
-                                10
+                                {ladder.players.length}
                               </span>
                               <a className='text-sm text-gray-400 underline hover:cursor-pointer'>
                                 Players
