@@ -59,16 +59,6 @@ export default function GroupsTable({ color, ladders }) {
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
-								>
-									Leaders
-								</th>
-								<th
-									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
-										(color === 'light'
-											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
-									}
 								></th>
 							</tr>
 						</thead>
@@ -94,9 +84,6 @@ export default function GroupsTable({ color, ladders }) {
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateComponent dateString={ladder.startDate} /> - <DateComponent dateString={ladder.endDate} />
-									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										Leaders...
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
