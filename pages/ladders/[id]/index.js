@@ -86,12 +86,13 @@ export default function Competition({ ladder, preview }) {
               <section className='relative py-16 bg-gray-200'>
                 <div className='container mx-auto px-0 sm:px-4'>
                   <div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64'>
-                    <div className='px-6'>
+                    <div className='px-6 pb-20'>
                       <div className='flex flex-wrap justify-center'>
                         <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
                           <div className='relative'>
                             <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
-                              <i className='fas fa-trophy text-6xl text-yellow-400'></i>
+                              <i className='fas fa-medal text-6xl text-yellow-400'></i>
+                              Ladder
                             </div>
                           </div>
                         </div>
@@ -130,6 +131,7 @@ export default function Competition({ ladder, preview }) {
                           </div>
                         </div>
                       </div>
+
                       <div className='text-center'>
                         <div className='text-sm leading-normal mt-0 mb-2  font-bold uppercase'>
                           <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
@@ -141,27 +143,30 @@ export default function Competition({ ladder, preview }) {
                       <div className='text-center'>
                         <div className='text-sm leading-normal mt-0 mb-2 '>
                           <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
-                            From {' '}
                             <DateComponent
                               dateString={
                                 ladder.startDate
                               }
                             />
-                            {' '} to {' '}
+                            {' - '}
                             <DateComponent
                               dateString={
                                 ladder.endDate
                               }
                             />{' '}
-                            {ladder.joiningFee && <>, Joining Fee ${ladder.joiningFee}.00</>}
+                            {ladder.joiningFee && <>, Fee ${ladder.joiningFee}.00</>}
                           </a>
                         </div>
                       </div>
 
-                      <div className='mx-0 md:mx-4'>
+                      <div className='mx-0 md:mx-4 pt-8'>
                         <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
                           {ladder.name}
                         </h3>
+                      </div>
+
+                      <div className='mx-0 md:mx-4 mt-10'>
+                        {ladder.rule}
                       </div>
                     </div>
                   </div>

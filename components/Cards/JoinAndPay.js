@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { loadStripe } from '@stripe/stripe-js';
 import 'react-toastify/dist/ReactToastify.css';
 import PlayerAvatar from '../Cards/PlayerAvatar';
+import DateComponent from '../date';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -12,7 +13,7 @@ const stripePromise = loadStripe(
 );
 
 export default function JoinLadder({ ladder, players, fullProfile }) {
-  console.log("🚀 ~ file: JoinAndPay.js ~ line 13 ~ JoinLadder ~ fullProfile", fullProfile)
+  console.log("🚀 ~ file: JoinAndPay.js ~ line 15 ~ JoinLadder ~ ladder", ladder)
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -26,13 +27,43 @@ export default function JoinLadder({ ladder, players, fullProfile }) {
   return (
     <>
       <>
-        <form action={`/api/checkout_sessions?playerId=${fullProfile.uid}&ladder=${ladder.id}`} method="POST"
+        <form action={`/api/checkout_ladder?playerId=${fullProfile.uid}&ladder=${ladder.id}&fee=${ladder.joiningFee}`} method="POST"
           className="relative flex flex-col min-w-0 break-words mb-6 border-0 justify-center items-center"
         >
           <p className="py-2 h1">Join <span className="font-bold">{ladder.name}</span>
           </p>
           <p className="py-6">
             <PlayerAvatar player={fullProfile} className="w-28 h-28" />
+          </p>
+
+          <div className='text-center'>
+            <div className='text-sm leading-normal mt-0 mb-2  font-bold uppercase'>
+              <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
+                <i className='fas fa-map-marker-alt mr-2 text-lg '></i>{' '}
+                {ladder.homeClub}
+              </a>
+            </div>
+          </div>
+
+          <div className='text-center'>
+            <div className='leading-normal mt-0 mb-2 '>
+              <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
+                <DateComponent
+                  dateString={
+                    ladder.startDate
+                  }
+                />
+                {' - '}
+                <DateComponent
+                  dateString={
+                    ladder.endDate
+                  }
+                />
+              </a>
+            </div>
+          </div>
+
+          <p className="py-5 pb-10 px-5">{ladder.rule}
           </p>
 
           <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150

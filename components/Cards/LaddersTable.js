@@ -50,7 +50,7 @@ export default function GroupsTable({ color, ladders }) {
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Start/End Date
+									Date
 								</th>
 								<th
 									className={

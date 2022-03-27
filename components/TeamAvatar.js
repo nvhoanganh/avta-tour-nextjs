@@ -3,7 +3,6 @@ import PlayerAvatar from './Cards/PlayerAvatar';
 import React from "react";
 import Link from 'next/link';
 import cn from 'classnames';
-import PropTypes from "./Ply";
 import { format } from 'date-fns'
 
 export default function TeamAvatar({ team }) {
