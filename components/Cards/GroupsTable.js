@@ -1,10 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
+import DateComponent from '../date';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
-
-// components
 
 import TableDropdown from '../Dropdowns/TableDropdown.js';
 
@@ -61,6 +60,16 @@ export default function GroupsTable({ color, groups }) {
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
+								>
+									Leaders
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left ' +
+										(color === 'light'
+											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
+									}
 								></th>
 							</tr>
 						</thead>
@@ -85,13 +94,16 @@ export default function GroupsTable({ color, groups }) {
 										{comp.homeClub}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{comp.startDate}
+										<DateComponent dateString={comp.startDate} />
+									</td>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+										Leaders...
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
 											href={`/groups/${comp.id}`}
 										>
-											<a className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
+											<a className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
 												View
 											</a>
 										</Link>
@@ -105,3 +117,12 @@ export default function GroupsTable({ color, groups }) {
 		</>
 	);
 }
+
+GroupsTable.defaultProps = {
+	color: 'light',
+	groups: [],
+};
+
+GroupsTable.propTypes = {
+	color: PropTypes.oneOf(['light', 'dark']),
+};
