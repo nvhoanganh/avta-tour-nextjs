@@ -7,7 +7,7 @@ import ContentfulImage from '../contentful-image';
 
 import TableDropdown from '../Dropdowns/TableDropdown.js';
 
-export default function GroupsTable({ color, groups }) {
+export default function GroupsTable({ color, ladders }) {
 	return (
 		<>
 			<div
@@ -19,7 +19,6 @@ export default function GroupsTable({ color, groups }) {
 				}
 			>
 				<div className='block w-full overflow-x-auto'>
-					{/* Projects table */}
 					<table className='items-center w-full bg-transparent border-collapse'>
 						<thead>
 							<tr>
@@ -31,7 +30,7 @@ export default function GroupsTable({ color, groups }) {
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Group
+									Ladder
 								</th>
 								<th
 									className={
@@ -51,7 +50,7 @@ export default function GroupsTable({ color, groups }) {
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Start Date
+									Start/End Date
 								</th>
 								<th
 									className={
@@ -74,8 +73,8 @@ export default function GroupsTable({ color, groups }) {
 							</tr>
 						</thead>
 						<tbody>
-							{groups.map((comp) => (
-								<tr key={comp.id}>
+							{ladders.map((ladder) => (
+								<tr key={ladder.id}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div className='flex flex-col'>
 											<div
@@ -86,22 +85,22 @@ export default function GroupsTable({ color, groups }) {
 														: 'text-white')
 												}
 											>
-												{comp.name}
+												{ladder.name}
 											</div>
 										</div>
 									</th>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{comp.homeClub}
+										{ladder.homeClub}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										<DateComponent dateString={comp.startDate} />
+										<DateComponent dateString={ladder.startDate} /> - <DateComponent dateString={ladder.endDate} />
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										Leaders...
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
-											href={`/groups/${comp.id}`}
+											href={`/ladders/${ladder.id}`}
 										>
 											<a className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
 												View

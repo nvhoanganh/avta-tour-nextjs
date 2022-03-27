@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug, getRulebyId } from '../../../lib/api';
-import { getGroupDetails, mergeUsersAndPlayersData, getAllGroups } from '../../../lib/backendapi';
+import { getGroupDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 
 
 export default function Apply({ group, allPlayers, preview }) {
@@ -128,7 +128,10 @@ export default function Apply({ group, allPlayers, preview }) {
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
                           <div>
-                            Register
+                            {linkedPlayerId ?
+                              <div>You can join</div> :
+                              <div>You can't join this group until you have connected your profile</div>
+                            }
                           </div>
                       }
                     </div>
@@ -158,7 +161,7 @@ export async function getStaticProps({ params, preview = false }) {
 }
 
 export async function getStaticPaths() {
-  const all = await getAllGroups();
+  const all = await getAllLadders();
   return {
     paths: all?.map(({ id }) => `/groups/${id}/apply`) ?? [],
     fallback: true,

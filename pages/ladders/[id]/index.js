@@ -1,64 +1,28 @@
-import ToggleContactDetails from '../../../components/ToggleContactDetails';
-import ToggleTournamentRule from '../../../components/ToggleTournamentRule';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import cn from 'classnames';
-import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ErrorPage from 'next/error';
-import ContentfulImage from '../../../components/contentful-image';
 import DateComponent from '../../../components/date';
-import MatchScheduler from '../../../components/MatchScheduler';
-import Container from '../../../components/container';
-import PostBody from '../../../components/post-body';
-import MoreStories from '../../../components/more-stories';
-import MatchResultsTable from '../../../components/Cards/MatchResultsTableFb';
-import Header from '../../../components/header';
-import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding, getRulebyId } from '../../../lib/api';
-import { getGroupDetails, getAllGroups } from '../../../lib/backendapi';
-import { getAllGroupMatches, exportGroupsAllocation, getCompGroups } from '../../../lib/browserapi';
+import { getLadderDetails, getAllLadders } from '../../../lib/backendapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
-import Intro from '../../../components/intro';
-import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import TeamsCard from '../../../components/Cards/TeamsCard2.js';
-import MatchResultsCard from '../../../components/Cards/MatchResultsCardFb';
-import MatchScheduleCard from '../../../components/Cards/MatchScheduleCard';
-import MatchScheduleGrid from '../../../components/Cards/MatchScheduleGrid';
-import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
-import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import { useFirebaseAuth } from '../../../components/authhook';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
-import fileDownload from 'js-file-download';
+import { doc, getDoc } from "firebase/firestore";
 
-export default function Competition({ group, preview }) {
+export default function Competition({ ladder, preview }) {
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
-  const [userRoles, setUserRoles] = useState(null);
 
-  if (!router.isFallback && !group) {
+  if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
   }
-
-  useEffect(async () => {
-    if (user) {
-      const docSnap = await getDoc(doc(db, "user_roles", user.uid));
-      if (docSnap.exists()) {
-        setUserRoles(docSnap.data());
-      }
-    } else {
-      setUserRoles(null)
-    }
-  }, [user]);
-  console.log("🚀 ~ file: index.js ~ line 41 ~ Competition ~ group", group)
 
   return (
     <Layout preview={preview}>
@@ -72,11 +36,11 @@ export default function Competition({ group, preview }) {
           <article>
             <Head>
               <title>
-                {group.name} - {group.homeGroup} | AVTA.
+                {ladder.name} - {ladder.homeGroup} | AVTA.
               </title>
               <meta
                 name='description'
-                content={`Australia Vietnamese Tennis Association - ${group.name} - ${group.homeGroup}`}
+                content={`Australia Vietnamese Tennis Association - ${ladder.name} - ${ladder.homeGroup}`}
               />
             </Head>
           </article>
@@ -89,7 +53,7 @@ export default function Competition({ group, preview }) {
                   style={{
                     backgroundImage:
                       "url('" +
-                      (group.heroImage?.url ||
+                      (ladder.heroImage?.url ||
                         'https://unsplash.com/photos/HkN64BISuQA/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM2OTU1MTkw&force=true&w=1920') +
                       "')",
                   }}
@@ -134,7 +98,7 @@ export default function Competition({ group, preview }) {
 
                         <div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right text-center lg:self-center'>
                           <div className='py-6 mt-24 sm:mt-0 flex flex-col sm:flex-row justify-end'>
-                            <Link href={`/groups/${group.id}/apply`}><a
+                            <Link href={`/ladders/${ladder.id}/apply`}><a
                               className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                             >
                               Join Now
@@ -164,22 +128,36 @@ export default function Competition({ group, preview }) {
                         </div>
                       </div>
                       <div className='text-center'>
-                        <div className='text-sm leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase'>
-                          <a href={`https://maps.google.com/?q=${group.homeClub}`} target='_blank' className='hover:underline'>
-                            <i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
-                            {group.homeClub}, Starts {' '}
+                        <div className='text-sm leading-normal mt-0 mb-2  font-bold uppercase'>
+                          <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
+                            <i className='fas fa-map-marker-alt mr-2 text-lg '></i>{' '}
+                            {ladder.homeClub}
+                          </a>
+                        </div>
+                      </div>
+                      <div className='text-center'>
+                        <div className='text-sm leading-normal mt-0 mb-2 '>
+                          <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
+                            From {' '}
                             <DateComponent
                               dateString={
-                                group.startDate
+                                ladder.startDate
                               }
                             />
+                            {' '} to {' '}
+                            <DateComponent
+                              dateString={
+                                ladder.endDate
+                              }
+                            />{' '}
+                            {ladder.joiningFee && <>, Joining Fee ${ladder.joiningFee}.00</>}
                           </a>
                         </div>
                       </div>
 
                       <div className='mx-0 md:mx-4'>
                         <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-                          {group.name}
+                          {ladder.name}
                         </h3>
                       </div>
                     </div>
@@ -196,21 +174,21 @@ export default function Competition({ group, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const data = await getGroupDetails(params.id, preview);
+  const data = await getLadderDetails(params.id, preview);
 
   return {
     props: {
       preview,
-      group: data,
+      ladder: data,
     },
     revalidate: 1
   };
 }
 
 export async function getStaticPaths() {
-  const all = await getAllGroups();
+  const all = await getAllLadders();
   return {
-    paths: all?.map(({ id }) => `/groups/${id}`) ?? [],
+    paths: all?.map(({ id }) => `/ladders/${id}`) ?? [],
     fallback: true,
   };
 }
