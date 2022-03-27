@@ -22,6 +22,9 @@ export default function Apply({ ladder, allPlayers, preview }) {
     router.push(`/ladders/${router.query.id}`);
   }
 
+  const registeredPlayersUid = ladder.players.map(u => u.playerId);
+  const registeredPlayers = allPlayers.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1);
+
   return (
     <Layout preview={false}>
       <Navbar transparent />
@@ -79,8 +82,10 @@ export default function Apply({ ladder, allPlayers, preview }) {
                       <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
                         <div className='relative'>
                           <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 -ml-16 max-w-300-px text-4xl p-6 text-center'>
-                            <i className='fas fa-medal text-6xl text-yellow-400'></i>
-                            <i className="fas fa-baseball-ball text-green-400 block"></i>
+                            <i className='fas fa-award text-6xl text-yellow-400'></i>
+                            {registeredPlayers.length > 0 ? <>
+                              ${registeredPlayers.length * ladder.joiningFee}
+                            </> : <><i className="fas fa-baseball-ball text-5xl block text-green-400"></i></>}
                           </div>
                         </div>
                       </div>

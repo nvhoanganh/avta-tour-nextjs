@@ -6,35 +6,39 @@ import ContentfulImage from '../contentful-image';
 import DropDown from '../dropdown';
 import useFilterPlayers from '../../lib/useFilterhook';
 
-export default function PlayersCard({ allPlayers }) {
+export default function PlayersCard({ allPlayers, hideSearch }) {
 	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
 
 	return (
 		<>
-			<div className='sticky py-3 rounded-lg shadow-lg opacity-95 bg-gray-300 flex flex-col space-y-1 justify-center items-center'>
-				<div className='flex space-x-1 justify-center items-center'>
-					<input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-60 ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
-						value={filter} onChange={(e) => { setFilter(e.target.value) }}
-					/>
+			{
+				!hideSearch
+				&& <div className='sticky py-3 rounded-lg shadow-lg opacity-95 bg-gray-300 flex flex-col space-y-1 justify-center items-center'>
+					<div className='flex space-x-1 justify-center items-center'>
+						<input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-60 ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
+							value={filter} onChange={(e) => { setFilter(e.target.value) }}
+						/>
 
-					<DropDown buttonText={
-						<span><i className="fas fa-sort-amount-down-alt mr-1"></i>{sortBy}</span>
-					}
-						items={[
-							<a onClick={() => setSortBy('Point')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Point</a>,
+						<DropDown buttonText={
+							<span><i className="fas fa-sort-amount-down-alt mr-1"></i>{sortBy}</span>
+						}
+							items={[
+								<a onClick={() => setSortBy('Point')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Point</a>,
 
-							<a onClick={() => setSortBy('Name')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Name</a>,
+								<a onClick={() => setSortBy('Name')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Name</a>,
 
-							<a onClick={() => setSortBy('Club')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Club</a>,
-						]}
-					>
-					</DropDown>
+								<a onClick={() => setSortBy('Club')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Club</a>,
+							]}
+						>
+						</DropDown>
+					</div>
+					<div className="italic text-gray-500 text-xs">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}</div>
 				</div>
-				<div className="italic text-gray-500 text-xs">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}</div>
-			</div>
+
+			}
 
 
-			<section className='pt-32 pb-48'>
+			<section className='pt-10 pb-48'>
 				<div className='container mx-auto px-4'>
 					<div className='flex flex-wrap justify-center'>
 

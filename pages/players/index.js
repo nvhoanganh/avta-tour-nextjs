@@ -50,7 +50,7 @@ export default function Players({ allPlayers, preview }) {
 										players={allPlayers}
 									/>
 								</div>
-								<div className='md:hidden px-2 mx-auto'>
+								<div className='md:hidden px-2 mx-auto pt-32'>
 									<PlayersCard allPlayers={allPlayers} />
 								</div>
 							</div>

@@ -9,12 +9,12 @@ import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../..
 import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
+import PlayersCard from '../../../components/Cards/PlayersCard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAllPlayers } from '../../../lib/api';
 
 export default function Competition({ ladder, allPlayers, preview }) {
-  console.log("🚀 ~ file: index.js ~ line 17 ~ Competition ~ allPlayers", allPlayers)
   const { fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
@@ -23,6 +23,15 @@ export default function Competition({ ladder, allPlayers, preview }) {
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
   }
+
+  const registeredPlayersUid = ladder.players.map(u => u.playerId);
+  const registeredPlayers = allPlayers.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1);
+  const totalPoints = registeredPlayers.reduce((previousTotal, player) => {
+    return (
+      previousTotal +
+      player.avtaPoint
+    );
+  }, 0)
 
   return (
     <Layout preview={preview}>
@@ -89,10 +98,12 @@ export default function Competition({ ladder, allPlayers, preview }) {
                     <div className='px-6 pb-20'>
                       <div className='flex flex-wrap justify-center'>
                         <div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
-                        <div className='relative'>
+                          <div className='relative'>
                             <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
-                              <i className='fas fa-medal text-6xl text-yellow-400'></i>
-                              <i className="fas fa-baseball-ball text-green-400 block"></i>
+                              <i className='fas fa-award text-6xl text-yellow-400'></i>
+                              {registeredPlayers.length > 0 ? <>
+                                ${registeredPlayers.length * ladder.joiningFee}
+                              </> : <><i className="fas fa-baseball-ball text-6xl block text-green-400"></i></>}
                             </div>
                           </div>
                         </div>
@@ -106,7 +117,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                 >
                                   Join Now
                                 </a></Link> :
-                                <span className="bg-gray-500 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i class="fas fa-sign-in-alt"></i>&nbsp; Joined</span>
+                                <span className="bg-gray-500 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i class="fas fa-sign-in-alt"></i>&nbsp;You Joined</span>
                             }
                           </div>
                         </div>
@@ -123,7 +134,14 @@ export default function Competition({ ladder, allPlayers, preview }) {
                             </div>
                             <div className='mr-4 p-3 text-center'>
                               <span className='text-xl font-bold block uppercase tracking-wide text-green-700'>
-                                1389
+                                {registeredPlayers?.length > 0
+                                  ? (
+                                    totalPoints /
+                                    registeredPlayers?.length
+                                  ).toFixed(
+                                    0
+                                  )
+                                  : '-'}
                               </span>
                               <span className='text-sm text-gray-400'>
                                 Avg Point
@@ -161,7 +179,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       </div>
 
                       <div className='mx-0 md:mx-4 pt-8'>
-                        <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
+                        <h3 className='mt-10 text-3xl pt-6 mx-auto'>
                           {ladder.name}
                         </h3>
                       </div>
@@ -169,6 +187,12 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       <div className='mx-0 md:mx-4 mt-10'>
                         {ladder.rule}
                       </div>
+
+                      {ladder.players?.length > 0 &&
+                        <section className="mx-0 md:mx-4">
+                          <div id="teams" className="text-2xl pt-6">Registered Players</div>
+                          <PlayersCard allPlayers={registeredPlayers} hideSearch />
+                        </section>}
                     </div>
                   </div>
                 </div>
