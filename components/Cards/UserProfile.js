@@ -29,7 +29,11 @@ export default function UserProfile() {
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
     let updated = docSnap.exists() ? { ...docSnap.data(), ...data } : { ...data, uid: user.uid };
-    updated = { ...updated, photoURL: user.photoURL };
+
+    if (!updated.photoURL) {
+      updated = { ...updated, photoURL: user.photoURL };
+    }
+
     await setDoc(docRef, updated);
 
     if (updated.playerId) {
@@ -237,7 +241,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
       border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
                 {...register("playStyle", { required: true })}
               >
-                <option value="All-Court" selected>All-Court</option>
+                <option value="All-Court">All-Court</option>
                 <option value="Baseliner">Baseliner</option>
                 <option value="Serve and Volley">Serve and Volley</option>
                 <option value="Pusher">Pusher</option>
