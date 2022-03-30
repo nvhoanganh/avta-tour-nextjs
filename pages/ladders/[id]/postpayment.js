@@ -122,13 +122,12 @@ export default function Apply({ ladder, preview }) {
                           <p className="uppercase py-2 h1">Payment Received</p>
                           <p className="text-gray-400 text-sm pb-6">Thanks {applicationState?.customer?.name}!</p>
                           <p className="text-gray-400 text-sm pb-6">We have received ${applicationState.amount_total / 100}.00 for your application</p>
-
-                          <Link href={`/ladders/${ladder.id}`}>
-                            <a
-                              className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'
-                            >
-                              Go Back to Ladder
-                            </a></Link>
+                          <a
+                            className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'
+                            onClick={goback}
+                          >
+                            Go Back to Ladder
+                          </a>
                         </div>
                       }
 
@@ -151,7 +150,8 @@ export default function Apply({ ladder, preview }) {
               </div>
             </section>
           </main>
-        </>)}
+        </>)
+      }
     </Layout >
   );
 }
