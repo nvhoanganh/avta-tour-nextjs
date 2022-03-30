@@ -15,50 +15,30 @@ import 'react-toastify/dist/ReactToastify.css';
 var Diacritics = require('diacritic');
 
 export default function SubmitLadderScore({ ladder, allPlayers }) {
-  console.log("🚀 ~ file: SubmitLadderScore.js ~ line 17 ~ SubmitLadderScore ~ allPlayers", allPlayers)
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
   const onSubmit = async data => {
     setSaving(true)
     toast("Result submitted!");
-
-    console.log("🚀 ~ file: SubmitLadderScore.js ~ line 22 ~ SubmitLadderScore ~ data", data)
-
-    // data = {
-    //   competitionId: ladder?.sys?.id,
-    //   compDate: ladder?.date,
-    //   maxPoint: ladder?.maxPoint,
-    //   slug: ladder?.slug,
-    //   title: ladder?.title,
-    //   type: ladder?.type,
-    //   active: ladder?.active,
-    //   timestamp: (new Date()),
-
-    //   stage: data.stage,
-    //   gameWonByLoser: data.gameWonByLoser,
-    //   stage: data.stage,
-    //   knockoutRound: data.knockoutRound || '',
-    //   group: data.group || '',
-    //   losers: data.selectedLoser,
-    //   winners: data.selectedWinner,
-    //   loserTeamId: data.selectedLoser.sys.id,
-    //   winnerTeamId: data.selectedWinner.sys.id,
-    //   loser1: data.selectedLoser.players[0].sys.id,
-    //   loser2: data.selectedLoser.players[1].sys.id,
-    //   winner1: data.selectedWinner.players[0].sys.id,
-    //   winner2: data.selectedWinner.players[1].sys.id,
-    // };
-
-    // const docRef = await addDoc(collection(db, "competition_results"), data);
-
+    data = {
+      ladderId: ladder.id,
+      ...data,
+      winnerUser1: allPlayers.find(x => x.sys.id === data.winner1),
+      winnerUser2: allPlayers.find(x => x.sys.id === data.winner2),
+      loserUser1: allPlayers.find(x => x.sys.id === data.loser1),
+      loserUser2: allPlayers.find(x => x.sys.id === data.loser2),
+      timestamp: (new Date()),
+      gameWonByWinners: +data.gameWonByWinners,
+      gameWonByLosers: +data.gameWonByLosers,
+    }
+    const docRef = await addDoc(collection(db, "ladder_results"), data);
     setSaving(false)
   };
 
   return (
     <>
       <ToastContainer />
-
       {
         saving
           ? <><div className="text-center py-24"><Spinner size="lg" color="blue" /> Loading...</div> :</>
@@ -212,6 +192,15 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                     ))}
                   </select>
                 </div>
+              </div>
+            </div>
+
+            <div className="w-full lg:w-6/12 px-4 py-4">
+              <div className="relative w-full mb-3">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("isBagel")} />
+                  <span className="ml-2 text-sm font-semibold text-blueGray-600">Is Bagel</span>
+                </label>
               </div>
             </div>
 

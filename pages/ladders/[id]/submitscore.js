@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { format } from 'date-fns'
 import Link from 'next/link';
 import Head from 'next/head';
 import Spinner from '../../../components/spinner';
@@ -18,6 +19,14 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
   const router = useRouter();
   const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
 
+  useEffect(() => {
+    if (fullProfile
+      && ladder.players.map(player => player.playerId).indexOf(fullProfile?.uid) < 0
+      && new Date() < new Date(ladder.startDate)) {
+      router.push(`/ladders/${ladder.id}`);
+    }
+  }, [ladder, fullProfile]);
+
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
   }
@@ -32,7 +41,7 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
         <>
           <article>
             <Head>
-              <title>Submit Score - {ladder.name} - Starting {ladder.startDate} | AVTA.</title>
+              <title>Submit Score - {ladder.name} - Starting format {format(new Date(ladder.startDate), 'LLLL	d, yyyy')} | AVTA.</title>
             </Head>
           </article>
 

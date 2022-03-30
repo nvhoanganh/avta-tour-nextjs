@@ -115,7 +115,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                 >
                                   Join Now
                                 </a></Link> :
-                                (new Date('2022-04-14T14:00:00.000Z') > new Date() ?
+                                (new Date() < new Date(ladder.startDate) ?
                                   <Link href={`/ladders/${ladder.id}/submitscore`}>
                                     <a
                                       className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
