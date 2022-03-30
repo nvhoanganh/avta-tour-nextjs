@@ -22,10 +22,6 @@ export default function Apply({ ladder, allPlayers, preview }) {
     return <ErrorPage statusCode={404} />;
   }
 
-  const goback = () => {
-    router.push(`/ladders/${router.query.id}`);
-  }
-
   const registeredPlayersUid = ladder?.players.map(u => u.playerId) || [];
   const registeredPlayers = allPlayers?.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1);
 
