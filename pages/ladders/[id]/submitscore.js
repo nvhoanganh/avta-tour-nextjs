@@ -22,7 +22,7 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
   useEffect(() => {
     if (fullProfile
       && ladder.players.map(player => player.playerId).indexOf(fullProfile?.uid) < 0
-      && new Date() < new Date(ladder.startDate)) {
+      && new Date() >= new Date(ladder.startDate)) {
       router.push(`/ladders/${ladder.id}`);
     }
   }, [ladder, fullProfile]);
