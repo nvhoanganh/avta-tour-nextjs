@@ -12,6 +12,7 @@ import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResults
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import PlayersCard from '../../../components/Cards/PlayersCard';
+import LadderRankingsCard from '../../../components/Cards/LadderRankingsCard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAllPlayers } from '../../../lib/api';
@@ -19,7 +20,6 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
 
 export default function Competition({ ladder, allPlayers, preview }) {
-  console.log("🚀 ~ file: index.js ~ line 22 ~ Competition ~ ladder", ladder.ranking)
   const { fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
@@ -260,7 +260,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               activeTab === 0 &&
                               (
                                 <>
-                                  Not done yet
+                                  <LadderRankingsCard ranking={ladder.ranking}></LadderRankingsCard>
                                 </>)
                             }
 
