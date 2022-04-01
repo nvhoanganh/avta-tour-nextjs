@@ -13,6 +13,7 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import PlayersCard from '../../../components/Cards/PlayersCard';
 import LadderRankingsCard from '../../../components/Cards/LadderRankingsCard';
+import LadderRankingTable from '../../../components/Cards/LadderRankingTable';
 import { getAllPlayers } from '../../../lib/api';
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
@@ -258,9 +259,15 @@ export default function Competition({ ladder, allPlayers, preview }) {
                             {
                               activeTab === 0 &&
                               (
-                                <div className='mt-4'>
-                                  <LadderRankingsCard ranking={ladder.ranking}></LadderRankingsCard>
-                                </div>)
+                                <>
+                                  <div className='hidden container md:block'>
+                                    <LadderRankingTable ranking={ladder.ranking}></LadderRankingTable>
+                                  </div>
+                                  <div className='md:hidden mt-4'>
+                                    <LadderRankingsCard ranking={ladder.ranking}></LadderRankingsCard>
+                                  </div>
+                                </>
+                              )
                             }
 
                             {
@@ -268,8 +275,9 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               && (
                                 <>
                                   <div className='hidden container md:block'>
+                                    <LadderRankingTable></LadderRankingTable>
                                   </div>
-                                  <div className='mt-4'>
+                                  <div className='md:hidden mt-4'>
                                     <LadderMatchResultsCard
                                       results={ladder.scores}
                                       deleteResult={deleteResult}

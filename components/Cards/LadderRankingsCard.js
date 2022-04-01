@@ -7,6 +7,7 @@ export default function LadderRankingsCard({ ranking }) {
         <div className='w-full lg:w-6/12 xl:w-3/12'>
           {ranking.map((player, index) => (
             <PlayerRankingCard
+              key={player.player.playerId}
               player={player}
               index={index}
             />
