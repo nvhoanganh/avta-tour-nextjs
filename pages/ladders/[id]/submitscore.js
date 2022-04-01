@@ -116,7 +116,7 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
                         loading
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <SubmitLadderScore ladder={ladder} allPlayers={allPlayers}></SubmitLadderScore>
+                          <SubmitLadderScore ladder={ladder} allPlayers={allPlayers} user={fullProfile}></SubmitLadderScore>
                       }
                     </div>
                   </div>

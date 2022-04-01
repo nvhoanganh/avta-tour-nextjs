@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 var Diacritics = require('diacritic');
 
-export default function SubmitLadderScore({ ladder, allPlayers }) {
+export default function SubmitLadderScore({ ladder, allPlayers, user }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -31,6 +31,8 @@ export default function SubmitLadderScore({ ladder, allPlayers }) {
       timestamp: (new Date()),
       gameWonByWinners: +data.gameWonByWinners,
       gameWonByLosers: +data.gameWonByLosers,
+      submittedById: user.uid,
+      submittedByFullName: user.displayName,
     }
     const docRef = await addDoc(collection(db, "ladder_results"), data);
     setSaving(false)
