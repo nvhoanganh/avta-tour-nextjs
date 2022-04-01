@@ -13,11 +13,11 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import PlayersCard from '../../../components/Cards/PlayersCard';
 import LadderRankingsCard from '../../../components/Cards/LadderRankingsCard';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { getAllPlayers } from '../../../lib/api';
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Competition({ ladder, allPlayers, preview }) {
   const { fullProfile, loading } = useFirebaseAuth({});
@@ -258,9 +258,9 @@ export default function Competition({ ladder, allPlayers, preview }) {
                             {
                               activeTab === 0 &&
                               (
-                                <>
+                                <div className='mt-4'>
                                   <LadderRankingsCard ranking={ladder.ranking}></LadderRankingsCard>
-                                </>)
+                                </div>)
                             }
 
                             {

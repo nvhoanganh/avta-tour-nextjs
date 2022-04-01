@@ -3,6 +3,7 @@ import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
+import DropDown from '../dropdown';
 import { getFilteredLadderMatches } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
@@ -43,18 +44,20 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
-                  <div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
-                    onClick={() => deleteResult && deleteResult(result)}
+                  {!is_superuser ? <div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
+                    onClick={() => deleteResult(result)}
                   >
                     {result.gameWonByWinners}-{result.gameWonByLosers}
-                    {is_superuser &&
-                      <span
-                        className="ml-3 text-red-500 cursor-pointer"
-                      >
-                        Delete
-                      </span>
+                  </div> :
+                    <DropDown buttonText={
+                      <span>{result.gameWonByWinners}-{result.gameWonByLosers}</span>
                     }
-                  </div>
+                      items={[
+                        <a onClick={() => deleteResult(result)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Delete</a>,
+                      ]}
+                    >
+                    </DropDown>
+                  }
                 </div>
 
                 <div className="flex flex-wrap mt-2">

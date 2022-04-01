@@ -26,12 +26,7 @@ export default function DropDown({ buttonText, items, align }) {
           })}
           role="menu" ariaOrientation="vertical" ariaLabelledby="menu-button" tabindex="-1">
           <div className="py-1" role="none">
-            {items.map((item, index) => (<div onClick={() => {
-              setShow(false);
-              if (item.props.onClick) {
-                item.props.onClick();
-              }
-            }} key={index}>
+            {items.map((item, index) => (<div onClick={() => setShow(false)} key={index}>
               {item}
             </div>))}
           </div>

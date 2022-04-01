@@ -1,5 +1,6 @@
 import cn from 'classnames';
-
+import PlayerAvatar from './PlayerAvatar';
+import PlayerPoint from '../PlayerPoint';
 export default function PlayerRankingCard({ player, index }) {
   return (
     <>
@@ -14,11 +15,9 @@ export default function PlayerRankingCard({ player, index }) {
                 <span>{index + 1}. {player.player.fullName}</span>
               </div>
               <div className='text-sm text-gray-600 flex space-x-2'>
-                <span className='text-green-600'>{player.player.avtaPoint} pt.</span>
-
                 {player.win + player.lost > 0 ?
                   <>
-                    <span>{ player.win + player.lost} Matches <span className='text-green-600'>{player.win}</span>
+                    <span>{player.win + player.lost} Matches <span className='text-green-600'>{player.win}</span>
                       /<span className='text-red-600'>{player.lost}</span></span>
                   </> : '-'
                 }
@@ -36,7 +35,8 @@ export default function PlayerRankingCard({ player, index }) {
             </div>
 
             <div className="relative w-auto pl-4 flex-initial flex">
-              {/* <TeamAvatar team={team} /> */}
+              <PlayerAvatar player={player.player} />
+              <PlayerPoint player={player.player} />
             </div>
           </div>
         </div>
