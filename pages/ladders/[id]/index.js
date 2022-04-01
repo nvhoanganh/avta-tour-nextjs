@@ -19,6 +19,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
 
 export default function Competition({ ladder, allPlayers, preview }) {
+  console.log("🚀 ~ file: index.js ~ line 22 ~ Competition ~ ladder", ladder.ranking)
   const { fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
