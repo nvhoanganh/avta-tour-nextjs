@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -19,7 +20,6 @@ import { db } from '../../../lib/firebase';
 
 export default function Competition({ ladder, allPlayers, preview }) {
   const { fullProfile, loading } = useFirebaseAuth({});
-  console.log("🚀 ~ file: index.js ~ line 20 ~ Competition ~ fullProfile", fullProfile)
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
@@ -220,18 +220,76 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
                       {ladder.scores?.length > 0 &&
                         <section className="mx-0 md:mx-4">
-                          <div id="teams" className="text-2xl pt-10">Last 50 Matches</div>
-                          <div className='hidden container md:block'>
+                          {/* tabs */}
+                          <div className='border-b-2 border-gray-300 mt-10'>
+                            <ul className='flex cursor-pointer justify-around'>
+                              <li className={cn(
+                                'py-2 px-8 flex-grow text-center rounded-t-lg',
+                                {
+                                  'bg-gray-200':
+                                    activeTab === 0
+                                }
+                              )}
+                                onClick={(e) => setActiveTab(0)}
+                              >Ranking</li>
+                              <li className={cn(
+                                'py-2 px-8 flex-grow text-center rounded-t-lg',
+                                {
+                                  'bg-gray-200':
+                                    activeTab === 1
+                                }
+                              )}
+                                onClick={(e) => setActiveTab(1)}
+                              >Results</li>
+                              <li className={cn(
+                                'py-2 px-8 flex-grow text-center rounded-t-lg',
+                                {
+                                  'bg-gray-200':
+                                    activeTab === 2
+                                }
+                              )}
+                                onClick={(e) => setActiveTab(2)}
+                              >Players</li>
+                            </ul>
                           </div>
-                          <div className='md:hidden mt-4'>
-                            <LadderMatchResultsCard
-                              results={ladder.scores}
-                              deleteResult={deleteResult}
-                              is_superuser={fullProfile?.roles?.superuser}></LadderMatchResultsCard>
+
+                          {/* tabs content */}
+                          <div className="mx-auto mb-20">
+                            {
+                              activeTab === 0 &&
+                              (
+                                <>
+                                  Not done yet
+                                </>)
+                            }
+
+                            {
+                              activeTab === 1
+                              && (
+                                <>
+                                  <div id="teams" className="text-sm pt-2">Showing last 50 matches</div>
+                                  <div className='hidden container md:block'>
+                                  </div>
+                                  <div className='md:hidden mt-4'>
+                                    <LadderMatchResultsCard
+                                      results={ladder.scores}
+                                      deleteResult={deleteResult}
+                                      is_superuser={fullProfile?.roles?.superuser}></LadderMatchResultsCard>
+                                  </div>
+                                </>
+                              )
+                            }
+
+                            {
+                              activeTab === 2
+                              && <PlayersCard allPlayers={registeredPlayers} hideSearch />
+                            }
                           </div>
+
+
                         </section>}
 
-                      {ladder.players?.length > 0 &&
+                      {!ladder.scores?.length && ladder.players?.length > 0 &&
                         <section className="mx-0 md:mx-4">
                           <div id="players" className="text-2xl pt-10">Registered Players</div>
                           <PlayersCard allPlayers={registeredPlayers} hideSearch />
