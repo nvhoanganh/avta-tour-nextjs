@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { getAllPlayers } from '../../../lib/api';
 
 export default function Competition({ ladder, allPlayers, preview }) {
+  console.log("🚀 ~ file: index.js ~ line 18 ~ Competition ~ ladder", ladder.scores)
   const { fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
