@@ -3,11 +3,12 @@ import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
-import { getFilteredMatches } from '../../lib/browserapi';
+import { getFilteredLadderMatches } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
-export default function MatchResultsCard({ results, is_superuser, deleteMatch }) {
+export default function LadderMatchResultsCard({ results, is_superuser, deleteResult }) {
   const [filter, setFilter] = useState(null);
+
   return (
     <>
       <div className='sticky py-2 mb-5 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center'>
@@ -17,36 +18,39 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
           value={filter} onChange={(e) => { setFilter(e.target.value) }}
         />
       </div>
+
       <div className='flex flex-wrap'>
         <div className='w-full lg:w-6/12 xl:w-3/12'>
-          {getFilteredMatches(results || [], filter).map((result) => (
+          {getFilteredLadderMatches(results || [], filter).map((result) => (
             <div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
               <div className="flex-auto p-4">
-                <div className="flex flex-wrap ">
+                <div className="flex flex-wrap">
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                     <div
                       className=
-                      'font-bold  text-gray-600 '
+                      'font-bold  text-gray-600'
                     >
-                      {result.winners.players[0]?.fullName} + {result.winners.players[1]?.fullName}
+                      {result.winnerUser1?.fullName} + {result.winnerUser2?.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
-                      {result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}, {format(new Date(result.timestamp), 'h:mm a')}
+                      {format(new Date(result.timestamp), 'd/M h:mm a')}
                     </div>
                   </div>
 
                   <div className="relative w-auto pl-4 flex-initial flex">
-                    <TeamAvatar team={result.winners} />
+                    <TeamAvatar team={{ player1: result.winnerUser1, player2: result.winnerUser2 }} />
                   </div>
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
-                  <div className=' text-gray-600 text-lg align-center p-1 shadow px-4 border rounded border-gray-200'
-                    onClick={() => deleteMatch && deleteMatch(result)}
+                  <div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
+                    onClick={() => deleteResult && deleteResult(result)}
                   >
-                    6-{result.gameWonByLoser}
+                    {result.gameWonByWinners}-{result.gameWonByLosers}
                     {is_superuser &&
-                      <span className="ml-3 text-red-500 cursor-pointer">
+                      <span
+                        className="ml-3 text-red-500 cursor-pointer"
+                      >
                         Delete
                       </span>
                     }
@@ -59,14 +63,14 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
                       className=
                       'font-bold  text-gray-600 '
                     >
-                      {result.losers.players[0]?.fullName} + {result.losers.players[1]?.fullName}
+                      {result.loserUser1?.fullName} + {result.loserUser2?.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
                     </div>
                   </div>
 
                   <div className="relative w-auto pl-4 flex-initial flex">
-                    <TeamAvatar team={result.losers} />
+                    <TeamAvatar team={{ player1: result.loserUser1, player2: result.loserUser2 }} />
                   </div>
                 </div>
 

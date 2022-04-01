@@ -7,16 +7,19 @@ import DateComponent from '../../../components/date';
 import Layout from '../../../components/layout';
 import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
+import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import PlayersCard from '../../../components/Cards/PlayersCard';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { getAllPlayers } from '../../../lib/api';
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from '../../../lib/firebase';
 
 export default function Competition({ ladder, allPlayers, preview }) {
-  console.log("🚀 ~ file: index.js ~ line 18 ~ Competition ~ ladder", ladder.scores)
   const { fullProfile, loading } = useFirebaseAuth({});
+  console.log("🚀 ~ file: index.js ~ line 20 ~ Competition ~ fullProfile", fullProfile)
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
@@ -33,6 +36,28 @@ export default function Competition({ ladder, allPlayers, preview }) {
       player.avtaPoint
     );
   }, 0)
+
+  const viewPlayers = () => {
+    const teams = document.getElementById("players");
+    teams && teams.scrollIntoView();
+    setActiveTab(2);
+    const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?view=players';
+    window.history.pushState({ path: newurl }, '', newurl);
+  };
+
+  const deleteResult = async (record) => {
+    if (!fullProfile?.roles?.superuser) return;
+    console.log("🚀 ~ file: index.js ~ line 40 ~ deleteResult ~ record", record)
+
+    if (confirm('Are you sure you want to delete?')) {
+      try {
+        await deleteDoc(doc(db, "ladder_results", record.id));
+        toast("Deleted!, You need to TWICE for the change to take effect!");
+      } catch (error) {
+        toast.error("Delete failed! Reload page and try again, this record might be already deleted");
+      }
+    }
+  }
 
   return (
     <Layout preview={preview}>
@@ -135,7 +160,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               <span className='text-xl font-bold block uppercase tracking-wide text-gray-600'>
                                 {ladder.players.length}
                               </span>
-                              <a className='text-sm text-gray-400 underline hover:cursor-pointer'>
+                              <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewPlayers}>
                                 Players
                               </a>
                             </div>
@@ -193,9 +218,22 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       <div className='mx-0 md:mx-4 mt-10' dangerouslySetInnerHTML={{ __html: ladder?.rule?.replace(/\\n/g, '<br />') }}>
                       </div>
 
+                      {ladder.scores?.length > 0 &&
+                        <section className="mx-0 md:mx-4">
+                          <div id="teams" className="text-2xl pt-10">Last 50 Matches</div>
+                          <div className='hidden container md:block'>
+                          </div>
+                          <div className='md:hidden mt-4'>
+                            <LadderMatchResultsCard
+                              results={ladder.scores}
+                              deleteResult={deleteResult}
+                              is_superuser={fullProfile?.roles?.superuser}></LadderMatchResultsCard>
+                          </div>
+                        </section>}
+
                       {ladder.players?.length > 0 &&
                         <section className="mx-0 md:mx-4">
-                          <div id="teams" className="text-2xl pt-10">Registered Players</div>
+                          <div id="players" className="text-2xl pt-10">Registered Players</div>
                           <PlayersCard allPlayers={registeredPlayers} hideSearch />
                         </section>}
                     </div>

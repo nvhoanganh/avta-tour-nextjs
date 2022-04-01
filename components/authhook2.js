@@ -43,8 +43,12 @@ export function useFirebaseAuth({ protectedRoute, reason }) {
 
 			if (user) {
 				const usersSnap = await getDoc(doc(db, "users", user.uid));
+				const roleSnap = await getDoc(doc(db, "user_roles", user.uid));
 				if (usersSnap.exists()) {
-					setFullProfile(usersSnap.data());
+					setFullProfile({
+						...usersSnap.data(),
+						...(roleSnap.exists() && { roles: roleSnap.data() })
+					});
 				}
 			}
 
