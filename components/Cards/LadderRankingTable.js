@@ -106,9 +106,9 @@ export default function LadderRankingTable({ ranking, color, players }) {
 										{player.winPercentage > 0 &&
 											<span
 												className={cn({
-													'text-gray-600': Number(player.winPercentage) === 0,
-													'text-green-600': Number(player.winPercentage) > 0,
-													'text-red-600': Number(player.winPercentage) < 0,
+													'text-gray-600': Number(player.winPercentage) === 100,
+													'text-green-600': Number(player.winPercentage) > 100,
+													'text-red-600': Number(player.winPercentage) < 100,
 												})}
 											>{player.winPercentage}%</span>
 										}
