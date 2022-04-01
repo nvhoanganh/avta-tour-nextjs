@@ -48,7 +48,6 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
   const deleteResult = async (record) => {
     if (!fullProfile?.roles?.superuser) return;
-    console.log("🚀 ~ file: index.js ~ line 40 ~ deleteResult ~ record", record)
 
     if (confirm('Are you sure you want to delete?')) {
       try {
@@ -268,10 +267,9 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               activeTab === 1
                               && (
                                 <>
-                                  <div id="teams" className="text-sm pt-2">Showing last 50 matches</div>
                                   <div className='hidden container md:block'>
                                   </div>
-                                  <div className='md:hidden mt-4'>
+                                  <div className='mt-4'>
                                     <LadderMatchResultsCard
                                       results={ladder.scores}
                                       deleteResult={deleteResult}

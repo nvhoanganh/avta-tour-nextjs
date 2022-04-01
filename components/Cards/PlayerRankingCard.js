@@ -18,13 +18,13 @@ export default function PlayerRankingCard({ player, index }) {
 
                 {player.win + player.lost > 0 ?
                   <>
-                    <span>Match: <span className='text-green-600'>{player.win}</span>
+                    <span>{ player.win + player.lost} Matches <span className='text-green-600'>{player.win}</span>
                       /<span className='text-red-600'>{player.lost}</span></span>
-                  </> : ''
+                  </> : '-'
                 }
 
                 {player.winPercentage > 0 &&
-                  <span>Win Per.: <span
+                  <span>Game W/L: <span
                     className={cn({
                       'text-gray-600': Number(player.winPercentage) === 100,
                       'text-green-600': Number(player.winPercentage) > 100,
