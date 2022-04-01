@@ -14,6 +14,7 @@ import { useFirebaseAuth } from '../../../components/authhook2';
 import PlayersCard from '../../../components/Cards/PlayersCard';
 import LadderRankingsCard from '../../../components/Cards/LadderRankingsCard';
 import LadderRankingTable from '../../../components/Cards/LadderRankingTable';
+import LadderResultsTable from '../../../components/Cards/LadderResultsTable';
 import { getAllPlayers } from '../../../lib/api';
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
@@ -275,7 +276,9 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               && (
                                 <>
                                   <div className='hidden container md:block'>
-                                    <LadderRankingTable></LadderRankingTable>
+                                    <LadderResultsTable results={ladder.scores}
+                                      deleteResult={deleteResult}
+                                      is_superuser={fullProfile?.roles?.superuser}></LadderResultsTable>
                                   </div>
                                   <div className='md:hidden mt-4'>
                                     <LadderMatchResultsCard
