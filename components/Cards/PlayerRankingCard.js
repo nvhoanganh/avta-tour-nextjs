@@ -1,7 +1,9 @@
 import cn from 'classnames';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerPoint from '../PlayerPoint';
-export default function PlayerRankingCard({ player, index }) {
+export default function PlayerRankingCard({ player, index, registeredPlayers }) {
+  const isRegistered = registeredPlayers?.find(p => p.playerId === player.player.uid);
+
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
@@ -13,6 +15,10 @@ export default function PlayerRankingCard({ player, index }) {
                 'font-bold flex space-x-1 text-gray-600 '
               >
                 <span>{index + 1}. {player.player.fullName}</span>
+
+                {isRegistered &&
+                  <i className="fas fa-money-bill text-green-600" title={`Paid on ${isRegistered.paidOn}`}></i>
+                }
               </div>
               <div className='text-sm text-gray-600 flex space-x-2'>
                 {player.win + player.lost > 0 ?

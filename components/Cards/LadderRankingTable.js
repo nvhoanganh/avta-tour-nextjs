@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import PlayerPoint from '../PlayerPoint';
 import PlayerAvatar from './PlayerAvatar';
 
-export default function LadderRankingTable({ ranking, color }) {
+export default function LadderRankingTable({ ranking, color, players }) {
+	const isRegistered = (player) => players?.find(p => p.playerId === player.player.uid);
 
 	return (
 		<>
@@ -86,6 +87,9 @@ export default function LadderRankingTable({ ranking, color }) {
 											>
 												{player.player.fullName}
 												<PlayerPoint player={player.player} className="ml-1" />
+												{isRegistered(player) &&
+													<i className="fas fa-money-bill ml-1 text-green-600" title={`Paid on ${isRegistered(player).paidOn}`}></i>
+												}
 											</div>
 										</div>
 									</td>

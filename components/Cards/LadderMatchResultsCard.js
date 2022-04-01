@@ -72,7 +72,7 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                       <span className='font-normal mb-2 ml-1 text-green-600'>[{result.loserUser1?.avtaPoint + result.loserUser2?.avtaPoint}]</span>
                     </div>
                     <div className='text-sm text-gray-600 italic'>
-                      submitted by: {result.submittedByFullName}
+                      Submitted by: {result.submittedByFullName}
                     </div>
                   </div>
 
