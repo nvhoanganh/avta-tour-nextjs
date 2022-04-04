@@ -50,32 +50,39 @@ export default function EditApplicationCompetition({ competition, players, rule,
 
 
     // update groupsAllocation
-    const groupRef = doc(db, "competition_groups", competition.sys.id);
-    const groups = await getDoc(groupRef);
-    const groupData = groups.data();
-    const updatedGroupAlloc = Object.keys(groupData).reduce((pre, currGroup) => {
-      const updatedTeams = groupData[currGroup].map(x => {
-        if (x.id === editTeamId) {
-          return {
-            ...x,
-            ...data,
-            paidOn: data.paidOn.toDate().toISOString(),
-            timestamp: data.timestamp.toDate().toISOString(),
-          }
-        }
-        return x;
-      });
+    // const groupRef = doc(db, "competition_groups", competition.sys.id);
+    // const groups = await getDoc(groupRef);
+    // const groupData = groups.data();
+    // const updatedGroupAlloc = Object.keys(groupData).reduce((pre, currGroup) => {
+    //   const updatedTeams = groupData[currGroup].map(x => {
+    //     if (x.id === editTeamId) {
+    //       return {
+    //         ...x,
+    //         ...data,
+    //         paidOn: data.paidOn.toDate().toISOString(),
+    //         timestamp: data.timestamp.toDate().toISOString(),
+    //       }
+    //     }
+    //     return x;
+    //   });
 
-      return {
-        ...pre,
-        [currGroup]: updatedTeams
-      }
-    }, {});
-    await setDoc(groupRef, updatedGroupAlloc);
+    //   return {
+    //     ...pre,
+    //     [currGroup]: updatedTeams
+    //   }
+    // }, {});
+    // await setDoc(groupRef, updatedGroupAlloc);
+
+    // update schedule
+    const scheduldeRef = doc(db, "competition_schedule", competition.sys.id);
+    const scheduldes = await getDoc(scheduldeRef);
+    const scheduldeData = scheduldes.data();
+    console.log("🚀 ~ file: EditApplication.js ~ line 80 ~ EditApplicationCompetition ~ scheduldeData", scheduldeData);
+
 
     // update application
-    const applicationRef = doc(db, "competition_applications", editTeamId);
-    await setDoc(applicationRef, data);
+    // const applicationRef = doc(db, "competition_applications", editTeamId);
+    // await setDoc(applicationRef, data);
 
     setSaving(false);
 

@@ -24,7 +24,7 @@ function Widget({ widget, index }) {
           <div className={`flex pl-2 pt-1 font-bold tex-xl text-${GroupsColours[widget.group]}-600`} >{widget.group}
             <span className="text-sm">{index + 1}</span>
           </div>
-          {widget.between[0].name} vs {widget.between[1].name}
+          {widget.between[0].player1.fullName} + {widget.between[0].player2.fullName} vs {widget.between[1].player1.fullName} + {widget.between[1].player2.fullName}
         </div>
       )}
     </Draggable>
