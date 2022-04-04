@@ -4,9 +4,10 @@ import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
-import { GroupsColours } from '../../lib/browserapi';
+import { GroupsColours, getPlayer } from '../../lib/browserapi';
 
 export default function MatchScheduleGrid({ schedule }) {
+
   return (
     <div className="flex space-x-4">
       {Object.keys(schedule).sort().map((court) => (
@@ -23,8 +24,8 @@ export default function MatchScheduleGrid({ schedule }) {
                     <div className="relative w-auto pl-1 flex-initial flex">
                       <TeamAvatar team={match.between[0]} />
                       <div>
-                        <div className="ml-3 text-sm text-left">{match.between[0].players[0]?.fullName} +</div>
-                        <div className="ml-3 text-sm text-left">{match.between[0].players[1]?.fullName}</div>
+                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[0], 0)?.fullName} +</div>
+                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[0], 1)?.fullName}</div>
                       </div>
                     </div>
                   </div>
@@ -33,8 +34,8 @@ export default function MatchScheduleGrid({ schedule }) {
                     <div className="relative w-auto pl-1 flex-initial flex items-center">
                       <TeamAvatar team={match.between[1]} />
                       <div>
-                        <div className="ml-3 text-sm text-left">{match.between[1].players[0]?.fullName}</div>
-                        <div className="ml-3 text-sm text-left">{match.between[1].players[1]?.fullName}</div>
+                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[1], 0)?.fullName}</div>
+                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[1], 1)?.fullName}</div>
                       </div>
                     </div>
                   </div>

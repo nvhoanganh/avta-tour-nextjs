@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
-import { GroupsColours, getSchedules } from '../../lib/browserapi';
+import { getPlayer, GroupsColours, getSchedules } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
 export default function MatchScheduleCard({ schedule }) {
@@ -32,14 +32,14 @@ export default function MatchScheduleCard({ schedule }) {
                   <div className="flex flex-wrap">
                     <div className="relative w-auto pl-1 flex-initial flex items-center">
                       <TeamAvatar team={match.between[0]} />
-                      <span className="ml-2">{match.between[0].players[0]?.fullName} + {match.between[0].players[1]?.fullName}</span>
+                      <span className="ml-2">{getPlayer(match.between[0], 0)?.fullName} + {getPlayer(match.between[0], 1)?.fullName}</span>
                     </div>
                   </div>
 
                   <div className="flex flex-wrap">
                     <div className="relative w-auto pl-1 flex-initial flex items-center">
                       <TeamAvatar team={match.between[1]} />
-                      <span className="ml-2">{match.between[1].players[0]?.fullName} + {match.between[1].players[1]?.fullName}</span>
+                      <span className="ml-2">{getPlayer(match.between[1], 0)?.fullName} + {getPlayer(match.between[1], 1)?.fullName}</span>
                     </div>
                   </div>
 
