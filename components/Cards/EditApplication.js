@@ -45,7 +45,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
       player2: data.selectedPlayer2,
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
-      changedByUser: currentUser.uid
+      changedByUser: currentUser.uid,
     };
 
     // update groupsAllocation
@@ -117,9 +117,12 @@ export default function EditApplicationCompetition({ competition, players, rule,
       }
     }, {});
 
+    const scheduleRef = doc(db, "competition_schedule", competition.sys.id);
+    await setDoc(scheduleRef, updatedSchedule);
+
     // update application
-    const applicationRef = doc(db, "competition_schedule", editTeamId);
-    await setDoc(applicationRef, data);
+    const appRef = doc(db, "competition_applications", editTeamId);
+    await setDoc(appRef, data);
 
     setSaving(false);
 
