@@ -85,7 +85,12 @@ export default function LadderRankingTable({ ranking, color, players }) {
 														: 'text-white')
 												}
 											>
-												{player.player.fullName}
+												<Link href={`/players/${player.player.sys.id}`}>
+													<div className='mx-auto cursor-pointer hover:underline'>
+														{player.player.fullName}
+													</div>
+												</Link>
+
 												<PlayerPoint player={player.player} className="ml-1" />
 												{isRegistered(player) &&
 													<i className="fas fa-money-bill ml-1 text-green-600" title={`Paid on ${isRegistered(player).paidOn}`}></i>

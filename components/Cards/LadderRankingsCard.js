@@ -1,7 +1,6 @@
 import PlayerRankingCard from './PlayerRankingCard';
 
 export default function LadderRankingsCard({ ranking, players }) {
-  console.log("🚀 ~ file: LadderRankingsCard.js ~ line 4 ~ LadderRankingsCard ~ ranking", ranking)
   return (
     <>
       <div className='flex flex-wrap'>

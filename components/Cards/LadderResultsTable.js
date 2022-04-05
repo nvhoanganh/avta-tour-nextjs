@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 import DateWithTimeComponent from '../dateWithTime';
 import PlayerPoint from '../PlayerPoint';
 import PlayerAvatar from '../Cards/PlayerAvatar';
@@ -79,13 +80,21 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 														: 'text-white')
 												}
 											>
-												{result.winnerUser1?.fullName}
+												<Link href={`/players/${result.winnerUser1.sys.id}`}>
+													<div className='mx-auto cursor-pointer hover:underline'>
+														{result.winnerUser1?.fullName}
+													</div>
+												</Link>
 
 												<PlayerPoint player={result.winnerUser1} className="ml-1 mb-2" />
 
 												<span className="mx-3">&amp;</span>
 
-												{result.winnerUser2?.fullName}
+												<Link href={`/players/${result.winnerUser2.sys.id}`}>
+													<div className='mx-auto cursor-pointer hover:underline'>
+														{result.winnerUser2?.fullName}
+													</div>
+												</Link>
 
 												<PlayerPoint player={result.winnerUser2} className="ml-1 mb-2" />
 
@@ -114,13 +123,21 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												}
 											>
 
-												{result.loserUser1?.fullName}
+												<Link href={`/players/${result.loserUser1.sys.id}`}>
+													<div className='mx-auto cursor-pointer hover:underline'>
+														{result.loserUser1?.fullName}
+													</div>
+												</Link>
 
 												<PlayerPoint player={result.loserUser1} className="ml-1 mb-2" />
 
 												<span className="mx-3">&amp;</span>
 
-												{result.loserUser2?.fullName}
+												<Link href={`/players/${result.loserUser2.sys.id}`}>
+													<div className='mx-auto cursor-pointer hover:underline'>
+														{result.loserUser2?.fullName}
+													</div>
+												</Link>
 
 												<PlayerPoint player={result.loserUser2} className="ml-1 mb-2" />
 
