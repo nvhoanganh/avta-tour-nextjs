@@ -65,7 +65,7 @@ export default function LadderRankingTable({ ranking, color, players }) {
 						</thead>
 						<tbody>
 							{ranking.map((player, index) => (
-								<tr key={player.player.playerId}>
+								<tr key={player.player.sys.id}>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<div className="flex flex-col items-center justify-center">
 											{index + 1}
