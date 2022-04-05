@@ -7,7 +7,7 @@ import { getPlayer, GroupsColours, getSchedules } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
 export default function MatchScheduleCard({ schedule }) {
-  const [filter, setFilter] = useState(null);
+  const [filter, setFilter] = useState('');
 
   return (
     <>

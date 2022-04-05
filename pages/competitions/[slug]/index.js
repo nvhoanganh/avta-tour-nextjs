@@ -125,7 +125,6 @@ export default function Competition({ competition, preview }) {
   }
 
   const editTeam = async (team) => {
-    console.log("🚀 ~ file: index.js ~ line 128 ~ editTeam ~ team", team)
     router.push(`/competitions/${router.query.slug}/editteam?teamId=${team.id}`);
   }
 
