@@ -31,7 +31,7 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                       className=
                       'font-bold  text-gray-600'
                     >
-                      {result.winnerUser1?.fullName} + {result.winnerUser2?.fullName}
+                      {result.winnerUser1?.displayName || result.winnerUser1?.fullName} + {result.winnerUser2?.displayName || result.winnerUser2?.fullName}
 
                       <span className='font-normal mb-2 ml-1 text-green-600'>[{result.winnerUser1?.avtaPoint + result.winnerUser2?.avtaPoint}]</span>
                     </div>
@@ -68,7 +68,7 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                       className=
                       'font-bold  text-gray-600 '
                     >
-                      {result.loserUser1?.fullName} + {result.loserUser2?.fullName}
+                      {result.loserUser1?.displayName || result.loserUser1?.fullName} + {result.loserUser2?.displayName || result.loserUser2?.fullName}
                       <span className='font-normal mb-2 ml-1 text-green-600'>[{result.loserUser1?.avtaPoint + result.loserUser2?.avtaPoint}]</span>
                     </div>
                     <div className='text-sm text-gray-600 italic'>
