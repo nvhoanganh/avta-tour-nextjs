@@ -82,7 +82,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 											>
 												<Link href={`/players/${result.winnerUser1.sys.id}`}>
 													<div className='mx-auto cursor-pointer hover:underline'>
-														{result.winnerUser1?.fullName}
+														{result.winnerUser1?.displayName || result.winnerUser1?.fullName}
 													</div>
 												</Link>
 
@@ -92,7 +92,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 
 												<Link href={`/players/${result.winnerUser2.sys.id}`}>
 													<div className='mx-auto cursor-pointer hover:underline'>
-														{result.winnerUser2?.fullName}
+														{result.winnerUser2?.displayName || result.winnerUser2?.fullName}
 													</div>
 												</Link>
 
@@ -125,7 +125,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 
 												<Link href={`/players/${result.loserUser1.sys.id}`}>
 													<div className='mx-auto cursor-pointer hover:underline'>
-														{result.loserUser1?.fullName}
+														{result.loserUser1?.displayName || result.loserUser1?.fullName}
 													</div>
 												</Link>
 
@@ -135,7 +135,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 
 												<Link href={`/players/${result.loserUser2.sys.id}`}>
 													<div className='mx-auto cursor-pointer hover:underline'>
-														{result.loserUser2?.fullName}
+														{result.loserUser2?.displayName || result.loserUser2?.fullName}
 													</div>
 												</Link>
 
