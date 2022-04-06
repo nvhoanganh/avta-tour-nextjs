@@ -87,7 +87,7 @@ export default function LadderRankingTable({ ranking, color, players }) {
 											>
 												<Link href={`/players/${player.player.sys.id}`}>
 													<div className='mx-auto cursor-pointer hover:underline'>
-														{player.player.fullName}
+														{player.player.displayName || player.player.fullName}
 													</div>
 												</Link>
 

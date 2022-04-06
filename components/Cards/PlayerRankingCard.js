@@ -14,7 +14,7 @@ export default function PlayerRankingCard({ player, index, registeredPlayers }) 
                 className=
                 'font-bold flex space-x-1 text-gray-600 '
               >
-                <span>{index + 1}. {player.player.fullName}</span>
+                <span>{index + 1}. {player.player.displayName || player.player.fullName}</span>
 
                 {isRegistered &&
                   <i className="fas fa-money-bill text-green-600" title={`Paid on ${isRegistered.paidOn}`}></i>
