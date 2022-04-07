@@ -66,15 +66,15 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 							{results.map((result) => (
 								<tr key={result.timestamp}>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
-										<div className='flex'>
+										{/* <div className='flex'>
 											<PlayerAvatar player={result.winnerUser1} />
 											<PlayerAvatar player={result.winnerUser2} className='-ml-2' />
-										</div>
+										</div> */}
 
 										<div className='flex flex-col'>
 											<div
 												className={
-													'ml-3 font-bold flex space-x-2' +
+													'font-bold flex space-x-2' +
 													+(color === 'light'
 														? 'text-gray-600'
 														: 'text-white')
@@ -109,14 +109,14 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 										</div>
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
-										<div className='flex'>
+										{/* <div className='flex'>
 											<PlayerAvatar player={result.loserUser1} />
 											<PlayerAvatar player={result.loserUser2} className='-ml-2' />
-										</div>
+										</div> */}
 										<div className='flex flex-col'>
 											<div
 												className={
-													'ml-3 font-bold flex space-x-2' +
+													'font-bold flex space-x-2' +
 													+(color === 'light'
 														? 'text-gray-600'
 														: 'text-white')

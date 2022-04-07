@@ -40,9 +40,9 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                     </div>
                   </div>
 
-                  <div className="relative w-auto pl-4 flex-initial flex">
+                  {/* <div className="relative w-auto pl-4 flex-initial flex">
                     <TeamAvatar team={{ player1: result.winnerUser1, player2: result.winnerUser2 }} />
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
@@ -76,9 +76,9 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                     </div>
                   </div>
 
-                  <div className="relative w-auto pl-4 flex-initial flex">
+                  {/* <div className="relative w-auto pl-4 flex-initial flex">
                     <TeamAvatar team={{ player1: result.loserUser1, player2: result.loserUser2 }} />
-                  </div>
+                  </div> */}
                 </div>
 
               </div>

@@ -346,16 +346,24 @@ export default function Competition({ ladder, allPlayers, preview }) {
 export async function getStaticProps({ params, preview = false }) {
   const data = await getLadderDetails(params.id, preview);
 
+  // console.log('data length', JSON.stringify(data).length);
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
+  allPlayers = allPlayers.map(x => {
+    // todo: fix this
+    delete x.coverImage;
+    delete x.photoURL;
+    return x;
+  });
 
+  // console.log('allPlayers length', JSON.stringify(allPlayers).length);
   return {
     props: {
       preview,
       ladder: data,
       allPlayers
     },
-    revalidate: 60
+    revalidate: 10
   };
 }
 

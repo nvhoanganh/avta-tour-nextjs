@@ -41,7 +41,7 @@ export default function PlayerRankingCard({ player, index, registeredPlayers }) 
             </div>
 
             <div className="relative w-auto pl-4 flex-initial flex">
-              <PlayerAvatar player={player.player} />
+              {/* <PlayerAvatar player={player.player} /> */}
               <PlayerPoint player={player.player} />
             </div>
           </div>
