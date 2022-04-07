@@ -7,7 +7,7 @@ import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
 import Layout from '../../../components/layout';
-import { getLadderDetails, mergeUsersAndPlayersData } from '../../../lib/backendapi';
+import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
@@ -366,13 +366,13 @@ export async function getStaticProps({ params, preview = false }) {
   };
 }
 
-// export async function getStaticPaths() {
-//   const all = await getAllLadders();
-//   return {
-//     paths: all?.map(({ id }) => `/ladders/${id}`) ?? [],
-//     fallback: true,
-//   };
-// }
+export async function getStaticPaths() {
+  const all = await getAllLadders();
+  return {
+    paths: all?.map(({ id }) => `/ladders/${id}`) ?? [],
+    fallback: true,
+  };
+}
 
 // export async function getServerSideProps(context) {
 //   const { id } = context.query;
