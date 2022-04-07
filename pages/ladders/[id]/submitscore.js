@@ -133,6 +133,12 @@ export async function getStaticProps({ params, preview = false }) {
   const data = await getLadderDetails(params.id, preview);
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
+  allPlayers = allPlayers.map(x => {
+    // todo: fix this
+    delete x.coverImage;
+    delete x.photoURL;
+    return x;
+  });
 
   return {
     props: {
