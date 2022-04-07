@@ -343,29 +343,28 @@ export default function Competition({ ladder, allPlayers, preview }) {
   );
 }
 
-// export async function getStaticProps({ params, preview = false }) {
-//   const data = await getLadderDetails(params.id, preview);
+export async function getStaticProps({ params, preview = false }) {
+  console.log('rebuilt started for ladder', params.id);
+  const data = await getLadderDetails(params.id, preview);
 
-//   // console.log('data length', JSON.stringify(data).length);
-//   let allPlayers = (await getAllPlayers(preview)) ?? [];
-//   allPlayers = await mergeUsersAndPlayersData(allPlayers);
-//   allPlayers = allPlayers.map(x => {
-//     // todo: fix this
-//     delete x.coverImage;
-//     delete x.photoURL;
-//     return x;
-//   });
-
-//   // console.log('allPlayers length', JSON.stringify(allPlayers).length);
-//   return {
-//     props: {
-//       preview,
-//       ladder: data,
-//       allPlayers
-//     },
-//     revalidate: 10
-//   };
-// }
+  let allPlayers = (await getAllPlayers(preview)) ?? [];
+  allPlayers = await mergeUsersAndPlayersData(allPlayers);
+  allPlayers = allPlayers.map(x => {
+    // todo: fix this
+    delete x.coverImage;
+    delete x.photoURL;
+    return x;
+  });
+  console.log('rebuilt Finished for ladder', params.id);
+  return {
+    props: {
+      preview,
+      ladder: data,
+      allPlayers
+    },
+    revalidate: 60
+  };
+}
 
 // export async function getStaticPaths() {
 //   const all = await getAllLadders();
@@ -375,23 +374,23 @@ export default function Competition({ ladder, allPlayers, preview }) {
 //   };
 // }
 
-export async function getServerSideProps(context) {
-  const { id } = context.query;
-  const data = await getLadderDetails(id, false);
+// export async function getServerSideProps(context) {
+//   const { id } = context.query;
+//   const data = await getLadderDetails(id, false);
 
-  let allPlayers = (await getAllPlayers(false)) ?? [];
-  allPlayers = await mergeUsersAndPlayersData(allPlayers);
-  allPlayers = allPlayers.map(x => {
-    // todo: fix this
-    delete x.coverImage;
-    delete x.photoURL;
-    return x;
-  });
+//   let allPlayers = (await getAllPlayers(false)) ?? [];
+//   allPlayers = await mergeUsersAndPlayersData(allPlayers);
+//   allPlayers = allPlayers.map(x => {
+//     // todo: fix this
+//     delete x.coverImage;
+//     delete x.photoURL;
+//     return x;
+//   });
 
-  return {
-    props: {
-      ladder: data,
-      allPlayers
-    },
-  };
-}
+//   return {
+//     props: {
+//       ladder: data,
+//       allPlayers
+//     },
+//   };
+// }
