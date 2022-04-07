@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
+import PossibleMatches from '../../../components/possibleMatches';
 import Layout from '../../../components/layout';
 import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
@@ -296,12 +297,19 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               activeTab === 2
                               && <>
                                 <div className='w-full text-center py-3 pt-5'>
-                                  <button
-                                    className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                                    onClick={() => setShowOrder(!showOrder)}
-                                  >
-                                    Create play order
-                                  </button>
+                                  {
+                                    ladder.tonightMatches?.tonightMatches && <div>
+                                      <div className=" text-lg py-3 font-bold">Possible Matches Tonight</div>
+                                      <PossibleMatches matches={ladder.tonightMatches.tonightMatches}></PossibleMatches></div>
+                                  }
+                                  <div className="py-5">
+                                    <button
+                                      className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                      onClick={() => setShowOrder(!showOrder)}
+                                    >
+                                      {ladder.tonightMatches?.tonightMatches ? 'Create new play order' : 'Create play order'}
+                                    </button>
+                                  </div>
                                   {
                                     showOrder
                                     && <div className="py-8">

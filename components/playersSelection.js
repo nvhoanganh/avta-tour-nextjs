@@ -1,4 +1,5 @@
 import ContentfulImage from './contentful-image'
+import PossibleMatches from './possibleMatches'
 import { useForm } from "react-hook-form";
 import { getMatchups } from "../lib/browserapi"
 import useFilterPlayers from '../lib/useFilterhook';
@@ -53,18 +54,7 @@ export default function PlayersSelection({ players, registered, ladderId }) {
         matchUps
           ? <div className="flex flex-col py-10">
             <div className=" text-lg py-3 font-bold">Possible Matches</div>
-            {matchUps.map((match, index) => (
-              <>
-                <div className=" border-b-2 text-left py-1 shadow flex items-center space-x-2" key={index}>
-                  <div className=" text-2xl text-green-600">{match.pointDiff}</div>
-                  <div>
-                    <div>{match.team1.player1} &amp; {match.team1.player2} [{match.team1.point}] <strong>vs.</strong></div>
-                    <div>{match.team2.player1} &amp; {match.team2.player2} [{match.team2.point}]</div>
-                  </div>
-                </div>
-
-              </>
-            ))}
+            <PossibleMatches matches={matchUps}></PossibleMatches>
             <div>
               <SaveButton saving={saving} onClick={() => saveMatcheups()}
                 type="submit">Save</SaveButton>
