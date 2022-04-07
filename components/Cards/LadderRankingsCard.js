@@ -4,7 +4,7 @@ export default function LadderRankingsCard({ ranking, players }) {
   return (
     <>
       <div className='flex flex-wrap'>
-        <div className='w-full lg:w-6/12 xl:w-3/12'>
+        <div className='w-full'>
           {ranking.map((player, index) => (
             <PlayerRankingCard
               key={index}

@@ -8,6 +8,7 @@ import DateComponent from '../../../components/date';
 import Layout from '../../../components/layout';
 import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
+import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook2';
@@ -26,6 +27,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
+  const [showOrder, setShowOrder] = useState(false);
 
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
@@ -292,7 +294,23 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
                             {
                               activeTab === 2
-                              && <PlayersCard allPlayers={registeredPlayers} hideSearch />
+                              && <>
+                                <div className='w-full text-center py-3 pt-5'>
+                                  <button
+                                    className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                    onClick={() => setShowOrder(!showOrder)}
+                                  >
+                                    Create play order
+                                  </button>
+                                  {
+                                    showOrder
+                                    && <div className="py-8">
+                                      <PlayersSelection registered={registeredPlayers} players={allPlayers} ladderId={ladder.id}></PlayersSelection>
+                                    </div>
+                                  }
+                                </div>
+                                <PlayersCard allPlayers={registeredPlayers} hideSearch />
+                              </>
                             }
                           </div>
 
