@@ -7,7 +7,7 @@ import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
 import Layout from '../../../components/layout';
-import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
+import { getLadderDetails, mergeUsersAndPlayersData } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
@@ -343,26 +343,41 @@ export default function Competition({ ladder, allPlayers, preview }) {
   );
 }
 
-export async function getStaticProps({ params, preview = false }) {
-  const data = await getLadderDetails(params.id, preview);
+// export async function getStaticProps({ params, preview = false }) {
+//   const data = await getLadderDetails(params.id, preview);
 
-  let allPlayers = (await getAllPlayers(preview)) ?? [];
+//   let allPlayers = (await getAllPlayers(preview)) ?? [];
+//   allPlayers = await mergeUsersAndPlayersData(allPlayers);
+
+//   return {
+//     props: {
+//       preview,
+//       ladder: data,
+//       allPlayers
+//     },
+//     revalidate: 1
+//   };
+// }
+
+// export async function getStaticPaths() {
+//   const all = await getAllLadders();
+//   return {
+//     paths: all?.map(({ id }) => `/ladders/${id}`) ?? [],
+//     fallback: true,
+//   };
+// }
+
+export async function getServerSideProps(context) {
+  const { id } = context.query;
+  const data = await getLadderDetails(id, false);
+
+  let allPlayers = (await getAllPlayers(false)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
 
   return {
     props: {
-      preview,
       ladder: data,
       allPlayers
     },
-    revalidate: 1
-  };
-}
-
-export async function getStaticPaths() {
-  const all = await getAllLadders();
-  return {
-    paths: all?.map(({ id }) => `/ladders/${id}`) ?? [],
-    fallback: true,
   };
 }
