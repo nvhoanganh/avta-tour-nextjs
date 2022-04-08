@@ -35,10 +35,9 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
         submittedById: user.uid,
         submittedByFullName: user.displayName,
       }
-      console.log("🚀 ~ file: SubmitLadderScore2.js ~ line 38 ~ SubmitLadderScore ~ toSubmit", toSubmit)
 
-      // const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
-      // await RevalidatePath(user, `/ladders/${ladder.id}`);
+      const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
+      await RevalidatePath(user, `/ladders/${ladder.id}`);
 
       toast("Result submitted!");
       setSaving(false)
@@ -68,26 +67,34 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
   const winners = watch('winners') || [];
   const selectedWinners = allPlayers.filter(x => winners.indexOf(x.sys.id) !== -1);
   const losers = watch('losers') || []
+  const loserSet = watch('gameWonByLosers')
+  const winnerSet = watch('gameWonByWinners')
   const selectedLosers = allPlayers.filter(x => losers.indexOf(x.sys.id) !== -1);
 
   const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
+
+  const isValid = () => {
+    return winners.length === 2 && losers.length === 2 && winners[0] !== losers[0] && winners[0] !== losers[1] &&
+      winners[1] !== losers[0] && winners[1] !== losers[1] && !!loserSet && !!winnerSet && loserSet !== winnerSet;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6  border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-          <h6 className="text-gray-400 text-lg mt-3 mb-6 text-center">
-            Submit Result for {ladder.name} - {format(new Date(ladder.startDate), 'LLLL	d, yyyy')}
+          <h6 className="text-gray-400 text-lg mb-2 text-center uppercase">
+            Submit Result
           </h6>
+          <div className="text-center mb-8">{ladder.name} - {format(new Date(ladder.startDate), 'LLLL	d, yyyy')}</div>
           <div className="flex flex-wrap">
             <div className="w-full px-4 py-4">
-              <div className="relative w-full mb-3">
-                <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
+              <div className="relative w-full mb-3 flex justify-center">
+                <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 w-96" placeholder="Search Name, Club or Point"
                   value={filter} onChange={(e) => { setFilter(e.target.value) }}
                 />
               </div>
             </div>
-            <div className="w-full lg:w-6/12 px-4 py-4">
+            <div className="w-full lg:w-6/12 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Winners:
@@ -99,14 +106,16 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150"
                           value={player.sys.id} name={"withIndex." + i * 2}
-                          {...register("winners", { required: true })}
+                          {...register("winners", {
+                            required: true,
+                          })}
                         />{player.fullName} - {player.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
                       </label>
                     )
                   }
                 </div> :
                   <div>
-                    <span>{selectedWinners.map(x => x.fullName).join(' & ')}</span>
+                    <span>{selectedWinners.map(x => `${x.fullName} [${x.avtaPoint}]`).join(' & ')}</span>
                     <span className="bg-red-500  text-white font-bold hover:shadow-md shadow text-xs ml-2 px-2 py-1 rounded outline-none 
                             focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer" onClick={() => setValue('winners', null)}>Clear</span>
                   </div>
@@ -114,7 +123,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
               </div>
             </div>
 
-            <div className="w-full lg:w-6/12 px-4 py-4">
+            <div className="w-full lg:w-6/12 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Losers:
@@ -125,13 +134,15 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                     filteredPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
-                          {...register("losers", { required: true })}
+                          {...register("losers", {
+                            required: true,
+                          })}
                         />{player.fullName} - {player.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
                       </label>
                     )
                   }
                 </div> : <div>
-                  <span>{selectedLosers.map(x => x.fullName).join(' & ')}</span>
+                  <span>{selectedLosers.map(x => `${x.fullName} [${x.avtaPoint}]`).join(' & ')}</span>
                   <span className="bg-red-500  text-white font-bold hover:shadow-md shadow text-xs ml-2 px-2 py-1 rounded outline-none 
                             focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer" onClick={() => setValue('losers', null)}>Clear</span>
                 </div>}
@@ -184,16 +195,15 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                 </label>
               </div>
             </div>
-
-
           </div>
-
           <div className="flex flex-wrap pt-10">
             <div className="w-full lg:w-12/12 px-4">
               <div className="relative w-full mb-3 text-left lg:text-right">
                 <button type="button" onClick={() => reset()} className="bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">Reset</button>
-                <SaveButton saving={saving}
-                  type="submit">Submit</SaveButton>
+                {
+                  isValid() && <SaveButton saving={saving}
+                    type="submit">Submit</SaveButton>
+                }
               </div>
             </div>
           </div>
