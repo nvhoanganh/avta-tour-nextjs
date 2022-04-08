@@ -7,13 +7,9 @@ import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import SubmitLadderScore from '../../../components/Cards/SubmitLadderScore';
-import { CleanUser } from '../../../lib/browserapi';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect } from 'react';
-import { db } from '../../../lib/firebase';
-import { getLadderBasicDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
-import { doc, getDoc } from "firebase/firestore";
-import { getAllPlayers } from '../../../lib/api';
+import { GetMergedPlayersWithNoAvatar, getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
 
 
 export default function SubmitScore({ ladder, allPlayers, preview }) {
@@ -131,13 +127,7 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  let allPlayers = (await getAllPlayers(preview)) ?? [];
-  allPlayers = await mergeUsersAndPlayersData(allPlayers);
-  allPlayers = allPlayers.map(x => {
-    CleanUser(x, 'coverImage,photoURL')
-    return x;
-  });
-
+  const allPlayers = await GetMergedPlayersWithNoAvatar()
   const data = await getLadderBasicDetails(params.id, allPlayers);
 
   return {

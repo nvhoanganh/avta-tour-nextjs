@@ -7,7 +7,7 @@ import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
 import Layout from '../../../components/layout';
-import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
+import { GetMergedPlayersWithNoAvatar, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
@@ -17,8 +17,6 @@ import PlayersCard from '../../../components/Cards/PlayersCard';
 import LadderRankingsCard from '../../../components/Cards/LadderRankingsCard';
 import LadderRankingTable from '../../../components/Cards/LadderRankingTable';
 import LadderResultsTable from '../../../components/Cards/LadderResultsTable';
-import { getAllPlayers } from '../../../lib/api';
-import { CleanUser } from '../../../lib/browserapi';
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
 import { ToastContainer, toast } from 'react-toastify';
@@ -345,14 +343,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  console.log(`${(new Date()).toISOString()} - Get data from Contentful started`);
-  let allPlayers = (await getAllPlayers(preview)) ?? [];
-  allPlayers = await mergeUsersAndPlayersData(allPlayers);
-  allPlayers = allPlayers.map(x => {
-    CleanUser(x, 'coverImage,photoURL')
-    return x;
-  });
-  console.log(`${(new Date()).toISOString()} - Get data from Contentful done`);
+  const allPlayers = await GetMergedPlayersWithNoAvatar()
 
   console.log(`${(new Date()).toISOString()} - rebuilt STARTED for ladder ${params.id}`);
   const data = await getLadderDetails(params.id, allPlayers);
