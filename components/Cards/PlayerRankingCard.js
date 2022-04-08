@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import cn from 'classnames';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerPoint from '../PlayerPoint';
@@ -14,7 +15,9 @@ export default function PlayerRankingCard({ player, index, registeredPlayers }) 
                 className=
                 'font-bold flex space-x-1 text-gray-600 '
               >
-                <span>{index + 1}. {player.player.displayName || player.player.fullName}</span>
+                <Link href={`/players/${player.player.playerId}`}>
+                  <span className="cursor-pointer hover:underline">{index + 1}. {player.player.displayName || player.player.fullName}</span>
+                </Link>
 
                 {isRegistered &&
                   <i className="fas fa-money-bill text-green-600" title={`Paid on ${isRegistered.paidOn}`}></i>
