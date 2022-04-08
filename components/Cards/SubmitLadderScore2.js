@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import { getFBUserIdFromContentfulId, score, RevalidatePath } from '../../lib/browserapi';
 import Spinner from '../../components/spinner';
 import { db } from '../../lib/firebase';
+import useFilterPlayers from '../../lib/useFilterhook';
 import { collection, addDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
@@ -63,10 +64,12 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
 
 function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
   const { register, reset, handleSubmit, watch, setValue, errors, getValues } = useForm({ mode: "onBlur" });
+  const winners = watch('winners') || [];
+  const selectedWinners = allPlayers.filter(x => winners.indexOf(x.sys.id) !== -1);
+  const losers = watch('losers') || []
+  const selectedLosers = allPlayers.filter(x => losers.indexOf(x.sys.id) !== -1);
 
-  const sortedPlayers = allPlayers.sort((a, b) => {
-    return Diacritics.clean(b.fullName) > Diacritics.clean(a.fullName) ? -1 : 1;
-  });
+  const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -76,95 +79,56 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
             Submit Result for {ladder.name} - {format(new Date(ladder.startDate), 'LLLL	d, yyyy')}
           </h6>
           <div className="flex flex-wrap">
+            <div className="w-full px-4 py-4">
+              <div className="relative w-full mb-3">
+                <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
+                  value={filter} onChange={(e) => { setFilter(e.target.value) }}
+                />
+              </div>
+            </div>
             <div className="w-full lg:w-6/12 px-4 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Winner 1
+                  Winners: {
+                    selectedWinners &&
+                    selectedWinners.map(x => x.fullName).join(' & ')
+                  }
                 </label>
-
-                <div className="flex space-x-2">
-                  <select className="appearance-none
-      border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
-                    {...register("winner1", {
-                      required: true,
-                      validate: () => getValues("winner1") !== getValues("winner2") && getValues("winner1") !== getValues("loser1") && getValues("winner1") !== getValues("loser2")
-                    })}
-                  >
-                    <option value=""></option>
-                    {sortedPlayers.map(player => (
-                      <option key={player.sys.id} value={player.sys.id}>{player.fullName}{player.fullName !== player.nickName ? ` (${player.nickName})` : ''} [{player.avtaPoint}]</option>
-                    ))}
-                  </select>
+                {winners?.length < 2 && <div className="flex flex-col space-y-1">
+                  {
+                    filteredPlayers.map(
+                      (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150"
+                          value={player.sys.id} name={"withIndex." + i * 2}
+                          {...register("winners", { required: true })}
+                        />{player.fullName} - {player.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                      </label>
+                    )
+                  }
                 </div>
+                }
               </div>
             </div>
 
             <div className="w-full lg:w-6/12 px-4 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Winner 2
+                  Losers: {
+                    selectedLosers &&
+                    selectedLosers.map(x => x.fullName).join(' & ')
+                  }
                 </label>
-
-                <div className="flex space-x-2">
-                  <select className="appearance-none
-      border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
-                    {...register("winner2", {
-                      required: true,
-                      validate: () => getValues("winner2") !== getValues("winner1") && getValues("winner2") !== getValues("loser1") && getValues("winner2") !== getValues("loser2")
-                    })}
-                  >
-                    <option value=""></option>
-                    {sortedPlayers.map(player => (
-                      <option key={player.sys.id} value={player.sys.id}>{player.fullName}{player.fullName !== player.nickName ? ` (${player.nickName})` : ''} [{player.avtaPoint}]</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full lg:w-6/12 px-4 py-4">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Loser 1
-                </label>
-
-                <div className="flex space-x-2">
-                  <select className="appearance-none
-      border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
-                    {...register("loser1", {
-                      required: true,
-                      validate: () => getValues("loser1") !== getValues("loser2") && getValues("loser1") !== getValues("winner1") && getValues("loser1") !== getValues("winner2")
-                    })}
-                  >
-                    <option value=""></option>
-                    {sortedPlayers.map(player => (
-                      <option key={player.sys.id} value={player.sys.id}>{player.fullName}{player.fullName !== player.nickName ? ` (${player.nickName})` : ''} [{player.avtaPoint}]</option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full lg:w-6/12 px-4 py-4">
-              <div className="relative w-full mb-3">
-                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Loser 2
-                </label>
-
-                <div className="flex space-x-2">
-                  <select className="appearance-none
-      border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
-                    {...register("loser2", {
-                      required: true,
-                      validate: () => getValues("loser2") !== getValues("loser1") && getValues("loser2") !== getValues("winner1") && getValues("loser2") !== getValues("winner2")
-                    })}
-                  >
-                    <option value=""></option>
-                    {sortedPlayers.map(player => (
-                      <option key={player.sys.id} value={player.sys.id}>{player.fullName}{player.fullName !== player.nickName ? ` (${player.nickName})` : ''} [{player.avtaPoint}]</option>
-                    ))}
-                  </select>
-                </div>
+                {losers?.length < 2 && <div className="flex flex-col space-y-1">
+                  {
+                    filteredPlayers.map(
+                      (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
+                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
+                          {...register("losers", { required: true })}
+                        />{player.fullName} - {player.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                      </label>
+                    )
+                  }
+                </div>}
               </div>
             </div>
 

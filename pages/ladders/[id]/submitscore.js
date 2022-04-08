@@ -6,7 +6,7 @@ import Spinner from '../../../components/spinner';
 import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import SubmitLadderScore from '../../../components/Cards/SubmitLadderScore';
+import SubmitLadderScore from '../../../components/Cards/SubmitLadderScore2';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect } from 'react';
 import { GetMergedPlayersWithNoAvatar, getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';

@@ -63,7 +63,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
     if (confirm('Are you sure you want to delete?')) {
       try {
         await deleteDoc(doc(db, "ladder_results", record.id));
-        toast("Deleted!, You need to TWICE for the change to take effect!");
+        toast("Deleted!, click on Refresh Data link to see updated results!");
       } catch (error) {
         toast.error("Delete failed! Reload page and try again, this record might be already deleted");
       }
