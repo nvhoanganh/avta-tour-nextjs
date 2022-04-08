@@ -7,14 +7,10 @@ import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import JoinAndPay from '../../../components/Cards/JoinAndPay';
 import { useFirebaseAuth } from '../../../components/authhook2';
-import { useEffect, useState } from 'react'
-import { db } from '../../../lib/firebase';
-import { doc, getDoc } from "firebase/firestore";
-import { getAllPlayers } from '../../../lib/api';
-import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
+import { getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
 
 
-export default function Apply({ ladder, allPlayers, preview }) {
+export default function Apply({ ladder, preview }) {
   const router = useRouter();
   const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
 
@@ -105,7 +101,7 @@ export default function Apply({ ladder, allPlayers, preview }) {
                                       </div>
                                     </div> :
                                     <div>
-                                      <JoinAndPay ladder={ladder} players={allPlayers} fullProfile={fullProfile}></JoinAndPay>
+                                      <JoinAndPay ladder={ladder} fullProfile={fullProfile}></JoinAndPay>
                                     </div>
                                 }
                               </div> :
@@ -135,15 +131,12 @@ export default function Apply({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const data = await getLadderDetails(params.id, preview);
-  let allPlayers = (await getAllPlayers(preview)) ?? [];
-  allPlayers = await mergeUsersAndPlayersData(allPlayers);
+  const data = await getLadderBasicDetails(params.id, []);
 
   return {
     props: {
       preview,
       ladder: data,
-      allPlayers
     },
     revalidate: 60
   };

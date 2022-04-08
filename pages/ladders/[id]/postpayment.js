@@ -7,7 +7,7 @@ import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
-import { getLadderDetails, getAllLadders } from '../../../lib/backendapi';
+import { getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
 
 
 export default function Apply({ ladder, preview }) {
@@ -157,7 +157,7 @@ export default function Apply({ ladder, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const data = await getLadderDetails(params.id, preview);
+  const data = await getLadderBasicDetails(params.id, []);
 
   return {
     props: {

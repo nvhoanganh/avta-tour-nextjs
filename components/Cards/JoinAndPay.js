@@ -12,7 +12,7 @@ const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 );
 
-export default function JoinLadder({ ladder, players, fullProfile }) {
+export default function JoinLadder({ ladder, fullProfile }) {
   console.log("🚀 ~ file: JoinAndPay.js ~ line 15 ~ JoinLadder ~ ladder", ladder)
   const router = useRouter();
   const [saving, setSaving] = useState(false);
@@ -63,8 +63,8 @@ export default function JoinLadder({ ladder, players, fullProfile }) {
             </div>
           </div>
 
-          <p className="py-5 pb-10 px-5">{ladder.rule}
-          </p>
+          <div className='py-5 pb-10 px-5' dangerouslySetInnerHTML={{ __html: ladder?.rule?.replace(/\\n/g, '<br />') }}>
+          </div>
 
           <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
     disabled:cursor-wait whitespace-nowrap

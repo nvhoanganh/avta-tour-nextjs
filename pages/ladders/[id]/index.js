@@ -8,6 +8,7 @@ import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
 import Layout from '../../../components/layout';
 import { GetMergedPlayersWithNoAvatar, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
+import { RevalidatePath } from '../../../lib/browserapi';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
@@ -23,7 +24,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Competition({ ladder, allPlayers, preview }) {
-  const { fullProfile, loading } = useFirebaseAuth({});
+  const { user, fullProfile, loading } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
@@ -49,6 +50,12 @@ export default function Competition({ ladder, allPlayers, preview }) {
     const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?view=players';
     window.history.pushState({ path: newurl }, '', newurl);
   };
+
+  const refreshData = async () => {
+    toast("Refreshing. Please wait...");
+    await RevalidatePath(user, `/ladders/${ladder.id}`);
+    window.location.reload();
+  }
 
   const deleteResult = async (record) => {
     if (!fullProfile?.roles?.superuser) return;
@@ -222,6 +229,13 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       <div className='mx-0 md:mx-4 mt-10' dangerouslySetInnerHTML={{ __html: ladder?.rule?.replace(/\\n/g, '<br />') }}>
                       </div>
 
+                      <div className='mx-0 md:mx-4 mt-10'>
+                        <a className='underline hover:cursor-pointer' onClick={refreshData}>
+                          Refresh data
+                        </a>
+                      </div>
+
+
                       {ladder.scores?.length > 0 &&
                         <section className="mx-0 md:mx-4">
                           {/* tabs */}
@@ -298,7 +312,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                 <div className='w-full text-center py-3 pt-5'>
                                   {
                                     ladder.tonightMatches?.tonightMatches && <div>
-                                      <div className=" text-lg py-3 font-bold">Possible Matches Tonight</div>
+                                      <div className=" text-lg py-3 font-bold">Possible Matches</div>
                                       <PossibleMatches matches={ladder.tonightMatches.tonightMatches}></PossibleMatches></div>
                                   }
                                   <div className="py-5">
@@ -356,7 +370,6 @@ export async function getStaticProps({ params, preview = false }) {
       ladder: data,
       allPlayers
     },
-    revalidate: 30
   };
 }
 
