@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default function PossibleMatches({ matches }) {
-  console.log("🚀 ~ file: possibleMatches.js ~ line 5 ~ PossibleMatches ~ matches", matches)
 	return (<>
 		{matches.map((match, index) => (
 			<>

@@ -4,30 +4,30 @@ import DropDown from '../../components/dropdown';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
+import { getFBUserIdFromContentfulId, score, RevalidatePath } from '../../lib/browserapi';
 import Spinner from '../../components/spinner';
-import { score } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { collection, addDoc } from "firebase/firestore";
-
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useFirebaseAuth } from '../authhook';
 var Diacritics = require('diacritic');
 
 export default function SubmitLadderScore({ ladder, allPlayers, user }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const { user } = useFirebaseAuth();
 
   const onSubmit = async data => {
     setSaving(true)
-    toast("Result submitted!");
     data = {
       ladderId: ladder.id,
       ...data,
-      winnerUser1: allPlayers.find(x => x.sys.id === data.winner1),
-      winnerUser2: allPlayers.find(x => x.sys.id === data.winner2),
-      loserUser1: allPlayers.find(x => x.sys.id === data.loser1),
-      loserUser2: allPlayers.find(x => x.sys.id === data.loser2),
+      winnerUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner1) },
+      winnerUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner2) },
+      loserUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser1) },
+      loserUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser2) },
       timestamp: (new Date()),
       gameWonByWinners: +data.gameWonByWinners,
       gameWonByLosers: +data.gameWonByLosers,
@@ -35,6 +35,9 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
       submittedByFullName: user.displayName,
     }
     const docRef = await addDoc(collection(db, "ladder_results"), data);
+    await RevalidatePath(user, `/ladders/${ladder.id}`);
+
+    toast("Result submitted!");
     setSaving(false)
   };
 

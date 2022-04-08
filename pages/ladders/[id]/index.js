@@ -18,6 +18,7 @@ import LadderRankingsCard from '../../../components/Cards/LadderRankingsCard';
 import LadderRankingTable from '../../../components/Cards/LadderRankingTable';
 import LadderResultsTable from '../../../components/Cards/LadderResultsTable';
 import { getAllPlayers } from '../../../lib/api';
+import { CleanUser } from '../../../lib/browserapi';
 import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
 import { ToastContainer, toast } from 'react-toastify';
@@ -344,25 +345,27 @@ export default function Competition({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  console.log('rebuilt started for ladder', params.id);
+  console.log(`${(new Date()).toISOString()} - rebuilt STARTED for ladder ${params.id}`);
   const data = await getLadderDetails(params.id, preview);
+  console.log(`${(new Date()).toISOString()} - Get data from Firebase done`);
 
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
   allPlayers = allPlayers.map(x => {
-    // todo: fix this
-    delete x.coverImage;
-    delete x.photoURL;
+    CleanUser(x, 'coverImage,photoURL')
     return x;
   });
-  console.log('rebuilt Finished for ladder', params.id);
+
+  console.log(`${(new Date()).toISOString()} - Get data from Contentful done`);
+
+  console.log(`${(new Date()).toISOString()} - rebuilt FINISHED for ladder ${params.id}`);
   return {
     props: {
       preview,
       ladder: data,
       allPlayers
     },
-    revalidate: 60
+    revalidate: 30
   };
 }
 
