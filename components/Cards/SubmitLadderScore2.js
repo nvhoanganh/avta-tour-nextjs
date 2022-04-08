@@ -25,6 +25,10 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
       const toSubmit = {
         ladderId: ladder.id,
         ...data,
+        winner1: data.winners[0],
+        winner2: data.winners[1],
+        loser1: data.losers[0],
+        loser2: data.losers[1],
         winnerUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.winners[0]) },
         winnerUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.winners[1]) },
         loserUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.losers[0]) },
@@ -35,6 +39,8 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
         submittedById: user.uid,
         submittedByFullName: user.displayName,
       }
+      delete toSubmit.winners
+      delete toSubmit.losers
 
       const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
       await RevalidatePath(user, `/ladders/${ladder.id}`);
