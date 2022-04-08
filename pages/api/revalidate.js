@@ -1,4 +1,7 @@
+import { initFirebase } from '../../lib/backendapi';
 import { getAuth } from 'firebase-admin/auth';
+import { getFirestore } from 'firebase-admin/firestore';
+
 export default async function handler(req, res) {
   const { authorization } = req.headers;
 

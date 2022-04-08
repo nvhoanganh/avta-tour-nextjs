@@ -7,17 +7,18 @@ import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import SubmitLadderScore from '../../../components/Cards/SubmitLadderScore';
+import { CleanUser } from '../../../lib/browserapi';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect } from 'react';
 import { db } from '../../../lib/firebase';
-import { getLadderDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
+import { getLadderBasicDetails, mergeUsersAndPlayersData, getAllLadders } from '../../../lib/backendapi';
 import { doc, getDoc } from "firebase/firestore";
 import { getAllPlayers } from '../../../lib/api';
 
 
 export default function SubmitScore({ ladder, allPlayers, preview }) {
   const router = useRouter();
-  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
+  const { user, fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
 
   useEffect(() => {
     if (fullProfile
@@ -116,7 +117,7 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
                         loading
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <SubmitLadderScore ladder={ladder} allPlayers={allPlayers} user={fullProfile}></SubmitLadderScore>
+                          <SubmitLadderScore ladder={ladder} allPlayers={allPlayers} user={user}></SubmitLadderScore>
                       }
                     </div>
                   </div>
@@ -130,15 +131,14 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const data = await getLadderDetails(params.id, preview);
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
   allPlayers = allPlayers.map(x => {
-    // todo: fix this
-    delete x.coverImage;
-    delete x.photoURL;
+    CleanUser(x, 'coverImage,photoURL')
     return x;
   });
+
+  const data = await getLadderBasicDetails(params.id, allPlayers);
 
   return {
     props: {

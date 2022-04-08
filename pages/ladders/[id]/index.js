@@ -345,18 +345,18 @@ export default function Competition({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  console.log(`${(new Date()).toISOString()} - rebuilt STARTED for ladder ${params.id}`);
-  const data = await getLadderDetails(params.id, preview);
-  console.log(`${(new Date()).toISOString()} - Get data from Firebase done`);
-
+  console.log(`${(new Date()).toISOString()} - Get data from Contentful started`);
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
   allPlayers = allPlayers.map(x => {
     CleanUser(x, 'coverImage,photoURL')
     return x;
   });
-
   console.log(`${(new Date()).toISOString()} - Get data from Contentful done`);
+
+  console.log(`${(new Date()).toISOString()} - rebuilt STARTED for ladder ${params.id}`);
+  const data = await getLadderDetails(params.id, allPlayers);
+  console.log(`${(new Date()).toISOString()} - Get data from Firebase done`);
 
   console.log(`${(new Date()).toISOString()} - rebuilt FINISHED for ladder ${params.id}`);
   return {

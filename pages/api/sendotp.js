@@ -1,8 +1,6 @@
-import { getPreviewPostBySlug } from '../../lib/api';
 import { sendSms, initFirebase } from '../../lib/backendapi';
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
-import { getFirestore, CollectionReference } from 'firebase-admin/firestore'
+import { getFirestore } from 'firebase-admin/firestore';
 
 
 export default async function sendsms(req, res) {

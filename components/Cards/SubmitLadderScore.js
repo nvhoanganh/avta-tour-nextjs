@@ -17,28 +17,34 @@ var Diacritics = require('diacritic');
 export default function SubmitLadderScore({ ladder, allPlayers, user }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
-  const { user } = useFirebaseAuth();
 
   const onSubmit = async data => {
     setSaving(true)
-    data = {
-      ladderId: ladder.id,
-      ...data,
-      winnerUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner1) },
-      winnerUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner2) },
-      loserUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser1) },
-      loserUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser2) },
-      timestamp: (new Date()),
-      gameWonByWinners: +data.gameWonByWinners,
-      gameWonByLosers: +data.gameWonByLosers,
-      submittedById: user.uid,
-      submittedByFullName: user.displayName,
-    }
-    const docRef = await addDoc(collection(db, "ladder_results"), data);
-    await RevalidatePath(user, `/ladders/${ladder.id}`);
+    try {
+      getFBUserIdFromContentfulId(allPlayers, data.winner1)
+      const toSubmit = {
+        ladderId: ladder.id,
+        ...data,
+        winnerUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner1) },
+        winnerUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner2) },
+        loserUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser1) },
+        loserUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser2) },
+        timestamp: (new Date()),
+        gameWonByWinners: +data.gameWonByWinners,
+        gameWonByLosers: +data.gameWonByLosers,
+        submittedById: user.uid,
+        submittedByFullName: user.displayName,
+      }
+      const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
+      await RevalidatePath(user, `/ladders/${ladder.id}`);
 
-    toast("Result submitted!");
-    setSaving(false)
+      toast("Result submitted!");
+      setSaving(false)
+    } catch (error) {
+      console.log('Submit failed', error)
+      toast.error("Failed to submit result: " + error.message);
+      setSaving(false)
+    }
   };
 
   return (
@@ -217,7 +223,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
               <div className="relative w-full mb-3 text-left lg:text-right">
                 <button type="button" onClick={() => reset()} className="bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">Reset</button>
                 <SaveButton saving={saving}
-                  type="submit">Submit Score</SaveButton>
+                  type="submit">Submit</SaveButton>
               </div>
             </div>
           </div>
