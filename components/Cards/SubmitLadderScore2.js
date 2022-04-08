@@ -22,22 +22,23 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
   const onSubmit = async data => {
     setSaving(true)
     try {
-      getFBUserIdFromContentfulId(allPlayers, data.winner1)
       const toSubmit = {
         ladderId: ladder.id,
         ...data,
-        winnerUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner1) },
-        winnerUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.winner2) },
-        loserUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser1) },
-        loserUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.loser2) },
+        winnerUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.winners[0]) },
+        winnerUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.winners[1]) },
+        loserUser1: { uid: getFBUserIdFromContentfulId(allPlayers, data.losers[0]) },
+        loserUser2: { uid: getFBUserIdFromContentfulId(allPlayers, data.losers[1]) },
         timestamp: (new Date()),
         gameWonByWinners: +data.gameWonByWinners,
         gameWonByLosers: +data.gameWonByLosers,
         submittedById: user.uid,
         submittedByFullName: user.displayName,
       }
-      const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
-      await RevalidatePath(user, `/ladders/${ladder.id}`);
+      console.log("🚀 ~ file: SubmitLadderScore2.js ~ line 38 ~ SubmitLadderScore ~ toSubmit", toSubmit)
+
+      // const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
+      // await RevalidatePath(user, `/ladders/${ladder.id}`);
 
       toast("Result submitted!");
       setSaving(false)
@@ -89,12 +90,10 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
             <div className="w-full lg:w-6/12 px-4 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Winners: {
-                    selectedWinners &&
-                    selectedWinners.map(x => x.fullName).join(' & ')
-                  }
+                  Winners:
                 </label>
-                {winners?.length < 2 && <div className="flex flex-col space-y-1">
+                {winners?.length < 2 ? <div className="flex flex-col space-y-1">
+                  <div className="text-sm italic text-gray-500">{winners?.length} selected</div>
                   {
                     filteredPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
@@ -105,7 +104,12 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                       </label>
                     )
                   }
-                </div>
+                </div> :
+                  <div>
+                    <span>{selectedWinners.map(x => x.fullName).join(' & ')}</span>
+                    <span className="bg-red-500  text-white font-bold hover:shadow-md shadow text-xs ml-2 px-2 py-1 rounded outline-none 
+                            focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer" onClick={() => setValue('winners', null)}>Clear</span>
+                  </div>
                 }
               </div>
             </div>
@@ -113,12 +117,10 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
             <div className="w-full lg:w-6/12 px-4 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Losers: {
-                    selectedLosers &&
-                    selectedLosers.map(x => x.fullName).join(' & ')
-                  }
+                  Losers:
                 </label>
-                {losers?.length < 2 && <div className="flex flex-col space-y-1">
+                {losers?.length < 2 ? <div className="flex flex-col space-y-1">
+                  <div className="text-sm italic text-gray-500">{losers?.length} selected</div>
                   {
                     filteredPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
@@ -128,6 +130,10 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                       </label>
                     )
                   }
+                </div> : <div>
+                  <span>{selectedLosers.map(x => x.fullName).join(' & ')}</span>
+                  <span className="bg-red-500  text-white font-bold hover:shadow-md shadow text-xs ml-2 px-2 py-1 rounded outline-none 
+                            focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer" onClick={() => setValue('losers', null)}>Clear</span>
                 </div>}
               </div>
             </div>
