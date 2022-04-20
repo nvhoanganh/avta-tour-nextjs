@@ -259,13 +259,13 @@ export default function Player({ player, preview }) {
 											</div>
 											<div
 												className={cn('mb-20 mt-10 text-6xl font-bold', {
-													'text-green-600': !player.unofficialPoint,
-													'text-red-600': player.unofficialPoint,
+													'text-green-600': !player?.unofficialPoint,
+													'text-red-600': player?.unofficialPoint,
 												})}
 											>
-												{player.avtaPoint} pt.
+												{player?.avtaPoint} pt.
 												{
-													player.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
+													player?.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
 												}
 											</div>
 										</div>

@@ -115,7 +115,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                           {...register("winners", {
                             required: true,
                           })}
-                        />{player.fullName} - {player.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                        />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
                       </label>
                     )
                   }
@@ -143,7 +143,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                           {...register("losers", {
                             required: true,
                           })}
-                        />{player.fullName} - {player.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                        />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
                       </label>
                     )
                   }

@@ -16,9 +16,9 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam })
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
               <div
                 className=
-                'font-bold flex space-x-1 text-gray-600 '
+                'flex space-x-1 text-gray-600 '
               >
-                <span>{index + 1}. {players[0].nickName} + {players[1].nickName}</span>
+                <span>{index + 1}. {players[0].fullName} + {players[1].fullName}</span>
                 {team.paidOn &&
                   <i className="fas fa-money-bill text-green-600" title={`Paid on ${team.paidOn}`}></i>}
               </div>

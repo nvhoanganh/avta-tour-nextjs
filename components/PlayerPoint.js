@@ -6,8 +6,8 @@ export default function PlayerPoint({
   className
 }) {
   return <div className={cn(` text-green-600 text-xs text-center ${className}`, {
-    'text-red-600': player.unofficialPoint
+    'text-red-600': player?.unofficialPoint
   })}>
-    { player.avtaPoint }
+    { player?.avtaPoint }
   </div >;
 }

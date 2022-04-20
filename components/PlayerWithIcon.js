@@ -32,7 +32,7 @@ export default function PlayerWithIcon({
       </p>}
 
       <p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
-        {player.avtaPoint}
+        {player?.avtaPoint}
       </p>
       <p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
         {player.homeClub || 'Unknown Club'}

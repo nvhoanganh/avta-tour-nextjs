@@ -19,16 +19,22 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
       </div>
       <div className='flex flex-wrap'>
         <div className='w-full lg:w-6/12 xl:w-3/12'>
-          {getFilteredMatches(results || [], filter).map((result) => (
-            <div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
+          {getFilteredMatches(results || [], filter).map((result) => {
+            const w1 = result.winners.player1 || result.winners.players[0];
+            const w2 = result.winners.player2 || result.winners.players[1];
+
+            const l1 = result.losers.player1 || result.losers.players[0];
+            const l2 = result.losers.player2 || result.losers.players[1];
+
+            return <div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
               <div className="flex-auto p-4">
                 <div className="flex flex-wrap ">
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                     <div
                       className=
-                      'font-bold  text-gray-600 '
+                      ' text-gray-600 '
                     >
-                      {result.winners.player1?.fullName} + {result.winners.player2?.fullName}
+                      {w1.fullName} + {w2.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
                       {result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}, {format(new Date(result.timestamp), 'h:mm a')}
@@ -57,9 +63,9 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
                   <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
                     <div
                       className=
-                      'font-bold  text-gray-600 '
+                      ' text-gray-600 '
                     >
-                      {result.losers.player1?.fullName} + {result.losers.player2?.fullName}
+                      {l1.fullName} + {l2.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
                     </div>
@@ -72,7 +78,7 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
 
               </div>
             </div>
-          ))}
+          })}
         </div>
       </div>
     </>

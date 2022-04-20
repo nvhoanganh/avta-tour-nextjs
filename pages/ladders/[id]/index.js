@@ -39,7 +39,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
   const totalPoints = registeredPlayers.reduce((previousTotal, player) => {
     return (
       previousTotal +
-      player.avtaPoint
+      player?.avtaPoint
     );
   }, 0)
 

@@ -66,17 +66,23 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 							</tr>
 						</thead>
 						<tbody>
-							{results.map((result) => (
-								<tr key={result.timestamp}>
+							{results.map((result) => {
+								const w1 = result.winners.player1 || result.winners.players[0];
+								const w2 = result.winners.player2 || result.winners.players[1];
+
+								const l1 = result.losers.player1 || result.losers.players[0];
+								const l2 = result.losers.player2 || result.losers.players[1];
+
+								return <tr key={result.timestamp}>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div className='flex'>
 											<img
-												src={result.winners.player1?.coverImage?.url || 'https://via.placeholder.com/64'}
+												src={w1?.coverImage?.url || 'https://via.placeholder.com/64'}
 												alt='...'
 												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
 											></img>
 											<img
-												src={result.winners.player2?.coverImage?.url || 'https://via.placeholder.com/64'}
+												src={w2?.coverImage?.url || 'https://via.placeholder.com/64'}
 												alt='...'
 												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
 											></img>
@@ -92,27 +98,27 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												}
 											>
 
-												<Link href={`/players/${result.winners.player1?.sys?.id}`}>
-													<a className="hover:underline">{result.winners.player1?.fullName}</a>
+												<Link href={`/players/${w1?.sys?.id}`}>
+													<a className="hover:underline">{w1?.fullName}</a>
 												</Link>
 
 
-												<PlayerPoint player={result.winners.player1} className="ml-1 mb-2" />
+												<PlayerPoint player={w1} className="ml-1 mb-2" />
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${result.winners.player2?.sys?.id}`}>
-													<a className="hover:underline">{result.winners.player2?.fullName}</a>
+												<Link href={`/players/${w2?.sys?.id}`}>
+													<a className="hover:underline">{w2?.fullName}</a>
 												</Link>
 
-												<PlayerPoint player={result.winners.player2} className="ml-1 mb-2" />
+												<PlayerPoint player={w2} className="ml-1 mb-2" />
 
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{result.winners.player1?.avtaPoint + result.winners.player2?.avtaPoint}]</span>
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{w1?.avtaPoint + w2?.avtaPoint}]</span>
 
 
 											</div>
 											<div className='ml-3 text-sm text-gray-600 mr-3'>
-												{result.winners.player1?.homeClub}
+												{w1?.homeClub}
 											</div>
 										</div>
 									</td>
@@ -125,12 +131,12 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div className='flex'>
 											<img
-												src={result.losers.player1?.coverImage?.url || 'https://via.placeholder.com/64'}
+												src={l1?.coverImage?.url || 'https://via.placeholder.com/64'}
 												alt='...'
 												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
 											></img>
 											<img
-												src={result.losers.player2?.coverImage?.url || 'https://via.placeholder.com/64'}
+												src={l2?.coverImage?.url || 'https://via.placeholder.com/64'}
 												alt='...'
 												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
 											></img>
@@ -145,24 +151,24 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 												}
 											>
 
-												<Link href={`/players/${result.losers.player1?.sys?.id}`}>
-													<a className="hover:underline">{result.losers.player1?.fullName}</a>
+												<Link href={`/players/${l1?.sys?.id}`}>
+													<a className="hover:underline">{l1?.fullName}</a>
 												</Link>
 
 
-												<PlayerPoint player={result.losers.player1} className="ml-1 mb-2" />
+												<PlayerPoint player={l1} className="ml-1 mb-2" />
 
 												<span className="mx-3">&amp;</span>
 
-												<Link href={`/players/${result.losers.player2?.sys?.id}`}>
-													<a className="hover:underline">{result.losers.player2?.fullName}</a>
+												<Link href={`/players/${l2?.sys?.id}`}>
+													<a className="hover:underline">{l2?.fullName}</a>
 												</Link>
 
-												<PlayerPoint player={result.losers.player2} className="ml-1 mb-2" />
-												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{result.losers.player1?.avtaPoint + result.losers.player2?.avtaPoint}]</span>
+												<PlayerPoint player={l2} className="ml-1 mb-2" />
+												<span className='font-normal text-xs mb-2 ml-1 text-green-600'>[{l1?.avtaPoint + l2?.avtaPoint}]</span>
 											</div>
 											<div className='ml-3 text-sm text-gray-600 mr-3'>
-												{result.losers.player1?.homeClub}
+												{l1?.homeClub}
 											</div>
 										</div>
 									</td>
@@ -179,7 +185,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 										</div>
 									</td>
 								</tr>
-							))}
+							})}
 						</tbody>
 					</table>
 				</div>
