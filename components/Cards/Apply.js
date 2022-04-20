@@ -81,7 +81,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
           competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} />
       }
 
-      {!registeredTeam &&
+      {registeredTeam &&
         <>
           <form action={`/api/checkout_sessions?applicationId=${registeredTeam?.id}&competition=${router.query.slug}`} method="POST"
             className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
