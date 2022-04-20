@@ -5,6 +5,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import 'react-toastify/dist/ReactToastify.css';
 import PlayerAvatar from '../Cards/PlayerAvatar';
 import DateComponent from '../date';
+import Stripepaymentinfo from '../stripepaymentinfo';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -13,7 +14,6 @@ const stripePromise = loadStripe(
 );
 
 export default function JoinLadder({ ladder, fullProfile }) {
-  console.log("🚀 ~ file: JoinAndPay.js ~ line 15 ~ JoinLadder ~ ladder", ladder)
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -69,10 +69,10 @@ export default function JoinLadder({ ladder, fullProfile }) {
           <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-4 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
     disabled:cursor-wait whitespace-nowrap
              disabled:bg-gray-200">
-            Pay ${ladder.joiningFee}.00 now using Stripe
+            Pay ${ladder.joiningFee}.00 now with Stripe.com
           </button>
 
-          <p className="pt-3 pb-6 text-gray-400 text-sm">Note: You will be taken to checkout.stripe.com to make this payment</p>
+          <Stripepaymentinfo></Stripepaymentinfo>
         </form>
 
         <p className="text-gray-400 text-sm text-center mb-12">

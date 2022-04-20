@@ -19,7 +19,7 @@ import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding, getRulebyId } from '../../../lib/api';
 import { getCompResults, getAppliedTeams, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
-import { getAllGroupMatches, exportGroupsAllocation, getCompGroups } from '../../../lib/browserapi';
+import { getAllGroupMatches, exportGroupsAllocation, getCompGroups, RevalidatePath } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -46,6 +46,12 @@ export default function Competition({ competition, preview }) {
   const [userRoles, setUserRoles] = useState(null);
   const [hideRules, setHideRules] = useState(false);
   const [hideContacts, setHideContacts] = useState(false);
+
+  const refreshData = async () => {
+    toast("Refreshing. Please wait...");
+    await RevalidatePath(user, `/competitions/${competition.slug}`);
+    window.location.reload();
+  }
 
   const deleteResult = async (record) => {
     if (!userRoles?.superuser) return;
@@ -356,6 +362,7 @@ export default function Competition({ competition, preview }) {
 
                         {hasResults ?
                           <>
+                            {/* has results */}
                             {/* tabs */}
                             <div className='border-b-2 border-gray-300 mt-10'>
                               <ul className='flex cursor-pointer justify-around'>
@@ -462,9 +469,16 @@ export default function Competition({ competition, preview }) {
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
                             </div>
+
+                            <div className='mx-0 pb-8'>
+                              <a className='underline hover:cursor-pointer' onClick={refreshData}>
+                                Refresh data
+                              </a>
+                            </div>
                           </>
                           :
                           <>
+                            {/* has no result */}
                             <div className='prose text-lg mt-10'>
                               {documentToReactComponents(
                                 competition.description
@@ -475,6 +489,12 @@ export default function Competition({ competition, preview }) {
                             <div className="py-5">
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
+                            </div>
+
+                            <div className='mx-0 pb-8'>
+                              <a className='underline hover:cursor-pointer' onClick={refreshData}>
+                                Refresh data
+                              </a>
                             </div>
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
@@ -534,6 +554,7 @@ export default function Competition({ competition, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
+  console.log(`${(new Date()).toISOString()} - rebuilt STARTED for comp ${params.slud}`);
   let data = await getCompetitionBySlug(params.slug, preview);
 
   const matchScores = await getCompResults(data.sys.id);
@@ -551,13 +572,13 @@ export async function getStaticProps({ params, preview = false }) {
     groupsAllocation: groupsAllocation,
     groupResult: getGroupStageStanding(matchScores || [], groupsAllocation || {})
   };
+  console.log(`${(new Date()).toISOString()} - rebuilt COMPLETEd for comp ${params.slud}`);
 
   return {
     props: {
       preview,
       competition: data,
     },
-    revalidate: 1
   };
 }
 

@@ -5,7 +5,8 @@ import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
-import { score } from '../../lib/browserapi';
+import { useFirebaseAuth } from '../../components/authhook';
+import { score, RevalidatePath } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { collection, addDoc } from "firebase/firestore";
 
@@ -14,12 +15,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function SubmitScore({ competition, groupsAllocation }) {
+  const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
   const onSubmit = async data => {
     setSaving(true)
-    toast("Result submitted!");
 
     data = {
       competitionId: competition?.sys?.id,
@@ -38,15 +39,19 @@ export default function SubmitScore({ competition, groupsAllocation }) {
       group: data.group || '',
       losers: data.selectedLoser,
       winners: data.selectedWinner,
-      loserTeamId: data.selectedLoser.sys.id,
-      winnerTeamId: data.selectedWinner.sys.id,
-      loser1: data.selectedLoser.players[0].sys.id,
-      loser2: data.selectedLoser.players[1].sys.id,
-      winner1: data.selectedWinner.players[0].sys.id,
-      winner2: data.selectedWinner.players[1].sys.id,
+      loserTeamId: data.selectedLoser.id,
+      winnerTeamId: data.selectedWinner.id,
+      loser1: data.selectedLoser.player1.sys.id,
+      loser2: data.selectedLoser.player2.sys.id,
+      winner1: data.selectedWinner.player1.sys.id,
+      winner2: data.selectedWinner.player2.sys.id,
     };
 
+    console.log("🚀 ~ file: SubmitScore.js ~ line 23 ~ SubmitScore ~ data", data)
     const docRef = await addDoc(collection(db, "competition_results"), data);
+    await RevalidatePath(user, `/competitions/${competition?.slug}`);
+
+    toast("Result submitted!");
 
     setSaving(false)
   };
@@ -88,7 +93,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
 
   const isValid = () => {
     return !!selectedWinner && !!selectedLoser
-      && selectedWinner.name !== selectedLoser.name
+      && selectedWinner.id !== selectedLoser.id
       && !!gameWonByLoser
       && !!stage
       &&
@@ -109,9 +114,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
         player2: team.players[1],
       };
 
-      return team.name.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
-
-        players.player1.fullName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
+      return players.player1.fullName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
         players.player1.nickName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
 
         players.player2.fullName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
@@ -237,7 +240,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
 
                 {!selectedLoser ||
                   (selectedWinner && selectedLoser
-                    && selectedWinner.name === selectedLoser.name)
+                    && selectedWinner.id === selectedLoser.id)
                   ?
                   <>
                     {
@@ -248,7 +251,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                     <div className='flex flex-col space-y-2 py-5'>
 
                       {selectedWinner && selectedLoser
-                        && selectedWinner.name === selectedLoser.name && <span className="text-red-700">
+                        && selectedWinner.id === selectedLoser.id && <span className="text-red-700">
                           Winner and loser can't be the same
                         </span>}
 
@@ -267,7 +270,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                 }
 
                 {selectedWinner && selectedLoser
-                  && selectedWinner.name === selectedLoser.name && <span className="text-red-700">
+                  && selectedWinner.id === selectedLoser.id && <span className="text-red-700">
                     Winner and loser can't be the same
                   </span>}
 
@@ -297,8 +300,8 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
 
 function TeamCard({ team, onSelect }) {
   const players = {
-    player1: team.players[0],
-    player2: team.players[1],
+    player1: team.player1,
+    player2: team.player2,
   };
 
   return (<div
@@ -312,7 +315,7 @@ function TeamCard({ team, onSelect }) {
             className=
             'font-bold flex space-x-1 text-gray-600 '
           >
-            <span>{team.name}</span>
+            <span>{team.player1.fullName} + {team.player2.fullName}</span>
           </div>
           <div
             className=

@@ -3,6 +3,7 @@ import Link from 'next/link'
 import TeamCard from './TeamCard';
 import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
+import Stripepaymentinfo from '../../components/stripepaymentinfo';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import { loadStripe } from '@stripe/stripe-js';
@@ -80,26 +81,26 @@ export default function ApplyForCompetition({ competition, players, rule, linked
           competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} />
       }
 
-      {registeredTeam &&
+      {!registeredTeam &&
         <>
-          <form action={`/api/checkout_sessions?applicationId=${registeredTeam.id}&competition=${router.query.slug}`} method="POST"
+          <form action={`/api/checkout_sessions?applicationId=${registeredTeam?.id}&competition=${router.query.slug}`} method="POST"
             className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
           >
             <p className="uppercase py-2 h1">Application received</p>
 
             <div className="form-group w-96 py-3">
-              <TeamCard team={registeredTeam} />
+              {/* <TeamCard team={registeredTeam} /> */}
             </div>
 
-            <p className="text-gray-400 text-sm pb-6">Application Id: {registeredTeam.id}</p>
+            <p className="text-gray-400 text-sm pb-6">Application Id: {registeredTeam?.id}</p>
             <p className="text-gray-400 text-sm pb-6">Status: <strong>Not Paid</strong></p>
             <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
     disabled:cursor-wait whitespace-nowrap
              disabled:bg-gray-200">
-              Pay ${competition.costPerTeam}.00 now using Stripe
+              Pay ${competition.costPerTeam}.00 now with Stripe.com
             </button>
 
-            <p className="pt-3 pb-6 text-gray-400 text-sm">Note: You will be taken to checkout.stripe.com to make this payment</p>
+            <Stripepaymentinfo />
           </form>
         </>
       }

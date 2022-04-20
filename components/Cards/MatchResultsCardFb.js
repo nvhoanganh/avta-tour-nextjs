@@ -28,7 +28,7 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
                       className=
                       'font-bold  text-gray-600 '
                     >
-                      {result.winners.players[0]?.fullName} + {result.winners.players[1]?.fullName}
+                      {result.winners.player1?.fullName} + {result.winners.player2?.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
                       {result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}, {format(new Date(result.timestamp), 'h:mm a')}
@@ -59,7 +59,7 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
                       className=
                       'font-bold  text-gray-600 '
                     >
-                      {result.losers.players[0]?.fullName} + {result.losers.players[1]?.fullName}
+                      {result.losers.player1?.fullName} + {result.losers.player2?.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
                     </div>
