@@ -37,6 +37,8 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
                       {w1.fullName} + {w2.fullName}
                     </div>
                     <div className='text-sm text-gray-600'>
+                      {result.stage === 'Knockout Stage' && result.knockoutRound === 'Final' ? <i class="fas fa-trophy text-yellow-400 pr-1"></i> : ''}
+                      {result.stage === 'Knockout Stage' && result.knockoutRound === '3rdPlace' ? <i className='fas fa-medal text-yellow-700'></i> : ''}
                       {result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}, {format(new Date(result.timestamp), 'h:mm a')}
                     </div>
                   </div>

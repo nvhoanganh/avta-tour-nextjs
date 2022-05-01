@@ -182,6 +182,8 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 											</span>
 										}
 										<div className=' text-gray-600 mr-3'>
+											{result.stage === 'Knockout Stage' && result.knockoutRound === 'Final' ? <i class="fas fa-trophy text-yellow-400 pr-1"></i> : ''}
+											{result.stage === 'Knockout Stage' && result.knockoutRound === '3rdPlace' ? <i className='fas fa-medal text-yellow-700'></i> : ''}
 											{result.stage === 'Group Stage' ? 'Group ' + result.group + ' Round Robin' : result.knockoutRound}
 										</div>
 									</td>
