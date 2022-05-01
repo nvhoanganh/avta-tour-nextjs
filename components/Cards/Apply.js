@@ -8,10 +8,10 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
-import { getPlayers } from '../../lib/browserapi';
+import { getPlayers, RevalidatePath } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
-
+import { useFirebaseAuth } from '../../components/authhook';
 import { useForm } from "react-hook-form";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,6 +27,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
   const [saving, setSaving] = useState(false);
   const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
+  const { user, loadingAuth } = useFirebaseAuth();
 
   const onSubmit = async data => {
     setSaving(true)
@@ -49,6 +50,8 @@ export default function ApplyForCompetition({ competition, players, rule, linked
     };
 
     const docRef = await addDoc(collection(db, "competition_applications"), data);
+    await RevalidatePath(user, `/competitions/${competition?.slug}`);
+
     setSaving(false);
 
     setRegisteredTeam({

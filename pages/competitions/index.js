@@ -60,7 +60,7 @@ export default function Competitions({ competitions, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	let data = await getAllCompetitionsForHome(preview);
+	let data = await getAllCompetitionsForHome(preview, true);
 	const teams = await getAppliedTeamsForComps(data.map(c => c.sys.id));
 	data = data.map(comp => {
 		return {

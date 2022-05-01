@@ -17,13 +17,6 @@ export default function JoinLadder({ ladder, fullProfile }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
-  const onSubmit = async data => {
-    setSaving(true)
-
-    // const docRef = await addDoc(collection(db, "competition_applications"), data);
-    setSaving(false);
-  };
-
   return (
     <>
       <>

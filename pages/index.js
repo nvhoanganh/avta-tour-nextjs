@@ -33,7 +33,7 @@ export default function Index({
 	const { user } = useFirebaseAuth();
 
 	const heroPost = allPosts[0];
-	const upcomingCompetition = competittions[0];
+	const upcomingCompetition = competittions[competittions.length - 1];
 	const morePosts = allPosts.slice(1);
 
 	return (
