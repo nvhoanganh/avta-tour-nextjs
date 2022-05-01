@@ -3,7 +3,7 @@ import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
-import { getFilteredMatches } from '../../lib/browserapi';
+import { getFilteredMatches, getWinningScoreForComp } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
 export default function MatchResultsCard({ results, is_superuser, deleteMatch }) {
@@ -50,7 +50,7 @@ export default function MatchResultsCard({ results, is_superuser, deleteMatch })
                   <div className=' text-gray-600 text-lg align-center p-1 shadow px-4 border rounded border-gray-200'
                     onClick={() => deleteMatch && deleteMatch(result)}
                   >
-                    6-{result.gameWonByLoser}
+                    {getWinningScoreForComp(result)}-{result.gameWonByLoser}
                     {is_superuser &&
                       <span className="ml-3 text-red-500 cursor-pointer">
                         Delete

@@ -6,6 +6,7 @@ import ContentfulImage from '../contentful-image';
 import DateWithTimeComponent from '../dateWithTime';
 import PlayerPoint from '../PlayerPoint';
 import Avatar from '../avatar';
+import { getWinningScoreForComp } from '../../lib/browserapi';
 
 export default function MatchResultsTable({ color, results, is_superuser, deleteMatch }) {
 	return (
@@ -125,7 +126,7 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<div className="flex flex-col items-center justify-center">
 											<div className='italic text-gray-600 text-sm'>def.</div>
-											<div>6-{result.gameWonByLoser}</div>
+											<div>{getWinningScoreForComp(result)}-{result.gameWonByLoser}</div>
 										</div>
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>

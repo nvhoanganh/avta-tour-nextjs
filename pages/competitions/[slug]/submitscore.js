@@ -19,7 +19,7 @@ import SendOtp from '../../../components/sendotp';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
-import { getCompGroupsAllocation } from '../../../lib/backendapi';
+import { getCompGroupsAllocation, getAppliedTeams } from '../../../lib/backendapi';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
 
@@ -152,6 +152,12 @@ export default function SubmitScore({ competition, groupsAllocation, preview }) 
 
 export async function getStaticProps({ params, preview = false }) {
   let data = await getCompetitionBySlug(params.slug, preview);
+  const teams = await getAppliedTeams(data.sys.id);
+  data = {
+    ...data,
+    teams: teams
+  }
+
   const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
 
   return {

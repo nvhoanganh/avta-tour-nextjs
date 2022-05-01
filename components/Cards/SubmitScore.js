@@ -13,6 +13,7 @@ import { collection, addDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+var Diacritics = require('diacritic');
 
 export default function SubmitScore({ competition, groupsAllocation }) {
   const { user, loadingAuth } = useFirebaseAuth();
@@ -47,7 +48,6 @@ export default function SubmitScore({ competition, groupsAllocation }) {
       winner2: data.selectedWinner.player2.sys.id,
     };
 
-    console.log("🚀 ~ file: SubmitScore.js ~ line 23 ~ SubmitScore ~ data", data)
     const docRef = await addDoc(collection(db, "competition_results"), data);
     await RevalidatePath(user, `/competitions/${competition?.slug}`);
 
@@ -62,7 +62,7 @@ export default function SubmitScore({ competition, groupsAllocation }) {
 
       {
         saving
-          ? <><div className="text-center py-24"><Spinner size="lg" color="blue" /> Loading...</div> :</>
+          ? <><div className="text-center py-24"><Spinner size="lg" color="blue" /> Loading...</div></>
           : <SubmitScoreForm onSubmit={onSubmit} saving={saving}
             competition={competition} groupsAllocation={groupsAllocation} />
       }
@@ -109,16 +109,11 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
     if (!query) return [];
 
     return teams.filter(team => {
-      const players = {
-        player1: team.players[0],
-        player2: team.players[1],
-      };
-
-      return players.player1.fullName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
-        players.player1.nickName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
-
-        players.player2.fullName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0 ||
-        players.player2.nickName.toLowerCase().indexOf(query.toLowerCase().trim()) >= 0
+      const q = Diacritics.clean(query.toLowerCase().trim());
+      return Diacritics.clean(team.player1.fullName.toLowerCase()).indexOf(q) >= 0 ||
+        Diacritics.clean(team.player1.nickName.toLowerCase()).indexOf(q) >= 0 ||
+        Diacritics.clean(team.player2.fullName.toLowerCase()).indexOf(q) >= 0 ||
+        Diacritics.clean(team.player2.nickName.toLowerCase()).indexOf(q) >= 0
         ;
     })
   }
@@ -166,6 +161,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                         <a onClick={() => setValue('knockoutRound', 'Quarter')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Quarter Final</a>,
                         <a onClick={() => setValue('knockoutRound', 'Semi')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Semi Final</a>,
                         <a onClick={() => setValue('knockoutRound', 'Final')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Final</a>,
+                        <a onClick={() => setValue('knockoutRound', '3rdPlace')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">3rd Place</a>,
                         <a onClick={() => setValue('knockoutRound', '16')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 16</a>,
                         <a onClick={() => setValue('knockoutRound', '32')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 32</a>,
                         <a onClick={() => setValue('knockoutRound', '64')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Round of 64</a>,
