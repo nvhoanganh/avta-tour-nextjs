@@ -503,6 +503,7 @@ export default function Competition({ competition, preview }) {
                                 <div className='mt-10'>
                                   <TeamsCard
                                     is_superuser={userRoles?.superuser}
+                                    competition={competition}
                                     teams={
                                       competition.appliedTeams
                                     }

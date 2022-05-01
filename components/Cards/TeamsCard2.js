@@ -11,12 +11,12 @@ import TeamAvatar from '../TeamAvatar';
 import TableDropdown from '../Dropdowns/TableDropdown.js';
 import CardStats from '../Cards/CardStats.js';
 
-export default function TeamsCard({ color, teams, is_superuser }) {
+export default function TeamsCard({ color, teams, is_superuser, competition }) {
 	return (
 		<>
 			<div className='grid grid-cols-1 md:grid-cols-3 md:gap-x-10 lg:gap-x-16 gap-y-5 mb-32'>
 				{teams.map((t) =>
-					(<TeamCard key={t.id} team={t} is_superuser={is_superuser}/>)
+					(<TeamCard key={t.id} team={t} is_superuser={is_superuser} competition={competition}/>)
 				)}
 			</div>
 		</>

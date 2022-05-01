@@ -88,19 +88,26 @@ export default function ApplyForCompetition({ competition, players, rule, linked
           >
             <p className="uppercase py-2 h1">Application received</p>
 
-            <div className="form-group w-96 py-3">
-              {/* <TeamCard team={registeredTeam} /> */}
-            </div>
-
-            <p className="text-gray-400 text-sm pb-6">Application Id: {registeredTeam?.id}</p>
-            <p className="text-gray-400 text-sm pb-6">Status: <strong>Not Paid</strong></p>
-            <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+            {
+              competition.costPerTeam > 0 ? <>
+                <p className="text-gray-400 text-sm pb-6">Application Id: {registeredTeam?.id}</p>
+                <p className="text-gray-400 text-sm pb-6">Status: <strong>Not Paid</strong></p>
+                <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
     disabled:cursor-wait whitespace-nowrap
              disabled:bg-gray-200">
-              Pay ${competition.costPerTeam}.00 now with Stripe.com
-            </button>
+                  Pay ${competition.costPerTeam}.00 now with Stripe.com
+                </button>
 
-            <Stripepaymentinfo />
+                <Stripepaymentinfo />
+              </> : <>
+                <Link href={`/competitions/${competition.slug}`}>
+                  <a
+                    className='bg-blue-500 my-8 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'
+                  >
+                    Go Back
+                  </a></Link>
+              </>
+            }
           </form>
         </>
       }

@@ -1,7 +1,7 @@
 import React from "react";
 import TeamAvatar from "../TeamAvatar";
 export default function TeamCard({
-  team, is_superuser
+  team, is_superuser, competition
 }) {
   return <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
     <div className="flex-auto p-4">
@@ -17,7 +17,7 @@ export default function TeamCard({
           </div>
           <div className='text-sm text-gray-600 flex space-x-2'>
             <span className='text-green-600'>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
-            {!team.paidOn && (<form action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}`} method="POST"
+            {!team.paidOn && competition.costPerTeam > 0 && (<form action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}`} method="POST"
               className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
             >
               <button type="submit" className='text-sm text-red-600 flex space-x-2 hover:underline hover:cursor-pointer font-bold'>
