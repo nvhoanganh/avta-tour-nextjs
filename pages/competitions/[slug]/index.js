@@ -573,13 +573,14 @@ export async function getStaticProps({ params, preview = false }) {
     groupsAllocation: groupsAllocation,
     groupResult: getGroupStageStanding(matchScores || [], groupsAllocation || {})
   };
-  console.log(`${(new Date()).toISOString()} - rebuilt COMPLETEd for comp ${params.slud}`);
+  console.log(`${(new Date()).toISOString()} - rebuilt COMPLETED for comp ${params.slud}`);
 
   return {
     props: {
       preview,
       competition: data,
     },
+    revalidate: 3600
   };
 }
 
