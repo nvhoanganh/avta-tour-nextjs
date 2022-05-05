@@ -26,7 +26,6 @@ export default function SendInviteViaSms({ players, competition }) {
 			id
 		] : selected.filter(x => x !== id);
 
-		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 51 ~ toggle ~ newList", newList)
 		setSelected(newList);
 	}
 
@@ -58,37 +57,37 @@ export default function SendInviteViaSms({ players, competition }) {
 				msg: parseMsg(x, data.msg)
 			}));
 
-		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 58 ~ SendInviteViaSms ~ destinations", destinations)
-
-
-		// setSaving(true)
-		// user.getIdToken().then(idtoken => {
-		// 	return fetch(
-		// 		`/api/bulksendsms`,
-		// 		{
-		// 			method: 'POST',
-		// 			headers: {
-		// 				Authorization: `Bearer ${idtoken}`,
-		// 			},
-		// 			body: JSON.stringify({
-		// 				msg: data.msg,
-		// 			})
-		// 		}
-		// 	)
-		// 		.then(response => response.json())
-		// 		.then((rsp) => {
-		// 			setSaving(false);
-		// 			if (rsp.success) {
-		// 				toast(`Successfully sent ${rsp.sentTo} players`);
-		// 			} else {
-		// 				toast(`Error sending SMS`);
-		// 			}
-		// 		})
-		// 		.catch((err) => {
-		// 			toast(`Error sending SMS`);
-		// 			setSaving(false);
-		// 		});
-		// })
+		setSaving(true)
+		user.getIdToken().then(idtoken => {
+			return fetch(
+				`/api/bulksendsms`,
+				{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${idtoken}`,
+					},
+					body: JSON.stringify({
+						destinations,
+					})
+				}
+			)
+				.then(response => response.json())
+				.then((rsp) => {
+					setSaving(false);
+					if (rsp.success) {
+						toast(`Successfully sent ${rsp.sentTo} players`);
+					} else {
+						console.log('error sending SMS', rsp);
+						toast(`Error sending SMS`);
+					}
+				})
+				.catch((err) => {
+					toast(`Error sending SMS`);
+					console.log('error sending SMS', err);
+					setSaving(false);
+				});
+		})
 	}
 
 	return (
