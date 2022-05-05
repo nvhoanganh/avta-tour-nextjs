@@ -10,6 +10,17 @@ import PlayerProfileStatus from '../../components/playerprofilestatus';
 
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayers, setAvaiPlayers] = useState(players);
+	const [selected, setSelected] = useState([]);
+
+	const toggle = (id) => {
+		const newList = selected.indexOf(id) === -1 ? [
+			...selected,
+			id
+		] : selected.filter(x => x !== id);
+
+		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 51 ~ toggle ~ newList", newList)
+		setSelected(newList);
+	}
 
 	useEffect(async () => {
 		if (competition) {
@@ -21,19 +32,24 @@ export default function SendInviteViaSms({ players, competition }) {
 				id: doc.id
 			}));
 
-			const avaiPlayers = players.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id));
+			const avaiPlayers = players
+				.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id))
+				.filter(x => !!x.mobileNumber);
+
 			setAvaiPlayers(avaiPlayers);
+			setSelected(avaiPlayers.map(x => x.sys.id));
 		}
 	}, [competition]);
 
 	return (
 		<>
-			<PlayersTable players={avaiPlayers}></PlayersTable>
+			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
+			<div className=' text-xl bold text-center pb-10 uppercase'>Send SMS to {selected?.length} players</div>
 		</>
 	);
 }
 
-function PlayersTable({ players }) {
+function PlayersTable({ players, toggle, selected }) {
 	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
 
 	return (
@@ -141,13 +157,15 @@ function PlayersTable({ players }) {
 										{player.homeClub || 'Unknown Club'}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
-										<Link
-											href={`/players/${player.sys.id}`}
+										<button
+											onClick={() => toggle(player.sys.id)}
+											className={cn('get-started font-bold px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-2  uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150 w-32', {
+												'bg-blue-500 text-white': selected.indexOf(player.sys.id) >= 0,
+												'bg-gray-300': selected.indexOf(player.sys.id) < 0,
+											})}
 										>
-											<a className='get-started text-white font-bold px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
-												View
-											</a>
-										</Link>
+											{selected.indexOf(player.sys.id) >= 0 ? 'Selected' : 'Select'}
+										</button>
 									</td>
 								</tr>
 							))}
@@ -158,6 +176,8 @@ function PlayersTable({ players }) {
 		</>
 	);
 }
+
+
 
 SendInviteViaSms.defaultProps = {
 	players: []
