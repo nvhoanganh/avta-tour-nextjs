@@ -13,6 +13,7 @@ import PlayerProfileStatus from '../../components/playerprofilestatus';
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayers, setAvaiPlayers] = useState(players);
 	const [selected, setSelected] = useState([]);
+	const [saving, setSaving] = useState(false);
 
 	const toggle = (id) => {
 		const newList = selected.indexOf(id) === -1 ? [
@@ -44,13 +45,14 @@ export default function SendInviteViaSms({ players, competition }) {
 	}, [competition]);
 
 	const onSubmit = async data => {
-		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 46 ~ SendInviteViaSms ~ data", data)
+		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 46 ~ SendInviteViaSms ~ data", data, selected);
 	}
+
 	return (
 		<>
 			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
 			<div className='py-6'>
-				<SendSmsForm onSubmit={onSubmit} count={selected.length}></SendSmsForm>
+				<SendSmsForm onSubmit={onSubmit} count={selected.length} saving={saving}></SendSmsForm>
 			</div>
 		</>
 	);
@@ -185,16 +187,17 @@ function PlayersTable({ players, toggle, selected }) {
 }
 
 
-function SendSmsForm({ onSubmit, saving, count }) {
+function SendSmsForm({ onSubmit, saving, count, saving }) {
 	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm();
 	const msg = watch('aboutMe');
+
 	return <form onSubmit={handleSubmit(onSubmit)}>
 		<div className="flex flex-wrap pt-5">
 			<div className="w-full lg:w-12/12 px-4">
 				<div className="relative w-full mb-3">
 					<ul>
-						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerUrl%</span> : will be replaced with player profile page</li>
-						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerID%</span> : will be replaced with player ID</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerUrl%</span> will be replaced with player profile page</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerID%</span> will be replaced with player ID</li>
 					</ul>
 				</div>
 			</div>
@@ -207,7 +210,7 @@ function SendSmsForm({ onSubmit, saving, count }) {
 					</label>
 					<textarea type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"
 						{...register("aboutMe", { required: true })}></textarea>
-					<div>{msg.length} Chars.</div>
+					<div>{msg.length} Characters</div>
 				</div>
 			</div>
 		</div>
