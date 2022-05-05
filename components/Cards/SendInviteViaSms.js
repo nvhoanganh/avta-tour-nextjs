@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
+import { useForm } from "react-hook-form";
 import PropTypes from 'prop-types';
 import { db } from '../../lib/firebase';
 import ContentfulImage from '../contentful-image';
+import SaveButton from '../../components/savebutton';
 import useFilterPlayers from '../../lib/useFilterhook';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
@@ -41,10 +43,15 @@ export default function SendInviteViaSms({ players, competition }) {
 		}
 	}, [competition]);
 
+	const onSubmit = async data => {
+		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 46 ~ SendInviteViaSms ~ data", data)
+	}
 	return (
 		<>
 			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
-			<div className=' text-xl bold text-center pb-10 uppercase'>Send SMS to {selected?.length} players</div>
+			<div className='py-6'>
+				<SendSmsForm onSubmit={onSubmit} count={selected.length}></SendSmsForm>
+			</div>
 		</>
 	);
 }
@@ -175,6 +182,44 @@ function PlayersTable({ players, toggle, selected }) {
 			</div>
 		</>
 	);
+}
+
+
+function SendSmsForm({ onSubmit, saving, count }) {
+	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm();
+	const msg = watch('aboutMe');
+	return <form onSubmit={handleSubmit(onSubmit)}>
+		<div className="flex flex-wrap pt-5">
+			<div className="w-full lg:w-12/12 px-4">
+				<div className="relative w-full mb-3">
+					<ul>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerUrl%</span> : will be replaced with player profile page</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerID%</span> : will be replaced with player ID</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div className="flex flex-wrap">
+			<div className="w-full lg:w-12/12 px-4">
+				<div className="relative w-full mb-3">
+					<label className="block uppercase text-gray-600 font-bold mb-2" htmlFor="grid-password">
+						Send this SMS to {count} players
+					</label>
+					<textarea type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"
+						{...register("aboutMe", { required: true })}></textarea>
+					<div>{msg.length} Chars.</div>
+				</div>
+			</div>
+		</div>
+		<div className="flex flex-wrap pt-5">
+			<div className="w-full lg:w-12/12 px-4">
+				<div className="relative w-full mb-3 text-center">
+					<SaveButton saving={saving}
+						type="submit">Send Now</SaveButton>
+				</div>
+			</div>
+		</div>
+	</form>
 }
 
 
