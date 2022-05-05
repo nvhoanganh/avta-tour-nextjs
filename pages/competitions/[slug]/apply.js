@@ -31,8 +31,8 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
 
   useEffect(async () => {
     const query = new URLSearchParams(window.location.search);
-    if (query.get('playerId')) {
-      setPlayerId(query.get('playerId'));
+    if (query.get('id')) {
+      setPlayerId(query.get('id'));
     }
   }, []);
 

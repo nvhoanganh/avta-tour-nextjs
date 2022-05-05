@@ -1,59 +1,17 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import ErrorPage from 'next/error';
-import ContentfulImage from '../../../components/contentful-image';
-import Container from '../../../components/container';
-import Spinner from '../../../components/spinner';
-import PostBody from '../../../components/post-body';
-import MoreStories from '../../../components/more-stories';
-import Header from '../../../components/header';
-import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
-import Intro from '../../../components/intro';
-import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import ApplyForCompForm from '../../../components/Cards/Apply';
-import SendOtp from '../../../components/sendotp';
-import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
-import { db } from '../../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
+import { getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
 
 
 export default function Apply({ competition, allPlayers, preview }) {
   const router = useRouter();
-  const { user, loadingAuth } = useFirebaseAuth();
-  const [userRole, setUserRole] = useState(null);
   const [applicationState, setApplicationState] = useState(null);
   const [paymentError, setPaymentError] = useState(null);
-
-  const goback = () => {
-    router.push(`/competitions/${router.query.slug}`);
-  }
-
-  const gotoLogin = () => {
-    localStorage.setItem('redirectAfterLogin', window.location.pathname);
-    router.push('/auth/login?reason=apply');
-  }
-
-  useEffect(async () => {
-    if (!loadingAuth) {
-      if (!user) {
-        gotoLogin();
-        return;
-      }
-
-      const docRef = doc(db, "user_roles", user.uid);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        const userRoles = docSnap.data();
-        setUserRole(userRoles)
-      }
-    }
-  }, [user, loadingAuth]);
 
   useEffect(async () => {
     // Check to see if this is a redirect back from Checkout
@@ -148,10 +106,6 @@ export default function Apply({ competition, allPlayers, preview }) {
                       </div>
                     </div>
                     <div className='mt-24'>
-                      {
-                        loadingAuth && <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div>
-                      }
-
                       {
                         applicationState && <div className='mb-8 text-center'>
                           <p className="uppercase py-2 h1">Payment Received</p>

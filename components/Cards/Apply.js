@@ -81,7 +81,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
       {
         !registeredTeam &&
         <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
-          competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} />
+          competition={competition} players={avaiPlayers} rule={rule} />
       }
 
       {registeredTeam &&
@@ -118,7 +118,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
   );
 }
 
-function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole }) {
+function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 
   const agreed = watch('agreed');
