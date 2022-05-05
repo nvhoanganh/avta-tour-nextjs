@@ -16,8 +16,10 @@ import { ToastContainer, toast } from 'react-toastify';
 
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayersAll, setAvaiPlayersAll] = useState(players);
+	const [registeredPlayers, setRegisteredPlayers] = useState([]);
 	const [avaiPlayers, setAvaiPlayers] = useState(players);
 	const [selected, setSelected] = useState([]);
+	const [currentSelected, setCurrentSelected] = useState('Unregistered');
 	const [saving, setSaving] = useState(false);
 	const { user } = useFirebaseAuth();
 
@@ -44,9 +46,15 @@ export default function SendInviteViaSms({ players, competition }) {
 				.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id))
 				.filter(x => !!x.mobileNumber);
 
+			const registeredPlayers = players
+				.filter(x => !!registeredTeams.find(p => p.player1Id === x.sys.id) || !!registeredTeams.find(p => p.player2Id === x.sys.id))
+				.filter(x => !!x.mobileNumber);
+
 			setAvaiPlayersAll(avaiPlayers);
+			setRegisteredPlayers(registeredPlayers);
+
 			setAvaiPlayers(avaiPlayers);
-			setSelected(avaiPlayers.map(x => x.sys.id));
+			// setSelected(avaiPlayers.map(x => x.sys.id));
 		}
 	}, [competition]);
 
@@ -95,11 +103,36 @@ export default function SendInviteViaSms({ players, competition }) {
 	return (
 		<>
 			<ToastContainer />
-			<div className="flex justify-end space-x-3 py-3">
-				<a onClick={() => setSelected([])} className="underline hover:cursor-pointer">Clear All</a>
-				<a onClick={() => setSelected(avaiPlayers.map(x => x.sys.id))} className="underline hover:cursor-pointer">Select All</a>
-				<a onClick={() => { setAvaiPlayers(avaiPlayersAll); setSelected([]); }} className="underline hover:cursor-pointer">Unregistered Players</a>
-				<a onClick={() => { setAvaiPlayers(players) }} className="underline hover:cursor-pointer">All Players</a>
+			<div className="flex justify-between items-center py-3">
+
+				<div className="flex space-x-2">
+					<a onClick={() => {
+						setAvaiPlayers(avaiPlayersAll);
+						setCurrentSelected('Unregistered');
+					}}
+						className={cn('border-t-0 px-2 rounded py-2 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 cursor-pointer', {
+							'bg-gray-200': currentSelected === 'Unregistered',
+						})}
+					>Unregistered Players</a>
+					<a onClick={() => {
+						setAvaiPlayers(players.filter(x => !!x.mobileNumber));
+						setCurrentSelected('All');
+					}}
+						className={cn('border-t-0 px-2 rounded py-2 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 cursor-pointer', {
+							'bg-gray-200': currentSelected === 'All',
+						})}
+					>All Players</a>
+					<a onClick={() => { setAvaiPlayers(registeredPlayers); setCurrentSelected('Registered'); }}
+						className={cn('border-t-0 px-2 rounded py-2 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 cursor-pointer', {
+							'bg-gray-200': currentSelected === 'Registered',
+						})}
+					>Registered Players</a>
+				</div>
+
+				<div className="flex space-x-2">
+					<a onClick={() => setSelected([])} className="underline hover:cursor-pointer">Clear All</a>
+					<a onClick={() => setSelected(avaiPlayers.map(x => x.sys.id))} className="underline hover:cursor-pointer">Select All</a>
+				</div>
 			</div>
 
 			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
@@ -160,7 +193,7 @@ function PlayersTable({ players, toggle, selected }) {
 									}
 								>
 									<div className='text-right'>
-										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}</div>
+										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} Players wih Mobile</div>
 										Search
 										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150"
 											placeholder="Search Name, Club or Point"
