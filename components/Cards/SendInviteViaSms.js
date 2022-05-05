@@ -13,13 +13,13 @@ import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
 import { useFirebaseAuth } from '../authhook';
 import { parseMsg } from '../../lib/browserapi';
-import { ToastContainer, toast } from 'react-toastify';
 
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayersAll, setAvaiPlayersAll] = useState(players);
 	const [registeredPlayers, setRegisteredPlayers] = useState([]);
 	const [avaiPlayers, setAvaiPlayers] = useState(players);
 	const [selected, setSelected] = useState([]);
+	const [sendResult, setSendResult] = useState('');
 	const [currentSelected, setCurrentSelected] = useState('Unregistered');
 	const [saving, setSaving] = useState(false);
 	const { user } = useFirebaseAuth();
@@ -88,14 +88,13 @@ export default function SendInviteViaSms({ players, competition }) {
 					console.log('sent complete', rsp);
 					setSaving(false);
 					if (rsp.success) {
-						toast(`Successfully sent SMS to ${rsp.sentTo} players`);
+						setSendResult(`Successfully sent SMS to ${rsp.sentTo} players`);
 					} else {
-						console.log('error sending SMS', rsp);
-						toast(`Error sending SMS`);
+						setSendResult(`Error sending SMS. ${rsp.message || 'Please try again'}`);
 					}
 				})
 				.catch((err) => {
-					toast(`Error sending SMS`);
+					setSendResult(`Error sending SMS. ${err.message || 'Please try again'}`);
 					console.log('error sending SMS', err);
 					setSaving(false);
 				});
@@ -104,7 +103,6 @@ export default function SendInviteViaSms({ players, competition }) {
 
 	return (
 		<>
-			<ToastContainer />
 			<div className="flex flex-col sm:flex-row justify-between items-center py-3 space-y-3">
 				<div className="flex space-x-2">
 					<a onClick={() => {
@@ -149,6 +147,7 @@ export default function SendInviteViaSms({ players, competition }) {
 			<div className='py-6'>
 				<SendSmsForm onSubmit={onSubmit} count={selected.length} competition={competition} saving={saving}></SendSmsForm>
 			</div>
+			<div className="px-3 py-3">{sendResult}</div>
 		</>
 	);
 }

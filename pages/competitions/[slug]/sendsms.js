@@ -15,6 +15,7 @@ import {
   getRulebyId,
 } from '../../../lib/api';
 import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
+import { ToastContainer, toast } from 'react-toastify';
 
 
 export default function SendInvite({ competition, allPlayers, rule, preview }) {
@@ -25,6 +26,7 @@ export default function SendInvite({ competition, allPlayers, rule, preview }) {
 
   return (
     <Layout preview={false}>
+      <ToastContainer></ToastContainer>
       <Navbar transparent />
 
       {router.isFallback ? (
