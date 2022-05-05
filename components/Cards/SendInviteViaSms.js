@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { format } from 'date-fns'
 import Link from 'next/link';
 import cn from 'classnames';
 import { useForm } from "react-hook-form";
@@ -9,11 +10,15 @@ import SaveButton from '../../components/savebutton';
 import useFilterPlayers from '../../lib/useFilterhook';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
+import { useFirebaseAuth } from '../authhook';
+import { parseMsg } from '../../lib/browserapi';
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayers, setAvaiPlayers] = useState(players);
 	const [selected, setSelected] = useState([]);
 	const [saving, setSaving] = useState(false);
+	const { user } = useFirebaseAuth();
 
 	const toggle = (id) => {
 		const newList = selected.indexOf(id) === -1 ? [
@@ -45,14 +50,53 @@ export default function SendInviteViaSms({ players, competition }) {
 	}, [competition]);
 
 	const onSubmit = async data => {
-		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 46 ~ SendInviteViaSms ~ data", data, selected);
+		const destinations = players
+			.filter(x => selected.find(p => p === x.sys.id))
+			.filter(x => !!x.mobileNumber)
+			.map(x => ({
+				mobile: x.mobileNumber,
+				msg: parseMsg(x, data.msg)
+			}));
+
+		console.log("🚀 ~ file: SendInviteViaSms.js ~ line 58 ~ SendInviteViaSms ~ destinations", destinations)
+
+
+		// setSaving(true)
+		// user.getIdToken().then(idtoken => {
+		// 	return fetch(
+		// 		`/api/bulksendsms`,
+		// 		{
+		// 			method: 'POST',
+		// 			headers: {
+		// 				Authorization: `Bearer ${idtoken}`,
+		// 			},
+		// 			body: JSON.stringify({
+		// 				msg: data.msg,
+		// 			})
+		// 		}
+		// 	)
+		// 		.then(response => response.json())
+		// 		.then((rsp) => {
+		// 			setSaving(false);
+		// 			if (rsp.success) {
+		// 				toast(`Successfully sent ${rsp.sentTo} players`);
+		// 			} else {
+		// 				toast(`Error sending SMS`);
+		// 			}
+		// 		})
+		// 		.catch((err) => {
+		// 			toast(`Error sending SMS`);
+		// 			setSaving(false);
+		// 		});
+		// })
 	}
 
 	return (
 		<>
+			<ToastContainer />
 			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
 			<div className='py-6'>
-				<SendSmsForm onSubmit={onSubmit} count={selected.length} saving={saving}></SendSmsForm>
+				<SendSmsForm onSubmit={onSubmit} count={selected.length} competition={competition} saving={saving}></SendSmsForm>
 			</div>
 		</>
 	);
@@ -187,17 +231,24 @@ function PlayersTable({ players, toggle, selected }) {
 }
 
 
-function SendSmsForm({ onSubmit, saving, count, saving }) {
-	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm();
-	const msg = watch('aboutMe');
+function SendSmsForm({ onSubmit, saving, count, competition }) {
+	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
+		defaultValues: {
+			msg: `Hi %name%, the next tournament ${competition.title} registration deadline is ${format(new Date(competition.date), 'LLLL d, yyyy')} . If you need help finding a partner, please use our website to connect with a suitable partner: https://avtatour.com/competitions/${competition.slug}/apply. Join our facebook group https://www.facebook.com/groups/464135091348911 for more details about this 🏆`,
+		}
+	});
+
+	const msg = watch('msg');
 
 	return <form onSubmit={handleSubmit(onSubmit)}>
 		<div className="flex flex-wrap pt-5">
 			<div className="w-full lg:w-12/12 px-4">
 				<div className="relative w-full mb-3">
 					<ul>
-						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerUrl%</span> will be replaced with player profile page</li>
-						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%PlayerID%</span> will be replaced with player ID</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%fullname%</span> will be replaced with playe Full Name</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%name%</span> will be replaced with playe First Name</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%url%</span> will be replaced with player Profile page</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%id%</span> will be replaced with player ID</li>
 					</ul>
 				</div>
 			</div>
@@ -209,8 +260,8 @@ function SendSmsForm({ onSubmit, saving, count, saving }) {
 						Send this SMS to {count} players
 					</label>
 					<textarea type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"
-						{...register("aboutMe", { required: true })}></textarea>
-					<div>{msg.length} Characters</div>
+						{...register("msg", { required: true })}></textarea>
+					<div>{msg?.length || 0} Characters</div>
 				</div>
 			</div>
 		</div>
