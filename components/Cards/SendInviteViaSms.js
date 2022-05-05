@@ -15,6 +15,7 @@ import { parseMsg } from '../../lib/browserapi';
 import { ToastContainer, toast } from 'react-toastify';
 
 export default function SendInviteViaSms({ players, competition }) {
+	const [avaiPlayersAll, setAvaiPlayersAll] = useState(players);
 	const [avaiPlayers, setAvaiPlayers] = useState(players);
 	const [selected, setSelected] = useState([]);
 	const [saving, setSaving] = useState(false);
@@ -43,6 +44,7 @@ export default function SendInviteViaSms({ players, competition }) {
 				.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id))
 				.filter(x => !!x.mobileNumber);
 
+			setAvaiPlayersAll(avaiPlayers);
 			setAvaiPlayers(avaiPlayers);
 			setSelected(avaiPlayers.map(x => x.sys.id));
 		}
@@ -93,7 +95,15 @@ export default function SendInviteViaSms({ players, competition }) {
 	return (
 		<>
 			<ToastContainer />
+			<div className="flex justify-end space-x-3 py-3">
+				<a onClick={() => setSelected([])} className="underline hover:cursor-pointer">Clear All</a>
+				<a onClick={() => setSelected(avaiPlayers.map(x => x.sys.id))} className="underline hover:cursor-pointer">Select All</a>
+				<a onClick={() => { setAvaiPlayers(avaiPlayersAll); setSelected([]); }} className="underline hover:cursor-pointer">Unregistered Players</a>
+				<a onClick={() => { setAvaiPlayers(players) }} className="underline hover:cursor-pointer">All Players</a>
+			</div>
+
 			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
+
 			<div className='py-6'>
 				<SendSmsForm onSubmit={onSubmit} count={selected.length} competition={competition} saving={saving}></SendSmsForm>
 			</div>
@@ -256,7 +266,7 @@ function SendSmsForm({ onSubmit, saving, count, competition }) {
 			<div className="w-full lg:w-12/12 px-4">
 				<div className="relative w-full mb-3">
 					<label className="block uppercase text-gray-600 font-bold mb-2" htmlFor="grid-password">
-						Send this SMS to {count} players
+						Send this SMS to <span className="text-red-600">{count}</span> players
 					</label>
 					<textarea type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"
 						{...register("msg", { required: true })}></textarea>
@@ -267,8 +277,11 @@ function SendSmsForm({ onSubmit, saving, count, competition }) {
 		<div className="flex flex-wrap pt-5">
 			<div className="w-full lg:w-12/12 px-4">
 				<div className="relative w-full mb-3 text-center">
-					<SaveButton saving={saving}
-						type="submit">Send Now</SaveButton>
+					{
+						count > 0
+						&& <SaveButton saving={saving}
+							type="submit">Send Now</SaveButton>
+					}
 				</div>
 			</div>
 		</div>

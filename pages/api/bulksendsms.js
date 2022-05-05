@@ -39,7 +39,7 @@ export default async function bulksendsms(req, res) {
   try {
     for (let index = 0; index < destinations.length; index++) {
       const { mobile, msg } = destinations[index];
-      console.log('sending to ', mobile);
+      console.log(`sending to: ${mobile}, msg: ${msg}`);
       // const sendResult = await sendSms({ body: msg, to: mobile });
       // console.log('sms sent', sendResult);
     }
