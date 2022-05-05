@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { db } from '../../lib/firebase';
 import ContentfulImage from '../contentful-image';
 import SaveButton from '../../components/savebutton';
+import PlayerCard from '../../components/PlayerCard';
 import useFilterPlayers from '../../lib/useFilterhook';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
@@ -104,7 +105,7 @@ export default function SendInviteViaSms({ players, competition }) {
 	return (
 		<>
 			<ToastContainer />
-			<div className="flex justify-between items-center py-3">
+			<div className="flex flex-col sm:flex-row justify-between items-center py-3 space-y-3">
 				<div className="flex space-x-2">
 					<a onClick={() => {
 						setAvaiPlayers(avaiPlayersAll);
@@ -113,7 +114,7 @@ export default function SendInviteViaSms({ players, competition }) {
 						className={cn('border-t-0 px-2 rounded py-2 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 cursor-pointer', {
 							'bg-gray-200': currentSelected === 'Unregistered',
 						})}
-					>Unregistered Players</a>
+					>Unregistered</a>
 					<a onClick={() => {
 						setAvaiPlayers(players.filter(x => !!x.mobileNumber));
 						setCurrentSelected('All');
@@ -121,21 +122,29 @@ export default function SendInviteViaSms({ players, competition }) {
 						className={cn('border-t-0 px-2 rounded py-2 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 cursor-pointer', {
 							'bg-gray-200': currentSelected === 'All',
 						})}
-					>All Players</a>
+					>All</a>
 					<a onClick={() => { setAvaiPlayers(registeredPlayers); setCurrentSelected('Registered'); }}
 						className={cn('border-t-0 px-2 rounded py-2 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 cursor-pointer', {
 							'bg-gray-200': currentSelected === 'Registered',
 						})}
-					>Registered Players</a>
+					>Registered</a>
 				</div>
 
-				<div className="flex space-x-2">
+				<div className="flex space-x-2 ">
 					<a onClick={() => setSelected([])} className="underline hover:cursor-pointer text-blue-600">Clear All</a>
 					<a onClick={() => setSelected(avaiPlayers.map(x => x.sys.id))} className="underline hover:cursor-pointer text-blue-600">Select All</a>
 				</div>
 			</div>
+			<div className='w-full'>
+				<div className='hidden container mx-auto md:block px-4'>
+					<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
+				</div>
+				<div className='md:hidden px-2 mx-auto pt-6'>
+					<PlayersCard players={avaiPlayers} toggle={toggle} selected={selected}></PlayersCard>
+				</div>
+			</div>
 
-			<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
+
 
 			<div className='py-6'>
 				<SendSmsForm onSubmit={onSubmit} count={selected.length} competition={competition} saving={saving}></SendSmsForm>
@@ -272,6 +281,23 @@ function PlayersTable({ players, toggle, selected }) {
 	);
 }
 
+function PlayersCard({ players, toggle, selected }) {
+	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
+
+	return (
+		<div className='flex flex-wrap justify-center pt-5 items-center'>
+			<div className='grid grid-cols-1 gap-y-10 mb-32 w-full'>
+				{filteredPlayers.map((player) => (
+					<PlayerCard player={player} key={player.sys.id} size="md" showSelect
+						buttonColor={selected.indexOf(player.sys.id) >= 0 ? 'bg-blue-500 text-white' : 'bg-gray-300'}
+						buttonText={selected.indexOf(player.sys.id) >= 0 ? 'Selected' : 'Select'}
+						onSelect={(player) => toggle(player.sys.id)} />
+				))}
+			</div>
+		</div>
+	)
+}
+
 
 function SendSmsForm({ onSubmit, saving, count, competition }) {
 	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
@@ -302,7 +328,7 @@ function SendSmsForm({ onSubmit, saving, count, competition }) {
 					<label className="block uppercase text-gray-600 font-bold mb-2" htmlFor="grid-password">
 						Send this SMS to <span className="text-red-600">{count}</span> players
 					</label>
-					<textarea type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"
+					<textarea type="text" className="border px-3 py-3 h-96 sm:h-40 placeholder-gray-300 text-gray-600 bg-white rounded shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" rows="4"
 						{...register("msg", { required: true })}></textarea>
 					<div>{msg?.length || 0} Characters</div>
 				</div>
