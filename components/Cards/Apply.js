@@ -130,11 +130,9 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
   useEffect(() => {
     if (linkedPlayerId) {
       const currentLinkedPlayer = players?.find(x => x.sys.id === linkedPlayerId);
-      if (currentLinkedPlayer) {
-        setValue('selectedPlayer1', currentLinkedPlayer)
-      }
+      setValue('selectedPlayer1', currentLinkedPlayer || null);
     }
-  }, [linkedPlayerId]);
+  }, [linkedPlayerId, players]);
 
   const isValid = () => {
     return !!selectedPlayer1 && !!selectedPlayer2 &&

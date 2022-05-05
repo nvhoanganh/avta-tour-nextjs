@@ -319,7 +319,7 @@ function PlayersCard({ players, toggle, selected, unsubscribed }) {
 function SendSmsForm({ onSubmit, saving, count, competition }) {
 	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
 		defaultValues: {
-			msg: `Hi %fullname%, the next AVTA tournament ${competition.title} registration deadline is ${format(addDays(new Date(competition.date), -5), 'LLLL d, yyyy')} . If you need help finding a partner, please use our website to connect with a suitable partner: https://avtatour.com/competitions/${competition.slug}/apply. Join our facebook group https://www.facebook.com/groups/464135091348911 for more details about this tournament. To Unsubscribe, click %unsubscribe%`,
+			msg: `Hi %fullname%, the next AVTA tournament ${competition.title} registration deadline is ${format(addDays(new Date(competition.date), -5), 'LLLL d, yyyy')} . If you need help finding a partner, please use our website to connect with a suitable partner: https://avtatour.com/competitions/${competition.slug}/apply?id=%id%. Join our facebook group https://www.facebook.com/groups/464135091348911 for more details about this tournament. To Unsubscribe, click %unsubscribe%`,
 		}
 	});
 
