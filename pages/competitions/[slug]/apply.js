@@ -16,7 +16,7 @@ import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import ApplyForCompForm from '../../../components/Cards/Apply';
 import SendOtp from '../../../components/sendotp';
-import { useFirebaseAuth } from '../../../components/authhook';
+import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
@@ -26,39 +26,15 @@ import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 
 export default function Apply({ competition, allPlayers, rule, preview }) {
   const router = useRouter();
-  const { user, loadingAuth } = useFirebaseAuth();
-  const [userRole, setUserRole] = useState(null);
-  const [linkedPlayerId, setLinkedPlayerId] = useState(null);
-
-  const goback = () => {
-    router.push(`/competitions/${router.query.slug}`);
-  }
-
-  const gotoLogin = () => {
-    localStorage.setItem('redirectAfterLogin', window.location.pathname);
-    router.push('/auth/login?reason=apply');
-  }
+  const { fullProfile, loading } = useFirebaseAuth({});
+  const [playerId, setPlayerId] = useState();
 
   useEffect(async () => {
-    if (!loadingAuth) {
-      if (!user) {
-        gotoLogin();
-        return;
-      }
-
-      const docSnap = await getDoc(doc(db, "user_roles", user.uid));
-      if (docSnap.exists()) {
-        const userRoles = docSnap.data();
-        setUserRole(userRoles)
-      }
-
-      const usersSnap = await getDoc(doc(db, "users", user.uid));
-      if (usersSnap.exists()) {
-        const { playerId } = usersSnap.data();
-        setLinkedPlayerId(playerId);
-      }
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('playerId')) {
+      setPlayerId(query.get('playerId'));
     }
-  }, [user, loadingAuth]);
+  }, []);
 
   return (
     <Layout preview={false}>
@@ -128,10 +104,12 @@ export default function Apply({ competition, allPlayers, rule, preview }) {
                     </div>
                     <div className='mt-24'>
                       {
-                        loadingAuth
+                        loading
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
-                          <ApplyForCompForm competition={competition} players={allPlayers} rule={rule} linkedPlayerId={linkedPlayerId} userRole={userRole}></ApplyForCompForm>
+                          <ApplyForCompForm competition={competition} players={allPlayers} rule={rule} linkedPlayerId={playerId || fullProfile?.playerId}
+                            userRole={fullProfile?.roles}
+                          ></ApplyForCompForm>
                       }
                     </div>
                   </div>

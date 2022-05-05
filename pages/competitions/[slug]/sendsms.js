@@ -21,8 +21,6 @@ import { ToastContainer, toast } from 'react-toastify';
 export default function SendInvite({ competition, allPlayers, rule, preview }) {
   const router = useRouter();
   const { user, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'sendsms' })
-  const [userRole, setUserRole] = useState(null);
-  const [linkedPlayerId, setLinkedPlayerId] = useState(null);
 
   return (
     <Layout preview={false}>
