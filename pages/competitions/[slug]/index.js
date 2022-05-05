@@ -359,6 +359,16 @@ export default function Competition({ competition, preview }) {
                         <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
                           {competition.title}
                         </h3>
+                        {
+                          userRoles?.superuser
+                          && <div className='mx-0 py-4'>
+                            <Link href={`/competitions/${competition.slug}/sendsms`}>
+                              <a className='underline hover:cursor-pointer'>
+                                Send Sms to Players
+                              </a>
+                            </Link>
+                          </div>
+                        }
 
                         {hasResults ?
                           <>

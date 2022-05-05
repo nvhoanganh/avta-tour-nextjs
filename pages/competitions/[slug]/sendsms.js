@@ -133,7 +133,13 @@ export default function SendInvite({ competition, allPlayers, rule, preview }) {
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
                           <>
-                            <div className=' text-2xl bold text-center pb-10 uppercase'>Send SMS to players</div>
+                            <div className=' text-2xl bold text-center pb-2 uppercase'>Send SMS to unregistered players</div>
+                            <div className='text-center pb-8'>
+                              <Link href={`/competitions/${competition.slug}`}><a
+                                className='underline ml-2'
+                              >
+                                Go Back
+                              </a></Link></div>
                             <SendInviteViaSms competition={competition} players={allPlayers} ></SendInviteViaSms>
                           </>
                       }
