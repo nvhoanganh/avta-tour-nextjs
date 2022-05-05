@@ -84,9 +84,10 @@ export default function SendInviteViaSms({ players, competition }) {
 			)
 				.then(response => response.json())
 				.then((rsp) => {
+					console.log('sent complete', rsp);
 					setSaving(false);
 					if (rsp.success) {
-						toast(`Successfully sent ${rsp.sentTo} players`);
+						toast(`Successfully sent SMS to ${rsp.sentTo} players`);
 					} else {
 						console.log('error sending SMS', rsp);
 						toast(`Error sending SMS`);
@@ -104,7 +105,6 @@ export default function SendInviteViaSms({ players, competition }) {
 		<>
 			<ToastContainer />
 			<div className="flex justify-between items-center py-3">
-
 				<div className="flex space-x-2">
 					<a onClick={() => {
 						setAvaiPlayers(avaiPlayersAll);
@@ -130,8 +130,8 @@ export default function SendInviteViaSms({ players, competition }) {
 				</div>
 
 				<div className="flex space-x-2">
-					<a onClick={() => setSelected([])} className="underline hover:cursor-pointer">Clear All</a>
-					<a onClick={() => setSelected(avaiPlayers.map(x => x.sys.id))} className="underline hover:cursor-pointer">Select All</a>
+					<a onClick={() => setSelected([])} className="underline hover:cursor-pointer text-blue-600">Clear All</a>
+					<a onClick={() => setSelected(avaiPlayers.map(x => x.sys.id))} className="underline hover:cursor-pointer text-blue-600">Select All</a>
 				</div>
 			</div>
 
@@ -291,6 +291,7 @@ function SendSmsForm({ onSubmit, saving, count, competition }) {
 						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%name%</span> will be replaced with playe First Name</li>
 						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%url%</span> will be replaced with player Profile page</li>
 						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%id%</span> will be replaced with player ID</li>
+						<li className="py-2"><span className="px-2 py-1 bg-gray-200 italic rounded">%club%</span> will be replaced with player club</li>
 					</ul>
 				</div>
 			</div>

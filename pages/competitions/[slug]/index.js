@@ -364,7 +364,7 @@ export default function Competition({ competition, preview }) {
                           && <div className='mx-0 py-4'>
                             <Link href={`/competitions/${competition.slug}/sendsms`}>
                               <a className='underline hover:cursor-pointer'>
-                                Send Sms to Players
+                                Send SMS
                               </a>
                             </Link>
                           </div>
