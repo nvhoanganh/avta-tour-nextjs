@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { format } from 'date-fns'
+import { format, addDays } from 'date-fns'
 import Link from 'next/link';
 import cn from 'classnames';
 import { useForm } from "react-hook-form";
@@ -136,10 +136,10 @@ export default function SendInviteViaSms({ players, competition }) {
 				</div>
 			</div>
 			<div className='w-full'>
-				<div className='hidden container mx-auto md:block px-4'>
+				<div className='hidden container mx-auto md:block'>
 					<PlayersTable players={avaiPlayers} toggle={toggle} selected={selected}></PlayersTable>
 				</div>
-				<div className='md:hidden px-2 mx-auto pt-6'>
+				<div className='md:hidden mx-auto pt-6'>
 					<PlayersCard players={avaiPlayers} toggle={toggle} selected={selected}></PlayersCard>
 				</div>
 			</div>
@@ -202,12 +202,7 @@ function PlayersTable({ players, toggle, selected }) {
 									}
 								>
 									<div className='text-right'>
-										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} Players wih Mobile</div>
-										Search
-										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150"
-											placeholder="Search Name, Club or Point"
-											value={filter} onChange={(e) => { setFilter(e.target.value) }}
-										/>
+										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} players wih Mobile</div>
 									</div>
 
 								</th>
@@ -285,16 +280,19 @@ function PlayersCard({ players, toggle, selected }) {
 	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
 
 	return (
-		<div className='flex flex-wrap justify-center pt-5 items-center'>
-			<div className='grid grid-cols-1 gap-y-10 mb-32 w-full'>
-				{filteredPlayers.map((player) => (
-					<PlayerCard player={player} key={player.sys.id} size="md" showSelect
-						buttonColor={selected.indexOf(player.sys.id) >= 0 ? 'bg-blue-500 text-white' : 'bg-gray-300'}
-						buttonText={selected.indexOf(player.sys.id) >= 0 ? 'Selected' : 'Select'}
-						onSelect={(player) => toggle(player.sys.id)} />
-				))}
+		<>
+			<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} players wih mobile</div>
+			<div className='flex flex-wrap justify-center pt-5 items-center'>
+				<div className='grid grid-cols-1 gap-y-10 mb-32 w-full'>
+					{filteredPlayers.map((player) => (
+						<PlayerCard player={player} key={player.sys.id} size="md" showSelect
+							buttonColor={selected.indexOf(player.sys.id) >= 0 ? 'bg-blue-500 text-white' : 'bg-gray-300'}
+							buttonText={selected.indexOf(player.sys.id) >= 0 ? 'Selected' : 'Select'}
+							onSelect={(player) => toggle(player.sys.id)} />
+					))}
+				</div>
 			</div>
-		</div>
+		</>
 	)
 }
 
@@ -302,7 +300,7 @@ function PlayersCard({ players, toggle, selected }) {
 function SendSmsForm({ onSubmit, saving, count, competition }) {
 	const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
 		defaultValues: {
-			msg: `Hi %name%, the next tournament ${competition.title} registration deadline is ${format(new Date(competition.date), 'LLLL d, yyyy')} . If you need help finding a partner, please use our website to connect with a suitable partner: https://avtatour.com/competitions/${competition.slug}/apply. Join our facebook group https://www.facebook.com/groups/464135091348911 for more details about this 🏆`,
+			msg: `Hi %fullname%, the next AVTA tournament ${competition.title} registration deadline is ${format(addDays(new Date(competition.date), -5), 'LLLL d, yyyy')} . If you need help finding a partner, please use our website to connect with a suitable partner: https://avtatour.com/competitions/${competition.slug}/apply. Join our facebook group https://www.facebook.com/groups/464135091348911 for more details about this tournament`,
 		}
 	});
 
