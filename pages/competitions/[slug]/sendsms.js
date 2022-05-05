@@ -1,65 +1,27 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Head from 'next/head';
-import ErrorPage from 'next/error';
-import ContentfulImage from '../../../components/contentful-image';
-import Container from '../../../components/container';
 import Spinner from '../../../components/spinner';
-import PostBody from '../../../components/post-body';
-import MoreStories from '../../../components/more-stories';
-import Header from '../../../components/header';
-import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
-import Intro from '../../../components/intro';
 import SendInviteViaSms from '../../../components/Cards/SendInviteViaSms';
-import IndexNavbar from '../../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
-import ApplyForCompForm from '../../../components/Cards/Apply';
-import SendOtp from '../../../components/sendotp';
-import { useFirebaseAuth } from '../../../components/authhook';
-import { useEffect, useState } from 'react'
-import { db } from '../../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
-import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug, getRulebyId } from '../../../lib/api';
+import { useFirebaseAuth } from '../../../components/authhook2';
+import { useState } from 'react';
+import {
+  getAllPlayers,
+  getAllCompetitionsForHome,
+  getCompetitionBySlug,
+  getRulebyId,
+} from '../../../lib/api';
 import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 
 
 export default function SendInvite({ competition, allPlayers, rule, preview }) {
   const router = useRouter();
-  const { user, loadingAuth } = useFirebaseAuth();
+  const { user, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'sendsms' })
   const [userRole, setUserRole] = useState(null);
   const [linkedPlayerId, setLinkedPlayerId] = useState(null);
-
-  const goback = () => {
-    router.push(`/competitions/${router.query.slug}`);
-  }
-
-  const gotoLogin = () => {
-    localStorage.setItem('redirectAfterLogin', window.location.pathname);
-    router.push('/auth/login?reason=apply');
-  }
-
-  useEffect(async () => {
-    if (!loadingAuth) {
-      if (!user) {
-        gotoLogin();
-        return;
-      }
-
-      const docSnap = await getDoc(doc(db, "user_roles", user.uid));
-      if (docSnap.exists()) {
-        const userRoles = docSnap.data();
-        setUserRole(userRoles)
-      }
-
-      const usersSnap = await getDoc(doc(db, "users", user.uid));
-      if (usersSnap.exists()) {
-        const { playerId } = usersSnap.data();
-        setLinkedPlayerId(playerId);
-      }
-    }
-  }, [user, loadingAuth]);
 
   return (
     <Layout preview={false}>
@@ -129,7 +91,7 @@ export default function SendInvite({ competition, allPlayers, rule, preview }) {
                     </div>
                     <div className='mt-24'>
                       {
-                        loadingAuth
+                        loading
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
                           <>
