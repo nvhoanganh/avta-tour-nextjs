@@ -39,15 +39,16 @@ export default async function bulksendsms(req, res) {
   try {
     for (let index = 0; index < destinations.length; index++) {
       const { mobile, msg } = destinations[index];
-      console.log(`sending to: ${mobile}, msg: ${msg}`);
+      console.log(`sending to: ${mobile}\nmsg: ${msg}`);
       const sendResult = await sendSms({ body: msg, to: mobile });
       // const sendResult = await sendSms({ body: msg, to: '+61413725625' });
-      console.log('sms sent', sendResult);
+      console.log('sms sent');
     }
 
     res.status(200).json({ success: true, sentTo: destinations.length })
     res.end()
   } catch (error) {
+    console.log("🚀 ~ file: bulksendsms.js ~ line 51 ~ bulksendsms ~ error", error)
     return res.status(500).json({ error })
   }
 }
