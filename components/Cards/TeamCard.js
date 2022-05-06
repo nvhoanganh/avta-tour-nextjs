@@ -1,6 +1,8 @@
 import React from "react";
 import Link from 'next/link';
 import TeamAvatar from "../TeamAvatar";
+import { format } from 'date-fns'
+
 export default function TeamCard({
   team, is_superuser, competition
 }) {
@@ -9,12 +11,12 @@ export default function TeamCard({
       <div className="flex flex-wrap ">
         <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
           <div className='font-bold flex space-x-1 text-gray-600 '>
-            <span>{team.player1.fullName} &amp; {team.player2.fullName} </span>
+            <span>{team.player1.fullName} &amp; {team.player2.fullName}</span>
             {team.paidOn &&
               <i className="fas fa-money-bill text-green-600" title={`Paid on ${team.paidOn}`}></i>}
           </div>
           <div className='text-gray-600 '>
-            {team.player1.homeClub || team.player2.homeClub || 'Unknown Club'}
+            {team.player1.homeClub || team.player2.homeClub || 'Unknown Club'} - {format(new Date(team.timestamp), 'd/MM')}
           </div>
           <div className='text-sm text-gray-600 flex space-x-2'>
             <span className='text-green-600'>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
