@@ -1,4 +1,5 @@
 import React from "react";
+import Link from 'next/link';
 import TeamAvatar from "../TeamAvatar";
 export default function TeamCard({
   team, is_superuser, competition
@@ -24,6 +25,13 @@ export default function TeamCard({
                 Pay Now
               </button>
             </form>)
+            }
+            {
+              is_superuser && <><Link href={`/competitions/${competition.slug}/editteam?teamId=${team.id}`}>
+                <a className='text-sm flex space-x-2 hover:underline hover:cursor-pointer'>
+                  Edit
+                </a>
+              </Link></>
             }
           </div>
 

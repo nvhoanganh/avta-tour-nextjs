@@ -51,74 +51,79 @@ export default function EditApplicationCompetition({ competition, players, rule,
     // update groupsAllocation
     const groupRef = doc(db, "competition_groups", competition.sys.id);
     const groups = await getDoc(groupRef);
-    const groupData = groups.data();
-    const updatedGroupAlloc = Object.keys(groupData).reduce((pre, currGroup) => {
-      const updatedTeams = groupData[currGroup].map(x => {
-        if (x.id === editTeamId) {
-          return {
-            ...x,
-            ...data,
-            paidOn: data.paidOn.toDate().toISOString(),
-            timestamp: data.timestamp.toDate().toISOString(),
+    if (groups.exists()) {
+      const groupData = groups.data();
+      const updatedGroupAlloc = Object.keys(groupData).reduce((pre, currGroup) => {
+        const updatedTeams = groupData[currGroup].map(x => {
+          if (x.id === editTeamId) {
+            return {
+              ...x,
+              ...data,
+              paidOn: data.paidOn.toDate().toISOString(),
+              timestamp: data.timestamp.toDate().toISOString(),
+            }
           }
-        }
-        return x;
-      });
+          return x;
+        });
 
-      return {
-        ...pre,
-        [currGroup]: updatedTeams
-      }
-    }, {});
-    await setDoc(groupRef, updatedGroupAlloc);
+        return {
+          ...pre,
+          [currGroup]: updatedTeams
+        }
+      }, {});
+      await setDoc(groupRef, updatedGroupAlloc);
+    }
 
     // update schedule
     const scheduldeRef = doc(db, "competition_schedule", competition.sys.id);
     const scheduldes = await getDoc(scheduldeRef);
-    const scheduldeData = scheduldes.data();
-
-    const updatedSchedule = Object.keys(scheduldeData).reduce((pre, currentCourt) => {
-      const matches = scheduldeData[currentCourt].map(x => {
-        if (x.between[0].id === editTeamId) {
-          return {
-            ...x,
-            between: [
-              {
-                ...x.between[0],
-                ...data,
-                paidOn: data.paidOn.toDate().toISOString(),
-                timestamp: data.timestamp.toDate().toISOString(),
-              },
-              x.between[1]
-            ]
+    if (scheduldes.exists()) {
+      const scheduldeData = scheduldes.data();
+      const updatedSchedule = Object.keys(scheduldeData).reduce((pre, currentCourt) => {
+        const matches = scheduldeData[currentCourt].map(x => {
+          if (x.between[0].id === editTeamId) {
+            return {
+              ...x,
+              between: [
+                {
+                  ...x.between[0],
+                  ...data,
+                  paidOn: data.paidOn.toDate().toISOString(),
+                  timestamp: data.timestamp.toDate().toISOString(),
+                },
+                x.between[1]
+              ]
+            }
           }
-        }
 
-        if (x.between[1].id === editTeamId) {
-          return {
-            ...x,
-            between: [
-              x.between[0],
-              {
-                ...x.between[1],
-                ...data,
-                paidOn: data.paidOn.toDate().toISOString(),
-                timestamp: data.timestamp.toDate().toISOString(),
-              },
-            ]
+          if (x.between[1].id === editTeamId) {
+            return {
+              ...x,
+              between: [
+                x.between[0],
+                {
+                  ...x.between[1],
+                  ...data,
+                  paidOn: data.paidOn.toDate().toISOString(),
+                  timestamp: data.timestamp.toDate().toISOString(),
+                },
+              ]
+            }
           }
+          return x;
+        });
+
+        return {
+          ...pre,
+          [currentCourt]: matches
         }
-        return x;
-      });
+      }, {});
 
-      return {
-        ...pre,
-        [currentCourt]: matches
-      }
-    }, {});
+      const scheduleRef = doc(db, "competition_schedule", competition.sys.id);
+      await setDoc(scheduleRef, updatedSchedule);
+    }
 
-    const scheduleRef = doc(db, "competition_schedule", competition.sys.id);
-    await setDoc(scheduleRef, updatedSchedule);
+
 
     // update application
     const appRef = doc(db, "competition_applications", editTeamId);
