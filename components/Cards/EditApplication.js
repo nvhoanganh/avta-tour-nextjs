@@ -268,7 +268,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
           </div>
 
           {
-            !paid
+            !paid && userRole?.superuser
             && <div>
               <label className='flex justify-center py-6'>
                 <input
