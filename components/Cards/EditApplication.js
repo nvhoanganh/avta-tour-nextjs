@@ -46,6 +46,10 @@ export default function EditApplicationCompetition({ competition, players, rule,
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
       changedByUser: currentUser.uid,
+      ...(data.paid && {
+        paid: true,
+        paidOn: new Date()
+      })
     };
 
     // update groupsAllocation
@@ -153,7 +157,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
         registeredTeam &&
         <div className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center">
           <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
-            competition={competition} players={players} rule={rule} userRole={userRole}
+            competition={competition} players={players} rule={rule} userRole={userRole} paid={registeredTeam.paid}
             currentPlayer1={registeredTeam.player1} currentPlayer2={registeredTeam.player2}
           />
         </div>
@@ -162,10 +166,10 @@ export default function EditApplicationCompetition({ competition, players, rule,
   );
 }
 
-function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole, currentPlayer1, currentPlayer2 }) {
+function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole, currentPlayer1, currentPlayer2, paid }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
-      selectedPlayer1: currentPlayer1, selectedPlayer2: currentPlayer2,
+      selectedPlayer1: currentPlayer1, selectedPlayer2: currentPlayer2, paid
     }
   });
 
@@ -262,6 +266,22 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
               </div>
             </div>
           </div>
+
+          {
+            !paid
+            && <div>
+              <label className='flex justify-center py-6'>
+                <input
+                  type='checkbox'
+                  {...register("paid")}
+                  className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
+                />
+                <span className='ml-2 text-sm font-semibold text-gray-600'>
+                  Paid via direct transfer
+                </span>
+              </label>
+            </div>
+          }
 
           <div className="flex flex-wrap pt-16">
             <div className="w-full lg:w-12/12 px-4">
