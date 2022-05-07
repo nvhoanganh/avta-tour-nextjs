@@ -87,7 +87,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 											'text-red-600': x.unofficialPoint,
 										})}
 									>
-										{x.avtaPoint} {x.unofficialPoint ? '[Unofficial]' : ''}
+										{x.avtaPoint}
 									</p>
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
 										{x.homeClub || 'Unknown Club'}
