@@ -20,7 +20,7 @@ export default function Intro({ upcomingCompetition }) {
 
 	return (
 		<>
-			<div className='relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-45 '>
+			<div className='relative pt-16 pb-14 flex content-center items-center justify-center min-h-screen-45 '>
 				<div
 					className='absolute top-0 w-full h-full bg-center bg-cover'
 					style={{
@@ -38,13 +38,13 @@ export default function Intro({ upcomingCompetition }) {
 						<div className='w-full lg:w-6/12 px-4 ml-auto mr-auto text-center'>
 							<div className='md:pr-12'>
 								<h1 className='text-white font-semibold text-5xl'>
-									Hội Tennis người Việt tại Úc
+									Australia Vietnamese Tennis
+									Association
 								</h1>
-								<p className='mt-4 text-lg text-gray-200'>
+								{/* <p className='mt-4 text-lg text-gray-200'>
 									AVTA, Australia Vietnamese Tennis
-									Association, cùng nhau tạo thành sân chơi tennis phong trào lớn
-									mạnh nhất ở Australia
-								</p>
+									Association, grow together
+								</p> */}
 								<p className="text-center pt-12">
 									{
 										loadingAuth
@@ -94,54 +94,57 @@ export default function Intro({ upcomingCompetition }) {
 				<div className='container mx-auto px-4'>
 					<div className='flex flex-wrap'>
 						<div className='lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center'>
-							<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg'>
-								<div className='px-4 py-5 flex-auto'>
-									<div className='text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400'>
-										<i className='fas fa-seedling'></i>
+							<Link href='/competitions'>
+								<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg cursor-pointer hover:shadow-xl hover:bg-gray-100 bg-gray-50'>
+									<div className='px-4 py-5 flex-auto'>
+										<div className='text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-400'>
+											<i className='fas fa-trophy text-lg'></i>
+										</div>
+										<h6 className='text-xl font-semibold'>
+											Tournaments
+										</h6>
+										<p className='mt-2 mb-4 text-gray-500'>
+											View our professionally organized tennis tournaments
+										</p>
 									</div>
-									<h6 className='text-xl font-semibold'>
-										Phát triển
-									</h6>
-									<p className='mt-2 mb-4 text-gray-500'>
-										Phát triển và đẩy mạnh phong trào tennis
-										trong cộng đồng
-									</p>
 								</div>
-							</div>
+							</Link>
 						</div>
 
 						<div className='w-full md:w-4/12 px-4 text-center'>
-							<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg'>
-								<div className='px-4 py-5 flex-auto'>
-									<div className='text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-400'>
-										<i className='fas fa-tasks'></i>
+							<Link href='/players'>
+								<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg cursor-pointer hover:shadow-xl hover:bg-gray-100 bg-gray-50'>
+									<div className='px-4 py-5 flex-auto'>
+										<div className='text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-400'>
+											<i className='fas fa-users text-lg'></i>
+										</div>
+										<h6 className='text-xl font-semibold'>
+											Players
+										</h6>
+										<p className='mt-2 mb-4 text-gray-500'>
+											View and connect to AVTA players close to you
+										</p>
 									</div>
-									<h6 className='text-xl font-semibold'>
-										Chuyên nghiệp
-									</h6>
-									<p className='mt-2 mb-4 text-gray-500'>
-										Tạo cơ sân chơi lớn và chuyên nghiệp cho
-										các thành viên cọ sát
-									</p>
 								</div>
-							</div>
+							</Link>
 						</div>
 
 						<div className='pt-6 w-full md:w-4/12 px-4 text-center'>
-							<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg'>
-								<div className='px-4 py-5 flex-auto'>
-									<div className='text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-green-400'>
-										<i className='fas fa-users'></i>
+							<Link href='/ladders'>
+								<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg cursor-pointer hover:shadow-xl hover:bg-gray-100 bg-gray-50'>
+									<div className='px-4 py-5 flex-auto'>
+										<div className='text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-blue-400'>
+											<i className='fas fa-award text-lg'></i>
+										</div>
+										<h6 className='text-xl font-semibold'>
+											Ladders
+										</h6>
+										<p className='mt-2 mb-4 text-gray-500'>
+											View and join your local tennis ladder
+										</p>
 									</div>
-									<h6 className='text-xl font-semibold'>
-										Kết nối
-									</h6>
-									<p className='mt-2 mb-4 text-gray-500'>
-										Kết nối đam mê tennis và mở rộng quan hệ
-										xã hội
-									</p>
 								</div>
-							</div>
+							</Link>
 						</div>
 					</div>
 
