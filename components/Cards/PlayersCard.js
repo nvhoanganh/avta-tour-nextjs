@@ -6,7 +6,7 @@ import ContentfulImage from '../contentful-image';
 import DropDown from '../dropdown';
 import useFilterPlayers from '../../lib/useFilterhook';
 
-export default function PlayersCard({ allPlayers, hideSearch }) {
+export default function PlayersCard({ allPlayers, hideSearch, user, refreshData }) {
 	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
 
 	return (
@@ -32,7 +32,14 @@ export default function PlayersCard({ allPlayers, hideSearch }) {
 						>
 						</DropDown>
 					</div>
-					<div className="italic text-gray-500 text-xs">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}</div>
+					<div className="italic text-gray-500 text-xs">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}
+						{
+							user &&
+							<a className='underline ml-2 hover:cursor-pointer' onClick={refreshData}>
+								Refresh data
+							</a>
+						}
+					</div>
 				</div>
 
 			}

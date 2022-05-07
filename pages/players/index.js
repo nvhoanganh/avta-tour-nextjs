@@ -24,6 +24,7 @@ import React, { useState, useEffect } from 'react';
 import { mergeUsersAndPlayersData } from "../../lib/backendapi";
 import { RevalidatePath } from "../../lib/browserapi";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Players({ allPlayers, preview }) {
 	const router = useRouter();
@@ -64,7 +65,7 @@ export default function Players({ allPlayers, preview }) {
 									/>
 								</div>
 								<div className='md:hidden px-2 mx-auto pt-32'>
-									<PlayersCard allPlayers={allPlayers} refreshData={refreshData} />
+									<PlayersCard allPlayers={allPlayers} refreshData={refreshData} user={user} />
 								</div>
 							</div>
 						</Intro>

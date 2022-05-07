@@ -16,6 +16,7 @@ import {
 } from '../../../lib/api';
 import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function SendInvite({ competition, allPlayers, rule, preview }) {
