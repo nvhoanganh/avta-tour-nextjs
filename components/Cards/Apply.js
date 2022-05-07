@@ -1,8 +1,10 @@
 import { format } from 'date-fns'
+import cn from 'classnames';
 import Link from 'next/link'
 import TeamCard from './TeamCard';
 import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
+import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import Stripepaymentinfo from '../../components/stripepaymentinfo';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
@@ -119,13 +121,21 @@ export default function ApplyForCompetition({ competition, players, rule, linked
 }
 
 function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId }) {
-  const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+    defaultValue: {
+      player1Style: 'All',
+      player2Style: 'All',
+    }
+  });
 
   const agreed = watch('agreed');
   const player1 = watch('player1');
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
   const selectedPlayer2 = watch('selectedPlayer2');
+
+  const player1Style = watch('player1Style');
+  const player2Style = watch('player2Style');
 
   useEffect(() => {
     if (linkedPlayerId) {
@@ -160,10 +170,12 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
           <h6 className="text-sm mt-3 mb-14 text-center">
             Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
           </h6>
-          {selectedPlayer1 && selectedPlayer2
+          {
+            selectedPlayer1 && selectedPlayer2
             && selectedPlayer1.sys.id === selectedPlayer2.sys.id && <div className="text-red-700 text-center py-6">
               Select a different player
-            </div>}
+            </div>
+          }
           <div className="flex flex-wrap">
             <div className="w-full lg:w-6/12 px-4">
               <div className="relative w-full mb-3">
@@ -175,9 +187,12 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                   <>
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Search by name, point or club" />
                     <div className="text-gray-400 text-sm py-2 italic text-center">Available players with Point less than {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
+
+                    <PlayerTypeFilter selected={player1Style} setState={(val) => setValue('player1Style', val)}></PlayerTypeFilter>
+
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
-                        {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)).map((player) => (
+                        {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0), player1Style).map((player) => (
                           <PlayerCard player={player} key={player.sys.id} size="md" showSelect onSelect={(player) => {
                             setValue('selectedPlayer1', player);
                             setTimeout(() => {
@@ -205,9 +220,12 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                     <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Search by name, point or club" />
 
                     <div className="text-gray-400 text-sm py-2 italic text-center">Available players with Point less than {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}:</div>
+
+                    <PlayerTypeFilter selected={player2Style} setState={(val) => setValue('player2Style', val)}></PlayerTypeFilter>
+
                     <div className='flex flex-wrap justify-center pt-5 items-center'>
                       <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
-                        {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)).map((player) => (
+                        {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0), player2Style).map((player) => (
                           <PlayerCard player={player} size="md" key={player.sys.id} showSelect onSelect={(player) => {
                             setValue('selectedPlayer2', player);
                             setTimeout(() => {

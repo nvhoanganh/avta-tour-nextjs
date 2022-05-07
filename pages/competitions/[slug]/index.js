@@ -362,11 +362,16 @@ export default function Competition({ competition, preview }) {
                         {
                           userRoles?.superuser
                           && <div className='mx-0 py-4'>
-                            <Link href={`/competitions/${competition.slug}/sendsms`}>
-                              <a className='underline hover:cursor-pointer'>
-                                Send SMS
+                            <div className='flex space-x-2 items-center'>
+                              <Link href={`/competitions/${competition.slug}/sendsms`}>
+                                <a className='hover:cursor-pointer border-t-0 px-2 rounded py-1 align-middle border-l-0 border-r-0 hover:bg-gray-400 whitespace-nowrap p-4 cursor-pointer bg-gray-100'>
+                                  Send SMS
+                                </a>
+                              </Link>
+                              <a className='hover:cursor-pointer border-t-0 px-2 rounded py-1 align-middle border-l-0 hover:bg-gray-400 border-r-0 whitespace-nowrap p-4 cursor-pointer bg-gray-100' onClick={refreshData}>
+                                Refresh data
                               </a>
-                            </Link>
+                            </div>
                           </div>
                         }
 
@@ -479,12 +484,6 @@ export default function Competition({ competition, preview }) {
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
                             </div>
-
-                            <div className='mx-0 pb-8'>
-                              <a className='underline hover:cursor-pointer' onClick={refreshData}>
-                                Refresh data
-                              </a>
-                            </div>
                           </>
                           :
                           <>
@@ -499,12 +498,6 @@ export default function Competition({ competition, preview }) {
                             <div className="py-5">
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
-                            </div>
-
-                            <div className='mx-0 pb-8'>
-                              <a className='underline hover:cursor-pointer' onClick={refreshData}>
-                                Refresh data
-                              </a>
                             </div>
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&

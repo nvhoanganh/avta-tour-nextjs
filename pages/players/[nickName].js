@@ -224,6 +224,11 @@ export default function Player({ player, preview }) {
 										<div className='text-center mt-12'>
 											<h3 className='text-4xl font-semibold leading-normal mb-2 text-gray-700 mb-2'>
 												{player.fullName}
+
+												{
+													playerStatus === CLAIMED_BY_OTHER
+													&& <i title="Profile claimed" title="Profile is claimed" class="far text-blue-500 fa-id-badge text-sm pl-2"></i>
+												}
 											</h3>
 											{
 												player.fullName !== player.nickName
