@@ -13,7 +13,7 @@ export default async function unsubscribe(req, res) {
     const db = getFirestore();
 
     await db.collection("unsubscribed").doc(uid).set({ unsubscribeDate: (new Date()) })
-    res.end(`Thanks, you have successfully unsubscribed from AVTA`)
+    res.end(`Thanks, you have successfully unsubscribed from AVTA. You can revert this setting at https://avtatour.com/editmyprofile`)
     return;
   } catch (error) {
     console.log("🚀 ~ file: unsubscribe.js ~ line 22 ~ unsubscribe ~ error", error)

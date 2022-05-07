@@ -10,7 +10,7 @@ import {
   getPlayerById,
 } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
+import { query, collection, deleteDoc, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
@@ -37,6 +37,18 @@ export default function UserProfile() {
     await setDoc(docRef, updated);
 
     if (updated.playerId) {
+      const unsubref = doc(db, "unsubscribed", updated.playerId);
+      if (updated.stopSms) {
+        await setDoc(unsubref, {
+          unsubscribeDate: (new Date())
+        });
+      } else {
+        const unsubSnap = await getDoc(unsubref);
+        if (unsubSnap.exists()) {
+          await deleteDoc(unsubref);
+        }
+      }
+
       // need to load this twice for Vercel to rebuild the app
       await fetch(`/players/${updated.playerId}`);
       setTimeout(() => {
@@ -62,11 +74,21 @@ export default function UserProfile() {
         const contentfuldata = await getPlayerById(formData.playerId, false);
         formData = {
           ...formData, ...contentfuldata,
+          stopSms: false,
           displayName: formData.displayName || contentfuldata.fullName,
           // home club and nick Name comes from what user type in the form, not from contentful
           homeClub: formData.homeClub,
           nickName: formData.nickName,
         };
+
+        const unsubSnap = await getDoc(doc(db, "unsubscribed", formData.playerId));
+        if (unsubSnap.exists()) {
+          console.log('this user unsubscribed');
+          formData = {
+            ...formData,
+            stopSms: true
+          }
+        }
       }
 
       setUserProfile(formData);
@@ -95,13 +117,13 @@ export default function UserProfile() {
 function UserForm({ onSubmit, userProfile, saving, userRoles }) {
   const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
-    allowContact, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner } = userProfile;
+    allowContact, stopSms, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner, playerId } = userProfile;
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
       displayName, email, mobileNumber,
       suburb, allowContact, aboutMe, homeClub, nickName,
-      playStyle, perfectPartner
+      playStyle, perfectPartner, stopSms
     }
   });
 
@@ -142,17 +164,17 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
               {showHowToGetPoint &&
                 <div className="py-3 my-4 border rounded shadow-xl px-3 bg-gray-50">
                   <p>
-                    If you believe a player profile has been created for you. You can find and link it <Link href={`/players`}>
+                    If you believe a player profile has been created for you. You can find and claim it <Link href={`/players`}>
                       <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
                     </Link>.
                   </p>
 
                   <p className="pt-5">
-                    Otherwise, contact one of our members
+                    Otherwise, contact one of our
                     <Link href={`/players`}>
-                      <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
+                      <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">members</a>
                     </Link>
-                    to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
+                    close to you to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
                     <Link href={`/competitions`}>
                       <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">competitions</a>
                     </Link>
@@ -218,14 +240,27 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
             </div>
           </div>
-          <div className="w-full lg:w-12/12 px-4 py-3">
+          <div className="w-full lg:w-4/12 px-4 py-3">
             <div className="relative w-full mb-3">
               <label className="inline-flex items-center cursor-pointer">
                 <input id="customCheckLogin" type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("allowContact")} />
-                <span className="ml-2 text-sm font-semibold text-blueGray-600">Show my contact details to other logged in users</span>
+                <span className="ml-2 text-sm font-semibold text-blueGray-600">Show my contact details to other logged in players</span>
               </label>
             </div>
           </div>
+          {
+            playerId
+            && <div className="w-full lg:w-4/12 px-4 py-3">
+              <div className="relative w-full mb-3">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input id="customCheckLogin" type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("stopSms")}
+                    onChange={(e) => e.target.checked && alert('Note: you will stop receive notification about upcoming AVTA Tournaments')}
+                  />
+                  <span className="ml-2 text-sm font-semibold text-blueGray-600">Opt-out from AVTA SMS notification</span>
+                </label>
+              </div>
+            </div>
+          }
         </div>
 
         <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
