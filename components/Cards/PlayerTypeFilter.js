@@ -1,7 +1,9 @@
 import cn from 'classnames';
+import { PLAYER_STYLE } from '../../lib/constants'
 
 export default function PlayerStyleFilter({ setState, selected }) {
-  const types = ['All', 'Baseliner', 'All-Court', 'Serve and Volley', 'Pusher'];
+  const types = ['All', ...Object.values(PLAYER_STYLE)];
+
   return (<div className="text-center flex space-x-2 justify-center items-center pb-3">
     {types.map(x => (
       <a key={x} onClick={() => setState(x)}

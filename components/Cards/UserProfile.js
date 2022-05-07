@@ -10,6 +10,7 @@ import {
   getPlayerById,
 } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
+import { PLAYER_STYLE } from '../../lib/constants';
 import { query, collection, deleteDoc, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
@@ -276,10 +277,10 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
       border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
                 {...register("playStyle", { required: true })}
               >
-                <option value="All-Court">All-Court</option>
-                <option value="Baseliner">Baseliner</option>
-                <option value="Serve and Volley">Serve and Volley</option>
-                <option value="Pusher">Pusher</option>
+                <option value={PLAYER_STYLE.AllCourt}>{PLAYER_STYLE.AllCourt}</option>
+                <option value={PLAYER_STYLE.Baseliner}>{PLAYER_STYLE.Baseliner}</option>
+                <option value={PLAYER_STYLE.NetRusher}>{PLAYER_STYLE.NetRusher}</option>
+                <option value={PLAYER_STYLE.Pusher}>{PLAYER_STYLE.Pusher}</option>
               </select>
             </div>
           </div>
@@ -292,10 +293,10 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
       border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
                 {...register("perfectPartner", { required: true })}
               >
-                <option value="All-Court">All-Court</option>
-                <option value="Baseliner">Baseliner</option>
-                <option value="Serve and Volley">Serve and Volley</option>
-                <option value="Pusher">Pusher</option>
+                <option value={PLAYER_STYLE.AllCourt}>{PLAYER_STYLE.AllCourt}</option>
+                <option value={PLAYER_STYLE.Baseliner}>{PLAYER_STYLE.Baseliner}</option>
+                <option value={PLAYER_STYLE.NetRusher}>{PLAYER_STYLE.NetRusher}</option>
+                <option value={PLAYER_STYLE.Pusher}>{PLAYER_STYLE.Pusher}</option>
               </select>
             </div>
           </div>
