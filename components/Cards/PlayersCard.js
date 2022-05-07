@@ -4,10 +4,15 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 import DropDown from '../dropdown';
+import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import useFilterPlayers from '../../lib/useFilterhook';
 
+
 export default function PlayersCard({ allPlayers, hideSearch, user, refreshData }) {
-	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
+	const {
+		sortBy, setSortBy, filter, setFilter,
+		avgPoint, filteredPlayers, filerPlayerStyle, setFilerPlayerStyle
+	} = useFilterPlayers(allPlayers);
 
 	return (
 		<>
@@ -40,6 +45,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 							</a>
 						}
 					</div>
+					<PlayerTypeFilter selected={filerPlayerStyle} setState={(val) => setFilerPlayerStyle(val)}></PlayerTypeFilter>
 				</div>
 
 			}

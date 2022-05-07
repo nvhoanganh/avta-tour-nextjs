@@ -5,10 +5,16 @@ import PropTypes from 'prop-types';
 import ContentfulImage from '../contentful-image';
 import useFilterPlayers from '../../lib/useFilterhook';
 import PlayerProfileStatus from '../../components/playerprofilestatus';
+import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 
 
 export default function PlayersTable({ color, players, user, refreshData }) {
-	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
+	const {
+		sortBy, setSortBy, filter, setFilter,
+		avgPoint, filteredPlayers, filerPlayerStyle, setFilerPlayerStyle
+	} = useFilterPlayers(players);
+
+	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	return (
 		<>
@@ -80,10 +86,17 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 											}
 										</div>
 										Search
-										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150"
+										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150 mb-2"
 											placeholder="Search Name, Club or Point"
 											value={filter} onChange={(e) => { setFilter(e.target.value) }}
 										/>
+										<a onClick={() => setShowAdvanced(!showAdvanced)} className='text-sm italic pl-1 underline cursor-pointer font-normal'><i class="fas fa-angle-double-down"></i></a>
+										{
+											showAdvanced
+											&& <div className="font-normal flex justify-end items-center">
+												<PlayerTypeFilter selected={filerPlayerStyle} setState={(val) => setFilerPlayerStyle(val)}></PlayerTypeFilter>
+											</div>
+										}
 									</div>
 
 								</th>
