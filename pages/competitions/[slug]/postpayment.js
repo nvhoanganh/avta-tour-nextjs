@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import Layout from '../../../components/layout';
 import PostTitle from '../../../components/post-title';
+import ToggleContactDetails from '../../../components/ToggleContactDetails';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useEffect, useState } from 'react'
 import { getAllCompetitionsForHome, getCompetitionBySlug } from '../../../lib/api';
@@ -124,9 +125,10 @@ export default function Apply({ competition, allPlayers, preview }) {
 
                       {
                         paymentError && <div className='mb-8 text-center'>
-                          <p className="uppercase py-2 h1 text-red-500">Payment Error</p>
-                          <p className="py-8">{paymentError}!</p>
-                          <p className="py-8">You can go back to competition home page and click on `Pay Now` try make payment again.</p>
+                          <p className="uppercase py-2 h1 text-red-500 font-bold">Payment Error</p>
+                          <p className="py-6">{paymentError}!</p>
+                          <p className="py-6"><ToggleContactDetails competition={competition} /></p>
+                          <p className="py-6 pb-12">You can go back to competition home page and click on `Pay Now` try make payment again.</p>
                           <Link href={`/competitions/${competition.slug}?view=teams`}>
                             <a
                               className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'

@@ -9,18 +9,19 @@ import DropDown from '../../components/dropdown';
 import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
-import { useFirebaseAuth } from '../authhook';
 import { useState, useEffect } from 'react'
 import Spinner from '../../components/spinner';
 import PlayerWithIcon from '../../components/PlayerWithIcon';
 import PlayerCard from '../../components/PlayerCard';
+import { useFirebaseAuth } from '../../components/authhook';
 import {
   getPlayerById,
   score,
+  RevalidatePath,
   getPlayers
 } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, setDoc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
+import { query, collection, doc, setDoc, deleteDoc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
@@ -31,9 +32,20 @@ export default function EditApplicationCompetition({ competition, players, rule,
   const [saving, setSaving] = useState(false);
   const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
+  const { user, loadingAuth } = useFirebaseAuth();
 
   const goback = () => {
     router.push(`/competitions/${router.query.slug}`);
+  }
+
+  const deleteTeam = async () => {
+    if (confirm('Are you sure you want to delete')) {
+      console.log('deleting team: ' + editTeamId);
+      await deleteDoc(doc(db, "competition_applications", editTeamId));
+      await RevalidatePath(user, `/competitions/${competition?.slug}`);
+      toast("Team deleted successfully");
+      setTimeout(() => goback(), 750);
+    }
   }
 
   const onSubmit = async data => {
@@ -158,7 +170,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
         <div className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center">
           <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
             competition={competition} players={players} rule={rule} userRole={userRole} paid={registeredTeam.paid}
-            currentPlayer1={registeredTeam.player1} currentPlayer2={registeredTeam.player2}
+            currentPlayer1={registeredTeam.player1} currentPlayer2={registeredTeam.player2} deleteTeam={deleteTeam}
           />
         </div>
       }
@@ -166,7 +178,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
   );
 }
 
-function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole, currentPlayer1, currentPlayer2, paid }) {
+function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole, currentPlayer1, currentPlayer2, paid, deleteTeam }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
       selectedPlayer1: currentPlayer1, selectedPlayer2: currentPlayer2, paid
@@ -285,7 +297,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
 
           <div className="flex flex-wrap pt-16">
             <div className="w-full lg:w-12/12 px-4">
-              <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
+              <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center sm:space-x-2">
                 {
                   isValid() && <SaveButton saving={saving} className="w-full sm:w-32"
                     type="submit">Update</SaveButton>
@@ -296,6 +308,11 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                 >
                   Cancel
                 </a></Link>
+                <button onClick={deleteTeam} type="button"
+                  className='bg-red-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center'
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
