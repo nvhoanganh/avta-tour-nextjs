@@ -50,7 +50,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 					<div className='flex flex-wrap justify-center'>
 
 						<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
-							{filteredPlayers.map(x => <div key={x.nickName} className='px-6 text-center'>
+							{filteredPlayers.map(x => <div key={x.sys.id} className='px-6 text-center'>
 								<Link href={`/players/${x.sys.id}`}>
 									<div className='mx-auto max-w-120-px cursor-pointer'>
 										<ContentfulImage

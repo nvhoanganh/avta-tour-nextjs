@@ -11,11 +11,6 @@ function MyApp({ Component, pageProps }) {
       <title>
         AVTA - Australia Vietnamese Tennis Association
       </title>
-
-      <Script src="/newrelic.js" />
-      <Script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js" />
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-KF25F4604L" async />
-      <Script src="/ga.js" />
     </Head>
     <Component {...pageProps} />
   </>
