@@ -19,14 +19,25 @@ import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import TournamentsTable from '../../components/Cards/TournamentsTable.js';
 import TournamentsCard from '../../components/Cards/TournamentsCard.js';
+import { useFirebaseAuth } from '../../components/authhook';
 import React, { useState, useEffect } from 'react';
 import { mergeUsersAndPlayersData } from "../../lib/backendapi";
+import { RevalidatePath } from "../../lib/browserapi";
+import { ToastContainer, toast } from 'react-toastify';
 
 export default function Players({ allPlayers, preview }) {
 	const router = useRouter();
+	const { user } = useFirebaseAuth();
+
+	const refreshData = async () => {
+		toast("Refreshing. Please wait...");
+		await RevalidatePath(user, `/players`);
+		window.location.reload();
+	}
 
 	return (
 		<Layout preview={preview}>
+			<ToastContainer />
 			<Navbar transparent />
 
 			{router.isFallback ? (
@@ -48,10 +59,12 @@ export default function Players({ allPlayers, preview }) {
 								<div className='hidden container mx-auto md:block px-4'>
 									<PlayersTable
 										players={allPlayers}
+										user={user}
+										refreshData={refreshData}
 									/>
 								</div>
 								<div className='md:hidden px-2 mx-auto pt-32'>
-									<PlayersCard allPlayers={allPlayers} />
+									<PlayersCard allPlayers={allPlayers} refreshData={refreshData} />
 								</div>
 							</div>
 						</Intro>

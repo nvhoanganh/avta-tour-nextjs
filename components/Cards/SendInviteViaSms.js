@@ -219,7 +219,7 @@ function PlayersTable({ players, toggle, selected, unsubscribed }) {
 						</thead>
 						<tbody>
 							{filteredPlayers.map((player) => (
-								<tr key={player.nickName}>
+								<tr key={player.sys.id}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div
 											className='h-12 w-12 bg-white rounded-full border'
