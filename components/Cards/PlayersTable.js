@@ -90,7 +90,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 											placeholder="Search Name, Club or Point"
 											value={filter} onChange={(e) => { setFilter(e.target.value) }}
 										/>
-										<a onClick={() => setShowAdvanced(!showAdvanced)} className='text-sm italic pl-1 underline cursor-pointer font-normal'><i class="fas fa-angle-double-down"></i></a>
+										<a onClick={() => setShowAdvanced(!showAdvanced)} className='text-sm italic pl-1 underline cursor-pointer font-normal'><i className="fas fa-angle-double-down"></i></a>
 										{
 											showAdvanced
 											&& <div className="font-normal flex justify-end items-center">

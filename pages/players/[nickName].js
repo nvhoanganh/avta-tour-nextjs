@@ -227,7 +227,7 @@ export default function Player({ player, preview }) {
 
 												{
 													playerStatus === CLAIMED_BY_OTHER
-													&& <i title="Profile claimed" title="Profile is claimed" class="far text-blue-500 fa-id-badge text-sm pl-2"></i>
+													&& <i title="Profile claimed" title="Profile is claimed" className="far text-blue-500 fa-id-badge text-sm pl-2"></i>
 												}
 											</h3>
 											{

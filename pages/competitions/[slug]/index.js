@@ -201,6 +201,8 @@ export default function Competition({ competition, preview }) {
 
   return (
     <Layout preview={preview}>
+      <div id="fb-root"></div>
+      <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0&appId=955095205088132&autoLogAppEvents=1" nonce="AcLzT9WI"></script>
       <ToastContainer />
       <Navbar transparent />
 
@@ -208,6 +210,8 @@ export default function Competition({ competition, preview }) {
         <PostTitle>Loading…</PostTitle>
       ) : (
         <>
+
+
           <article>
             <Head>
               <title>
@@ -359,6 +363,7 @@ export default function Competition({ competition, preview }) {
                         <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
                           {competition.title}
                         </h3>
+
                         {
                           userRoles?.superuser
                           && <div className='mx-0 py-4'>
@@ -484,6 +489,8 @@ export default function Competition({ competition, preview }) {
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
                             </div>
+
+                            <div className="fb-comments" data-href="https://avtatour.com/competitions/1450-may-2022" data-width="" data-numposts="5"></div>
                           </>
                           :
                           <>
@@ -499,6 +506,8 @@ export default function Competition({ competition, preview }) {
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
                             </div>
+
+                            <div className="fb-comments" data-href="https://avtatour.com/competitions/1450-may-2022" data-width="" data-numposts="5"></div>
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
                               <section>

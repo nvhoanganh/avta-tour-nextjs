@@ -160,7 +160,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                       Submit Score
                                     </a>
                                   </Link> :
-                                  <span className="bg-gray-500 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i class="fas fa-sign-in-alt"></i>&nbsp;You Joined</span>)
+                                  <span className="bg-gray-500 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"><i className="fas fa-sign-in-alt"></i>&nbsp;You Joined</span>)
                             }
                           </div>
                         </div>
