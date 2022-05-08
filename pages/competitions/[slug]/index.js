@@ -1,3 +1,4 @@
+import { FbCommentRoot } from './../../../components/FbCommentRoot';
 import ToggleContactDetails from '../../../components/ToggleContactDetails';
 import ToggleTournamentRule from '../../../components/ToggleTournamentRule';
 import { useRouter } from 'next/router';
@@ -206,8 +207,7 @@ export default function Competition({ competition, preview }) {
 
   return (
     <Layout preview={preview}>
-      <div id="fb-root"></div>
-      <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0&appId=955095205088132&autoLogAppEvents=1" nonce="AcLzT9WI"></script>
+      <FbCommentRoot />
       <ToastContainer />
       <Navbar transparent />
 

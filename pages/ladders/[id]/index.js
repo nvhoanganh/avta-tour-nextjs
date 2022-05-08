@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { FbCommentRoot } from './../../../components/FbCommentRoot';
 import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -51,6 +52,11 @@ export default function Competition({ ladder, allPlayers, preview }) {
     window.history.pushState({ path: newurl }, '', newurl);
   };
 
+  const viewChat = () => {
+    const chatWindow = document.getElementById("fb-comments");
+    chatWindow && chatWindow.scrollIntoView();
+  };
+
   const refreshData = async () => {
     toast("Refreshing. Please wait...");
     await RevalidatePath(user, `/ladders/${ladder.id}`);
@@ -72,6 +78,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
   return (
     <Layout preview={preview}>
+      <FbCommentRoot />
       <ToastContainer />
       <Navbar transparent />
 
@@ -221,9 +228,14 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       </div>
 
                       <div className='mx-0 md:mx-4 pt-8'>
-                        <h3 className='mt-10 text-3xl pt-6 mx-auto uppercase'>
-                          {ladder.name}
-                        </h3>
+                        <div className="flex justify-between items-center mt-10">
+                          <h3 className='text-2xl md:text-3xl font-bold tracking-tighter leading-tight'>
+                            {ladder.name}
+                          </h3>
+                          <div>
+                            <a title="View Chat" className="text-gray-500 hover:underline cursor-pointer" onClick={viewChat}><i className="text-blue-500 far fa-comments hover:underline cursor-pointer" ></i> Comments</a>
+                          </div>
+                        </div>
                       </div>
 
                       <div className='mx-0 md:mx-4 mt-10' dangerouslySetInnerHTML={{ __html: ladder?.rule?.replace(/\\n/g, '<br />') }}>
@@ -234,6 +246,8 @@ export default function Competition({ ladder, allPlayers, preview }) {
                           Refresh data
                         </a>
                       </div>
+
+                      <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/ladders/${ladder.id}`} data-width="100%" data-numposts="5"></div>
 
 
                       {ladder.scores?.length > 0 &&
