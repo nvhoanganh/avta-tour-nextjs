@@ -490,7 +490,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div className="fb-comments" data-href="https://avtatour.com/competitions/1450-may-2022" data-width="" data-numposts="5"></div>
+                            <div className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="" data-numposts="5"></div>
                           </>
                           :
                           <>
@@ -507,7 +507,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div className="fb-comments" data-href="https://avtatour.com/competitions/1450-may-2022" data-width="" data-numposts="5"></div>
+                            <div className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="" data-numposts="5"></div>
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
                               <section>
