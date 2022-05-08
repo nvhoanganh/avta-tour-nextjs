@@ -113,10 +113,11 @@ export default function Competition({ competition, preview }) {
   }, [user]);
 
   useEffect(() => {
-    if (window.FB) {
-      FB.XFBML.parse();
-    }
-  }, [])
+    window.FB && FB.XFBML.parse();
+    setTimeout(() => {
+      window.FB && FB.XFBML.parse();
+    }, 500);
+  }, []);
 
   const hasResults = competition?.matchScores?.length > 0;
   const teamJoined = competition?.appliedTeams?.length || competition?.teams?.length || 0;
@@ -130,6 +131,7 @@ export default function Competition({ competition, preview }) {
   };
 
   const viewChat = () => {
+    window.FB && FB.XFBML.parse();
     const chatWindow = document.getElementById("fb-comments");
     chatWindow && chatWindow.scrollIntoView();
   };
@@ -504,7 +506,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5"></div>
+                            <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5">Loading comments...</div>
                           </>
                           :
                           <>
@@ -521,7 +523,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5"></div>
+                            <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5">Loading comments...</div>
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
                               <section>
