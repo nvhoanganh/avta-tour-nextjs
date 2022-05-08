@@ -52,15 +52,14 @@ export default function Competition({ ladder, allPlayers, preview }) {
   };
 
   const viewChat = () => {
-    window.FB && FB.XFBML.parse();
+    window.FB?.XFBML && FB.XFBML.parse();
     const chatWindow = document.getElementById("fb-comments");
     chatWindow && chatWindow.scrollIntoView();
   };
 
   useEffect(() => {
-    window.FB && FB.XFBML.parse();
     setTimeout(() => {
-      window.FB && FB.XFBML.parse();
+      window.FB?.XFBML && FB.XFBML.parse();
     }, 500);
   }, []);
 

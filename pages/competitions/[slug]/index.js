@@ -113,9 +113,8 @@ export default function Competition({ competition, preview }) {
   }, [user]);
 
   useEffect(() => {
-    window.FB && FB.XFBML.parse();
     setTimeout(() => {
-      window.FB && FB.XFBML.parse();
+      window.FB?.XFBML && FB.XFBML.parse();
     }, 500);
   }, []);
 
@@ -131,7 +130,7 @@ export default function Competition({ competition, preview }) {
   };
 
   const viewChat = () => {
-    window.FB && FB.XFBML.parse();
+    window.FB?.XFBML && FB.XFBML.parse();
     const chatWindow = document.getElementById("fb-comments");
     chatWindow && chatWindow.scrollIntoView();
   };
