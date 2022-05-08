@@ -112,6 +112,12 @@ export default function Competition({ competition, preview }) {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (window.FB) {
+      FB.XFBML.parse();
+    }
+  }, [])
+
   const hasResults = competition?.matchScores?.length > 0;
   const teamJoined = competition?.appliedTeams?.length || competition?.teams?.length || 0;
 

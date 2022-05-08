@@ -56,6 +56,12 @@ export default function Competition({ ladder, allPlayers, preview }) {
     chatWindow && chatWindow.scrollIntoView();
   };
 
+  useEffect(() => {
+    if (window.FB) {
+      FB.XFBML.parse();
+    }
+  }, [])
+
   const refreshData = async () => {
     toast("Refreshing. Please wait...");
     await RevalidatePath(user, `/ladders/${ladder.id}`);
