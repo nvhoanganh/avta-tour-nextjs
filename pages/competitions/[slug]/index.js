@@ -130,7 +130,6 @@ export default function Competition({ competition, preview }) {
   };
 
   const viewChat = () => {
-    window.FB?.XFBML && FB.XFBML.parse();
     const chatWindow = document.getElementById("fb-comments");
     chatWindow && chatWindow.scrollIntoView();
   };
@@ -505,7 +504,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5">Loading comments...</div>
+                            <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="412" data-numposts="5">Loading comments...</div>
                           </>
                           :
                           <>

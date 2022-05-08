@@ -20,7 +20,7 @@ export default function Intro({ upcomingCompetition }) {
 
 	return (
 		<>
-			<div className='relative pt-16 pb-14 flex content-center items-center justify-center min-h-screen-45 '>
+			<div className='relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-45 '>
 				<div
 					className='absolute top-0 w-full h-full bg-center bg-cover'
 					style={{
