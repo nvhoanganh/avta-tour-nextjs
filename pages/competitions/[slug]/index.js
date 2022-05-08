@@ -123,6 +123,11 @@ export default function Competition({ competition, preview }) {
     window.history.pushState({ path: newurl }, '', newurl);
   };
 
+  const viewChat = () => {
+    const chatWindow = document.getElementById("fb-comments");
+    chatWindow && chatWindow.scrollIntoView();
+  };
+
   const saveSchedule = async (data) => {
     await setDoc(doc(db, "competition_schedule", competition.sys.id), data);
     alert('Schedule created, please reload this page again in 15 seconds');
@@ -360,9 +365,14 @@ export default function Competition({ competition, preview }) {
                       </div>
 
                       <div className='mx-0 md:mx-4'>
-                        <h3 className='mt-10 text-2xl md:text-3xl font-bold tracking-tighter leading-tight mx-auto'>
-                          {competition.title}
-                        </h3>
+                        <div className="flex justify-between items-center mt-10">
+                          <h3 className='text-2xl md:text-3xl font-bold tracking-tighter leading-tight'>
+                            {competition.title}
+                          </h3>
+                          <div>
+                            <a title="View Chat" className="text-gray-500 hover:underline cursor-pointer" onClick={viewChat}><i className="text-blue-500 far fa-comments hover:underline cursor-pointer" ></i> Comments</a>
+                          </div>
+                        </div>
 
                         {
                           userRoles?.superuser
@@ -490,7 +500,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="" data-numposts="5"></div>
+                            <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5"></div>
                           </>
                           :
                           <>
@@ -507,7 +517,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="" data-numposts="5"></div>
+                            <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5"></div>
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
                               <section>
