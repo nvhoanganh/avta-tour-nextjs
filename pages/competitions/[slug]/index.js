@@ -370,7 +370,7 @@ export default function Competition({ competition, preview }) {
                             {competition.title}
                           </h3>
                           <div>
-                            <a title="View Chat" className="text-gray-500 hover:underline cursor-pointer" onClick={viewChat}><i className="text-blue-500 far fa-comments hover:underline cursor-pointer" ></i> Comments</a>
+                            <a title="View Chat" className="text-gray-500 hover:underline cursor-pointer whitespace-nowrap" onClick={viewChat}><i className="text-blue-500 far fa-comments hover:underline cursor-pointer" ></i> Comments</a>
                           </div>
                         </div>
 
