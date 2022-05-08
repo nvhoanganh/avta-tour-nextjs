@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
