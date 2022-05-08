@@ -13,6 +13,8 @@ export default class MyDocument extends Document {
           <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=G-KF25F4604L" async />
         </Head>
         <body>
+          <div id="fb-root"></div>
+          <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0&appId=955095205088132&autoLogAppEvents=1" nonce="AcLzT9WI"></script>
           <Main />
           <NextScript />
         </body>

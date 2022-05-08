@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { FbCommentRoot } from './../../../components/FbCommentRoot';
 import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
@@ -78,7 +77,6 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
   return (
     <Layout preview={preview}>
-      <FbCommentRoot />
       <ToastContainer />
       <Navbar transparent />
 

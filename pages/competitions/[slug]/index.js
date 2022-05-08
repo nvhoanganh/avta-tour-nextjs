@@ -1,4 +1,3 @@
-import { FbCommentRoot } from './../../../components/FbCommentRoot';
 import ToggleContactDetails from '../../../components/ToggleContactDetails';
 import ToggleTournamentRule from '../../../components/ToggleTournamentRule';
 import { useRouter } from 'next/router';
@@ -207,7 +206,6 @@ export default function Competition({ competition, preview }) {
 
   return (
     <Layout preview={preview}>
-      <FbCommentRoot />
       <ToastContainer />
       <Navbar transparent />
 
