@@ -1,27 +1,13 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import Head from 'next/head';
-import ErrorPage from 'next/error';
-import ContentfulImage from '../../components/contentful-image';
-import DropDown from '../../components/dropdown';
-import Container from '../../components/container';
 import PlayersCard from '../../components/Cards/PlayersCard';
 import PlayersTable from '../../components/Cards/PlayersTable';
-import PostBody from '../../components/post-body';
-import MoreStories from '../../components/more-stories';
-import Header from '../../components/header';
-import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
-import { getAllPlayers } from '../../lib/api';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
-import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
-import TournamentsTable from '../../components/Cards/TournamentsTable.js';
-import TournamentsCard from '../../components/Cards/TournamentsCard.js';
 import { useFirebaseAuth } from '../../components/authhook';
-import React, { useState, useEffect } from 'react';
-import { mergeUsersAndPlayersData } from "../../lib/backendapi";
+import { GetMergedPlayersWithNoAvatar } from "../../lib/backendapi";
 import { RevalidatePath } from "../../lib/browserapi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -77,14 +63,11 @@ export default function Players({ allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	let allPlayers = (await getAllPlayers(preview)) ?? [];
-	allPlayers = await mergeUsersAndPlayersData(allPlayers);
-
+	const allPlayers = await GetMergedPlayersWithNoAvatar()
 	return {
 		props: {
 			preview,
 			allPlayers
 		},
-		revalidate: 60
 	};
 }

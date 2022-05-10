@@ -399,24 +399,3 @@ export async function getStaticPaths() {
     fallback: true,
   };
 }
-
-// export async function getServerSideProps(context) {
-//   const { id } = context.query;
-//   const data = await getLadderDetails(id, false);
-
-//   let allPlayers = (await getAllPlayers(false)) ?? [];
-//   allPlayers = await mergeUsersAndPlayersData(allPlayers);
-//   allPlayers = allPlayers.map(x => {
-//     // todo: fix this
-//     delete x.coverImage;
-//     delete x.photoURL;
-//     return x;
-//   });
-
-//   return {
-//     props: {
-//       ladder: data,
-//       allPlayers
-//     },
-//   };
-// }
