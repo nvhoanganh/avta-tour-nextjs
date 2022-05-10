@@ -69,5 +69,6 @@ export async function getStaticProps({ params, preview = false }) {
 			preview,
 			allPlayers
 		},
+		revalidate: 3600
 	};
 }
