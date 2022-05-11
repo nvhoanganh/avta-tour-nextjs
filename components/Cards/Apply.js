@@ -1,16 +1,14 @@
 import { format } from 'date-fns'
-import cn from 'classnames';
 import Link from 'next/link'
-import TeamCard from './TeamCard';
 import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
-import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import Stripepaymentinfo from '../../components/stripepaymentinfo';
+import PlayersPicker from '../../components/Cards/PlayersPicker';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
-import { getPlayers, RevalidatePath } from '../../lib/browserapi';
+import { RevalidatePath } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import { useFirebaseAuth } from '../../components/authhook';
@@ -185,24 +183,18 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
 
                 {!selectedPlayer1 ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Search by name, point or club" />
-                    <div className="text-gray-400 text-sm py-2 italic text-center">Available players with Point less than {competition.maxPoint - (selectedPlayer2?.avtaPoint || 0)}</div>
-
-                    <PlayerTypeFilter selected={player1Style} setState={(val) => setValue('player1Style', val)}></PlayerTypeFilter>
-
-                    <div className='flex flex-wrap justify-center pt-5 items-center'>
-                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
-                        {getPlayers(players, 'Point', player1, competition.maxPoint - (selectedPlayer2?.avtaPoint || 0), player1Style).map((player) => (
-                          <PlayerCard player={player} key={player.sys.id} size="md" showSelect onSelect={(player) => {
-                            setValue('selectedPlayer1', player);
-                            setTimeout(() => {
-                              const lbl = document.getElementById("player1");
-                              lbl && lbl.scrollIntoView();
-                            }, 100);
-                          }} />
-                        ))}
-                      </div>
-                    </div>
+                    <PlayersPicker
+                      register={register}
+                      selectedPlayerNumber="selectedPlayer1"
+                      competition={competition}
+                      otherPlayer={selectedPlayer2}
+                      players={players}
+                      filter={player1}
+                      filterName="player1"
+                      setValue={setValue}
+                      playStyleFilter={player1Style}
+                      playerStyleFilterName="player1Style"
+                    ></PlayersPicker>
                   </> :
                   <PlayerCard player={selectedPlayer1} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer1', null)} />
                 }
@@ -217,26 +209,18 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
 
                 {!selectedPlayer2 ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Search by name, point or club" />
-
-                    <div className="text-gray-400 text-sm py-2 italic text-center">Available players with Point less than {competition.maxPoint - (selectedPlayer1?.avtaPoint || 0)}:</div>
-
-                    <PlayerTypeFilter selected={player2Style} setState={(val) => setValue('player2Style', val)}></PlayerTypeFilter>
-
-                    <div className='flex flex-wrap justify-center pt-5 items-center'>
-                      <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
-                        {getPlayers(players, 'Point', player2, competition.maxPoint - (selectedPlayer1?.avtaPoint || 0), player2Style).map((player) => (
-                          <PlayerCard player={player} size="md" key={player.sys.id} showSelect onSelect={(player) => {
-                            setValue('selectedPlayer2', player);
-                            setTimeout(() => {
-                              const lbl = document.getElementById("rule");
-                              lbl && lbl.scrollIntoView();
-                            }, 100);
-
-                          }} />
-                        ))}
-                      </div>
-                    </div>
+                    <PlayersPicker
+                      register={register}
+                      selectedPlayerNumber="selectedPlayer2"
+                      competition={competition}
+                      otherPlayer={selectedPlayer1}
+                      players={players}
+                      filter={player2}
+                      filterName="player2"
+                      setValue={setValue}
+                      playStyleFilter={player2Style}
+                      playerStyleFilterName="player2Style"
+                    ></PlayersPicker>
                   </> :
                   <PlayerCard player={selectedPlayer2} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer2', null)} />
                 }
