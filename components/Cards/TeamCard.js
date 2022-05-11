@@ -4,8 +4,9 @@ import TeamAvatar from "../TeamAvatar";
 import { format } from 'date-fns'
 
 export default function TeamCard({
-  team, is_superuser, competition
+  team, is_superuser, competition, uid
 }) {
+
   return <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
     <div className="flex-auto p-4">
       <div className="flex flex-wrap ">
@@ -20,7 +21,7 @@ export default function TeamCard({
           </div>
           <div className='text-sm text-gray-600 flex space-x-2'>
             <span className='text-green-600'>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
-            {!team.paidOn && competition.costPerTeam > 0 && (<form action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}`} method="POST"
+            {!team.paidOn && competition.costPerTeam > 0 && (is_superuser || team.player1.uid === uid || team.player2.uid === uid) && (<form action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}`} method="POST"
               className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
             >
               <button type="submit" className='text-sm text-red-600 flex space-x-2 hover:underline hover:cursor-pointer font-bold'>
@@ -29,8 +30,8 @@ export default function TeamCard({
             </form>)
             }
             {
-              is_superuser && <><Link href={`/competitions/${competition.slug}/editteam?teamId=${team.id}`}>
-                <a className='text-sm flex space-x-2 hover:underline hover:cursor-pointer'>
+              (is_superuser || team.player1.uid === uid || team.player2.uid === uid) && <><Link href={`/competitions/${competition.slug}/editteam?teamId=${team.id}`}>
+                <a className='text-sm flex space-x-2 hover:underline hover:cursor-pointer font-bold'>
                   Edit
                 </a>
               </Link></>

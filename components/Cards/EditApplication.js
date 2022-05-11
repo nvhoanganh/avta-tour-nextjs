@@ -48,6 +48,22 @@ export default function EditApplicationCompetition({ competition, players, rule,
     }
   }
 
+  useEffect(async () => {
+    if (competition) {
+      const q = query(collection(db, "competition_applications"), where("competitionId", "==", competition?.sys?.id));
+
+      const querySnapshot = await getDocs(q);
+      const registeredTeams = querySnapshot.docs.map(doc => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+
+      const avaiPlayers = players.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id));
+
+      setAvaiPlayers(avaiPlayers);
+    }
+  }, [competition]);
+
   const onSubmit = async data => {
     setSaving(true)
 
@@ -169,7 +185,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
         registeredTeam &&
         <div className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center">
           <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
-            competition={competition} players={players} rule={rule} userRole={userRole} paid={registeredTeam.paid}
+            competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} paid={registeredTeam.paid}
             currentPlayer1={registeredTeam.player1} currentPlayer2={registeredTeam.player2} deleteTeam={deleteTeam}
           />
         </div>
@@ -303,11 +319,16 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                     type="submit">Update</SaveButton>
                 }
 
-                <Link href={`/competitions/${competition.slug}`}><a
+                {/* <Link href={`/competitions/${competition.slug}`}> */}
+                <a onClick={() => {
+                  setValue('selectedPlayer2', currentPlayer2);
+                  setValue('selectedPlayer1', currentPlayer1);
+                }}
                   className='bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center'
                 >
                   Cancel
-                </a></Link>
+                </a>
+                {/* </Link> */}
                 <button onClick={deleteTeam} type="button"
                   className='bg-red-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center'
                 >
