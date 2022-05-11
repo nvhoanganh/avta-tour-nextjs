@@ -62,7 +62,7 @@ export default function EditMyProfile() {
   const updateUserProfilePhoto = async () => {
     setSaving(true)
 
-    const dataUrl = avatarRef.current.getImageScaledToCanvas().toDataURL();
+    const dataUrl = avatarRef.current.getImageScaledToCanvas().toDataURL('image/jpeg', 0.075);
 
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
