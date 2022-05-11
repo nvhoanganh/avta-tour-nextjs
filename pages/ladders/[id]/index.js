@@ -7,7 +7,7 @@ import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
 import Layout from '../../../components/layout';
-import { GetMergedPlayersWithNoAvatar, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
+import { GetMergedPlayers, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
 import { RevalidatePath } from '../../../lib/browserapi';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
@@ -376,7 +376,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const allPlayers = await GetMergedPlayersWithNoAvatar()
+  const allPlayers = await GetMergedPlayers()
 
   console.log(`${(new Date()).toISOString()} - rebuilt STARTED for ladder ${params.id}`);
   const data = await getLadderDetails(params.id, allPlayers);

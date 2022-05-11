@@ -9,7 +9,7 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import SubmitLadderScore from '../../../components/Cards/SubmitLadderScore2';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect } from 'react';
-import { GetMergedPlayersWithNoAvatar, getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
+import { GetMergedPlayers, getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
 
 
 export default function SubmitScore({ ladder, allPlayers, preview }) {
@@ -127,7 +127,7 @@ export default function SubmitScore({ ladder, allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-  const allPlayers = await GetMergedPlayersWithNoAvatar()
+  const allPlayers = await GetMergedPlayers()
   const data = await getLadderBasicDetails(params.id, allPlayers);
 
   return {
