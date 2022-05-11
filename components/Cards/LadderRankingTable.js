@@ -72,11 +72,11 @@ export default function LadderRankingTable({ ranking, color, players }) {
 										</div>
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
-										{/* <div className='flex'>
+										<div className='flex'>
 											<PlayerAvatar player={player.player} />
-										</div> */}
+										</div>
 
-										<div className='flex flex-col'>
+										<div className='flex flex-col ml-1'>
 											<div
 												className={
 													'font-bold flex space-x-2' +
