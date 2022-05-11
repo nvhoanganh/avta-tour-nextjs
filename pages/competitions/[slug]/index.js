@@ -504,7 +504,7 @@ export default function Competition({ competition, preview }) {
                               <ToggleTournamentRule competition={competition} />
                             </div>
 
-                            <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="412" data-numposts="5">Loading comments...</div>
+                            <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="412" data-numposts="5">Loading comments...</div>
                           </>
                           :
                           <>
