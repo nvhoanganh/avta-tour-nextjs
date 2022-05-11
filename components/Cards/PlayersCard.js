@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
-import ContentfulImage from '../contentful-image';
+import FirebaseImage from '../fb-image';
 import DropDown from '../dropdown';
 import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import useFilterPlayers from '../../lib/useFilterhook';
@@ -59,7 +59,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 							{filteredPlayers.map(x => <div key={x.sys.id} className='px-6 text-center'>
 								<Link href={`/players/${x.sys.id}`}>
 									<div className='mx-auto max-w-120-px cursor-pointer'>
-										<ContentfulImage
+										<FirebaseImage
 											width={120}
 											height={120}
 											className='rounded-full mx-auto max-w-120-px'

@@ -5,7 +5,7 @@ const contentfulLoader = ({ src, width, quality }) => {
 }
 
 const FirebaseImage = (props) => {
-  return <Image loader={contentfulLoader} {...props} />
+  return <Image loader={contentfulLoader} {...props} unoptimized={true} />
 }
 
 export default FirebaseImage

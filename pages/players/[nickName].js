@@ -3,7 +3,7 @@ import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
 import ErrorPage from 'next/error';
-import ContentfulImage from '../../components/contentful-image';
+import FirebaseImage from '../../components/fb-image';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
 import MoreStories from '../../components/more-stories';
@@ -178,7 +178,7 @@ export default function Player({ player, preview }) {
 											<div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
 												<div className='relative'>
 													<div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'>
-														<ContentfulImage
+														<FirebaseImage
 															width={250}
 															height={250}
 															className='rounded-full'

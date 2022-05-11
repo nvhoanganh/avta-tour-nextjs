@@ -7,7 +7,7 @@ import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../components/authhook';
-import { GetMergedPlayersWithNoAvatar } from "../../lib/backendapi";
+import { GetMergedPlayers } from "../../lib/backendapi";
 import { RevalidatePath } from "../../lib/browserapi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,7 +63,7 @@ export default function Players({ allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const allPlayers = await GetMergedPlayersWithNoAvatar()
+	const allPlayers = await GetMergedPlayers()
 	return {
 		props: {
 			preview,
