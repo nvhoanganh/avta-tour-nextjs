@@ -21,7 +21,7 @@ export default function HeroPost({
 					className='w-full align-middle rounded-t-lg'
 					src={coverImage.url}
 				/>
-				<blockquote className='relative p-8 mb-6'>
+				<div className='relative p-8 mb-6'>
 					<svg
 						preserveAspectRatio='none'
 						xmlns='http://www.w3.org/2000/svg'
@@ -47,7 +47,7 @@ export default function HeroPost({
 							/>
 						)}
 					</p>
-				</blockquote>
+				</div>
 			</div>
 		</Link>
 	);

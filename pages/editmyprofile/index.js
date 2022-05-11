@@ -1,28 +1,18 @@
 import { useRouter } from 'next/router';
 import AvatarEditor from "react-avatar-editor";
 import SaveButton from '../../components/savebutton';
-import Link from 'next/link';
+import FirebaseImage from '../../components/fb-image';
 import Head from 'next/head';
 import { ToastContainer, toast } from 'react-toastify';
-import ErrorPage from 'next/error';
-import ContentfulImage from '../../components/contentful-image';
-import Container from '../../components/container';
 import FloatingFileInput from '../../components/floatingFileInput';
-import PostBody from '../../components/post-body';
-import MoreStories from '../../components/more-stories';
-import Header from '../../components/header';
-import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
-import PostTitle from '../../components/post-title';
-import Intro from '../../components/intro';
-import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import ProfileSettings from '../../components/Cards/UserProfile';
-import SendOtp from '../../components/sendotp';
 import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState, useRef } from 'react'
-import { db } from '../../lib/firebase';
-import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
+import { db, storage, storageBucketId } from '../../lib/firebase';
+import { uploadBytes, ref } from 'firebase/storage';
+import { setDoc, doc, getDoc } from "firebase/firestore";
 
 
 export default function EditMyProfile() {
@@ -62,11 +52,20 @@ export default function EditMyProfile() {
   const updateUserProfilePhoto = async () => {
     setSaving(true)
 
-    const dataUrl = avatarRef.current.getImageScaledToCanvas().toDataURL('image/jpeg', 0.075);
+    const storageRef = ref(storage, `images/avatar_${user.uid}.jpg`);
+    avatarRef.current.getImageScaledToCanvas().toBlob(async (imageBlob) => {
+      const snapshot = await uploadBytes(storageRef, imageBlob);
+    },
+      'image/jpeg', 0.5);
+
+    const photoURL = `https://firebasestorage.googleapis.com/v0/b/${storageBucketId}/o/images%2Favatar_${user.uid}.jpg?alt=media`;
 
     const docRef = doc(db, "users", user.uid);
     const docSnap = await getDoc(docRef);
-    const updated = docSnap.exists() ? { ...docSnap.data(), photoURL: dataUrl } : { uid: user.uid, photoURL: dataUrl };
+    const updated = docSnap.exists() ?
+      { ...docSnap.data(), photoURL } :
+      { uid: user.uid, photoURL };
+
     await setDoc(docRef, updated);
 
     if (updated.playerId) {
@@ -78,7 +77,7 @@ export default function EditMyProfile() {
     }
 
     saveProfilePhoto('photo', null);
-    setUserprofile(curr => ({ ...curr, photoURL: dataUrl }));
+    setUserprofile(curr => ({ ...curr, photoURL }));
     toast("Avatar Updated");
     setSaving(false)
   };
@@ -138,13 +137,11 @@ export default function EditMyProfile() {
                     <div className='relative'>
                       {userprofile?.photoURL ? (
                         <div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px text-center'>
-                          <ContentfulImage
+                          <FirebaseImage
                             width={250}
                             height={250}
                             className='rounded-full'
-                            src={
-                              userprofile?.photoURL
-                            }
+                            src="https://firebasestorage.googleapis.com/v0/b/avta-tour.appspot.com/o/images%2Favatar_CEUM7NuvI5boKxzI64V2jxSPGBh1.jpg?alt=media"
                           />
 
                           <FloatingFileInput

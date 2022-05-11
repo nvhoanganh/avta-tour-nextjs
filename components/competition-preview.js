@@ -71,7 +71,7 @@ export default function CompetitionPreview({
 								className='rounded-xl shadow-sm'
 								src={heroImage?.url}
 							/>
-							<blockquote className='relative p-8 mb-4'>
+							<div className='relative p-8 mb-4'>
 								<svg
 									preserveAspectRatio='none'
 									xmlns='http://www.w3.org/2000/svg'
@@ -132,7 +132,7 @@ export default function CompetitionPreview({
 										</li>
 									</ul>
 								</p>
-							</blockquote>
+							</div>
 						</div>
 					</Link>
 				</div>
