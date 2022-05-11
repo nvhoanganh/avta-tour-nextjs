@@ -252,7 +252,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                         </a>
                       </div>
 
-                      <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/ladders/${ladder.id}`} data-width="412" data-numposts="5"></div>
+                      <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/ladders/${ladder.id}`} data-width="100%" data-numposts="5"></div>
 
 
                       {ladder.scores?.length > 0 &&
