@@ -141,7 +141,7 @@ export default function EditMyProfile() {
                             width={250}
                             height={250}
                             className='rounded-full'
-                            src="https://firebasestorage.googleapis.com/v0/b/avta-tour.appspot.com/o/images%2Favatar_CEUM7NuvI5boKxzI64V2jxSPGBh1.jpg?alt=media"
+                            src={userprofile?.photoURL}
                           />
 
                           <FloatingFileInput
