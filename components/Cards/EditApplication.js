@@ -14,6 +14,7 @@ import Spinner from '../../components/spinner';
 import PlayerWithIcon from '../../components/PlayerWithIcon';
 import PlayerCard from '../../components/PlayerCard';
 import { useFirebaseAuth } from '../../components/authhook';
+import PlayersPicker from '../../components/Cards/PlayersPicker';
 import {
   getPlayerById,
   score,
@@ -194,25 +195,6 @@ export default function EditApplicationCompetition({ competition, players, rule,
   );
 }
 
-function RenderPlayersPicker({ register, selectedPlayerNumber, filter, competition, otherPlayer, players, setValue }) {
-  const filteredPlayers = getPlayers(players, 'Point', filter, competition.maxPoint - (otherPlayer?.avtaPoint || 0));
-
-  return (
-    <>
-      <div className="text-gray-400 text-sm py-2 italic text-center">{filteredPlayers.length} available players with point less than {competition.maxPoint - (otherPlayer?.avtaPoint || 0)}</div>
-      <div className='flex flex-wrap justify-center pt-5 items-center'>
-        <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-20 gap-x-10 mb-32 w-full'>
-          {filteredPlayers.map((player) => (
-            <PlayerCard player={player} key={player.sys.id} size="md" showSelect onSelect={(player) => {
-              setValue(selectedPlayerNumber, player);
-            }} />
-          ))}
-        </div>
-      </div>
-    </>
-  );
-}
-
 function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId, userRole, currentPlayer1, currentPlayer2, paid, deleteTeam }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValues: {
@@ -224,6 +206,9 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
   const selectedPlayer2 = watch('selectedPlayer2');
+
+  const player1Style = watch('player1Style');
+  const player2Style = watch('player2Style');
 
   const isValid = () => {
     return !!selectedPlayer1 && !!selectedPlayer2 &&
@@ -266,17 +251,18 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
 
                 {!selectedPlayer1 ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player1", { required: true })} placeholder="Search by name, point or club" />
-
-                    <RenderPlayersPicker
+                    <PlayersPicker
                       register={register}
                       selectedPlayerNumber="selectedPlayer1"
                       competition={competition}
                       otherPlayer={selectedPlayer2}
                       players={players}
                       filter={player1}
+                      filterName="player1"
                       setValue={setValue}
-                    ></RenderPlayersPicker>
+                      playStyleFilter={player1Style}
+                      playerStyleFilterName="player1Style"
+                    ></PlayersPicker>
                   </> :
                   <PlayerCard player={selectedPlayer1} size="md" showSelect buttonText="Replace" buttonColor="bg-gray-500" onSelect={(player) => setValue('selectedPlayer1', null)} />
                 }
@@ -291,17 +277,18 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
 
                 {!selectedPlayer2 ?
                   <>
-                    <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("player2", { required: true })} placeholder="Search by name, point or club" />
-
-                    <RenderPlayersPicker
+                    <PlayersPicker
                       register={register}
                       selectedPlayerNumber="selectedPlayer2"
                       competition={competition}
                       otherPlayer={selectedPlayer1}
                       players={players}
                       filter={player2}
+                      filterName="player2"
                       setValue={setValue}
-                    ></RenderPlayersPicker>
+                      playStyleFilter={player2Style}
+                      playerStyleFilterName="player2Style"
+                    ></PlayersPicker>
                   </> :
                   <PlayerCard player={selectedPlayer2} size="md" showSelect buttonText="Replace" buttonColor="bg-gray-500" onSelect={(player) => setValue('selectedPlayer2', null)} />
                 }
