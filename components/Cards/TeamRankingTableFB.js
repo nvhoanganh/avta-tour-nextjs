@@ -6,6 +6,7 @@ import ContentfulImage from '../contentful-image';
 import PlayerPoint from '../PlayerPoint';
 import DateWithTimeComponent from '../dateWithTime';
 import Avatar from '../avatar';
+import PlayerAvatar from './PlayerAvatar';
 
 export default function TeamRankingTable({ groups, color, is_superuser, editTeam }) {
 
@@ -80,16 +81,8 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 											</td>
 											<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 												<div className='flex'>
-													<img
-														src={getPlayers(team)[0].coverImage?.url || 'https://via.placeholder.com/64'}
-														alt='...'
-														className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
-													></img>
-													<img
-														src={getPlayers(team)[1].coverImage?.url || 'https://via.placeholder.com/64'}
-														alt='...'
-														className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
-													></img>
+													<PlayerAvatar player={getPlayers(team)[0]} />
+													<PlayerAvatar player={getPlayers(team)[1]} className="-ml-2" />
 												</div>
 
 												<div className='flex flex-col'>

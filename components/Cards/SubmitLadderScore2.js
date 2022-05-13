@@ -1,10 +1,8 @@
 import { format } from 'date-fns'
-import TeamAvatar from '../../components/TeamAvatarNoLink';
-import DropDown from '../../components/dropdown';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react'
-import { getFBUserIdFromContentfulId, score, RevalidatePath } from '../../lib/browserapi';
+import { useState } from 'react';
+import { getFBUserIdFromContentfulId, RevalidatePath } from '../../lib/browserapi';
 import Spinner from '../../components/spinner';
 import { db } from '../../lib/firebase';
 import useFilterPlayers from '../../lib/useFilterhook';
@@ -12,7 +10,6 @@ import { collection, addDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useFirebaseAuth } from '../authhook';
 var Diacritics = require('diacritic');
 
 export default function SubmitLadderScore({ ladder, allPlayers, user }) {

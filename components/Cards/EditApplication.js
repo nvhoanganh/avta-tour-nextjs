@@ -1,28 +1,14 @@
-import React from "react";
 import { format } from 'date-fns'
 import Link from 'next/link'
-import PostTitle from '../../components/post-title';
-import TeamAvatar from '../../components/TeamAvatarNoLink';
-import TeamCard from './TeamCard';
-import cn from 'classnames';
-import DropDown from '../../components/dropdown';
-import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
-import Spinner from '../../components/spinner';
-import PlayerWithIcon from '../../components/PlayerWithIcon';
 import PlayerCard from '../../components/PlayerCard';
 import { useFirebaseAuth } from '../../components/authhook';
 import PlayersPicker from '../../components/Cards/PlayersPicker';
-import {
-  getPlayerById,
-  score,
-  RevalidatePath,
-  getPlayers
-} from '../../lib/browserapi';
+import { RevalidatePath } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, doc, setDoc, deleteDoc, getDocs, getDoc, where, addDoc } from "firebase/firestore";
+import { query, collection, doc, setDoc, deleteDoc, getDocs, getDoc, where } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';

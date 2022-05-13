@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
+import PlayerAvatar from './PlayerAvatar';
 import ContentfulImage from '../contentful-image';
 import DateWithTimeComponent from '../dateWithTime';
 import PlayerPoint from '../PlayerPoint';
@@ -77,16 +78,8 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 								return <tr key={result.timestamp}>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div className='flex'>
-											<img
-												src={w1?.coverImage?.url || 'https://via.placeholder.com/64'}
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
-											></img>
-											<img
-												src={w2?.coverImage?.url || 'https://via.placeholder.com/64'}
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
-											></img>
+											<PlayerAvatar player={w1} />
+											<PlayerAvatar player={w2} className="-ml-2" />
 										</div>
 
 										<div className='flex flex-col'>
@@ -131,16 +124,8 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div className='flex'>
-											<img
-												src={l1?.coverImage?.url || 'https://via.placeholder.com/64'}
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow'
-											></img>
-											<img
-												src={l2?.coverImage?.url || 'https://via.placeholder.com/64'}
-												alt='...'
-												className='w-10 h-10 rounded-full border-2 border-gray-50 shadow -ml-2'
-											></img>
+											<PlayerAvatar player={l1} />
+											<PlayerAvatar player={l2} className="-ml-2" />
 										</div>
 										<div className='flex flex-col'>
 											<div
