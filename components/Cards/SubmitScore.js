@@ -183,6 +183,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                   <span className="px-3">{gameWonByLoser || 'Select..'}</span>
                 }
                   items={[
+                    <a onClick={() => setValue('gameWonByLoser', 0)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">0</a>,
                     <a onClick={() => setValue('gameWonByLoser', 1)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">1</a>,
                     <a onClick={() => setValue('gameWonByLoser', 2)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">2</a>,
                     <a onClick={() => setValue('gameWonByLoser', 3)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">3</a>,
@@ -264,19 +265,12 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                     team={selectedLoser}
                   />
                 }
-
                 {selectedWinner && selectedLoser
                   && selectedWinner.id === selectedLoser.id && <span className="text-red-700">
                     Winner and loser can't be the same
                   </span>}
-
-
               </div>
             </div>
-
-
-
-
           </div>
 
           <div className="flex flex-wrap pt-10">
