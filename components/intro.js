@@ -4,18 +4,6 @@ import { useFirebaseAuth } from './authhook';
 import Spinner from './spinner';
 
 export default function Intro({ upcomingCompetition }) {
-	const {
-		title,
-		slug,
-		type,
-		club,
-		excerpt,
-		date,
-		maxPoint,
-		heroImage,
-		teamsCollection,
-	} = upcomingCompetition;
-
 	const { user, loadingAuth } = useFirebaseAuth();
 
 	return (
