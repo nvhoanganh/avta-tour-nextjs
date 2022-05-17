@@ -72,7 +72,9 @@ export default function UserProfile() {
       const docSnap = await getDoc(doc(db, "users", user.uid));
       let formData = docSnap.exists() ? { ...user, ...docSnap.data() } : { ...user, allowContact: true };
       if (formData.playerId) {
+        // get data fron contentful using REST api
         const contentfuldata = await getPlayerById(formData.playerId, false);
+
         formData = {
           ...formData, ...contentfuldata,
           stopSms: false,
@@ -118,7 +120,7 @@ export default function UserProfile() {
 function UserForm({ onSubmit, userProfile, saving, userRoles }) {
   const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
-    allowContact, stopSms, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner, playerId } = userProfile;
+    allowContact, stopSms, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner, playerId, pointChangeLog } = userProfile;
 
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
@@ -156,7 +158,9 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
               <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                 AVTA Score
               </label>
-              {avtaPoint ? <span className={`px-3 py-3 text-gray-600 text-4xl  ${unofficialPoint ? 'text-red-600' : 'text-green-600'}`}>{avtaPoint} Pt. {unofficialPoint ? '(Unofficial)' : ''}</span> :
+              {avtaPoint ? <span className={`px-3 py-3 text-gray-600 text-4xl  ${unofficialPoint ? 'text-red-600' : 'text-green-600'}`}>{avtaPoint} Pt. {unofficialPoint ? '(Unofficial)' : ''}
+                {pointChangeLog && <div className='text-sm italic font-normal text-gray-500'><i className="fas fa-history"></i> {pointChangeLog}</div>}
+              </span> :
                 <span className="py-3  text-red-600">Not Yet Assigned.
                   <a className="underline cursor-pointer text-gray-600 mx-2" onClick={() => setShowHowToGetPoint(true)}>How do I get one?</a>
                 </span>
