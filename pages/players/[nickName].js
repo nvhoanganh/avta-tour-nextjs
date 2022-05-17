@@ -272,6 +272,9 @@ export default function Player({ player, preview }) {
 												{
 													player?.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
 												}
+												{
+													player?.pointChangeLog && <div className='text-sm italic pt-3  font-normal text-gray-500'><i className="fas fa-history"></i> {player?.pointChangeLog}</div>
+												}
 											</div>
 										</div>
 
