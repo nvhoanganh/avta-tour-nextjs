@@ -28,6 +28,9 @@ export default function ApplyForCompetition({ competition, players, rule, linked
   const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
   const { user, loadingAuth } = useFirebaseAuth();
+  console.log("🚀 ~ file: Apply.js ~ line 26 ~ ApplyForCompetition ~ competition", competition)
+
+
 
   const onSubmit = async data => {
     setSaving(true)
@@ -60,7 +63,8 @@ export default function ApplyForCompetition({ competition, players, rule, linked
 
     setRegisteredTeam({
       id: docRef.id,
-      ...data
+      ...data,
+      isOverLimit: ((data.player1.avtaPoint || 0) + (data.player2.avtaPoint || 0) - competition.maxPoint) > 0
     });
   };
 
@@ -102,7 +106,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
                 <button type="submit" role="link" className="bg-purple-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
     disabled:cursor-wait whitespace-nowrap
              disabled:bg-gray-200">
-                  Pay ${competition.costPerTeam}.00 now with Stripe.com
+                  Pay ${registeredTeam.isOverLimit ? competition.costPerTeam + competition.additionalCostWhenLimit : competition.costPerTeam}.00 now with Stripe.com
                 </button>
 
                 <Stripepaymentinfo />
@@ -130,7 +134,6 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
     }
   });
 
-  const agreed = watch('agreed');
   const player1 = watch('player1');
   const player2 = watch('player2');
   const selectedPlayer1 = watch('selectedPlayer1');
@@ -149,8 +152,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
   const isValid = () => {
     return !!selectedPlayer1 && !!selectedPlayer2 &&
       selectedPlayer1?.sys?.id !== selectedPlayer2?.sys?.id
-      && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= (competition.maxPoint + 10)
-      && !!agreed
+      && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= (competition.maxPoint + (competition.allowMaxPointOverTheLimit || 0))
   }
 
   return (
@@ -170,7 +172,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
           <p className="text-gray-400 text-sm mt-3 mb-6 text-center">{format(new Date(competition.date), 'LLLL	d, yyyy')} @ {competition.club}
           </p>
           <h6 className="text-sm mt-3 mb-14 text-center">
-            Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint + 10 - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
+            Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
           </h6>
           {
             selectedPlayer1 && selectedPlayer2
@@ -234,13 +236,36 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
             </div>
           </div>
 
-          <div className="flex flex-wrap pt-16">
-            <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
-              <div>
-                <span className="font-bold text-yellow-600">Warning</span>: Your Team total point is {((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint)} over limit
+          {
+            ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint) > 0 &&
+            <>
+              <div className="flex flex-wrap pt-16">
+                <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
+                  <div>
+                    <span className="font-bold text-yellow-600">Warning</span>: Your Team is {((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint)}pt over limit
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+              {
+                (competition.additionalCostWhenLimit || 0) > 0 && <div className="flex flex-wrap">
+                  <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
+                    <div>
+                      <label className='inline-flex items-center cursor-pointer'>
+                        <input
+                          type='checkbox'
+                          {...register("agreeToPayMore", { required: true })}
+                          className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
+                        />
+                        <span className='ml-2 text-sm font-semibold text-gray-600'>
+                          I agree to sponsor additional ${competition.additionalCostWhenLimit}.00 which will go to Food and Beverages fund
+                        </span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              }
+            </>
+          }
 
           <div className="flex flex-wrap pt-16">
             <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
