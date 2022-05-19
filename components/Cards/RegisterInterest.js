@@ -32,17 +32,17 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
       maxPoint: competition?.maxPoint,
       timestamp: (new Date()),
 
-      player: data.currentPlayer,
-      playerId: data.currentPlayer.sys.id,
+      player: data.selectedPlayer1,
+      playerId: data.selectedPlayer1.sys.id,
     };
 
     // const docRef = await addDoc(collection(db, "competition_interested_players"), data);
 
     console.log(data);
     toast('Thanks. Your applicatioon has been submitted');
-    setTimeout(() => {
-      router.push(`/competitions/${competition.slug}`);
-    }, 500);
+    // setTimeout(() => {
+    //   router.push(`/competitions/${competition.slug}`);
+    // }, 500);
 
     setSaving(false);
   };
@@ -75,10 +75,10 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
     defaultValue: {
       player1Style: 'All',
+      player2Style: 'All',
     }
   });
 
-  const currentPlayer = watch('currentPlayer');
   const player1 = watch('player1');
   const selectedPlayer1 = watch('selectedPlayer1');
   const player1Style = watch('player1Style');
@@ -86,9 +86,13 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
   useEffect(() => {
     if (linkedPlayerId) {
       const currentLinkedPlayer = players?.find(x => x.sys.id === linkedPlayerId);
-      setValue('currentPlayer', currentLinkedPlayer || null);
+      setValue('selectedPlayer1', currentLinkedPlayer || null);
     }
   }, [linkedPlayerId, players]);
+
+  const isValid = () => {
+    return !!selectedPlayer1
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -107,23 +111,52 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
           <p className="text-gray-400 text-sm mt-3 mb-6 text-center">{format(new Date(competition.date), 'LLLL	d, yyyy')} @ {competition.club}
           </p>
 
-          <div className="flex flex-wrap space-y-12">
+          <p className="mt-3 mb-6">
+            <strong>How does this work?</strong>
+          </p>
+
+          <p className="mt-3 mb-16">
+            Once you have registered your interest in playing this tournament, people will see your name under <strong>Looking for partner</strong> section on the tournament home page.
+            Players can reach out to you by joining our <a href="https://www.facebook.com/groups/464135091348911" target="_blank">Facebook</a> group.
+            <br /><br />
+            Once you have found a suitable partner. You can apply and pay <Link href={`/competitions/${competition.slug}/apply`}><a
+              className='underline'
+            >here</a></Link>
+          </p>
+
+          <div className="flex flex-wrap space-y-10">
             <div className="w-full">
-              <div className="relative w-full mb-3">
-                <label className="block text-gray-600 text-sm mb-2" htmlFor="grid-password" id="player1">
-                  Click Register to register your interest in playing this tournament
+              <div className="relative w-full mb-3 flex flex-col items-center justify-center">
+                <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password" id="player1">
+                  {selectedPlayer1 ? 'Register interest as' : 'Who are you again?'}
                 </label>
 
-                {currentPlayer &&
-                  <PlayerCard player={currentPlayer} size="md" showSelect={false} />
+                {!selectedPlayer1 ?
+                  <>
+                    <PlayersPicker
+                      register={register}
+                      selectedPlayerNumber="selectedPlayer1"
+                      competition={competition}
+                      players={players}
+                      filter={player1}
+                      filterName="player1"
+                      showSelect={true}
+                      setValue={setValue}
+                      playStyleFilter={player1Style}
+                      playerStyleFilterName="player1Style"
+                    ></PlayersPicker>
+                  </> :
+                  <PlayerCard player={selectedPlayer1} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer1', null)} />
                 }
               </div>
             </div>
 
-            <div className="w-full px-4">
+            <div className="w-full">
               <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
-                <SaveButton saving={saving} className="w-full sm:w-32"
-                  type="submit">Register</SaveButton>
+                {
+                  isValid() && <SaveButton saving={saving} className="w-full sm:w-32"
+                    type="submit">Register</SaveButton>
+                }
 
                 <Link href={`/competitions/${competition.slug}`}><a
                   className='bg-gray-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center'
@@ -132,30 +165,8 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
                 </a></Link>
               </div>
             </div>
-            <div className="w-full px-4">
-              <div className="relative w-full mb-3">
-                <label className="uppercase block font-bold mb-2" htmlFor="grid-password" id="player1">
-                  These players are looking for partner too!
-                </label>
-
-                <p className="block py-4 pb-6  text-gray-600 text-sm italic mb-2">Connect with them via our <a className="text-blue-500 underline" href="https://www.facebook.com/groups/464135091348911" target="_blank">Facebook</a> group</p>
-
-                <PlayersPicker
-                  register={register}
-                  selectedPlayerNumber="selectedPlayer1"
-                  competition={competition}
-                  otherPlayer={currentPlayer}
-                  players={players}
-                  filter={player1}
-                  filterName="player1"
-                  setValue={setValue}
-                  playStyleFilter={player1Style}
-                  playerStyleFilterName="player1Style"
-                ></PlayersPicker>
-              </div>
-            </div>
           </div>
         </div>
       </div>
-    </form>);
+    </form >);
 }

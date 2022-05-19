@@ -13,7 +13,7 @@ import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
 
 export default function Apply({ competition, allPlayers, preview }) {
   const router = useRouter();
-  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'findpartner' })
+  const { fullProfile, loading } = useFirebaseAuth({ })
   const [playerId, setPlayerId] = useState();
 
   useEffect(async () => {
