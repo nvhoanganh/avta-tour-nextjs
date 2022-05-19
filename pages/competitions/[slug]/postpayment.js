@@ -35,7 +35,7 @@ export default function Apply({ competition, allPlayers, preview }) {
     }
 
     if (query.get('canceled')) {
-      setPaymentError('It looks like you click Cancelled button. Please contact AVTA Admin for alternative payment method');
+      setPaymentError(`It looks like you click Cancelled on Stripe checkout page. You can also use PayID $${competition.costPerTeam} to pay for the application`);
     }
   }, []);
 
@@ -127,8 +127,9 @@ export default function Apply({ competition, allPlayers, preview }) {
                         paymentError && <div className='mb-8 text-center'>
                           <p className="uppercase py-2 h1 text-red-500 font-bold">Payment Error</p>
                           <p className="py-6">{paymentError}!</p>
-                          <p className="py-6"><ToggleContactDetails competition={competition} /></p>
-                          <p className="py-6 pb-12">You can go back to competition home page and click on `Pay Now` try make payment again.</p>
+                          <p className="py-6"><ToggleContactDetails competition={competition} message="PayID Information" /></p>
+                          <p className="py-6 pb-12">When making PayID payment, please include <span className="font-bold">AVTA{competition.maxPoint} - YourName</span> as reference</p>
+                          <p className="py-6 pb-12">If you would to pay using Credit Card, please go back to competition home page and click on <span className="font-bold">Pay Now</span> try make payment again.</p>
                           <Link href={`/competitions/${competition.slug}?view=teams`}>
                             <a
                               className='bg-blue-500 text-white font-bold uppercase text-xs px-8 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150 w-full sm:w-32 text-center mb-8'

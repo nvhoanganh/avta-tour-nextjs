@@ -20,7 +20,7 @@ import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding, getRulebyId } from '../../../lib/api';
 import { getCompResults, getAppliedTeams, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
-import { getAllGroupMatches, exportGroupsAllocation, getCompGroups, RevalidatePath } from '../../../lib/browserapi';
+import { removeRegisteredPlayer, getAllGroupMatches, exportGroupsAllocation, getCompGroups, RevalidatePath } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -46,6 +46,7 @@ export default function Competition({ competition, preview }) {
   const [courtNames, setCourtNames] = useState('');
   const [userRoles, setUserRoles] = useState(null);
   const [lookingPartners, setLookingPartners] = useState([]);
+  const [reloadToken, setReloadToken] = useState(null);
   const [hideRules, setHideRules] = useState(false);
   const [hideContacts, setHideContacts] = useState(false);
 
@@ -126,7 +127,7 @@ export default function Competition({ competition, preview }) {
 
       setLookingPartners(interestedPlayers);
     }
-  }, [competition]);
+  }, [competition, reloadToken]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -151,11 +152,11 @@ export default function Competition({ competition, preview }) {
   };
 
   const removeMe = async (player) => {
-    console.log('remove player', player);
     if (confirm('Are you sure?')) {
-      await deleteDoc(doc(db, "competition_interested_players", `${competition.sys.id}_${player.playerId}`));
+      console.log('removing player', player);
+      await removeRegisteredPlayer(competition, player);
       toast("Your registration has been removed");
-      setTimeout(() => window.location.reload(), 200);
+      setReloadToken(new Date());
     }
   };
 

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
-import { RevalidatePath } from '../../lib/browserapi';
+import { RevalidatePath, removeRegisteredPlayer } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import { useFirebaseAuth } from '../../components/authhook';
@@ -51,6 +51,10 @@ export default function ApplyForCompetition({ competition, players, rule, linked
 
     const docRef = await addDoc(collection(db, "competition_applications"), data);
     await RevalidatePath(user, `/competitions/${competition?.slug}`);
+    // remove from
+
+    await removeRegisteredPlayer(competition, data.player1);
+    await removeRegisteredPlayer(competition, data.player2);
 
     setSaving(false);
 
