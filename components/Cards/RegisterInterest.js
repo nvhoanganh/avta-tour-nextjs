@@ -19,7 +19,6 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [registeredPlayers, setRegisteredPlayers] = useState([]);
-  const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
   const { user, loadingAuth } = useFirebaseAuth();
 
@@ -31,22 +30,18 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
       competitionId: competition?.sys?.id,
       compDate: competition?.date,
       maxPoint: competition?.maxPoint,
-      type: competition?.type,
       timestamp: (new Date()),
 
-      player: data.selectedPlayer1,
-      playerId: data.selectedPlayer1.sys.id,
+      player: data.currentPlayer,
+      playerId: data.currentPlayer.sys.id,
     };
 
-    const docRef = await addDoc(collection(db, "competition_interested"), data);
-    await RevalidatePath(user, `/competitions/${competition?.slug}`);
+    // const docRef = await addDoc(collection(db, "competition_interested"), data);
+    // await RevalidatePath(user, `/competitions/${competition?.slug}`);
+
+    console.log(data);
 
     setSaving(false);
-
-    setRegisteredTeam({
-      id: docRef.id,
-      ...data
-    });
   };
 
   useEffect(async () => {
@@ -67,11 +62,8 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
   return (
     <>
       <ToastContainer />
-      {
-        !registeredTeam &&
-        <RegisterInterestForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
-          competition={competition} players={players} registeredPlayers={registeredPlayers} />
-      }
+      <RegisterInterestForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
+        competition={competition} players={players} registeredPlayers={registeredPlayers} />
     </>
   );
 }
@@ -100,7 +92,7 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
           <h6 className=" text-3xl uppercase mt-3 text-center">
-            Find Partner
+            Register Interest
           </h6>
           <p className="text-gray-400 text-sm text-center mb-12">
             <Link href={`/competitions/${competition.slug}`}><a
@@ -140,10 +132,10 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
             <div className="w-full px-4">
               <div className="relative w-full mb-3">
                 <label className="uppercase block font-bold mb-2" htmlFor="grid-password" id="player1">
-                  Other registered players
+                  These players are looking for partner too!
                 </label>
 
-                <p className="block py-4 pb-6  text-gray-600 text-sm italic mb-2">Find and connect with these players via our Facebook group <a className="text-blue-500 underline" href="https://www.facebook.com/groups/464135091348911" target="_blank">here</a></p>
+                <p className="block py-4 pb-6  text-gray-600 text-sm italic mb-2">Connect with them via our <a className="text-blue-500 underline" href="https://www.facebook.com/groups/464135091348911" target="_blank">Facebook</a> group</p>
 
                 <PlayersPicker
                   register={register}
@@ -160,9 +152,6 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
               </div>
             </div>
           </div>
-
-
-
         </div>
       </div>
     </form>);

@@ -7,7 +7,9 @@ export default function PlayersPicker({ register, selectedPlayerNumber, filter, 
 
   return (
     <>
-      <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register(filterName, { required: true })} placeholder="Search by name, point or club" />
+      <input type="text"
+        className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+        {...register(filterName)} placeholder="Search by name, point or club" />
 
       <div className="py-2">
         <PlayerTypeFilter selected={playStyleFilter} setState={(val) => setValue(playerStyleFilterName, val)}></PlayerTypeFilter>
