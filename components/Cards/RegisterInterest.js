@@ -12,7 +12,7 @@ import { db } from '../../lib/firebase';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import { useFirebaseAuth } from '../../components/authhook';
 import { useForm } from "react-hook-form";
-import { ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function RegisterInterest({ competition, players, linkedPlayerId, userRole }) {
@@ -36,10 +36,13 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
       playerId: data.currentPlayer.sys.id,
     };
 
-    // const docRef = await addDoc(collection(db, "competition_interested"), data);
-    // await RevalidatePath(user, `/competitions/${competition?.slug}`);
+    // const docRef = await addDoc(collection(db, "competition_interested_players"), data);
 
     console.log(data);
+    toast('Thanks. Your applicatioon has been submitted');
+    setTimeout(() => {
+      router.push(`/competitions/${competition.slug}`);
+    }, 500);
 
     setSaving(false);
   };
