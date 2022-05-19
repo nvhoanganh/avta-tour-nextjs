@@ -36,13 +36,12 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
       playerId: data.selectedPlayer1.sys.id,
     };
 
-    // const docRef = await addDoc(collection(db, "competition_interested_players"), data);
+    const docRef = await addDoc(collection(db, "competition_interested_players"), data);
 
-    console.log(data);
-    toast('Thanks. Your applicatioon has been submitted');
-    // setTimeout(() => {
-    //   router.push(`/competitions/${competition.slug}`);
-    // }, 500);
+    toast('Thanks. Your application has been submitted');
+    setTimeout(() => {
+      router.push(`/competitions/${competition.slug}`);
+    }, 500);
 
     setSaving(false);
   };
