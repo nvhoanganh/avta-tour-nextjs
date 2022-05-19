@@ -1,5 +1,6 @@
 import ToggleContactDetails from '../../../components/ToggleContactDetails';
 import ToggleTournamentRule from '../../../components/ToggleTournamentRule';
+import PlayerCard from '../../../components/PlayerCard';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import cn from 'classnames';
@@ -44,6 +45,7 @@ export default function Competition({ competition, preview }) {
   const [activeTab, setActiveTab] = useState(0);
   const [courtNames, setCourtNames] = useState('');
   const [userRoles, setUserRoles] = useState(null);
+  const [lookingPartners, setLookingPartners] = useState([]);
   const [hideRules, setHideRules] = useState(false);
   const [hideContacts, setHideContacts] = useState(false);
 
@@ -114,6 +116,7 @@ export default function Competition({ competition, preview }) {
 
   useEffect(async () => {
     if (competition) {
+      console.log("🚀 ~ file: index.js ~ line 121 ~ useEffect ~ competition?.sys?.id", competition?.sys?.id)
       // get list of interested players
       const querySnapshot = await getDocs(query(collection(db, "competition_interested_players"), where("competitionId", "==", competition?.sys?.id)));
       const interestedPlayers = querySnapshot.docs.map(doc => ({
@@ -121,6 +124,7 @@ export default function Competition({ competition, preview }) {
         id: doc.id
       }));
 
+      setLookingPartners(interestedPlayers);
       console.log("🚀 ~ file: index.js ~ line 122 ~ useEffect ~ interestedPlayers", interestedPlayers)
     }
   }, [competition]);
@@ -140,6 +144,11 @@ export default function Competition({ competition, preview }) {
     setActiveTab(2);
     const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?view=teams';
     window.history.pushState({ path: newurl }, '', newurl);
+  };
+
+  const viewLooking = () => {
+    const teams = document.getElementById("lookingForPartner");
+    teams && teams.scrollIntoView();
   };
 
   const viewChat = () => {
@@ -319,7 +328,7 @@ export default function Competition({ competition, preview }) {
                                   <Link href={`/competitions/${competition.slug}/findpartner`}><a
                                     className='bg-indigo-500 active:bg-indigo-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                   >
-                                    Find me a partner
+                                    Find a partner
                                   </a></Link>
                                 </>
                                 : <span className='text-gray-500'>Tournament Completed</span>
@@ -353,9 +362,22 @@ export default function Competition({ competition, preview }) {
                                 {teamJoined}
                               </span>
                               <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewTeams}>
-                                {competition?.schedule ? "Match Schedule" : "View Teams"}
+                                {competition?.schedule ? "Schedule" : "Teams"}
                               </a>
                             </div>
+
+                            {
+                              lookingPartners?.length > 0
+                              && <div className='mr-4 p-3 text-center'>
+                                <span className='text-xl font-bold block uppercase tracking-wide text-green-600'>
+                                  {lookingPartners?.length}
+                                </span>
+                                <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewLooking}>
+                                  Looking
+                                </a>
+                              </div>
+                            }
+
                             <div className='mr-4 p-3 text-center'>
                               <span className='text-xl font-bold block uppercase tracking-wide text-green-700'>
                                 {teamJoined > 0
@@ -542,6 +564,18 @@ export default function Competition({ competition, preview }) {
                             </div>
 
                             <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5">Loading comments...</div>
+
+                            {/* show list of players */}
+
+                            {lookingPartners?.length > 0 &&
+                              < section >
+                                <div id="lookingForPartner" className="text-3xl pt-6">Looking for partner</div>
+                                <div className='mt-10'>
+                                  {lookingPartners.map((player) => (
+                                    <PlayerCard player={player.player} key={player.playerId} size="md" showSelect={false} />
+                                  ))}
+                                </div>
+                              </section>}
 
                             {competition.appliedTeams?.length > 0 && !competition?.groupsAllocation &&
                               <section>
