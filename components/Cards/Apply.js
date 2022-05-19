@@ -149,7 +149,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
   const isValid = () => {
     return !!selectedPlayer1 && !!selectedPlayer2 &&
       selectedPlayer1?.sys?.id !== selectedPlayer2?.sys?.id
-      && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= competition.maxPoint
+      && ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) <= (competition.maxPoint + 10)
       && !!agreed
   }
 
@@ -170,7 +170,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
           <p className="text-gray-400 text-sm mt-3 mb-6 text-center">{format(new Date(competition.date), 'LLLL	d, yyyy')} @ {competition.club}
           </p>
           <h6 className="text-sm mt-3 mb-14 text-center">
-            Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
+            Point: <span className="text-green-600">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0)) || '0'}</span> / <span className="text-red-600">{competition.maxPoint + 10 - ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0))}</span>
           </h6>
           {
             selectedPlayer1 && selectedPlayer2
@@ -230,6 +230,14 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                   </> :
                   <PlayerCard player={selectedPlayer2} size="md" showSelect buttonText="Clear" buttonColor="bg-red-500" onSelect={(player) => setValue('selectedPlayer2', null)} />
                 }
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap pt-16">
+            <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
+              <div>
+                <span className="font-bold text-yellow-600">Warning</span>: Your Team total point is {((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint)} over limit
               </div>
             </div>
           </div>

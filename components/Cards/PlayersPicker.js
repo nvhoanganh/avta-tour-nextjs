@@ -3,7 +3,7 @@ import PlayerCard from '../PlayerCard';
 import PlayerTypeFilter from './PlayerTypeFilter';
 
 export default function PlayersPicker({ register, selectedPlayerNumber, filter, competition, otherPlayer, players, setValue, playStyleFilter, playerStyleFilterName, filterName, showSelect }) {
-  const filteredPlayers = getPlayers(players, 'Point', filter, competition.maxPoint - (otherPlayer?.avtaPoint || 0), playStyleFilter);
+  const filteredPlayers = getPlayers(players, 'Point', filter, competition.maxPoint + 10 - (otherPlayer?.avtaPoint || 0), playStyleFilter);
 
   return (
     <>
@@ -15,7 +15,7 @@ export default function PlayersPicker({ register, selectedPlayerNumber, filter, 
         <PlayerTypeFilter selected={playStyleFilter} setState={(val) => setValue(playerStyleFilterName, val)}></PlayerTypeFilter>
       </div>
 
-      <div className="text-gray-400 text-sm italic text-center">{filteredPlayers.length} available players with point less than {competition.maxPoint - (otherPlayer?.avtaPoint || 0)}</div>
+      <div className="text-gray-400 text-sm italic text-center">{filteredPlayers.length} available players with point less than {competition.maxPoint + 10 - (otherPlayer?.avtaPoint || 0)}</div>
       <div className='flex flex-wrap justify-center pt-5 items-center'>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-5 mb-32 w-full'>
           {filteredPlayers.map((player) => (
