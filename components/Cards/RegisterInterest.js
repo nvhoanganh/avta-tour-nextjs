@@ -116,7 +116,7 @@ function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPla
 
           <p className="mt-3 mb-16">
             Once you have registered your interest in playing this tournament, people will see your name under <strong>Looking for partner</strong> section on the tournament home page.
-            Players can reach out to you by joining our <a href="https://www.facebook.com/groups/464135091348911" target="_blank">Facebook</a> group.
+            Players can reach out to you by joining our <a href="https://www.facebook.com/groups/464135091348911" className="underline text-blue-600" target="_blank">Facebook</a> group.
             <br /><br />
             Once you have found a suitable partner. You can apply and pay <Link href={`/competitions/${competition.slug}/apply`}><a
               className='underline'

@@ -570,7 +570,10 @@ export default function Competition({ competition, preview }) {
                             {lookingPartners?.length > 0 &&
                               < section >
                                 <div id="lookingForPartner" className="text-3xl pt-6">Looking for partner</div>
-                                <div className='mt-10'>
+                                <p className="mt-3 mb-16">
+                                  Joining our <a href="https://www.facebook.com/groups/464135091348911" className="underline text-blue-600" target="_blank">Facebook</a> group to contact these players
+                                </p>
+                                <div className='mt-10 grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 my-8'>
                                   {lookingPartners.map((player) => (
                                     <PlayerCard player={player.player} key={player.playerId} size="md" showSelect={false} />
                                   ))}
