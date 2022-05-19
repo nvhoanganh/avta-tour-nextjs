@@ -58,7 +58,7 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
       <ToastContainer />
       {
         saving
-          ? <><div className="text-center py-24"><Spinner size="lg" color="blue" />Saving result. Please wait..</div> :</>
+          ? <><div className="text-center py-24"><Spinner size="lg" color="blue" />Saving result. Please wait..</div></>
           : <SubmitLadderScoreForm onSubmit={onSubmit} saving={saving}
             ladder={ladder} allPlayers={allPlayers} />
       }
