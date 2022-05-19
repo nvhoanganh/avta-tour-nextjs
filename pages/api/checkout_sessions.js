@@ -1,14 +1,14 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-  const { applicationId, competition } = req.query;
+  const { applicationId, competition, priceId } = req.query;
   if (req.method === 'POST') {
     try {
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create({
         line_items: [
           {
-            price: process.env.STRIPE_PRICE,
+            price: priceId,
             quantity: 1,
           },
         ],

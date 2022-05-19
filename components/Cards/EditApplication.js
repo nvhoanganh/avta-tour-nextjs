@@ -172,7 +172,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
         registeredTeam &&
         <div className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center">
           <ApplyForCompForm onSubmit={onSubmit} saving={saving} linkedPlayerId={linkedPlayerId}
-            competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} paid={registeredTeam.paid}
+            competition={competition} players={avaiPlayers} rule={rule} userRole={userRole} paid={registeredTeam.paidOn}
             currentPlayer1={registeredTeam.player1} currentPlayer2={registeredTeam.player2} deleteTeam={deleteTeam}
           />
         </div>

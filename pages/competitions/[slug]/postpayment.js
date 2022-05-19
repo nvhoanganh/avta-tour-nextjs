@@ -35,7 +35,7 @@ export default function Apply({ competition, allPlayers, preview }) {
     }
 
     if (query.get('canceled')) {
-      setPaymentError(`It looks like you click Cancelled on Stripe checkout page. You can also use PayID $${competition.costPerTeam} to pay for the application`);
+      setPaymentError(`It looks like you click Cancelled on Stripe checkout page. You can also use PayID to pay for the application fee`);
     }
   }, []);
 

@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import { loadStripe } from '@stripe/stripe-js';
 import PlayerCard from '../../components/PlayerCard';
-import { RevalidatePath, removeRegisteredPlayer } from '../../lib/browserapi';
+import { RevalidatePath, removeRegisteredPlayer, getPriceId } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import { useFirebaseAuth } from '../../components/authhook';
@@ -50,6 +50,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
       paid: false,
+      isOverLimit: ((data.selectedPlayer1.avtaPoint || 0) + (data.selectedPlayer2.avtaPoint || 0) - competition.maxPoint) > 0
     };
 
     const docRef = await addDoc(collection(db, "competition_applications"), data);
@@ -64,7 +65,6 @@ export default function ApplyForCompetition({ competition, players, rule, linked
     setRegisteredTeam({
       id: docRef.id,
       ...data,
-      isOverLimit: ((data.player1.avtaPoint || 0) + (data.player2.avtaPoint || 0) - competition.maxPoint) > 0
     });
   };
 
@@ -94,7 +94,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
 
       {registeredTeam &&
         <>
-          <form action={`/api/checkout_sessions?applicationId=${registeredTeam?.id}&competition=${router.query.slug}`} method="POST"
+          <form action={`/api/checkout_sessions?applicationId=${registeredTeam?.id}&competition=${router.query.slug}&priceId=${getPriceId(competition, registeredTeam)}`} method="POST"
             className="relative flex flex-col min-w-0 break-words mb-6  border-0 justify-center items-center"
           >
             <p className="uppercase py-2 h1">Application received</p>
@@ -257,7 +257,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                           className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
                         />
                         <span className='ml-2 text-sm font-semibold text-gray-600'>
-                          I agree to sponsor additional ${competition.additionalCostWhenLimit}.00 which will go to Food and Beverages fund
+                          I agree to sponsor additional ${competition.additionalCostWhenLimit}.00 which will go to tournament's Food and Beverages fund
                         </span>
                       </label>
                     </div>
