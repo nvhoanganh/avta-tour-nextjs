@@ -2,8 +2,8 @@ import { getPlayers } from '../../lib/browserapi';
 import PlayerCard from '../PlayerCard';
 import PlayerTypeFilter from './PlayerTypeFilter';
 
-export default function PlayersPicker({ register, selectedPlayerNumber, filter, competition, otherPlayer, players, setValue, playStyleFilter, playerStyleFilterName, filterName }) {
-  const filteredPlayers = getPlayers(players, 'Point', filter, competition.maxPoint - (otherPlayer?.avtaPoint || 0));
+export default function PlayersPicker({ register, selectedPlayerNumber, filter, competition, otherPlayer, players, setValue, playStyleFilter, playerStyleFilterName, filterName, showSelect }) {
+  const filteredPlayers = getPlayers(players, 'Point', filter, competition.maxPoint - (otherPlayer?.avtaPoint || 0), playStyleFilter);
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function PlayersPicker({ register, selectedPlayerNumber, filter, 
       <div className='flex flex-wrap justify-center pt-5 items-center'>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-5 mb-32 w-full'>
           {filteredPlayers.map((player) => (
-            <PlayerCard player={player} key={player.sys.id} size="md" showSelect onSelect={(player) => {
+            <PlayerCard player={player} key={player.sys.id} size="md" showSelect={showSelect} onSelect={(player) => {
               setValue(selectedPlayerNumber, player);
             }} />
           ))}

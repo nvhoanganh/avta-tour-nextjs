@@ -295,13 +295,20 @@ export default function Competition({ competition, preview }) {
                         <div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right text-center lg:self-center'>
                           <div className='py-6 mt-24 sm:mt-0 flex flex-col sm:flex-row justify-end'>
                             {
-                              competition.active
+                              !competition.active
                                 ?
-                                <Link href={`/competitions/${competition.slug}/apply`}><a
-                                  className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                                >
-                                  Apply Now
-                                </a></Link>
+                                <>
+                                  <Link href={`/competitions/${competition.slug}/apply`}><a
+                                    className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                  >
+                                    Apply Now
+                                  </a></Link>
+                                  <Link href={`/competitions/${competition.slug}/findpartner`}><a
+                                    className='bg-indigo-500 active:bg-indigo-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                  >
+                                    Help me find a partner
+                                  </a></Link>
+                                </>
                                 : <span className='text-gray-500'>Tournament Completed</span>
                             }
 

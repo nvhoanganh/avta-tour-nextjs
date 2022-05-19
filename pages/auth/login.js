@@ -141,6 +141,9 @@ export default function Login() {
 													{reason === 'apply'
 														&& 'You will need to login to apply'
 													}
+													{reason === 'findpartner'
+														&& 'You will need to login to find partner'
+													}
 													{reason === 'messagemember'
 														&& 'You need to login before we can show player contact details'
 													}

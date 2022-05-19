@@ -191,6 +191,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                       players={players}
                       filter={player1}
                       filterName="player1"
+                      showSelect={true}
                       setValue={setValue}
                       playStyleFilter={player1Style}
                       playerStyleFilterName="player1Style"
@@ -217,6 +218,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                       players={players}
                       filter={player2}
                       filterName="player2"
+                      showSelect={true}
                       setValue={setValue}
                       playStyleFilter={player2Style}
                       playerStyleFilterName="player2Style"
