@@ -1,15 +1,12 @@
 import { format } from 'date-fns'
 import Link from 'next/link'
-import PostBody from '../../components/post-body';
 import SaveButton from '../../components/savebutton';
-import Stripepaymentinfo from '../../components/stripepaymentinfo';
 import PlayersPicker from '../../components/Cards/PlayersPicker';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react'
 import PlayerCard from '../../components/PlayerCard';
-import { RevalidatePath } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
-import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
+import { setDoc, query, collection, getDocs, doc, where } from "firebase/firestore";
 import { useFirebaseAuth } from '../../components/authhook';
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
@@ -36,12 +33,12 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
       playerId: data.selectedPlayer1.sys.id,
     };
 
-    const docRef = await addDoc(collection(db, "competition_interested_players"), data);
+    const docRef = await setDoc(doc(db, "competition_interested_players", `${data.competitionId}_${data.playerId}`), data);
 
     toast('Thanks. Your application has been submitted');
     setTimeout(() => {
       router.push(`/competitions/${competition.slug}`);
-    }, 500);
+    }, 100);
 
     setSaving(false);
   };

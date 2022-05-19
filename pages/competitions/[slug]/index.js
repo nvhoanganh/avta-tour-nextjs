@@ -32,14 +32,14 @@ import MatchScheduleCard from '../../../components/Cards/MatchScheduleCard';
 import MatchScheduleGrid from '../../../components/Cards/MatchScheduleGrid';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
-import { useFirebaseAuth } from '../../../components/authhook';
+import { useFirebaseAuth } from '../../../components/authhook2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
+import { query, collection, doc, getDocs, getDoc, where, setDoc, deleteDoc } from "firebase/firestore";
 import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
-  const { user, loadingAuth } = useFirebaseAuth();
+  const { user, loadingAuth, fullProfile } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
@@ -48,6 +48,7 @@ export default function Competition({ competition, preview }) {
   const [lookingPartners, setLookingPartners] = useState([]);
   const [hideRules, setHideRules] = useState(false);
   const [hideContacts, setHideContacts] = useState(false);
+
 
   const refreshData = async () => {
     toast("Refreshing. Please wait...");
@@ -116,7 +117,6 @@ export default function Competition({ competition, preview }) {
 
   useEffect(async () => {
     if (competition) {
-      console.log("🚀 ~ file: index.js ~ line 121 ~ useEffect ~ competition?.sys?.id", competition?.sys?.id)
       // get list of interested players
       const querySnapshot = await getDocs(query(collection(db, "competition_interested_players"), where("competitionId", "==", competition?.sys?.id)));
       const interestedPlayers = querySnapshot.docs.map(doc => ({
@@ -125,7 +125,6 @@ export default function Competition({ competition, preview }) {
       }));
 
       setLookingPartners(interestedPlayers);
-      console.log("🚀 ~ file: index.js ~ line 122 ~ useEffect ~ interestedPlayers", interestedPlayers)
     }
   }, [competition]);
 
@@ -149,6 +148,15 @@ export default function Competition({ competition, preview }) {
   const viewLooking = () => {
     const teams = document.getElementById("lookingForPartner");
     teams && teams.scrollIntoView();
+  };
+
+  const removeMe = async (player) => {
+    console.log('remove player', player);
+    if (confirm('Are you sure?')) {
+      await deleteDoc(doc(db, "competition_interested_players", `${competition.sys.id}_${player.playerId}`));
+      toast("Your registration has been removed");
+      setTimeout(() => window.location.reload(), 200);
+    }
   };
 
   const viewChat = () => {
@@ -325,11 +333,15 @@ export default function Competition({ competition, preview }) {
                                   >
                                     Apply Now
                                   </a></Link>
-                                  <Link href={`/competitions/${competition.slug}/findpartner`}><a
-                                    className='bg-indigo-500 active:bg-indigo-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
-                                  >
-                                    Find a partner
-                                  </a></Link>
+                                  {
+                                    !lookingPartners?.find(x => x.playerId === fullProfile?.playerId) &&
+                                    <Link href={`/competitions/${competition.slug}/findpartner`}><a
+                                      className='bg-indigo-500 active:bg-indigo-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                                    >
+                                      Find a partner
+                                    </a></Link>
+                                  }
+
                                 </>
                                 : <span className='text-gray-500'>Tournament Completed</span>
                             }
@@ -575,7 +587,10 @@ export default function Competition({ competition, preview }) {
                                 </p>
                                 <div className='mt-10 grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 my-8'>
                                   {lookingPartners.map((player) => (
-                                    <PlayerCard player={player.player} key={player.playerId} size="md" showSelect={false} />
+                                    <PlayerCard player={player.player} key={player.playerId} size="md" showSelect={
+                                      userRoles?.superuser || !!lookingPartners?.find(x => x.playerId === fullProfile?.playerId)
+                                    }
+                                      buttonText="Remove" buttonColor="bg-red-500" onSelect={(player) => removeMe(player)} />
                                   ))}
                                 </div>
                               </section>}
