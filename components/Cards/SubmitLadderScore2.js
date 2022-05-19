@@ -40,7 +40,9 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
       delete toSubmit.losers
 
       const docRef = await addDoc(collection(db, "ladder_results"), toSubmit);
-      await RevalidatePath(user, `/ladders/${ladder.id}`);
+      if (!data.submitAnother) {
+        await RevalidatePath(user, `/ladders/${ladder.id}`);
+      }
 
       toast("Result submitted!");
       setSaving(false)
@@ -195,6 +197,15 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                 <label className="inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("isBagel")} />
                   <span className="ml-2 text-sm font-semibold text-blueGray-600">Is Bagel</span>
+                </label>
+              </div>
+            </div>
+
+            <div className="w-full lg:w-6/12 px-4 py-4">
+              <div className="relative w-full mb-3">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("submitAnother")} />
+                  <span className="ml-2 text-sm font-semibold text-blueGray-600">Submit another after this</span>
                 </label>
               </div>
             </div>
