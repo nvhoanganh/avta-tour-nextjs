@@ -124,6 +124,7 @@ export default function Competition({ competition, preview }) {
         ...doc.data(),
         id: doc.id
       }));
+      console.log("🚀 ~ file: index.js ~ line 127 ~ useEffect ~ interestedPlayers", interestedPlayers)
 
       setLookingPartners(interestedPlayers);
     }
@@ -174,6 +175,10 @@ export default function Competition({ competition, preview }) {
 
   const editTeam = async (team) => {
     router.push(`/competitions/${router.query.slug}/editteam?teamId=${team.id}`);
+  }
+
+  const viewProfile = (player) => {
+    router.push(`/players/${player.sys.id}`);
   }
 
   const ConfigureSchedule = () => (
@@ -335,7 +340,9 @@ export default function Competition({ competition, preview }) {
                                     Apply Now
                                   </a></Link>
                                   {
-                                    !lookingPartners?.find(x => x.playerId === fullProfile?.playerId) &&
+                                    !lookingPartners?.find(x => x.playerId === fullProfile?.playerId)
+                                    && !competition.appliedTeams?.find(x => x.player1Id === fullProfile?.playerId || x.player2Id === fullProfile?.playerId)
+                                    &&
                                     <Link href={`/competitions/${competition.slug}/findpartner`}><a
                                       className='bg-indigo-500 active:bg-indigo-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                     >
@@ -386,7 +393,7 @@ export default function Competition({ competition, preview }) {
                                   {lookingPartners?.length}
                                 </span>
                                 <a className='text-sm text-gray-400 underline hover:cursor-pointer' onClick={viewLooking}>
-                                  Looking
+                                  Interested
                                 </a>
                               </div>
                             }
@@ -588,10 +595,9 @@ export default function Competition({ competition, preview }) {
                                 </p>
                                 <div className='mt-10 grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 my-8'>
                                   {lookingPartners.map((player) => (
-                                    <PlayerCard player={player.player} key={player.playerId} size="md" showSelect={
-                                      userRoles?.superuser || !!lookingPartners?.find(x => x.playerId === fullProfile?.playerId)
-                                    }
-                                      buttonText="Remove" buttonColor="bg-red-500" onSelect={(player) => removeMe(player)} />
+                                    <PlayerCard player={player.player} key={player.playerId} size="md" showSelect
+                                      buttonColor={player.playerId === fullProfile?.playerId || userRoles?.superuser ? "bg-red-500" : "bg-blue-500"}
+                                      buttonText={player.playerId === fullProfile?.playerId || userRoles?.superuser ? "Remove" : "View"} onSelect={(player) => player.playerId === fullProfile?.playerId || userRoles?.superuser ? removeMe(player) : viewProfile(player)} />
                                   ))}
                                 </div>
                               </section>}
