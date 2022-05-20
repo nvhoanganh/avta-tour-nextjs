@@ -242,7 +242,7 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                     <span className="font-bold text-yellow-600">Warning</span>: Your Team is <span className="font-bold">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint)} pt.</span> over the tournament limit of <span className="font-bold">{competition.maxPoint} pt.</span>
                     {
                       (competition.additionalCostWhenLimit || 0) > 0 && <div className="flex flex-wrap py-2">
-                        As per tournament announcement, an additional <span className="font-bold mx-1">${competition.additionalCostWhenLimit}.00</span> will be added to your application fee (Total of <span className="font-bold mx-1">${competition.costPerTeam + competition.additionalCostWhenLimit}.00</span>)
+                        As per tournament announcement, an additional ${competition.additionalCostWhenLimit}.00 will be added to your application fee (Total of ${competition.costPerTeam + competition.additionalCostWhenLimit}.00)
                       </div>
                     }
                   </div>
