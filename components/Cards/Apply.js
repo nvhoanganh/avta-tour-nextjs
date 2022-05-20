@@ -28,9 +28,6 @@ export default function ApplyForCompetition({ competition, players, rule, linked
   const [registeredTeam, setRegisteredTeam] = useState(null);
   const [avaiPlayers, setAvaiPlayers] = useState(players);
   const { user, loadingAuth } = useFirebaseAuth();
-  console.log("🚀 ~ file: Apply.js ~ line 26 ~ ApplyForCompetition ~ competition", competition)
-
-
 
   const onSubmit = async data => {
     setSaving(true)
@@ -55,8 +52,8 @@ export default function ApplyForCompetition({ competition, players, rule, linked
 
     const docRef = await addDoc(collection(db, "competition_applications"), data);
     await RevalidatePath(user, `/competitions/${competition?.slug}`);
-    // remove from
 
+    // remove from interested list
     await removeRegisteredPlayer(competition, data.player1);
     await removeRegisteredPlayer(competition, data.player2);
 
@@ -242,13 +239,32 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
               <div className="flex flex-wrap pt-16">
                 <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
                   <div>
-                    <span className="font-bold text-yellow-600">Warning</span>: Your Team is {((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint)}pt over limit
+                    <span className="font-bold text-yellow-600">Warning</span>: Your Team is <span className="font-bold">{((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint)} pt.</span> over the tournament limit of <span className="font-bold">{competition.maxPoint} pt.</span>
+                    {
+                      (competition.additionalCostWhenLimit || 0) > 0 && <div className="flex flex-wrap py-2">
+                        As per tournament announcement, an additional <span className="font-bold mx-1">${competition.additionalCostWhenLimit}.00</span> will be added to your application fee (Total of <span className="font-bold mx-1">${competition.costPerTeam + competition.additionalCostWhenLimit}.00</span>)
+                      </div>
+                    }
                   </div>
                 </div>
               </div>
+            </>
+          }
+
+
+
+          <div className="flex flex-wrap pt-16">
+            <div className="relative w-full text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
+              <div className="uppercase text-lg font-bold pb-8">
+                Please read and agree
+              </div>
+              <div id="rule" className="pb-12">
+                <PostBody content={rule} />
+              </div>
               {
+                ((selectedPlayer1?.avtaPoint || 0) + (selectedPlayer2?.avtaPoint || 0) - competition.maxPoint) > 0 &&
                 (competition.additionalCostWhenLimit || 0) > 0 && <div className="flex flex-wrap">
-                  <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
+                  <div className="relative w-full text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
                     <div>
                       <label className='inline-flex items-center cursor-pointer'>
                         <input
@@ -257,21 +273,13 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
                           className='form-checkbox border-0 rounded text-gray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150'
                         />
                         <span className='ml-2 text-sm font-semibold text-gray-600'>
-                          I agree to sponsor additional ${competition.additionalCostWhenLimit}.00 which will go to tournament's Food and Beverages fund
+                          I agree to sponsor additional ${competition.additionalCostWhenLimit}.00
                         </span>
                       </label>
                     </div>
                   </div>
                 </div>
               }
-            </>
-          }
-
-          <div className="flex flex-wrap pt-16">
-            <div className="relative w-full mb-3 text-left flex flex-col items-center space-y-2 sm:space-y-0 justify-center">
-              <div id="rule">
-                <PostBody content={rule} />
-              </div>
               <div>
                 <label className='inline-flex items-center cursor-pointer'>
                   <input
@@ -287,7 +295,9 @@ function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linked
             </div>
           </div>
 
-          <div className="flex flex-wrap pt-16">
+
+
+          <div className="flex flex-wrap pt-12">
             <div className="w-full lg:w-12/12 px-4">
               <div className="relative w-full mb-3 text-left lg:text-right flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 justify-center">
                 {
