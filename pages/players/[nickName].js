@@ -338,7 +338,7 @@ export default function Player({ player, preview }) {
 													}
 
 													{showMobile &&
-														<div className="mt-10 py-10 border-t border-gray-200 text-center">
+														<div className="mt-10 py-10 text-center">
 															<div className="flex flex-wrap justify-center">
 																<div className="w-full lg:w-9/12 px-4">
 																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
@@ -364,7 +364,7 @@ export default function Player({ player, preview }) {
 														&& player?.allowContact
 														&& !showMobile
 														&&
-														<button className='get-started text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+														<button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
 															onClick={sendMessageToPlayer}
 														>
 															Show Contact Details
@@ -405,42 +405,47 @@ export default function Player({ player, preview }) {
 function PastResults({ player }) {
 	return <div>
 		<div className="font-bold py-3">Tournament Results</div>
+		<div className="italic">Coming soon..</div>
 		<div className="font-bold py-3">Ladder Results</div>
+		<div className="italic">Coming soon..</div>
 	</div>
 }
 
 function KeyStats({ player }) {
 	return <div>
 		<div className="font-bold py-3">Match Won</div>
+		<div className="italic">Coming soon..</div>
 		<div className="font-bold py-3">Best Partners</div>
+		<div className="italic">Coming soon..</div>
 		<div className="font-bold py-3">Worst Partners</div>
+		<div className="italic">Coming soon..</div>
 	</div>
 }
 
 function PlayerYoutubeVideo({ player }) {
+	const YoutubeEmbed = ({ url }) => (
+		<iframe height="315" className="w-full" src={`https://www.youtube.com/embed/${getEmbedUrl(url)}`} title="YouTube video player" frameborder="0"
+			allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+	)
 	return <div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-16'>
 		{player?.forehandYoutubeVideo && <div className='font-bold py-2'>
 			<div className='font-bold py-2 text-left uppercase'>Forehand</div>
-			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.forehandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<YoutubeEmbed url={player?.forehandYoutubeVideo}></YoutubeEmbed>
 		</div>}
 
 		{player?.backhandYoutubeVideo && <div className='font-bold py-2'>
 			<div className='font-bold py-2 text-left uppercase'>Backhand</div>
-			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.backhandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<YoutubeEmbed url={player?.backhandYoutubeVideo}></YoutubeEmbed>
 		</div>}
 
 		{player?.serveYoutubeVideo && <div className='font-bold py-2'>
 			<div className='font-bold py-2 text-left uppercase'>Serve</div>
-			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.serveYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<YoutubeEmbed url={player?.serveYoutubeVideo}></YoutubeEmbed>
 		</div>}
 
 		{player?.volleyYoutubeVideo && <div className='font-bold py-2'>
 			<div className='font-bold py-2 text-left uppercase'>Volley</div>
-			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.volleyYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			<YoutubeEmbed url={player?.volleyYoutubeVideo}></YoutubeEmbed>
 		</div>}
 	</div>
 }
