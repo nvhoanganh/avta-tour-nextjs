@@ -6,7 +6,6 @@ import { initializeApp, getApps, cert } from 'firebase-admin/app';
 export default async function handler(req, res) {
   try {
     const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    console.log(session);
     const customer = await stripe.customers.retrieve(session.customer);
 
     initFirebase();
@@ -19,6 +18,15 @@ export default async function handler(req, res) {
         amount_paid: session.amount_total,
         payment_intent: session.payment_intent,
       })
+
+    // rebuild
+    try {
+      console.log('rebuilding after success payment', `/competitions/${req.query.competition}`);
+      await res.unstable_revalidate(`/competitions/${req.query.competition}`)
+      console.log('rebuild completed successfully', `/competitions/${req.query.competition}`);
+    } catch (error) {
+      console.log('Error rebuilding', error);
+    }
 
     res.status(200).json({
       success: true,

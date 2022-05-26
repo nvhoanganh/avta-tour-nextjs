@@ -20,7 +20,7 @@ export default function Apply({ competition, allPlayers, preview }) {
     if (query.get('success')) {
       const session_id = query.get('session_id');
       const applicationId = query.get('applicationId');
-      return fetch(`/api/get_session?session_id=${query.get('session_id')}`)
+      return fetch(`/api/get_session?session_id=${query.get('session_id')}&competition=${competition.slug}`)
         .then(response => response.json())
         .then((rsp) => {
           if (rsp.success) {
