@@ -26,6 +26,7 @@ import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
 import { findLinkedUsers } from '../../lib/backendapi';
+import { getEmbedUrl } from '../../lib/browserapi';
 import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -38,6 +39,7 @@ const NOT_LOGGEDIN_UNCLAIMED = 'NOT_LOGGEDIN_UNCLAIMED';
 const NOT_LOGGEDIN_CLAIMED = 'NOT_LOGGEDIN_CLAIMED';
 
 export default function Player({ player, preview }) {
+	console.log("🚀 ~ file: [nickName].js ~ line 41 ~ Player ~ player", player)
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
 	const [showMobile, setShowMobile] = useState(false);
@@ -290,6 +292,35 @@ export default function Player({ player, preview }) {
 												</div>
 											</div>
 										}
+
+										<div className='flex flex-wrap justify-center'>
+											<div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-16'>
+												{player?.forehandYoutubeVideo && <div className='font-bold py-2'>
+													<div className='font-bold py-2 text-left uppercase'>Forehand</div>
+													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.forehandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+												</div>}
+
+												{player?.backhandYoutubeVideo && <div className='font-bold py-2'>
+													<div className='font-bold py-2 text-left uppercase'>Backhand</div>
+													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.backhandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+												</div>}
+
+												{player?.serveYoutubeVideo && <div className='font-bold py-2'>
+													<div className='font-bold py-2 text-left uppercase'>Serve</div>
+													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.serveYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+												</div>}
+
+												{player?.volleyYoutubeVideo && <div className='font-bold py-2'>
+													<div className='font-bold py-2 text-left uppercase'>Volley</div>
+													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.volleyYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+												</div>}
+											</div>
+										</div>
+
 
 										<div className='mt-10 py-10 text-center'>
 											<div className='flex flex-wrap justify-center'>
