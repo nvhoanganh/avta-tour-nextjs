@@ -68,14 +68,6 @@ export default function EditMyProfile() {
 
     await setDoc(docRef, updated);
 
-    if (updated.playerId) {
-      // need to load this twice for Vercel to rebuild the app
-      await fetch(`/players/${updated.playerId}`);
-      setTimeout(() => {
-        fetch(`/players/${updated.playerId}`);
-      }, 1500);
-    }
-
     saveProfilePhoto('photo', null);
     setUserprofile(curr => ({ ...curr, photoURL }));
     toast("Avatar Updated");

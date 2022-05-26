@@ -63,7 +63,7 @@ export default function Competition({ competition, preview }) {
     if (confirm('Are you sure you want to delete?')) {
       try {
         await deleteDoc(doc(db, "competition_results", record.id));
-        toast("Deleted!, You need to TWICE for the change to take effect!");
+        toast("Result Deleted!");
       } catch (error) {
         toast.error("Delete failed! Reload page and try again, this record might be already deleted");
       }
