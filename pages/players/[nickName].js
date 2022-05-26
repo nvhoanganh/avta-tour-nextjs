@@ -6,6 +6,7 @@ import ErrorPage from 'next/error';
 import FirebaseImage from '../../components/fb-image';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
+import Tabs from '../../components/tabs';
 import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
@@ -39,7 +40,6 @@ const NOT_LOGGEDIN_UNCLAIMED = 'NOT_LOGGEDIN_UNCLAIMED';
 const NOT_LOGGEDIN_CLAIMED = 'NOT_LOGGEDIN_CLAIMED';
 
 export default function Player({ player, preview }) {
-	console.log("🚀 ~ file: [nickName].js ~ line 41 ~ Player ~ player", player)
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
 	const [showMobile, setShowMobile] = useState(false);
@@ -282,45 +282,16 @@ export default function Player({ player, preview }) {
 
 										{
 											player.aboutMe
-											&& <div className="mt-10 py-10 border-t border-gray-200 text-center">
+											&& <div className="mt-10 text-center">
 												<div className="flex flex-wrap justify-center">
 													<div className="w-full lg:w-9/12 px-4">
-														<p className="mb-4 text-lg leading-relaxed text-gray-700">
-															{player.aboutMe}
+														<p className="mb-4 text-lg leading-relaxed text-gray-700 italic">
+															"{player.aboutMe}"
 														</p>
 													</div>
 												</div>
 											</div>
 										}
-
-										<div className='flex flex-wrap justify-center'>
-											<div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-16'>
-												{player?.forehandYoutubeVideo && <div className='font-bold py-2'>
-													<div className='font-bold py-2 text-left uppercase'>Forehand</div>
-													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.forehandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-												</div>}
-
-												{player?.backhandYoutubeVideo && <div className='font-bold py-2'>
-													<div className='font-bold py-2 text-left uppercase'>Backhand</div>
-													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.backhandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-												</div>}
-
-												{player?.serveYoutubeVideo && <div className='font-bold py-2'>
-													<div className='font-bold py-2 text-left uppercase'>Serve</div>
-													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.serveYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-												</div>}
-
-												{player?.volleyYoutubeVideo && <div className='font-bold py-2'>
-													<div className='font-bold py-2 text-left uppercase'>Volley</div>
-													<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.volleyYoutubeVideo)}`} title="YouTube video player" frameborder="0"
-														allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-												</div>}
-											</div>
-										</div>
-
 
 										<div className='mt-10 py-10 text-center'>
 											<div className='flex flex-wrap justify-center'>
@@ -408,18 +379,72 @@ export default function Player({ player, preview }) {
 											&& <SendOtp mobileNumber={player.mobileNumber} playerId={player?.sys?.id} done={profileClaimed}></SendOtp>
 										}
 
-
-
+										<div className='flex flex-wrap justify-center mx-0 md:mx-10'>
+											<Tabs
+												titles="Skill,Results,Stats"
+												contents={[
+													<PlayerYoutubeVideo player={player} />,
+													<PastResults player={player} />,
+													<KeyStats player={player} />,
+												]}
+											>
+											</Tabs>
+										</div>
 									</div>
 								</div>
 							</div>
 						</section>
 					</main>
 				</>
-			)}
-		</Layout>
+			)
+			}
+		</Layout >
 	);
 }
+
+function PastResults({ player }) {
+	return <div>
+		<div className="font-bold py-3">Tournament Results</div>
+		<div className="font-bold py-3">Ladder Results</div>
+	</div>
+}
+
+function KeyStats({ player }) {
+	return <div>
+		<div className="font-bold py-3">Match Won</div>
+		<div className="font-bold py-3">Best Partners</div>
+		<div className="font-bold py-3">Worst Partners</div>
+	</div>
+}
+
+function PlayerYoutubeVideo({ player }) {
+	return <div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-16'>
+		{player?.forehandYoutubeVideo && <div className='font-bold py-2'>
+			<div className='font-bold py-2 text-left uppercase'>Forehand</div>
+			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.forehandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>}
+
+		{player?.backhandYoutubeVideo && <div className='font-bold py-2'>
+			<div className='font-bold py-2 text-left uppercase'>Backhand</div>
+			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.backhandYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>}
+
+		{player?.serveYoutubeVideo && <div className='font-bold py-2'>
+			<div className='font-bold py-2 text-left uppercase'>Serve</div>
+			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.serveYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>}
+
+		{player?.volleyYoutubeVideo && <div className='font-bold py-2'>
+			<div className='font-bold py-2 text-left uppercase'>Volley</div>
+			<iframe width="560" height="315" src={`https://www.youtube.com/embed/${getEmbedUrl(player?.volleyYoutubeVideo)}`} title="YouTube video player" frameborder="0"
+				allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>}
+	</div>
+}
+
 
 export async function getStaticProps({ params, preview = false }) {
 	let data = await getPlayerById(params.nickName, preview);
