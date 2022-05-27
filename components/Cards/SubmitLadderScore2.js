@@ -71,10 +71,12 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
   const { register, reset, handleSubmit, watch, setValue, errors, getValues } = useForm({ mode: "onBlur" });
   const winners = watch('winners') || [];
   const selectedWinners = allPlayers.filter(x => winners.indexOf(x.sys.id) !== -1);
+  const selectedWinnersPoint = selectedWinners.reduce((p, player) => p + player.avtaPoint, 0);
   const losers = watch('losers') || []
   const loserSet = watch('gameWonByLosers')
   const winnerSet = watch('gameWonByWinners')
   const selectedLosers = allPlayers.filter(x => losers.indexOf(x.sys.id) !== -1);
+  const selectedLosersPoint = selectedLosers.reduce((p, player) => p + player.avtaPoint, 0);
 
   const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
 
@@ -120,7 +122,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                   }
                 </div> :
                   <div>
-                    <span>{selectedWinners.map(x => `${x.fullName} [${x.avtaPoint}]`).join(' & ')}</span>
+                    <span>{selectedWinners.map(x => `${x.fullName} [${x.avtaPoint}]`).join(' & ')} - {selectedWinnersPoint}pt</span>
                     <span className="bg-red-500  text-white font-bold hover:shadow-md shadow text-xs ml-2 px-2 py-1 rounded outline-none 
                             focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer" onClick={() => setValue('winners', null)}>Clear</span>
                   </div>
@@ -147,7 +149,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                     )
                   }
                 </div> : <div>
-                  <span>{selectedLosers.map(x => `${x.fullName} [${x.avtaPoint}]`).join(' & ')}</span>
+                  <span>{selectedLosers.map(x => `${x.fullName} [${x.avtaPoint}]`).join(' & ')} - {selectedLosersPoint}pt</span>
                   <span className="bg-red-500  text-white font-bold hover:shadow-md shadow text-xs ml-2 px-2 py-1 rounded outline-none 
                             focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150 cursor-pointer" onClick={() => setValue('losers', null)}>Clear</span>
                 </div>}
