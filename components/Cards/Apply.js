@@ -125,7 +125,7 @@ export default function ApplyForCompetition({ competition, players, rule, linked
 
 function ApplyForCompForm({ onSubmit, competition, saving, players, rule, linkedPlayerId }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
-    defaultValue: {
+    defaultValues: {
       player1Style: 'All',
       player2Style: 'All',
     }

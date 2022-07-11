@@ -69,7 +69,7 @@ export default function RegisterInterest({ competition, players, linkedPlayerId,
 
 function RegisterInterestForm({ onSubmit, competition, saving, player, linkedPlayerId, registeredPlayers, players }) {
   const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
-    defaultValue: {
+    defaultValues: {
       player1Style: 'All',
       player2Style: 'All',
     }
