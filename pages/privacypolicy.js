@@ -104,6 +104,17 @@ export default function Index({
                     access request, but may charge an administrative fee for providing a copy of your Personal Information.</span></p>
                   <p><span>In order to protect your Personal Information we may require identification from you
                     before releasing the requested information.</span></p>
+
+                  <h2><span>Manage or delete your profile</span></h2>
+                  <p><span>
+                    You can manage your personal profile via <strong>My Profile</strong> page. If you would like to complete remove your profile, please contact us at <a
+                      className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
+                      href='mailto:nvhoanganh1909@gmail.com'
+                    >
+                      Email
+                    </a>
+                  </span></p>
+
                   <h2><span>Maintaining the Quality of your Personal Information</span></h2>
                   <p><span>It is an important to us that your Personal Information is up to date. We &nbsp;will
                     &nbsp;take reasonable steps to make sure that your Personal Information is accurate, complete and up-to-date. If
