@@ -102,15 +102,7 @@ export default function Footer() {
 										<li>
 											<a
 												className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-												href='/'
-											>
-												Terms & Conditions
-											</a>
-										</li>
-										<li>
-											<a
-												className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-												href='/'
+												href='/privacypolicy'
 											>
 												Privacy Policy
 											</a>
@@ -118,7 +110,7 @@ export default function Footer() {
 										<li>
 											<a
 												className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-												href='mailto:tonytuan.phan@gmail.com'
+												href='mailto:nvhoanganh1909@gmail.com'
 											>
 												Contact Us
 											</a>
