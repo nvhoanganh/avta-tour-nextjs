@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import cn from 'classnames';
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { GroupsColours, getAllGroupMatchesfull } from '../lib/browserapi';
 
@@ -12,39 +13,57 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-function Widget({ widget, index }) {
+function Widget({ widget, index, allColumns, droppableId }) {
+  const clashed = Object.keys(allColumns).map(court => {
+    if (court === droppableId) return null;
+
+    const sameMatch = allColumns[court][index];
+    if (!sameMatch) return null;
+    if (sameMatch.id.indexOf(widget.between[0].id) >= 0 || sameMatch.id.indexOf(widget.between[1].id) >= 0) {
+      return { court, match: allColumns[court][index], index }
+    }
+    return null;
+  }).filter(x => !!x);
+
   return (
     <Draggable draggableId={widget.id} index={index}>
       {provided => (
-        <div className={`border border-solid border-gray-300 p-2 shadow bg-${GroupsColours[widget.group]}-50`}
+        <div className={`border border-solid border-gray-300 p-2 shadow bg-${GroupsColours[widget.group]}-50 w-60`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className={`flex pl-2 pt-1 font-bold tex-xl text-${GroupsColours[widget.group]}-600`} >{widget.group}
+          <div className={`flex pl-2 pt-1 font-bold text-xl text-${GroupsColours[widget.group]}-600 `} >{widget.group}
             <span className="text-sm">{index + 1}</span>
           </div>
-          <div>{widget.between[0].player1.fullName} + {widget.between[0].player2.fullName} <span className="font-bold">vs.</span></div>
-          <div>{widget.between[1].player1.fullName} + {widget.between[1].player2.fullName}</div>
+          <div className=" whitespace-nowrap truncate overflow-hidden">{widget.between[0].player1.fullName} + {widget.between[0].player2.fullName}</div>
+          <div><span className="font-bold">vs.</span>
+            {
+              clashed.length > 0
+                ? <span className="ml-2 text-red-600 font-bold">❌ Clashed</span>
+                : null
+            }
+          </div>
+          <div className=" whitespace-nowrap truncate overflow-hidden">{widget.between[1].player1.fullName} + {widget.between[1].player2.fullName}</div>
         </div>
       )}
     </Draggable>
   );
 }
 
-const WidgetList = React.memo(function WidgetList({ widgets }) {
+const WidgetList = React.memo(function WidgetList({ widgets, allColumns, droppableId }) {
   return widgets.map((widget, index) => (
-    <Widget widget={widget} index={index} key={widget.id} />
+    <Widget widget={widget} index={index} key={widget.id} allColumns={allColumns} droppableId={droppableId} />
   ));
 });
 
 
-function Column({ droppableId, widgets, readonly }) {
+function Column({ droppableId, widgets, readonly, allColumns }) {
   return (
     <Droppable droppableId={droppableId} isDragDisabled={readonly}>
       {provided => (
         <div className="w-64 border border-solid border-gray-300 rounded shadow-md flex flex-col space-y-2 p-2 py-4 bg-gray-50" ref={provided.innerRef} {...provided.droppableProps}>
-          <WidgetList widgets={widgets} />
+          <WidgetList widgets={widgets} allColumns={allColumns} droppableId={droppableId} />
           {provided.placeholder}
         </div>
       )}
@@ -83,7 +102,6 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
           [source.droppableId]: widgets
         }
       };
-
       setState(updateState);
     } else {
       const startColumn = [...state.widgets[source.droppableId]];
@@ -111,6 +129,9 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
 
   return (
     <div>
+      <div className="hidden bg-red-50 bg-green-50 bg-yellow-50 bg-blue-50 bg-indigo-50
+      bg-purple-50 bg-pink-50 bg-yellow-50
+      "></div>
       <div className="flex space-x-1">
         <button
           tupe="button"
@@ -132,7 +153,7 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
           {Object.keys(state.widgets).sort().map((group, index) => (
             <div key={group}>
               <div className="text-bold text-xl text-center py-3">{group}</div>
-              <Column widgets={state.widgets[group]} droppableId={group} readonly={readonly} />
+              <Column widgets={state.widgets[group]} droppableId={group} readonly={readonly} allColumns={state.widgets} />
             </div>
           ))}
         </div>

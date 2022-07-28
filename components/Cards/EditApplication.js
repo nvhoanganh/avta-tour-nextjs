@@ -52,6 +52,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
   }, [competition]);
 
   const onSubmit = async data => {
+
     setSaving(true)
 
     data = {
@@ -61,7 +62,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
       changedByUser: currentUser.uid,
-      ...(data.paid && {
+      ...(!!data.paid && {
         paid: true,
         paidOn: new Date()
       })
@@ -78,7 +79,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
             return {
               ...x,
               ...data,
-              paidOn: data.paidOn.toDate().toISOString(),
+              paidOn: data.paidOn instanceof Date ? data.paidOn.toISOString() : data.paidOn.toDate().toISOString(),
               timestamp: data.timestamp.toDate().toISOString(),
             }
           }
@@ -107,7 +108,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
                 {
                   ...x.between[0],
                   ...data,
-                  paidOn: data.paidOn.toDate().toISOString(),
+                  paidOn: data.paidOn instanceof Date ? data.paidOn.toISOString() : data.paidOn.toDate().toISOString(),
                   timestamp: data.timestamp.toDate().toISOString(),
                 },
                 x.between[1]
@@ -123,7 +124,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
                 {
                   ...x.between[1],
                   ...data,
-                  paidOn: data.paidOn.toDate().toISOString(),
+                  paidOn: data.paidOn?.toDate()?.toISOString(),
                   timestamp: data.timestamp.toDate().toISOString(),
                 },
               ]

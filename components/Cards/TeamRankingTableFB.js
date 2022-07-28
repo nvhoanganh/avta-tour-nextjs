@@ -73,7 +73,7 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 								</thead>
 								<tbody>
 									{groups[group].map((team, index) => (
-										<tr key={team.name}>
+										<tr key={index}>
 											<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 												<div className="flex flex-col items-center justify-center">
 													{index + 1}
