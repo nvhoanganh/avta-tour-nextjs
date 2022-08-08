@@ -40,9 +40,13 @@ export default function PlayerWithIcon({
       <p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
         {player?.avtaPoint}
       </p>
-      <p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
-        {player.homeClub || 'Unknown Club'}
-      </p>
+      {
+        player.homeClub
+          ? <p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
+            {player.homeClub}
+          </p>
+          : null
+      }
       {showSelect &&
         <button className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-8 mt-3 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150' type='button'
           onClick={() => {
