@@ -6,6 +6,7 @@ import HeroPost from '../components/hero-post';
 import CompetitionPreview from '../components/competition-preview';
 import PostPreview from '../components/post-preview';
 import Top10Players from '../components/top10players';
+import PastChampions from '../components/pastChampions';
 import TopSponsors from '../components/sponsors';
 import Intro from '../components/intro';
 import Layout from '../components/layout';
@@ -15,6 +16,7 @@ import {
 	getAllPostsForHome,
 	getAllPlayers,
 	getTop10Players,
+	getPastChampions,
 	getAllSponsors,
 } from '../lib/api';
 import Head from 'next/head';
@@ -22,6 +24,7 @@ import Navbar from '../components/Navbars/AuthNavbar.js';
 import Link from 'next/link';
 import { useFirebaseAuth } from '../components/authhook';
 import { mergeUsersAndPlayersData } from "../lib/backendapi";
+import { getLastChampions } from "../lib/browserapi";
 
 export default function Index({
 	preview,
@@ -29,7 +32,9 @@ export default function Index({
 	allPlayers,
 	allSponsors,
 	competittions,
+	champions
 }) {
+	console.log("🚀 ~ file: index.js ~ line 35 ~ champions", JSON.stringify(champions, null, 2));
 	const { user } = useFirebaseAuth();
 
 	const heroPost = allPosts[0];
@@ -59,7 +64,7 @@ export default function Index({
 				</section>
 
 				<section className='pb-40'>
-					<Top10Players allPlayers={allPlayers} />
+					<PastChampions champions={champions} />
 				</section>
 
 			</Layout>
@@ -74,8 +79,12 @@ export async function getStaticProps({ preview = false }) {
 	const allSponsors = (await getAllSponsors(preview)) ?? [];
 	const competittions = (await getAllCompetitionsForHome(preview)) ?? [];
 
+
+	const data = (await getPastChampions(preview)) ?? [];
+	const champions = await mergeUsersAndPlayersData(getLastChampions(data));
+
 	return {
-		props: { preview, allPosts, allPlayers, competittions, allSponsors },
+		props: { preview, allPosts, allPlayers, competittions, allSponsors, champions },
 		revalidate: 60
 	};
 }
