@@ -94,7 +94,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
   const isValid = () => {
     return !!selectedWinner && !!selectedLoser
       && selectedWinner.id !== selectedLoser.id
-      && !!gameWonByLoser
+      && typeof gameWonByLoser === 'nunber'
       && !!stage
       &&
       (
