@@ -180,13 +180,19 @@ export default function Player({ player, preview }) {
 											<div className='w-full lg:w-3/12 px-4 lg:order-2 flex justify-center'>
 												<div className='relative'>
 													<div className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'>
-														<FirebaseImage
-															width={250}
-															height={250}
-															className='rounded-full'
-															src={
-																player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'}
-														/>
+														{
+															player.photoURL || player.coverImage?.url
+																? <FirebaseImage
+																	width={250}
+																	height={250}
+																	className='rounded-full'
+																	src={
+																		player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'}
+																/>
+																: <span className="inline-flex items-center justify-center h-36 w-36 rounded-full bg-gray-400">
+																	<span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+																</span>
+														}
 													</div>
 												</div>
 											</div>

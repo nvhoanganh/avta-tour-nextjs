@@ -14,7 +14,13 @@ export default function PlayerWithIcon({
   return <div key={player.sys.id} className='px-6 text-center'>
     <Link href={`/players/${player.sys.id}`}>
       <div className='mx-auto max-w-120-px cursor-pointer'>
-        <ContentfulImage width={sz} height={sz} className='rounded-full mx-auto' src={player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'} />
+        {
+          player.photoURL || player.coverImage?.url
+            ? <ContentfulImage width={sz} height={sz} className='rounded-full mx-auto' src={player.photoURL || player.coverImage?.url} />
+            : <span className="inline-flex items-center justify-center h-28 w-28 rounded-full bg-gray-400">
+              <span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+            </span>
+        }
       </div>
     </Link>
 
