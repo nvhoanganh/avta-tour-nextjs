@@ -187,7 +187,7 @@ export default function Player({ player, preview }) {
 																	height={250}
 																	className='rounded-full'
 																	src={
-																		player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'}
+																		player.photoURL || player.coverImage?.url}
 																/>
 																: <span className="inline-flex items-center justify-center h-36 w-36 rounded-full bg-gray-400">
 																	<span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>

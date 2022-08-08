@@ -228,7 +228,13 @@ function PlayersTable({ players, toggle, selected, unsubscribed }) {
 											<Link
 												href={`/players/${player.sys.id}`}
 											>
-												<ContentfulImage width={120} height={120} className='hover:cursor-pointer rounded-full mx-auto max-w-120-px' src={player.photoURL || player.coverImage?.url || 'https://via.placeholder.com/120'} />
+												{
+													player.photoURL || player.coverImage?.url
+														? <ContentfulImage width={120} height={120} className='hover:cursor-pointer rounded-full mx-auto max-w-120-px' src={player.photoURL || player.coverImage?.url} />
+														: <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-400">
+															<span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+														</span>
+												}
 											</Link>
 										</div>
 										<div className='flex flex-col'>

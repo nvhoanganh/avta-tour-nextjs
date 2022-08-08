@@ -153,11 +153,9 @@ export default function EditMyProfile() {
                           ></FloatingFileInput>
                         </div>
                       ) : (
-                        <img
-                          alt={userprofile?.displayName}
-                          src='https://via.placeholder.com/150'
-                          className='rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px'
-                        />
+                        <span title={userprofile?.displayName} className="inline-flex items-center justify-center h-32 w-32  bg-gray-400 rounded-full align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px">
+                          <span className="text-xl font-medium leading-none text-white">{userprofile?.displayName.split(" ").map((n) => n[0]).join("")}</span>
+                        </span>
                       )}
                     </div>
                   </div>

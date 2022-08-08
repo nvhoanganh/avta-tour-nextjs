@@ -59,12 +59,18 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 							{filteredPlayers.map(x => <div key={x.sys.id} className='px-6 text-center'>
 								<Link href={`/players/${x.sys.id}`}>
 									<div className='mx-auto max-w-120-px cursor-pointer'>
-										<FirebaseImage
-											width={120}
-											height={120}
-											className='rounded-full mx-auto max-w-120-px'
-											src={x.photoURL || x.coverImage?.url || 'https://via.placeholder.com/120'}
-										/>
+										{
+											x.photoURL || x.coverImage?.url
+												? <FirebaseImage
+													width={120}
+													height={120}
+													className='rounded-full mx-auto max-w-120-px'
+													src={x.photoURL || x.coverImage?.url}
+												/>
+												: <span className="inline-flex items-center justify-center h-28 w-28 rounded-full bg-gray-400">
+													<span className="text-xl font-medium leading-none text-white">{x.fullName.split(" ").map((n) => n[0]).join("")}</span>
+												</span>
+										}
 									</div>
 								</Link>
 
