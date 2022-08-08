@@ -31,9 +31,7 @@ export default function Index({
 	competittions,
 	champions
 }) {
-	console.log("🚀 ~ file: index.js ~ line 35 ~ champions", JSON.stringify(champions, null, 2));
 	const { user } = useFirebaseAuth();
-
 	const heroPost = allPosts[0];
 	const upcomingCompetition = competittions[competittions.length - 1];
 	const morePosts = allPosts.slice(1);

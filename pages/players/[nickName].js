@@ -430,7 +430,7 @@ function KeyStats({ player }) {
 
 function PlayerYoutubeVideo({ player }) {
 	const YoutubeEmbed = ({ url }) => (
-		<iframe height="315" className="w-full" src={`https://www.youtube.com/embed/${getEmbedUrl(url)}`} title="YouTube video player" frameborder="0"
+		<iframe height="315" className="w-full" src={`https://www.youtube.com/embed/${getEmbedUrl(url)}`} title="YouTube video player" frameBorder="0"
 			allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 	)
 	return <div className='grid grid-cols-1 md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-16'>
