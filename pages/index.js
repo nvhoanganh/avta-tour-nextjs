@@ -5,7 +5,6 @@ import ContentfulImage from '../components/contentful-image';
 import HeroPost from '../components/hero-post';
 import CompetitionPreview from '../components/competition-preview';
 import PostPreview from '../components/post-preview';
-import Top10Players from '../components/top10players';
 import PastChampions from '../components/pastChampions';
 import TopSponsors from '../components/sponsors';
 import Intro from '../components/intro';
@@ -15,7 +14,6 @@ import {
 	getAllCompetitionsForHome,
 	getAllPostsForHome,
 	getAllPlayers,
-	getTop10Players,
 	getPastChampions,
 	getAllSponsors,
 } from '../lib/api';
@@ -29,7 +27,6 @@ import { getLastChampions } from "../lib/browserapi";
 export default function Index({
 	preview,
 	allPosts,
-	allPlayers,
 	allSponsors,
 	competittions,
 	champions
@@ -74,8 +71,6 @@ export default function Index({
 
 export async function getStaticProps({ preview = false }) {
 	const allPosts = (await getAllPostsForHome(preview)) ?? [];
-	let allPlayers = (await getTop10Players(preview)) ?? [];
-	allPlayers = await mergeUsersAndPlayersData(allPlayers);
 	const allSponsors = (await getAllSponsors(preview)) ?? [];
 	const competittions = (await getAllCompetitionsForHome(preview)) ?? [];
 
@@ -84,7 +79,7 @@ export async function getStaticProps({ preview = false }) {
 	const champions = await mergeUsersAndPlayersData(getLastChampions(data));
 
 	return {
-		props: { preview, allPosts, allPlayers, competittions, allSponsors, champions },
+		props: { preview, allPosts, competittions, allSponsors, champions },
 		revalidate: 60
 	};
 }
