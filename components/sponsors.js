@@ -1,7 +1,8 @@
 import ContentfulImage from './contentful-image';
+import PlayerWithIcon from './PlayerWithIcon';
 import Link from 'next/link';
 
-export default function Sponsors({ sponsors }) {
+export default function Sponsors({ sponsors, playerSponsors }) {
 	return (
 		<div className='container mx-auto px-4'>
 			<div className='flex flex-wrap justify-center text-center mb-24'>
@@ -34,6 +35,20 @@ export default function Sponsors({ sponsors }) {
 										</a>
 									</Link>
 								</h5>
+							</div>
+						</div>
+					))}
+					{/* players sponsors */}
+					{playerSponsors.map((player) => (
+						<div key={player.sys.id}>
+							<PlayerWithIcon player={player} size="lg" hideNickname hidePoint />
+							<div className="flex justify-center pt-2 space-x-1" >
+								{
+									player.competitionsSponsored.map(comp =>
+									(<a className='rounded-full shadow-xl text-green-900 bg-yellow-400 align-middle border border-gray-300 text-xs px-1 text-center hover:bg-gray-200' title={comp}>
+										{comp}
+									</a>))
+								}
 							</div>
 						</div>
 					))}

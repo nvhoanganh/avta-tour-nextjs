@@ -16,13 +16,12 @@ export default function pastChampions({ champions }) {
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{champions.map((player) => (
 						<div key={player.sys.id}>
-							<PlayerWithIcon player={player} size="lg" />
+							<PlayerWithIcon player={player} size="lg" hideNickname hidePoint />
 							<div className="flex justify-center pt-2 space-x-1" >
 								{
 									player.won.map(tour =>
-									(<Link href={`/competitions/${tour.slug}`}>
-										<a className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 text-sm p-2 text-center hover:bg-gray-200' title={tour.title}>
-											<i className='fas fa-trophy text-lg text-yellow-400'></i>
+									(<Link key={tour.slug} href={`/competitions/${tour.slug}`}>
+										<a className='rounded-full shadow-xl text-green-900 bg-yellow-400 h-auto align-middle border border-gray-300 text-xs px-1 text-center hover:bg-gray-200' title={tour.title}>
 											{
 												tour.maxPoint
 											}

@@ -7,7 +7,9 @@ export default function PlayerWithIcon({
   size,
   showSelect,
   buttonText,
-  onSelect
+  onSelect,
+  hideNickname,
+  hidePoint,
 }) {
   const sz = size === 'sm' ? 40 : size === 'md' ? 80 : 120;
 
@@ -33,13 +35,17 @@ export default function PlayerWithIcon({
         </Link>
       </h5>
 
-      {player.fullName !== player.nickName && <p className='mt-1 text-blue-900 text-sm'>
+      {!hideNickname && player.fullName !== player.nickName && <p className='mt-1 text-blue-900 text-sm'>
         ({player.nickName})
       </p>}
 
-      <p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
-        {player?.avtaPoint}
-      </p>
+      {
+        !hidePoint
+          ? <p className='mt-1 text-xl text-blue-900 uppercase font-semibold'>
+            {player?.avtaPoint}
+          </p>
+          : null
+      }
       {
         player.homeClub
           ? <p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>

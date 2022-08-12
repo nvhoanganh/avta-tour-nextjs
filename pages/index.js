@@ -16,12 +16,13 @@ import {
 	getAllPlayers,
 	getPastChampions,
 	getAllSponsors,
+	getSponsorPlayers
 } from '../lib/api';
 import Head from 'next/head';
 import Navbar from '../components/Navbars/AuthNavbar.js';
 import Link from 'next/link';
 import { useFirebaseAuth } from '../components/authhook';
-import { mergeUsersAndPlayersData } from "../lib/backendapi";
+import { mergeUsersAndRegisteredPlayers, getLinkedUsers } from "../lib/backendapi";
 import { getLastChampions } from "../lib/browserapi";
 
 export default function Index({
@@ -29,7 +30,8 @@ export default function Index({
 	allPosts,
 	allSponsors,
 	competittions,
-	champions
+	champions,
+	playerSponsors
 }) {
 	const { user } = useFirebaseAuth();
 	const heroPost = allPosts[0];
@@ -55,7 +57,7 @@ export default function Index({
 				</section>
 
 				<section className='pt-20 pb-40'>
-					<TopSponsors sponsors={allSponsors} />
+					<TopSponsors sponsors={allSponsors} playerSponsors={playerSponsors} />
 				</section>
 
 				<section className='pb-40'>
@@ -70,14 +72,24 @@ export default function Index({
 export async function getStaticProps({ preview = false }) {
 	const allPosts = (await getAllPostsForHome(preview)) ?? [];
 	const allSponsors = (await getAllSponsors(preview)) ?? [];
+	let playerSponsors = (await getSponsorPlayers(preview)) ?? [];
+	// merge
+	playerSponsors = playerSponsors.map(player => ({
+		...player.player,
+		competitionsSponsored: player.competitionsSponsored
+	}));
+
 	const competittions = (await getAllCompetitionsForHome(preview)) ?? [];
 
+	// get list of registered players
+	const allRegisteredUsers = (await getLinkedUsers()) ?? [];
 
 	const data = (await getPastChampions(preview)) ?? [];
-	const champions = await mergeUsersAndPlayersData(getLastChampions(data));
+	const champions = await mergeUsersAndRegisteredPlayers(getLastChampions(data), allRegisteredUsers);
+	playerSponsors = await mergeUsersAndRegisteredPlayers(playerSponsors, allRegisteredUsers);
 
 	return {
-		props: { preview, allPosts, competittions, allSponsors, champions },
+		props: { preview, allPosts, competittions, allSponsors, champions, playerSponsors },
 		revalidate: 60
 	};
 }
