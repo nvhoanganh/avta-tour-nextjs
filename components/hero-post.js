@@ -14,13 +14,14 @@ export default function HeroPost({
 }) {
 	return (
 		<Link href={`/posts/${slug}`}>
-			<div className='relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl border border-gray-100 rounded-lg bg-blue-500 hover:shadow-2xl hover:cursor-pointer'>
-				<ContentfulImage
-					width={2000}
-					height={1000}
-					className='w-full align-middle rounded-t-lg'
-					src={coverImage.url}
-				/>
+			<div className='relative flex flex-col min-w-0 break-words  w-full mb-6 shadow-xl border border-gray-100 rounded-lg bg-blue-500 hover:shadow-2xl hover:cursor-pointer'>
+				<div className='aspect-w-5 aspect-h-3'>
+					<ContentfulImage
+						layout={'fill'}
+						className='w-full align-middle rounded-t-lg object-cover'
+						src={coverImage.url}
+					/>
+				</div>
 				<div className='relative p-8 mb-6'>
 					<svg
 						preserveAspectRatio='none'

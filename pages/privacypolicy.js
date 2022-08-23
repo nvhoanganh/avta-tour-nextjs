@@ -39,7 +39,7 @@ export default function Index({
           >
             <div className='w-full mb-12 mt-36'>
               <div className='container flex justify-center mx-auto'>
-                <div className='block prose'>
+                <div className='block prose max-w-5xl'>
                   <h1><span>Privacy Policy </span></h1>
                   <p><span>AVTA</span><span>&nbsp;is committed to providing quality
                     services to you and this policy outlines our ongoing obligations to you in respect of how we manage your Personal

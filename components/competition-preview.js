@@ -65,12 +65,13 @@ export default function CompetitionPreview({
 				<div className='w-full md:w-4/12 px-4 mr-auto ml-auto sm:pt-10'>
 					<Link href={`/competitions/${slug}`}>
 						<div className='relative flex hover:shadow-2xl hover:cursor-pointer flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-blue-500'>
-							<ContentfulImage
-								width={1000}
-								height={600}
-								className='rounded-xl shadow-sm'
-								src={heroImage?.url}
-							/>
+							<div className='aspect-w-16 aspect-h-9'>
+								<ContentfulImage
+									layout={'fill'}
+									className='rounded-xl shadow-sm object-cover'
+									src={heroImage?.url}
+								/>
+							</div>
 							<div className='relative p-8 mb-4'>
 								<svg
 									preserveAspectRatio='none'

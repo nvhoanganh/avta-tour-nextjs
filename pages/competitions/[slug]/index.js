@@ -554,7 +554,7 @@ export default function Competition({ competition, preview }) {
                               }
                             </div>
 
-                            <div className='prose text-lg my-10'>
+                            <div className='prose text-lg my-10 max-w-none'>
                               {documentToReactComponents(
                                 competition.description
                                   .json
@@ -571,7 +571,7 @@ export default function Competition({ competition, preview }) {
                           :
                           <>
                             {/* has no result */}
-                            <div className='prose text-lg mt-10'>
+                            <div className='prose text-lg mt-10 max-w-none'>
                               {documentToReactComponents(
                                 competition.description
                                   .json

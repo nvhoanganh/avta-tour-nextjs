@@ -11,7 +11,9 @@ export default function PostHeader({ title, coverImage, date, author }) {
         {author && <Avatar name={author.name} picture={author.picture} />}
       </div>
       <div className="mb-8 md:mb-16 sm:mx-0">
-        <CoverImage title={title} url={coverImage.url} />
+        <div className='aspect-w-16 aspect-h-9'>
+          <CoverImage title={title} url={coverImage.url} />
+        </div>
       </div>
       <div>
         <div className="block md:hidden mb-6">
