@@ -16,19 +16,12 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
 					{sponsors.map((x) => (
 						<div key={x.name} className='px-6 text-center'>
-							<Link href={x.website}>
-								<a className='mx-auto max-w-120-px ' target='_blank'>
-									<ContentfulImage
-										width={120}
-										height={120}
-										className='mx-auto max-w-120-px '
-										src={x.logo.url}
-									/>
-								</a>
+							<Link href={x.website} target='_blank'>
+								<img src={x.logo.url} className='w-48 hover:cursor-pointer' />
 							</Link>
 
-							<div className='pt-6 text-center'>
-								<h5 className='text-xl font-bold'>
+							<div className='pt-3 text-center'>
+								<h5 className='text-sm text-gray-400'>
 									<Link href={x.website}>
 										<a className='hover:underline' target='_blank'>
 											{x.name}
