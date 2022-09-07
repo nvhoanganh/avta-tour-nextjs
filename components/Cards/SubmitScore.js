@@ -34,7 +34,7 @@ export default function SubmitScore({ competition, groupsAllocation }) {
       timestamp: (new Date()),
 
       stage: data.stage,
-      gameWonByLoser: data.gameWonByLoser,
+      gameWonByLoser: +data.gameWonByLoser,
       stage: data.stage,
       knockoutRound: data.knockoutRound || '',
       group: data.group || '',
@@ -72,7 +72,9 @@ export default function SubmitScore({ competition, groupsAllocation }) {
 }
 
 function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
-  const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+  const { register, reset, handleSubmit, watch, setValue, formState: { errors } } = useForm({
+    defaultValues: { gameWonByLoser: '0' }
+  });
 
   const gameWonByLoser = watch('gameWonByLoser');
   const stage = watch('stage');
@@ -94,7 +96,7 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
   const isValid = () => {
     return !!selectedWinner && !!selectedLoser
       && selectedWinner.id !== selectedLoser.id
-      && typeof gameWonByLoser === 'nunber'
+      && !!gameWonByLoser
       && !!stage
       &&
       (
@@ -183,13 +185,13 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                   <span className="px-3">{gameWonByLoser || 'Select..'}</span>
                 }
                   items={[
-                    <a onClick={() => setValue('gameWonByLoser', 0)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">0</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 1)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">1</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 2)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">2</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 3)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">3</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 4)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">4</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 5)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">5</a>,
-                    <a onClick={() => setValue('gameWonByLoser', 6)} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">6</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '0')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">0</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '1')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">1</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '2')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">2</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '3')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">3</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '4')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">4</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '5')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">5</a>,
+                    <a onClick={() => setValue('gameWonByLoser', '6')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">6</a>,
                   ]}
                 >
                 </DropDown>
