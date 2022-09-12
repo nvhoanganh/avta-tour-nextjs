@@ -59,6 +59,16 @@ export default function LadderRankingTable({ ranking, color, players }) {
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
+									Games Won / Lost
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
+										(color === 'light'
+											? 'bg-gray-50 text-gray-500 border-gray-100'
+											: 'bg-blue-800 text-blue-300 border-blue-700')
+									}
+								>
 									Game Win %
 								</th>
 							</tr>
@@ -104,6 +114,14 @@ export default function LadderRankingTable({ ranking, color, players }) {
 												{player.win + player.lost} (
 												<span className='text-green-600'>{player.win}</span>
 												&nbsp;/&nbsp;<span className='text-red-600'>{player.lost}</span>)
+											</> : '-'
+										}
+									</td>
+									<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
+										{player.gameWin + player.gameLost > 0 ?
+											<>
+												<span className='text-green-600'>{player.gameWin}</span>
+												&nbsp;/&nbsp;<span className='text-red-600'>{player.gameLost}</span>
 											</> : '-'
 										}
 									</td>
