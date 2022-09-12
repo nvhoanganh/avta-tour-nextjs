@@ -40,6 +40,13 @@ export default function PlayerRankingCard({ player, index, registeredPlayers }) 
                     })}
                   >{player.winPercentage}%</span></span>
                 }
+
+                {player.gameWin + player.gameLost > 0 ?
+                  <span>
+                    (<span className='text-green-600'>{player.gameWin}</span>
+                    /<span className='text-red-600'>{player.gameLost}</span>)
+                  </span> : '-'
+                }
               </div>
             </div>
 
