@@ -23,29 +23,36 @@ export default function PlayerRankingCard({ player, index, registeredPlayers }) 
                   <i className="fas fa-money-bill text-green-600" title={`Paid on ${isRegistered.paidOn}`}></i>
                 }
               </div>
-              <div className='text-sm text-gray-600 flex space-x-2'>
+              <div className='text-sm text-gray-600 flex space-x-1'>
                 {player.win + player.lost > 0 ?
                   <>
-                    <span>{player.win + player.lost} Matches <span className='text-green-600'>{player.win}</span>
-                      /<span className='text-red-600'>{player.lost}</span></span>
+                    <span><span className="text-xs text-gray-400">Match: </span>{player.win + player.lost}
+                      <span
+                        className={cn('', {
+                          'text-gray-600': Number(player.win - player.lost) === 0,
+                          'text-green-600': Number(player.win - player.lost) > 0,
+                          'text-red-600': Number(player.win - player.lost) < 0,
+                        })}
+
+                      >({player.win - player.lost > 0 ? "+" : ''}{player.win - player.lost})</span>
+                    </span>
                   </> : '-'
                 }
 
                 {player.winPercentage > 0 &&
-                  <span>Game W/L: <span
+                  <span><span className="text-xs text-gray-400">Game: </span><span
                     className={cn({
                       'text-gray-600': Number(player.winPercentage) === 100,
                       'text-green-600': Number(player.winPercentage) > 100,
                       'text-red-600': Number(player.winPercentage) < 100,
                     })}
-                  >{player.winPercentage}%</span></span>
-                }
+                  >{player.winPercentage}%
+                    <span className='text-xs ml-1'>
+                      (<span className='text-green-600'>{player.gameWin}</span>
+                      /<span className='text-red-600'>{player.gameLost}</span>)
+                    </span>
 
-                {player.gameWin + player.gameLost > 0 ?
-                  <span>
-                    (<span className='text-green-600'>{player.gameWin}</span>
-                    /<span className='text-red-600'>{player.gameLost}</span>)
-                  </span> : '-'
+                  </span></span>
                 }
               </div>
             </div>
