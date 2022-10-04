@@ -79,7 +79,7 @@ export default function PlayersSelection({ players, registered, ladderId, user }
               {
                 filteredPlayers.map(
                   (player, i) => <label key={player} className="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
+                    <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 my-2 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
                       {...register("selected", { required: true })}
                     />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
                   </label>

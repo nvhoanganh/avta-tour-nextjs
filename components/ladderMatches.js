@@ -8,6 +8,8 @@ export default function LadderMatches({ matchUps }) {
 	const from20To30 = matchUps.filter(x => x.pointDiff > 20 && x.pointDiff <= 30);
 	const over30 = matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40);
 	return <>
+
+		<div className="text-2xl py-3 uppercase font-bold">Play Order</div>
 		<div className="py-6">
 			<div className="text-xl py-3 pb-8 font-bold">0 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 20</div>
 			<SummaryPossibleMatches matches={matchUps.filter(x => x.pointDiff <= 20)}></SummaryPossibleMatches>
