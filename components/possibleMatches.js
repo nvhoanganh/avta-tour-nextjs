@@ -5,7 +5,7 @@ import cn from 'classnames';
 export default function PossibleMatches({ matches }) {
 	return (<>
 		{matches.map((match, index) => (
-			<div className=" border-b-2 text-left py-1 shadow flex items-center space-x-2" key={index}>
+			<div className=" border-b text-left py-1 flex items-center space-x-2" key={index}>
 				{/* <div className="  text-green-600"
 					className={cn('text-normal', {
 						'  text-green-600': match.pointDiff <= 20,
