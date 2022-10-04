@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
+import SummaryPossibleMatches from '../../../components/summaryPossibleMatches';
 import Layout from '../../../components/layout';
 import { GetMergedPlayers, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
 import { RevalidatePath } from '../../../lib/browserapi';
@@ -331,7 +332,8 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                 <div className='w-full text-center py-3 pt-5'>
                                   {
                                     ladder.tonightMatches?.tonightMatches && <div>
-                                      <div className=" text-lg py-3 font-bold">Possible Matches</div>
+                                      <div className=" text-lg py-3 font-bold">Play Order</div>
+                                      <SummaryPossibleMatches matches={ladder.tonightMatches.tonightMatches}></SummaryPossibleMatches>
                                       <PossibleMatches matches={ladder.tonightMatches.tonightMatches}></PossibleMatches></div>
                                   }
                                   <div className="py-5">

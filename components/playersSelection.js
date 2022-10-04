@@ -8,6 +8,7 @@ import SaveButton from './savebutton';
 import { useState } from 'react'
 import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
+import SummaryPossibleMatches from './summaryPossibleMatches';
 var Diacritics = require('diacritic');
 
 export default function PlayersSelection({ players, registered, ladderId }) {
@@ -53,6 +54,7 @@ export default function PlayersSelection({ players, registered, ladderId }) {
         matchUps
           ? <div className="flex flex-col py-10">
             <div className=" text-lg py-3 font-bold">Play Order</div>
+            <SummaryPossibleMatches matches={matchUps}></SummaryPossibleMatches>
             <PossibleMatches matches={matchUps}></PossibleMatches>
             <div>
               <SaveButton saving={saving} onClick={() => saveMatcheups()}
