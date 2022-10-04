@@ -15,9 +15,8 @@ export default function PlayersSelection({ players, registered, ladderId }) {
   const [saving, setSaving] = useState(false);
 
   const { register, reset, handleSubmit, watch, setValue, errors, getValues } = useForm({ mode: "onBlur" });
-  const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
-
-  const registeredIds = registered.map(x => x.playerId);
+  // only include the registered players
+  const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(registered);
 
   const selectedPlayers = watch('selected');
 
@@ -53,7 +52,7 @@ export default function PlayersSelection({ players, registered, ladderId }) {
       {
         matchUps
           ? <div className="flex flex-col py-10">
-            <div className=" text-lg py-3 font-bold">Possible Matches</div>
+            <div className=" text-lg py-3 font-bold">Play Order</div>
             <PossibleMatches matches={matchUps}></PossibleMatches>
             <div>
               <SaveButton saving={saving} onClick={() => saveMatcheups()}
@@ -64,9 +63,9 @@ export default function PlayersSelection({ players, registered, ladderId }) {
           :
           <form onSubmit={handleSubmit(onSubmit)}>
             <div className=" text-lg py-3 font-bold">Who is playing tonight?</div>
-            <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
+            {/* <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
               value={filter} onChange={(e) => { setFilter(e.target.value) }}
-            />
+            /> */}
             <div className=" text-sm text-gray-600 italic">{selectedPlayers?.length} selected</div>
 
             <div className="flex flex-col space-y-1 pt-4">
