@@ -1,5 +1,6 @@
 import ContentfulImage from './contentful-image'
 import PossibleMatches from './possibleMatches'
+import LadderMatches from './ladderMatches'
 import { useForm } from "react-hook-form";
 import { getMatchups } from "../lib/browserapi"
 import useFilterPlayers from '../lib/useFilterhook';
@@ -53,9 +54,7 @@ export default function PlayersSelection({ players, registered, ladderId, user }
       {
         matchUps
           ? <div className="flex flex-col py-10">
-            <div className=" text-lg py-3 font-bold">Play Order</div>
-            <SummaryPossibleMatches matches={matchUps}></SummaryPossibleMatches>
-            <PossibleMatches matches={matchUps}></PossibleMatches>
+            <LadderMatches matchUps={matchUps}></LadderMatches>
             <div>
               {
                 user

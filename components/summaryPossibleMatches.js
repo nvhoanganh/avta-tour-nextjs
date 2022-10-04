@@ -6,7 +6,7 @@ import { getSummaryMatchup } from '../lib/browserapi';
 export default function SummaryPossibleMatches({ matches }) {
 	const data = getSummaryMatchup(matches);
 
-	return (<div className='grid grid-cols-3 gap-x-5 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-10 mb-16'>
+	return (<div className='grid grid-cols-3 gap-x-5 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-6 lg:gap-y-10 mb-6'>
 		{Object.keys(data).map(k => (<div
 			className='p-3 rounded shadow border border-gray-200 bg-indigo-100'
 			key={k}>

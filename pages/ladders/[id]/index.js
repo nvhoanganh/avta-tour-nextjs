@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
 import PossibleMatches from '../../../components/possibleMatches';
+import LadderMatches from '../../../components/ladderMatches';
 import SummaryPossibleMatches from '../../../components/summaryPossibleMatches';
 import Layout from '../../../components/layout';
 import { GetMergedPlayers, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
@@ -332,16 +333,21 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                 <div className='w-full text-center py-3 pt-5'>
                                   {
                                     ladder.tonightMatches?.tonightMatches && <div>
-                                      <div className=" text-lg py-3 font-bold">Play Order</div>
-                                      <SummaryPossibleMatches matches={ladder.tonightMatches.tonightMatches}></SummaryPossibleMatches>
-                                      <PossibleMatches matches={ladder.tonightMatches.tonightMatches}></PossibleMatches></div>
+                                      <LadderMatches matchUps={ladder.tonightMatches.tonightMatches}></LadderMatches></div>
                                   }
                                   <div className="py-5">
                                     <button
                                       className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                       onClick={() => setShowOrder(!showOrder)}
+                                      className={cn(
+                                        ' active:bg-blue-600 uppercase  font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150',
+                                        {
+                                          'bg-gray-300 text-black': showOrder,
+                                          'bg-blue-500 text-white': !showOrder,
+                                        }
+                                      )}
                                     >
-                                      {ladder.tonightMatches?.tonightMatches ? 'Create new play order' : 'Create play order'}
+                                      {showOrder ? 'Cancel' : 'Create play order'}
                                     </button>
                                   </div>
                                   {
