@@ -2,7 +2,7 @@ import ContentfulImage from './contentful-image'
 import PossibleMatches from './possibleMatches'
 import LadderMatches from './ladderMatches'
 import { useForm } from "react-hook-form";
-import { getMatchups } from "../lib/browserapi"
+import { getMatchups, RevalidatePath } from "../lib/browserapi"
 import useFilterPlayers from '../lib/useFilterhook';
 import { db } from '../lib/firebase';
 import SaveButton from './savebutton';
@@ -39,8 +39,10 @@ export default function PlayersSelection({ players, registered, ladderId, user }
     await setDoc(ladderRef, {
       tonightMatches: matchUps
     });
+    await RevalidatePath(user, `/ladders/${ladderId}`);
     setSaving(false)
-    toast("Matches saved!");
+    toast("Matches saved!.");
+    window.location.reload();
   }
 
   const sortedPlayers = players.sort((a, b) => {
