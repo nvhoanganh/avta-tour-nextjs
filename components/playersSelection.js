@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import SummaryPossibleMatches from './summaryPossibleMatches';
 var Diacritics = require('diacritic');
 
-export default function PlayersSelection({ players, registered, ladderId }) {
+export default function PlayersSelection({ players, registered, ladderId, user }) {
   const [matchUps, setMatchUps] = useState(null);
   const [saving, setSaving] = useState(false);
 
@@ -33,7 +33,7 @@ export default function PlayersSelection({ players, registered, ladderId }) {
   }
 
   const saveMatcheups = async () => {
-    setSaving(true)
+    setSaving(true);
     const ladderRef = doc(db, "ladder_matches", ladderId);
     await setDoc(ladderRef, {
       tonightMatches: matchUps
@@ -57,8 +57,12 @@ export default function PlayersSelection({ players, registered, ladderId }) {
             <SummaryPossibleMatches matches={matchUps}></SummaryPossibleMatches>
             <PossibleMatches matches={matchUps}></PossibleMatches>
             <div>
-              <SaveButton saving={saving} onClick={() => saveMatcheups()}
-                type="submit">Save</SaveButton>
+              {
+                user
+                  ? <SaveButton saving={saving} onClick={() => saveMatcheups()}
+                    type="submit">Save</SaveButton>
+                  : null
+              }
               <button type="button" className="bg-gray-500 ml-2 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 my-8 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" onClick={resetForm} >Cancel</button>
             </div>
           </div>
