@@ -8,18 +8,19 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState } from 'react'
 import { getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
+import { getFBUserIdFromContentfulId, RevalidatePath } from '../../../lib/browserapi';
 
 
 export default function Apply({ ladder, preview }) {
   const router = useRouter();
-  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
+  const { fullProfile, loading, user } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
 
   const [applicationState, setApplicationState] = useState(null);
   const [paymentError, setPaymentError] = useState(null);
 
   const goback = async () => {
     // force refresh
-    await fetch(`/ladders/${router.query.id}`);
+    await RevalidatePath(user, `/ladders/${router.query.id}`);
     router.push(`/ladders/${router.query.id}`);
   }
 
@@ -36,7 +37,7 @@ export default function Apply({ ladder, preview }) {
             setApplicationState({
               playerId,
               ...rsp
-            })
+            });
           }
         }).catch((err) => {
           setPaymentError('Oops! Something went wrong. Please try again');
