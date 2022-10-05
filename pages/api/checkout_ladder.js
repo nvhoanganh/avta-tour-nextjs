@@ -9,7 +9,7 @@ export default async function handler(req, res) {
         line_items: [
           {
             // todo: replace with price value
-            price: process.env.STRIPE_PRICE_50,
+            price: fee,
             quantity: 1,
           },
         ],
