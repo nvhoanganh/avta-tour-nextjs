@@ -307,10 +307,10 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               (
                                 <>
                                   <div className='hidden container md:block'>
-                                    <LadderRankingTable players={ladder.players} ranking={ladder.ranking}></LadderRankingTable>
+                                    <LadderRankingTable players={ladder.players} ranking={ladder.ranking} ladder={ladder}></LadderRankingTable>
                                   </div>
                                   <div className='md:hidden mt-4'>
-                                    <LadderRankingsCard players={ladder.players} ranking={ladder.ranking}></LadderRankingsCard>
+                                    <LadderRankingsCard players={ladder.players} ranking={ladder.ranking} ladder={ladder}></LadderRankingsCard>
                                   </div>
                                 </>
                               )

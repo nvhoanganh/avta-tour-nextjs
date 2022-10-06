@@ -1,6 +1,6 @@
 import PlayerRankingCard from './PlayerRankingCard';
 
-export default function LadderRankingsCard({ ranking, players }) {
+export default function LadderRankingsCard({ ranking, players, ladder }) {
   return (
     <>
       <div className='flex flex-wrap'>
@@ -11,6 +11,7 @@ export default function LadderRankingsCard({ ranking, players }) {
               player={player}
               registeredPlayers={players}
               index={index}
+              ladder={ladder}
             />
           ))}
         </div>

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import PlayerPoint from '../PlayerPoint';
 import PlayerAvatar from './PlayerAvatar';
 
-export default function LadderRankingTable({ ranking, color, players }) {
+export default function LadderRankingTable({ ranking, color, players, ladder }) {
 	const isRegistered = (player) => players?.find(p => p.playerId === player.player.uid);
 
 	return (
@@ -59,7 +59,7 @@ export default function LadderRankingTable({ ranking, color, players }) {
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
-									Games Won / Lost
+									Game Won / Lost
 								</th>
 								<th
 									className={
@@ -69,7 +69,7 @@ export default function LadderRankingTable({ ranking, color, players }) {
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
-									Game Win %
+									{ladder.orderRule === 'GAMEWON' ? 'Game' : 'Match'} Win %
 								</th>
 							</tr>
 						</thead>
@@ -129,11 +129,11 @@ export default function LadderRankingTable({ ranking, color, players }) {
 										{player.winPercentage > 0 &&
 											<span
 												className={cn({
-													'text-gray-600': Number(player.winPercentage) === 100,
-													'text-green-600': Number(player.winPercentage) > 100,
-													'text-red-600': Number(player.winPercentage) < 100,
+													'text-gray-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) === 100,
+													'text-green-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) > 100,
+													'text-red-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) < 100,
 												})}
-											>{player.winPercentage}%</span>
+											>{ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage}%</span>
 										}
 									</td>
 								</tr>

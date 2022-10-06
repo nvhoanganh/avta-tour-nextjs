@@ -2,7 +2,7 @@ import Link from 'next/link';
 import cn from 'classnames';
 import PlayerAvatar from './PlayerAvatar';
 import PlayerPoint from '../PlayerPoint';
-export default function PlayerRankingCard({ player, index, registeredPlayers }) {
+export default function PlayerRankingCard({ player, index, registeredPlayers, ladder }) {
   const isRegistered = registeredPlayers?.find(p => p.playerId === player.player.uid);
 
   return (
@@ -40,15 +40,15 @@ export default function PlayerRankingCard({ player, index, registeredPlayers }) 
                 }
 
                 {player.winPercentage > 0 &&
-                  <span><span className="text-xs text-gray-400">Game: </span><span
+                  <span><span className="text-xs text-gray-400">{ladder.orderRule === 'GAMEWON' ? 'Game' : 'Won'}: </span><span
                     className={cn({
-                      'text-gray-600': Number(player.winPercentage) === 100,
-                      'text-green-600': Number(player.winPercentage) > 100,
-                      'text-red-600': Number(player.winPercentage) < 100,
+                      'text-gray-600': Number(Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage)) === 100,
+                      'text-green-600': Number(Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage)) > 100,
+                      'text-red-600': Number(Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage)) < 100,
                     })}
-                  >{player.winPercentage}%
+                  >{ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage}%
                     <span className='text-xs ml-1'>
-                      (<span className='text-green-600'>{player.gameWin}</span>
+                      (g:<span className='text-green-600'>{player.gameWin}</span>
                       /<span className='text-red-600'>{player.gameLost}</span>)
                     </span>
 
