@@ -375,6 +375,33 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
                       {!ladder.scores?.length && ladder.players?.length > 0 &&
                         <section className="mx-0 md:mx-4">
+                          {/* no match played yet */}
+                          {
+                            ladder.tonightMatches?.tonightMatches && <div>
+                              <LadderMatches matchUps={ladder.tonightMatches.tonightMatches}></LadderMatches></div>
+                          }
+                          <div className="py-5 mx-auto w-full flex items-center justify-center">
+                            <button
+                              className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
+                              onClick={() => setShowOrder(!showOrder)}
+                              className={cn(
+                                ' active:bg-blue-600 uppercase  font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150',
+                                {
+                                  'bg-gray-300 text-black': showOrder,
+                                  'bg-blue-500 text-white': !showOrder,
+                                }
+                              )}
+                            >
+                              {showOrder ? 'Cancel' : 'Create play order'}
+                            </button>
+                          </div>
+                          {
+                            showOrder
+                            &&
+                            <div className="py-8 mx-auto flex justify-center">
+                              <PlayersSelection user={user} registered={registeredPlayers} players={allPlayers} ladderId={ladder.id}></PlayersSelection>
+                            </div>
+                          }
                           <div id="players" className="text-2xl pt-10">Registered Players</div>
                           <PlayersCard allPlayers={registeredPlayers} hideSearch />
                         </section>}
