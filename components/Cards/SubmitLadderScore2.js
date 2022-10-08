@@ -13,6 +13,9 @@ import 'react-toastify/dist/ReactToastify.css';
 var Diacritics = require('diacritic');
 
 export default function SubmitLadderScore({ ladder, allPlayers, user }) {
+  const registeredPlayerIds = ladder.players.map(x => x.playerId);
+  const registeredPlayers = allPlayers.filter(x => registeredPlayerIds.indexOf(x.uid) >= 0);
+
   const router = useRouter();
   const [saving, setSaving] = useState(false);
 
@@ -47,7 +50,6 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
       toast("Result submitted!");
       setSaving(false)
     } catch (error) {
-      console.log('Submit failed', error)
       toast.error("Failed to submit result: " + error.message);
       setSaving(false)
     }
@@ -60,7 +62,7 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
         saving
           ? <><div className="text-center py-24"><Spinner size="lg" color="blue" />Saving result. Please wait..</div></>
           : <SubmitLadderScoreForm onSubmit={onSubmit} saving={saving}
-            ladder={ladder} allPlayers={allPlayers} />
+            ladder={ladder} allPlayers={registeredPlayers} />
       }
 
     </>
@@ -78,8 +80,6 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
   const selectedLosers = allPlayers.filter(x => losers.indexOf(x.sys.id) !== -1);
   const selectedLosersPoint = selectedLosers.reduce((p, player) => p + player.avtaPoint, 0);
 
-  const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(allPlayers);
-
   const isValid = () => {
     return winners.length === 2 && losers.length === 2 && winners[0] !== losers[0] && winners[0] !== losers[1] &&
       winners[1] !== losers[0] && winners[1] !== losers[1] && !!loserSet && !!winnerSet && loserSet !== winnerSet;
@@ -94,13 +94,6 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
           </h6>
           <div className="text-center mb-8">{ladder.name} - {format(new Date(ladder.startDate), 'LLLL	d, yyyy')}</div>
           <div className="flex flex-wrap">
-            <div className="w-full px-4 py-4">
-              <div className="relative w-full mb-3 flex justify-center">
-                <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 w-96" placeholder="Search Name, Club or Point"
-                  value={filter} onChange={(e) => { setFilter(e.target.value) }}
-                />
-              </div>
-            </div>
             <div className="w-full lg:w-6/12 py-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
@@ -109,9 +102,9 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                 {winners?.length < 2 ? <div className="flex flex-col space-y-1">
                   <div className="text-sm italic text-gray-500">{winners?.length} selected</div>
                   {
-                    filteredPlayers.map(
+                    allPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150"
+                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150"
                           value={player.sys.id} name={"withIndex." + i * 2}
                           {...register("winners", {
                             required: true,
@@ -138,9 +131,9 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                 {losers?.length < 2 ? <div className="flex flex-col space-y-1">
                   <div className="text-sm italic text-gray-500">{losers?.length} selected</div>
                   {
-                    filteredPlayers.map(
+                    allPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
+                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
                           {...register("losers", {
                             required: true,
                           })}
