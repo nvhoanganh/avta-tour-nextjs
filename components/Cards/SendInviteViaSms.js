@@ -12,7 +12,7 @@ import useFilterPlayers from '../../lib/useFilterhook';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
 import { useFirebaseAuth } from '../authhook';
-import { parseMsg } from '../../lib/browserapi';
+import { parseMsg, getPlayerInitial } from '../../lib/browserapi';
 
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayersAll, setAvaiPlayersAll] = useState(players);
@@ -232,7 +232,7 @@ function PlayersTable({ players, toggle, selected, unsubscribed }) {
 													player.photoURL || player.coverImage?.url
 														? <ContentfulImage width={120} height={120} className='hover:cursor-pointer rounded-full mx-auto max-w-120-px' src={player.photoURL || player.coverImage?.url} />
 														: <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-400">
-															<span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+															<span className="text-xl font-medium leading-none text-white">{getPlayerInitial(player)}</span>
 														</span>
 												}
 											</Link>

@@ -3,6 +3,7 @@ import ContentfulImage from './contentful-image';
 import Link from 'next/link';
 import PlayerPoint from './PlayerPoint';
 import PlayerProfileStatus from './playerprofilestatus';
+import { getPlayerInitial } from '../lib/browserapi';
 
 export default function PlayerCard({
   player,
@@ -22,7 +23,7 @@ export default function PlayerCard({
             player.photoURL || player.coverImage?.url
               ? <ContentfulImage width={sz} height={sz} className='rounded-full mx-auto' src={player.photoURL || player.coverImage?.url} />
               : <span className="inline-flex items-center justify-center h-12 w-12 rounded-full bg-gray-400">
-                <span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+                <span className="text-xl font-medium leading-none text-white">{getPlayerInitial(player)}</span>
               </span>
           }
         </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import ContentfulImage from './contentful-image';
 import Link from 'next/link';
+import { getPlayerInitial } from '../lib/browserapi';
 
 export default function PlayerWithIcon({
   player,
@@ -20,7 +21,7 @@ export default function PlayerWithIcon({
           player.photoURL || player.coverImage?.url
             ? <ContentfulImage width={sz} height={sz} className='rounded-full mx-auto' src={player.photoURL || player.coverImage?.url} />
             : <span className="inline-flex items-center justify-center h-28 w-28 rounded-full bg-gray-400">
-              <span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+              <span className="text-xl font-medium leading-none text-white">{getPlayerInitial(player)}</span>
             </span>
         }
       </div>

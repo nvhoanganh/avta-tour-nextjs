@@ -27,7 +27,7 @@ import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
 import { findLinkedUsers } from '../../lib/backendapi';
-import { getEmbedUrl } from '../../lib/browserapi';
+import { getEmbedUrl, getPlayerInitial } from '../../lib/browserapi';
 import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -190,7 +190,7 @@ export default function Player({ player, preview }) {
 																		player.photoURL || player.coverImage?.url}
 																/>
 																: <span className="inline-flex items-center justify-center h-36 w-36 rounded-full bg-gray-400">
-																	<span className="text-xl font-medium leading-none text-white">{player.fullName.split(" ").map((n) => n[0]).join("")}</span>
+																	<span className="text-xl font-medium leading-none text-white">{getPlayerInitial(player)}</span>
 																</span>
 														}
 													</div>

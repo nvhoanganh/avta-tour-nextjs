@@ -25,11 +25,8 @@ export default function JoinLadder({ ladder, fullProfile }) {
         >
           <p className="py-2 h1">Join <span className="font-bold">{ladder.name}</span>
           </p>
-          <p className="py-6">
-            <PlayerAvatar player={fullProfile} className="w-28 h-28" />
-          </p>
 
-          <div className='text-center'>
+          <div className='text-center pt-8'>
             <div className='text-sm leading-normal mt-0 mb-2  font-bold uppercase'>
               <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
                 <i className='fas fa-map-marker-alt mr-2 text-lg '></i>{' '}
