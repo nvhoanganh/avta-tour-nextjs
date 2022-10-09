@@ -31,7 +31,7 @@ export default function SummaryPossibleMatches({ matches, onSelectedChange }) {
 								})}
 							/>
 							<label htmlFor={k.trim()} class="select-none cursor-pointer rounded-lg border border-gray-200 bg-gray-100 shadow-lg
-   px-2 py-1 text-gray-600 transition-colors duration-200 ease-in-out peer-checked:bg-green-300 peer-checked:text-gray-900 peer-checked:border-gray-200 text-sm w-36 text-center">
+   px-2 py-1 text-gray-600 w-32 transition-colors duration-200 ease-in-out peer-checked:bg-green-300 peer-checked:text-gray-900 peer-checked:border-gray-200 text-sm text-center whitespace-nowrap">
 								<span className='font-semibold'>{k.trim()}</span>
 								{/* <span className='text-xs'> ({data[k]})</span> */}
 							</label>

@@ -340,7 +340,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               && <>
                                 <div className='w-full text-center py-3 pt-5'>
                                   {
-                                    ladder.tonightMatches?.tonightMatches && <div>
+                                    !showOrder && ladder.tonightMatches?.tonightMatches && <div>
                                       <LadderMatches matchUps={ladder.tonightMatches.tonightMatches}></LadderMatches></div>
                                   }
                                   <div className="py-5">
@@ -377,7 +377,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                         <section className="mx-0 md:mx-4">
                           {/* no match played yet */}
                           {
-                            ladder.tonightMatches?.tonightMatches && <div>
+                            !showOrder && ladder.tonightMatches?.tonightMatches && <div>
                               <LadderMatches matchUps={ladder.tonightMatches.tonightMatches}></LadderMatches></div>
                           }
                           <div className="py-5 mx-auto w-full flex items-center justify-center">
