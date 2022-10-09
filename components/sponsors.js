@@ -38,7 +38,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 							<div className="flex justify-center pt-2 space-x-1" >
 								{
 									player.competitionsSponsored.map(comp =>
-									(<a className='rounded-full shadow-xl text-green-900 bg-yellow-400 align-middle border border-gray-300 text-xs px-1 text-center hover:bg-gray-200' title={comp}>
+									(<a key={comp} className='rounded-full shadow-xl text-green-900 bg-yellow-400 align-middle border border-gray-300 text-xs px-1 text-center hover:bg-gray-200' title={comp}>
 										{comp}
 									</a>))
 								}

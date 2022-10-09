@@ -69,7 +69,7 @@ export default function PlayersSelection({ players, registered, ladderId, user }
           </div>
           :
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className=" text-lg py-3 font-bold">Who is playing tonight?</div>
+            <div className=" text-lg py-3 font-bold">Who is playing?</div>
             {/* <input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" placeholder="Search Name, Club or Point"
               value={filter} onChange={(e) => { setFilter(e.target.value) }}
             /> */}
@@ -78,11 +78,12 @@ export default function PlayersSelection({ players, registered, ladderId, user }
             <div className="flex flex-col space-y-1 pt-4">
               {
                 filteredPlayers.map(
-                  (player, i) => <label key={player} className="inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 my-2 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
-                      {...register("selected", { required: true })}
-                    />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
-                  </label>
+                  (player, i) =>
+                    <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
+                      <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 my-2 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
+                        {...register("selected", { required: true })}
+                      />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                    </label>
                 )
               }
             </div>
