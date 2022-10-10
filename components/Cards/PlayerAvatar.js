@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { getPlayerInitial } from '../../lib/browserapi';
 
 export default function PlayerAvatar({ player, className }) {
-  console.log("🚀 ~ file: PlayerAvatar.js ~ line 5 ~ PlayerAvatar ~ player", player)
   return (
     <Link href={`/players/${player.sys?.id}`}>
       {
