@@ -40,19 +40,16 @@ export default function PlayerRankingCard({ player, index, registeredPlayers, la
                 }
 
                 {player.winPercentage > 0 &&
-                  <span><span className="text-xs text-gray-400">{ladder.orderRule === 'GAMEWON' ? 'Game' : 'Won'}: </span><span
-                    className={cn({
-                      'text-gray-600': Number(Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage)) === 100,
-                      'text-green-600': Number(Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage)) > 100,
-                      'text-red-600': Number(Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage)) < 100,
-                    })}
-                  >{ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage}%
-                    <span className='text-xs ml-1'>
-                      (g:<span className='text-green-600'>{player.gameWin}</span>
-                      /<span className='text-red-600'>{player.gameLost}</span>)
-                    </span>
+                  <span><span className="text-xs text-gray-400">{ladder.orderRule === 'GAMEWON' ? 'Game' : 'Won'}: </span>
+                    <span
+                      className='text-gray-600'
+                    >{ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage}%
+                      <span className='text-xs ml-1'>
+                        (g:<span className='text-green-600'>{player.gameWin}</span>
+                        /<span className='text-red-600'>{player.gameLost}</span>)
+                      </span>
 
-                  </span></span>
+                    </span></span>
                 }
               </div>
             </div>
