@@ -1,10 +1,12 @@
 import { useRouter } from 'next/router';
+import Countdown from 'react-countdown';
 import cn from 'classnames';
 import Link from 'next/link';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import ErrorPage from 'next/error';
 import DateComponent from '../../../components/date';
+import CountDownTimer from '../../../components/countdowntimer';
 import PossibleMatches from '../../../components/possibleMatches';
 import LadderMatches from '../../../components/ladderMatches';
 import SummaryPossibleMatches from '../../../components/summaryPossibleMatches';
@@ -24,6 +26,7 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function Competition({ ladder, allPlayers, preview }) {
   const { user, fullProfile, loading } = useFirebaseAuth({});
@@ -227,17 +230,28 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       <div className='text-center'>
                         <div className='text-sm leading-normal mt-0 mb-2 '>
                           <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
-                            <DateComponent
-                              dateString={
-                                ladder.startDate
-                              }
-                            />
-                            {' - '}
-                            <DateComponent
-                              dateString={
-                                ladder.endDate
-                              }
-                            />
+                            {
+                              new Date() < new Date(ladder.startDate)
+                                ? <>
+                                  <DateComponent
+                                    dateString={
+                                      ladder.startDate
+                                    }
+                                  />
+                                  {' - '}
+                                  <DateComponent
+                                    dateString={
+                                      ladder.endDate
+                                    }
+                                  />
+                                </>
+                                : <span className=' text-md'><Countdown date={new Date(ladder.endDate)}
+                                  renderer={CountDownTimer} /> to <DateComponent
+                                    dateString={
+                                      ladder.endDate
+                                    }
+                                  /></span>
+                            }
                           </a>
                         </div>
                       </div>
