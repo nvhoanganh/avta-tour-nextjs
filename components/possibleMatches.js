@@ -14,10 +14,17 @@ export default function PossibleMatches({ matches }) {
 					})}
 				>{match.pointDiff <= 20 ? '00-20' :
 					match.pointDiff > 20 && match.pointDiff <= 30 ? '20-30' : '30-40'}</div> */}
-				<div>
-					<div>{match.team1.player1} &amp; {match.team1.player2} [{match.team1.point}] <strong>vs.</strong></div>
-					<div>{match.team2.player1} &amp; {match.team2.player2} [{match.team2.point}]</div>
-				</div>
+				{
+					match.team1.point !== match.team2.point && parseInt(match.team1.point) > parseInt(match.team2.point)
+						? <div>
+							<div>{match.team1.player1} &amp; {match.team1.player2} [<span>{match.team1.point}</span>] <strong>vs.</strong></div>
+							<div>{match.team2.player1} &amp; {match.team2.player2} [<span>{match.team2.point}</span>]</div>
+						</div>
+						: <div>
+							<div>{match.team2.player1} &amp; {match.team2.player2} [<span>{match.team2.point}</span>] <strong>vs.</strong></div>
+							<div>{match.team1.player1} &amp; {match.team1.player2} [<span>{match.team1.point}</span>]</div>
+						</div>
+				}
 			</div>
 		))}
 	</>
