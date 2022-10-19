@@ -51,7 +51,9 @@ export default function LadderMatches({ matchUps }) {
 		{
 			less20.length > 0
 				? <div className="py-6">
-					<div className="text-xl py-3 font-bold">{less20.length} matches with 0 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 20</div>
+					<div className="text-xl py-3">No Handicap
+						<div className="text-sm text-gray-500">0 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 20 ({less20.length})</div>
+					</div>
 					<PossibleMatches matches={less20}></PossibleMatches>
 				</div >
 				: null
@@ -60,7 +62,9 @@ export default function LadderMatches({ matchUps }) {
 		{
 			from20To30.length > 0
 				? <div className="py-6">
-					<div className="text-xl py-3 font-bold">{from20To30.length} matches with 20 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 30</div>
+					<div className="text-xl py-3">1-0 Handicap
+						<div className="text-sm text-gray-500">20 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 30 ({from20To30.length})</div>
+					</div>
 					<PossibleMatches matches={from20To30}></PossibleMatches>
 				</div>
 				: null
@@ -68,7 +72,9 @@ export default function LadderMatches({ matchUps }) {
 		{
 			over30.length > 0
 				? <div className="py-6">
-					<div className="text-xl py-3 font-bold">{over30.length} matches with 30 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 40</div>
+					<div className="text-xl py-3">2-0 Handicap to 7
+						<div className="text-sm text-gray-500">30 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 40 ({over30.length})</div>
+					</div>
 					<PossibleMatches matches={over30}></PossibleMatches>
 				</div>
 				: null
