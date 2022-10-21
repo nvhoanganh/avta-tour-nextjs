@@ -1,10 +1,12 @@
 import ToggleContactDetails from '../../../components/ToggleContactDetails';
+import Countdown from 'react-countdown';
 import ToggleTournamentRule from '../../../components/ToggleTournamentRule';
 import PlayerCard from '../../../components/PlayerCard';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import cn from 'classnames';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
+import CountDownTimer from '../../../components/countdowntimer';
 import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import ErrorPage from 'next/error';
@@ -419,7 +421,7 @@ export default function Competition({ competition, preview }) {
                       <div className='text-center'>
                         <div className='text-sm leading-normal mt-0 mb-2 text-gray-400 font-bold uppercase'>
                           <a href={`https://maps.google.com/?q=${competition.location?.lat},${competition.location?.lon}`} target='_blank' className='hover:underline'>
-                            <i className='fas fa-map-marker-alt mr-2 text-lg text-gray-400'></i>{' '}
+                            <i className='fas fa-map-marker-alt mb-4 mr-2 text-lg text-gray-400'></i>{' '}
                             {competition.club},{' '}
                             <DateComponent
                               dateString={
@@ -427,6 +429,14 @@ export default function Competition({ competition, preview }) {
                               }
                             />
                           </a>
+
+                          {
+                            new Date() < new Date(competition.date)
+                              ? <div className='text-gray-600'><Countdown date={new Date(competition.date)}
+                                renderer={CountDownTimer} />
+                              </div>
+                              : null
+                          }
                         </div>
                       </div>
 
