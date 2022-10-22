@@ -448,7 +448,7 @@ export default function Competition({ competition, preview }) {
                           {
                             competition.discussionUrl
                               ?
-                              <div className="pt-6 sm:py-0">
+                              <div className="py-6 sm:py-0">
                                 <a title="View Chat"
                                   href={competition.discussionUrl}
                                   target="_blank"
