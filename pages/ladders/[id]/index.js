@@ -253,11 +253,11 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       </div>
 
                       <div className='mx-0 md:mx-4 pt-8'>
-                        <div className="flex justify-between items-center mt-10">
+                        <div className="flex justify-between items-center mt-10 flex-col sm:flex-row">
                           <h3 className='text-2xl md:text-3xl font-bold tracking-tighter leading-tight'>
                             {ladder.name}
                           </h3>
-                          <div>
+                          <div className="pt-6 sm:pt-0">
                             <a title="View Chat" className="text-gray-500 hover:underline cursor-pointer whitespace-nowrap" onClick={viewChat}><i className="text-blue-500 far fa-comments hover:underline cursor-pointer" ></i> Comments</a>
                           </div>
                         </div>
