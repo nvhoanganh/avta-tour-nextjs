@@ -441,13 +441,14 @@ export default function Competition({ competition, preview }) {
                       </div>
 
                       <div className='mx-0 md:mx-4'>
-                        <div className="flex justify-between items-center mt-10">
+                        <div className="flex flex-col sm:flex-row justify-between items-center mt-10">
                           <h3 className='text-2xl md:text-3xl font-bold tracking-tighter leading-tight'>
                             {competition.title}
                           </h3>
                           {
                             competition.discussionUrl
-                              ? <div>
+                              ?
+                              <div className="pt-6 sm:py-0">
                                 <a title="View Chat"
                                   href={competition.discussionUrl}
                                   target="_blank"
