@@ -130,7 +130,7 @@ export default function EditLadder({ ladder }) {
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-400 text-sm text-center pb-8">
+                <p className="text-gray-400 text-sm text-center pb-8 sm:pt-12">
                   <Link href={`/ladders/${ladder.id}`}><a
                     className='underline'
                   >
