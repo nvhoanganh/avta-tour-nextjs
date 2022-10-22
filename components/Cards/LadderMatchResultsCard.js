@@ -7,7 +7,8 @@ import DropDown from '../dropdown';
 import { getFilteredLadderMatches } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
-export default function LadderMatchResultsCard({ results, is_superuser, deleteResult }) {
+export default function LadderMatchResultsCard({ results, is_superuser, deleteResult, is_owner }) {
+  console.log("🚀 ~ file: LadderMatchResultsCard.js ~ line 11 ~ LadderMatchResultsCard ~ is_owner", is_owner)
   const [filter, setFilter] = useState(null);
 
   return (
@@ -46,11 +47,12 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                 </div>
 
                 <div className="flex flex-col items-center justify-center">
-                  {!is_superuser ? <div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
-                    onClick={() => deleteResult(result)}
-                  >
-                    {result.gameWonByWinners}-{result.gameWonByLosers}
-                  </div> :
+                  {!is_superuser && !is_owner ?
+                    (<div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
+                      onClick={() => deleteResult(result)}
+                    >
+                      {result.gameWonByWinners}-{result.gameWonByLosers}
+                    </div>) :
                     <DropDown buttonText={
                       <span>{result.gameWonByWinners}-{result.gameWonByLosers}</span>
                     }

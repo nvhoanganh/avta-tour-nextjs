@@ -350,12 +350,14 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                   <div className='hidden container md:block'>
                                     <LadderResultsTable results={ladder.scores}
                                       deleteResult={deleteResult}
+                                      is_owner={ladder.ownerId === user?.uid}
                                       is_superuser={fullProfile?.roles?.superuser}></LadderResultsTable>
                                   </div>
                                   <div className='md:hidden mt-4'>
                                     <LadderMatchResultsCard
                                       results={ladder.scores}
                                       deleteResult={deleteResult}
+                                      is_owner={ladder.ownerId === user?.uid}
                                       is_superuser={fullProfile?.roles?.superuser}></LadderMatchResultsCard>
                                   </div>
                                 </>

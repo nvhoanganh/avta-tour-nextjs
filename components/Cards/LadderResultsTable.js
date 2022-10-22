@@ -4,7 +4,7 @@ import DateWithTimeComponent from '../dateWithTime';
 import PlayerPoint from '../PlayerPoint';
 import PlayerAvatar from '../Cards/PlayerAvatar';
 
-export default function MatchResultsTable({ color, results, is_superuser, deleteResult }) {
+export default function MatchResultsTable({ color, results, is_superuser, deleteResult, is_owner }) {
 	return (
 		<>
 			<div
