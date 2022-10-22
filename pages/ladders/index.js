@@ -39,12 +39,12 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 										/>
 									</div>
 									<div className='pb-20'>
-										<a className='bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+										<a className='bg-gray-50 text-gray-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
                             disabled:cursor-wait whitespace-nowrap cursor-pointer
                                      disabled:bg-gray-200'
 											href={`/ladders/edit/newladder`}
 										>
-											<i className="fas fa-plus"></i> Add New Ladder
+											<i className="fas fa-plus"></i> New Ladder
 										</a>
 									</div>
 									<div className='pb-6'>
@@ -60,12 +60,12 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 										ladders={ladders}
 									/>
 									<div className='text-right mr-4 pb-16'>
-										<a className='bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+										<a className='bg-gray-50 text-gray-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
                             disabled:cursor-wait whitespace-nowrap cursor-pointer
                                      disabled:bg-gray-200'
 											href={`/ladders/edit/newladder`}
 										>
-											<i className="fas fa-plus"></i> New
+											<i className="fas fa-plus"></i> New Ladder
 										</a>
 									</div>
 									<div className='pb-6'>

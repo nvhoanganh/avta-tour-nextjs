@@ -120,7 +120,7 @@ export default function NewLadder() {
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-400 text-sm text-center">
+                <p className="text-gray-400 text-sm text-center sm:pt-8">
                   <Link href={`/ladders`}><a
                     className='underline'
                   >
