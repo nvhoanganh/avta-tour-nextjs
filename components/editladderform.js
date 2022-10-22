@@ -57,6 +57,14 @@ export default function EditLadderForm({ onSubmit, currentValue, saving }) {
                   {...register("endDate", { required: true })} />
               </div>
             </div>
+            <div className="w-full lg:w-4/12 sm:px-4 py-3">
+              <div className="relative w-full mb-3">
+                <label className="inline-flex items-center cursor-pointer">
+                  <input id="customCheckLogin" type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("open")} />
+                  <span className="ml-2 text-sm font-semibold text-blueGray-600">Open for registration</span>
+                </label>
+              </div>
+            </div>
             <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">

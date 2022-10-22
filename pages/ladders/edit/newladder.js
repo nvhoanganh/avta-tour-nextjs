@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import Link from 'next/link'
 import AvatarEditor from "react-avatar-editor";
 import SaveButton from '../../../components/savebutton';
 import FirebaseImage from '../../../components/fb-image';
@@ -40,7 +41,16 @@ export default function NewLadder() {
   const onSubmit = async data => {
     setSaving(true)
 
-    const docRef = await addDoc(collection(db, "ladders"), data);
+    let saveData = {
+      ...data,
+      startDate: new Date(data.startDate),
+      endDate: new Date(data.endDate),
+      timestamp: new Date(),
+      ownerId: user.uid,
+      ownerName: user.displayName,
+    };
+
+    const docRef = await addDoc(collection(db, "ladders"), saveData);
     await RevalidatePath(user, `/ladders`);
     toast("Ladder added!");
 
@@ -117,7 +127,13 @@ export default function NewLadder() {
                     </div>
                   </div>
                 </div>
-
+                <p className="text-gray-400 text-sm text-center">
+                  <Link href={`/ladders`}><a
+                    className='underline'
+                  >
+                    Go Back
+                  </a></Link>
+                </p>
                 <div className='sm:mt-12'>
                   <EditLadderForm onSubmit={onSubmit} saving={saving} />
                 </div>
