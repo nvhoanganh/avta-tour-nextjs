@@ -231,7 +231,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                         <div className='text-sm leading-normal mt-0 mb-2 '>
                           <a href={`https://maps.google.com/?q=${ladder.homeClub}`} target='_blank' className='hover:underline'>
                             {
-                              new Date() < new Date(ladder.startDate)
+                              new Date() < new Date(ladder.startDate) || new Date() > new Date(ladder.endDate)
                                 ? <>
                                   <DateComponent
                                     dateString={
