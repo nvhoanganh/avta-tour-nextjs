@@ -74,7 +74,6 @@ export default function EditLadderForm({ onSubmit, currentValue, saving }) {
         border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
                   {...register("joiningFee", { required: true })}
                 >
-                  <option value={0}>$0 - No joining fee</option>
                   <option value={10}>$10</option>
                   <option value={20}>$20</option>
                   <option value={30}>$30</option>

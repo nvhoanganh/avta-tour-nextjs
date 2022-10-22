@@ -3,7 +3,7 @@ import Link from 'next/link'
 import AvatarEditor from "react-avatar-editor";
 import SaveButton from '../../../components/savebutton';
 import FirebaseImage from '../../../components/fb-image';
-import { RevalidatePath } from '../../../lib/browserapi';
+import { RevalidatePath, ProcessLadderEditForm } from '../../../lib/browserapi';
 import Head from 'next/head';
 import FloatingFileInput from '../../../components/floatingFileInput';
 import Layout from '../../../components/layout';
@@ -41,14 +41,7 @@ export default function NewLadder() {
   const onSubmit = async data => {
     setSaving(true)
 
-    let saveData = {
-      ...data,
-      startDate: new Date(data.startDate),
-      endDate: new Date(data.endDate),
-      timestamp: new Date(),
-      ownerId: user.uid,
-      ownerName: user.displayName,
-    };
+    const saveData = ProcessLadderEditForm(data, user);
 
     const docRef = await addDoc(collection(db, "ladders"), saveData);
     await RevalidatePath(user, `/ladders`);

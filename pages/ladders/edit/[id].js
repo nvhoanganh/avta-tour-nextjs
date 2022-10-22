@@ -16,7 +16,7 @@ import { uploadBytes, ref } from 'firebase/storage';
 import { setDoc, doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { RevalidatePath } from '../../../lib/browserapi';
+import { ProcessLadderEditForm, RevalidatePath } from '../../../lib/browserapi';
 import { getLadderDetailsOnly, getAllLadders } from '../../../lib/backendapi';
 
 
@@ -44,15 +44,11 @@ export default function EditLadder({ ladder }) {
 
     const docRef = doc(db, "ladders", ladder.id);
     const docSnap = await getDoc(docRef);
-    let updated = {
+    const updated = ProcessLadderEditForm({
       ...docSnap.data(),
-      ...data,
-      startDate: new Date(data.startDate),
-      endDate: new Date(data.endDate),
-      timestamp: new Date(),
-      ownerId: user.uid,
-      ownerName: user.displayName,
-    };
+      ...data
+    }, user);
+
     await setDoc(docRef, updated);
     await RevalidatePath(user, `/ladders/${ladder.id}`);
     toast("Ladder Updated");
