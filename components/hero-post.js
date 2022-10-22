@@ -37,17 +37,17 @@ export default function HeroPost({
 					<h4 className='text-xl font-bold text-white'>
 						<a className='hover:underline'>{title}</a>
 					</h4>
-					<p className='text-md font-light mt-2 text-white'>
+					<div className='text-md font-light mt-2 text-white'>
 						{excerpt}
-					</p>
-					<p className='pt-7 text-white'>
+					</div>
+					<div className='pt-7 text-white'>
 						{author && (
 							<Avatar
 								name={author.name}
 								picture={author.picture}
 							/>
 						)}
-					</p>
+					</div>
 				</div>
 			</div>
 		</Link>

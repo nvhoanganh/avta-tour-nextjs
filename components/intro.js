@@ -33,7 +33,7 @@ export default function Intro({ upcomingCompetition }) {
 									AVTA, Australia Vietnamese Tennis
 									Association, grow together
 								</p> */}
-								<p className="text-center pt-12">
+								<div className="text-center pt-12">
 									{
 										loadingAuth
 											?
@@ -52,7 +52,7 @@ export default function Intro({ upcomingCompetition }) {
 													</a>
 												</Link>
 									}
-								</p>
+								</div>
 							</div>
 						</div>
 					</div>

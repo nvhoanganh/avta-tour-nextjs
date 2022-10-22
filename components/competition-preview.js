@@ -87,7 +87,7 @@ export default function CompetitionPreview({
 								<h4 className='text-xl font-bold text-white'>
 									<DateComponent dateString={date} />
 								</h4>
-								<p className='text-md font-light mt-2 text-white'>
+								<div className='text-md font-light mt-2 text-white'>
 									<ul className='list-none mt-6'>
 										<li className='py-2'>
 											<div className='flex items-center'>
@@ -132,7 +132,7 @@ export default function CompetitionPreview({
 											</div>
 										</li>
 									</ul>
-								</p>
+								</div>
 							</div>
 						</div>
 					</Link>
