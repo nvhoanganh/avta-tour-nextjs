@@ -167,6 +167,14 @@ export default function EditLadderForm({ onSubmit, currentValue, saving }) {
               <div className="relative w-full mb-3 text-center">
                 <SaveButton saving={saving}
                   type="submit">Save</SaveButton>
+
+                <a className='bg-gray-400 text-white active:bg-gray-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+                            disabled:cursor-wait whitespace-nowrap cursor-pointer
+                                     disabled:bg-gray-200'
+                  href={currentValue?.id ? `/ladders/${currentValue?.id}` : '/ladders'}
+                >
+                  Go Back
+                </a>
               </div>
             </div>
           </div>
