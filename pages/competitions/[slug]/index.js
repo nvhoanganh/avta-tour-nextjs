@@ -445,9 +445,17 @@ export default function Competition({ competition, preview }) {
                           <h3 className='text-2xl md:text-3xl font-bold tracking-tighter leading-tight'>
                             {competition.title}
                           </h3>
-                          <div>
-                            <a title="View Chat" className="text-gray-500 hover:underline cursor-pointer whitespace-nowrap" onClick={viewChat}><i className="text-blue-500 far fa-comments hover:underline cursor-pointer" ></i> Comments</a>
-                          </div>
+                          {
+                            competition.discussionUrl
+                              ? <div>
+                                <a title="View Chat"
+                                  href={competition.discussionUrl}
+                                  target="_blank"
+                                  className="text-gray-500 hover:underline cursor-pointer whitespace-nowrap" onClick={viewChat}><i className="text-blue-500 fab fa-facebook-messenger hover:underline cursor-pointer" ></i> Discuss &amp; Find Partners
+                                </a>
+                              </div>
+                              : null
+                          }
                         </div>
 
                         {
@@ -575,8 +583,6 @@ export default function Competition({ competition, preview }) {
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
                             </div>
-
-                            <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5">Loading comments...</div>
                           </>
                           :
                           <>
@@ -592,8 +598,6 @@ export default function Competition({ competition, preview }) {
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
                             </div>
-
-                            <div id="fb-comments" class="fb-comments" data-href={`https://avtatour.com/competitions/${competition.slug}`} data-width="100%" data-numposts="5">Loading comments...</div>
 
                             {/* show list of players */}
 
