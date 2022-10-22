@@ -38,7 +38,7 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 											ladders={ladders}
 										/>
 									</div>
-									<div className='pb-12'>
+									<div className='pb-20'>
 										<a className='bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
                             disabled:cursor-wait whitespace-nowrap cursor-pointer
                                      disabled:bg-gray-200'

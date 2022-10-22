@@ -16,8 +16,10 @@ import { setDoc, doc, getDoc } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { getLadderDetailsOnly, getAllLadders } from '../../../lib/backendapi';
 
-export default function NewLadder() {
+
+export default function EditLadder({ ladder }) {
   const router = useRouter();
   const [saving, setSaving] = useState(false);
   const [userprofile, setUserprofile] = useState(null);
@@ -47,7 +49,7 @@ export default function NewLadder() {
 
       <article>
         <Head>
-          <title>Create new Ladder | AVTA.</title>
+          <title>Edit Ladder | AVTA.</title>
         </Head>
       </article>
 
@@ -96,7 +98,7 @@ export default function NewLadder() {
                       <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px p-6 text-center'>
                         <i className='fas fa-award text-6xl text-yellow-400 '></i>
                         <div>
-                          New Ladder
+                          Edit Ladder
                         </div>
                       </div>
                     </div>
@@ -112,7 +114,7 @@ export default function NewLadder() {
                 </div>
 
                 <div className='sm:mt-12'>
-                  <EditLadderForm onSubmit={onSubmit} saving={saving} />
+                  <EditLadderForm onSubmit={onSubmit} saving={saving} currentValue={ladder} />
                 </div>
               </div>
             </div>
@@ -121,4 +123,23 @@ export default function NewLadder() {
       </main>
     </Layout>
   );
+}
+
+export async function getStaticProps({ params, preview = false }) {
+  const data = await getLadderDetailsOnly(params.id);
+
+  return {
+    props: {
+      preview,
+      ladder: data,
+    },
+  };
+}
+
+export async function getStaticPaths() {
+  const all = await getAllLadders();
+  return {
+    paths: all?.map(({ id }) => `/ladders/edit/${id}`) ?? [],
+    fallback: true,
+  };
 }
