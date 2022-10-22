@@ -12,3 +12,7 @@
 }
 
 .fb-comments, .fb-comments span, .fb-comments iframe { width: 100% !important; }
+
+.rsw-editor {
+	min-height: 400px !important;
+}

@@ -10,7 +10,7 @@ import Layout from '../../../components/layout';
 import EditLadderForm from '../../../components/editladderform';
 import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import ProfileSettings from '../../../components/Cards/UserProfile';
-import { useFirebaseAuth } from '../../../components/authhook';
+import { useFirebaseAuth } from '../../../components/authhook2';
 import { useEffect, useState, useRef } from 'react'
 import { db, storage, storageBucketId } from '../../../lib/firebase';
 import { uploadBytes, ref } from 'firebase/storage';
@@ -24,7 +24,7 @@ export default function NewLadder() {
   const [saving, setSaving] = useState(false);
   const [userprofile, setUserprofile] = useState(null);
   const [linkedPlayer, setLinkedPlayer] = useState(null);
-  const { user } = useFirebaseAuth();
+  const { user } = useFirebaseAuth({ protectedRoute: true, reason: 'createladder' });
 
   useEffect(async () => {
     if (user) {

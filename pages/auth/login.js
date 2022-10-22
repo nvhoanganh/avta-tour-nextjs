@@ -138,6 +138,12 @@ export default function Login() {
 													{reason === 'claimprofile'
 														&& 'You need to login before you can claim player profile'
 													}
+													{reason === 'createladder'
+														&& 'You need to login before you can create new ladder'
+													}
+													{reason === 'editladder'
+														&& 'You need to login before you can edit ladder'
+													}
 													{reason === 'apply'
 														&& 'You will need to login to apply'
 													}
