@@ -4,7 +4,9 @@ import SaveButton from './savebutton';
 export default function EditLadderForm({ onSubmit, currentValue, saving }) {
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
     defaultValues: {
-      ...currentValue
+      ...currentValue,
+      ...(!!currentValue && { startDate: currentValue?.startDate?.split('T')[0] }),
+      ...(!!currentValue && { endDate: currentValue?.endDate?.split('T')[0] }),
     }
   });
 
