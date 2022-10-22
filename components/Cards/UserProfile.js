@@ -133,7 +133,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             User Information {userRoles?.superuser && ' [Admin User]'}
           </h6>
           <div className="flex flex-wrap">
-            <div className="w-full lg:w-6/12 px-4">
+            <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Display Name
@@ -141,7 +141,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName", { required: true })} />
               </div>
             </div>
-            <div className="w-full lg:w-6/12 px-4">
+            <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Nick Name
@@ -149,7 +149,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName", { required: true })} />
               </div>
             </div>
-            <div className="w-full lg:w-6/12 px-4">
+            <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   AVTA Score
@@ -192,7 +192,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   </div>}
               </div>
             </div>
-            <div className="w-full lg:w-6/12 px-4">
+            <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Home Club
@@ -207,7 +207,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             Contact Information
           </h6>
           <div className="flex flex-wrap">
-            <div className="w-full lg:w-4/12 px-4">
+            <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Mobile
@@ -219,7 +219,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 {errors.mobileNumber && <span className="text-red-500">Australian Mobile, e.g +614XXXXXXXX</span>}
               </div>
             </div>
-            <div className="w-full lg:w-4/12 px-4">
+            <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Suburb
@@ -228,7 +228,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   {...register("suburb", { required: true })} />
               </div>
             </div>
-            <div className="w-full lg:w-4/12 px-4">
+            <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Email
@@ -241,7 +241,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
               </div>
             </div>
-            <div className="w-full lg:w-4/12 px-4 py-3">
+            <div className="w-full lg:w-4/12 sm:px-4 py-3">
               <div className="relative w-full mb-3">
                 <label className="inline-flex items-center cursor-pointer">
                   <input id="customCheckLogin" type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("allowContact")} />
@@ -251,7 +251,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             </div>
             {
               playerId
-              && <div className="w-full lg:w-4/12 px-4 py-3">
+              && <div className="w-full lg:w-4/12 sm:px-4 py-3">
                 <div className="relative w-full mb-3">
                   <label className="inline-flex items-center cursor-pointer">
                     <input id="customCheckLogin" type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("stopSms")}
@@ -268,7 +268,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             About Me
           </h6>
           <div className="flex flex-wrap">
-            <div className="w-full lg:w-4/12 px-4">
+            <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Play Style
@@ -284,7 +284,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 </select>
               </div>
             </div>
-            <div className="w-full lg:w-4/12 px-4">
+            <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Perfect Partner
@@ -300,13 +300,13 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 </select>
               </div>
             </div>
-            <div className="w-full lg:w-4/12 px-4">
+            <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
               </div>
             </div>
           </div>
           <div className="flex flex-wrap">
-            <div className="w-full lg:w-12/12 px-4">
+            <div className="w-full lg:w-12/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   About me
