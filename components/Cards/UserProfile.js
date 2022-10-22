@@ -8,8 +8,8 @@ import Spinner from '../../components/spinner';
 import {
   getPlayerById,
 } from '../../lib/browserapi';
-import { db } from '../../lib/firebase';
 import { PLAYER_STYLE } from '../../lib/constants';
+import { db } from '../../lib/firebase';
 import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";

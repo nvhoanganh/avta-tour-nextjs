@@ -12,10 +12,10 @@ import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState, useRef } from 'react'
 import { db, storage, storageBucketId } from '../../../lib/firebase';
 import { uploadBytes, ref } from 'firebase/storage';
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { RevalidatePath } from '../../../lib/browserapi';
 import { getLadderDetailsOnly, getAllLadders } from '../../../lib/backendapi';
 
 
@@ -39,7 +39,28 @@ export default function EditLadder({ ladder }) {
   }, [user]);
 
   const onSubmit = async data => {
-    console.log("🚀 ~ file: newladder.js ~ line 46 ~ onSubmit ~ data", data)
+    setSaving(true)
+
+    if (ladder) {
+      const docRef = doc(db, "ladders", ladder.id);
+      const docSnap = await getDoc(docRef);
+      let updated = {
+        ...docSnap.data(),
+        ...data,
+        ownerId: user.uid,
+        ownerName: user.displayName,
+      };
+      await setDoc(docRef, updated);
+      await RevalidatePath(user, `/ladders/${ladder.id}`);
+      toast("Ladder Updated");
+    } else {
+      // add new
+      const docRef = await addDoc(collection(db, "ladders"), data);
+      await RevalidatePath(user, `/ladders`);
+      toast("Ladder Added");
+    }
+
+    setSaving(false)
   }
 
   return (

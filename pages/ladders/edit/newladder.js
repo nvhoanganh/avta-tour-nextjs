@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import AvatarEditor from "react-avatar-editor";
 import SaveButton from '../../../components/savebutton';
 import FirebaseImage from '../../../components/fb-image';
+import { RevalidatePath } from '../../../lib/browserapi';
 import Head from 'next/head';
 import FloatingFileInput from '../../../components/floatingFileInput';
 import Layout from '../../../components/layout';
@@ -12,7 +13,7 @@ import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState, useRef } from 'react'
 import { db, storage, storageBucketId } from '../../../lib/firebase';
 import { uploadBytes, ref } from 'firebase/storage';
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc, getDoc, addDoc, collection } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -37,7 +38,13 @@ export default function NewLadder() {
   }, [user]);
 
   const onSubmit = async data => {
-    console.log("🚀 ~ file: newladder.js ~ line 46 ~ onSubmit ~ data", data)
+    setSaving(true)
+
+    const docRef = await addDoc(collection(db, "ladders"), data);
+    await RevalidatePath(user, `/ladders`);
+    toast("Ladder added!");
+
+    setSaving(false)
   }
 
   return (
