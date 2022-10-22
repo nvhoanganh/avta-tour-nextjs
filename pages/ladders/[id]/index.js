@@ -246,11 +246,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                   />
                                 </>
                                 : <span className=' text-md'><Countdown date={new Date(ladder.endDate)}
-                                  renderer={CountDownTimer} /> to <DateComponent
-                                    dateString={
-                                      ladder.endDate
-                                    }
-                                  /></span>
+                                  renderer={CountDownTimer} /> left</span>
                             }
                           </a>
                         </div>
@@ -271,9 +267,26 @@ export default function Competition({ ladder, allPlayers, preview }) {
                       </div>
 
                       <div className='mx-0 md:mx-4 mt-10'>
-                        <a className='underline hover:cursor-pointer' onClick={refreshData}>
-                          Refresh data
-                        </a>
+                        <div className='py-3'>
+                          <button className='bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+                            disabled:cursor-wait whitespace-nowrap cursor-pointer
+                                     disabled:bg-gray-200' onClick={refreshData}>
+                            <i className="fas fa-sync"></i> Refresh
+                          </button>
+                          {
+                            ladder?.ownerId === user?.uid
+                              ?
+                              <a className='bg-gray-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+                            disabled:cursor-wait whitespace-nowrap cursor-pointer
+                                     disabled:bg-gray-200'
+                                href={`/ladders/edit/${ladder.id}`}
+                              >
+                                <i className="fas fa-edit"></i> Edit
+                              </a>
+                              : null
+                          }
+                        </div>
+
                       </div>
 
                       <div id="fb-comments" className="fb-comments" data-href={`https://avtatour.com/ladders/${ladder.id}`} data-width="100%" data-numposts="5"></div>

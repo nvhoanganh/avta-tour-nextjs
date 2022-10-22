@@ -1,16 +1,16 @@
 import { useRouter } from 'next/router';
 import AvatarEditor from "react-avatar-editor";
-import SaveButton from '../../components/savebutton';
-import FirebaseImage from '../../components/fb-image';
+import SaveButton from '../../../components/savebutton';
+import FirebaseImage from '../../../components/fb-image';
 import Head from 'next/head';
-import FloatingFileInput from '../../components/floatingFileInput';
-import Layout from '../../components/layout';
-import EditLadderForm from '../../components/editladderform';
-import Navbar from '../../components/Navbars/AuthNavbar.js';
-import ProfileSettings from '../../components/Cards/UserProfile';
-import { useFirebaseAuth } from '../../components/authhook';
+import FloatingFileInput from '../../../components/floatingFileInput';
+import Layout from '../../../components/layout';
+import EditLadderForm from '../../../components/editladderform';
+import Navbar from '../../../components/Navbars/AuthNavbar.js';
+import ProfileSettings from '../../../components/Cards/UserProfile';
+import { useFirebaseAuth } from '../../../components/authhook';
 import { useEffect, useState, useRef } from 'react'
-import { db, storage, storageBucketId } from '../../lib/firebase';
+import { db, storage, storageBucketId } from '../../../lib/firebase';
 import { uploadBytes, ref } from 'firebase/storage';
 import { setDoc, doc, getDoc } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';

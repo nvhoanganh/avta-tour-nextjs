@@ -32,11 +32,20 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 						>
 							<div className='w-full mb-12'>
 								<div className='hidden container mx-auto md:block px-4'>
-									<div className='pb-6'>
+									<div className='pb-2'>
 										<LaddersTable
 											title='Active Ladders'
 											ladders={ladders}
 										/>
+									</div>
+									<div className='pb-12'>
+										<a className='bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+                            disabled:cursor-wait whitespace-nowrap cursor-pointer
+                                     disabled:bg-gray-200'
+											href={`/ladders/edit/newladder`}
+										>
+											<i className="fas fa-plus"></i> Add New Ladder
+										</a>
 									</div>
 									<div className='pb-6'>
 										<div className='uppercase text-xl py-5 text-center'>Completed Ladders</div>
@@ -50,8 +59,17 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 									<LaddersCard
 										ladders={ladders}
 									/>
+									<div className='text-right mr-4 pb-16'>
+										<a className='bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-3 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150
+                            disabled:cursor-wait whitespace-nowrap cursor-pointer
+                                     disabled:bg-gray-200'
+											href={`/ladders/edit/newladder`}
+										>
+											<i className="fas fa-plus"></i> New
+										</a>
+									</div>
 									<div className='pb-6'>
-										<div className='uppercase text-xl py-10 text-center'>Completed Ladders</div>
+										<div className='uppercase text-xl pt-10 pb-2 text-center'>Completed Ladders</div>
 										<LaddersCard
 											ladders={inactiveLadders}
 										/>
