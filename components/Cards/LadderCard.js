@@ -28,12 +28,12 @@ export default function LadderCard({ color, ladders }) {
 								`Fee: $${ladder.joiningFee}, ${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')}`
 							}
 							statIconName={
-								ladder.active
+								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate)
 									? 'fas fa-lock-open'
-									: 'far fa-chart-bar'
+									: 'far fa-lock'
 							}
 							statIconColor={
-								'bg-green-500'
+								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate) ? 'bg-green-500' : 'bg-red-500'
 							}
 						/>
 					))}

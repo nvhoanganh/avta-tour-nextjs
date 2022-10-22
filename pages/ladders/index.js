@@ -8,7 +8,7 @@ import Navbar from '../../components/Navbars/AuthNavbar.js';
 import LaddersTable from '../../components/Cards/LaddersTable';
 import LaddersCard from '../../components/Cards/LadderCard';
 
-export default function Groups({ ladders, preview }) {
+export default function Groups({ ladders, inactiveLadders, preview }) {
 	const router = useRouter();
 
 	return (
@@ -32,14 +32,30 @@ export default function Groups({ ladders, preview }) {
 						>
 							<div className='w-full mb-12'>
 								<div className='hidden container mx-auto md:block px-4'>
-									<LaddersTable
-										ladders={ladders}
-									/>
+									<div className='pb-6'>
+										<LaddersTable
+											title='Active Ladders'
+											ladders={ladders}
+										/>
+									</div>
+									<div className='pb-6'>
+										<div className='uppercase text-xl py-5 text-center'>Completed Ladders</div>
+										<LaddersTable
+											title='Inactive Ladders'
+											ladders={inactiveLadders}
+										/>
+									</div>
 								</div>
 								<div className='md:hidden px-2 mx-auto'>
 									<LaddersCard
 										ladders={ladders}
 									/>
+									<div className='pb-6'>
+										<div className='uppercase text-xl py-10 text-center'>Completed Ladders</div>
+										<LaddersCard
+											ladders={inactiveLadders}
+										/>
+									</div>
 								</div>
 							</div>
 						</Intro>
@@ -52,11 +68,14 @@ export default function Groups({ ladders, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
 	const data = await getAllLadders();
+	const activeLadders = data.filter(x => new Date() >= new Date(x.startDate) && new Date() <= new Date(x.endDate))
+	const inactiveLadders = data.filter(x => new Date() > new Date(x.endDate) || new Date() < new Date(x.startDate))
 
 	return {
 		props: {
 			preview,
-			ladders: data,
+			ladders: activeLadders,
+			inactiveLadders: inactiveLadders,
 		},
 		revalidate: 60
 	};

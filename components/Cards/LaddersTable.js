@@ -7,12 +7,12 @@ import ContentfulImage from '../contentful-image';
 
 import TableDropdown from '../Dropdowns/TableDropdown.js';
 
-export default function GroupsTable({ color, ladders }) {
+export default function GroupsTable({ color, ladders, title }) {
 	return (
 		<>
 			<div
 				className={
-					'relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg ' +
+					'relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg ' +
 					(color === 'light'
 						? 'bg-white'
 						: 'bg-lightBlue-900 text-white')
@@ -30,7 +30,7 @@ export default function GroupsTable({ color, ladders }) {
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 								>
-									Ladder
+									{title}
 								</th>
 								<th
 									className={
@@ -97,6 +97,7 @@ export default function GroupsTable({ color, ladders }) {
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateComponent dateString={ladder.startDate} /> - <DateComponent dateString={ladder.endDate} />
+										{new Date() < new Date(ladder.startDate) || new Date() > new Date(ladder.endDate) ? <i className='ml-3 far fa-lock text-red-500'></i> : null}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
