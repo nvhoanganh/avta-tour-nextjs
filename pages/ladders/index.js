@@ -48,9 +48,9 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 										</a>
 									</div>
 									<div className='pb-6'>
-										<div className='uppercase text-xl py-5 text-center'>Completed Ladders</div>
+										<div className='uppercase text-xl py-5 text-center'>Upcoming & Completed Ladders</div>
 										<LaddersTable
-											title='Inactive Ladders'
+											title='Ladders'
 											ladders={inactiveLadders}
 										/>
 									</div>

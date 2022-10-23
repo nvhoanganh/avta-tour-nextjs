@@ -86,6 +86,8 @@ export default function GroupsTable({ color, ladders, title }) {
 												}
 											>
 												{ladder.name}
+												{new Date() > new Date(ladder.endDate) ? <span className='ml-3 text-green-500 text-sm font-normal'>Upcoming</span> : null}
+												{new Date() < new Date(ladder.startDate) ? <span className='ml-3 text-red-500 text-sm font-normal'>Completed</span> : null}
 											</div>
 										</div>
 									</th>
@@ -97,7 +99,8 @@ export default function GroupsTable({ color, ladders, title }) {
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateComponent dateString={ladder.startDate} /> - <DateComponent dateString={ladder.endDate} />
-										{new Date() < new Date(ladder.startDate) || new Date() > new Date(ladder.endDate) ? <i className='ml-3 far fa-lock text-red-500'></i> : null}
+										{new Date() > new Date(ladder.endDate) ? <i className='ml-3 far fa-lock text-red-500'></i> : null}
+										{new Date() < new Date(ladder.startDate) ? <i className='ml-3 far fa-calendar-alt text-green-500'></i> : null}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
