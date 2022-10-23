@@ -30,10 +30,10 @@ export default function LadderCard({ color, ladders }) {
 							statIconName={
 								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate)
 									? 'fas fa-lock-open'
-									: 'far fa-lock'
+									: new Date() < new Date(ladder.startDate) ? 'far fa-calendar-alt' : 'far fa-lock'
 							}
 							statIconColor={
-								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate) ? 'bg-green-500' : 'bg-red-500'
+								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate) ? 'bg-green-500' : new Date() < new Date(ladder.startDate) ? 'bg-green-500' : 'bg-red-500'
 							}
 						/>
 					))}

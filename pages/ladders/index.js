@@ -69,7 +69,7 @@ export default function Groups({ ladders, inactiveLadders, preview }) {
 										</a>
 									</div>
 									<div className='pb-6'>
-										<div className='uppercase text-xl pt-10 pb-2 text-center'>Completed Ladders</div>
+										<div className='uppercase text-xl pt-10 pb-2 text-center'>Upcoming & Completed Ladders</div>
 										<LaddersCard
 											ladders={inactiveLadders}
 										/>
