@@ -50,6 +50,8 @@ export default function Login() {
 					return new OAuthProvider('yahoo.com');
 				case 'facebook':
 					return new FacebookAuthProvider();
+				case 'apple':
+					return new OAuthProvider('apple.com');
 				default:
 					return new GoogleAuthProvider();
 			}
@@ -62,8 +64,13 @@ export default function Login() {
 
 		if (provider != 'facebook') {
 			// Start a sign in process for an unauthenticated user.
-			p.addScope('profile');
-			p.addScope('email');
+			if (provider == 'apple') {
+				p.addScope('email');
+				p.addScope('name');
+			} else {
+				p.addScope('profile');
+				p.addScope('email');
+			}
 		}
 
 		return await signInWithRedirect(auth, p);
@@ -78,6 +85,8 @@ export default function Login() {
 						return new GoogleAuthProvider();
 					case 'yahoo':
 						return new OAuthProvider('yahoo.com');
+					case 'apple':
+						return new OAuthProvider('apple.com');
 					case 'facebook':
 						return new FacebookAuthProvider();
 					default:
@@ -90,6 +99,7 @@ export default function Login() {
 			if (!credential) return;
 
 			const user = result?.user;
+			console.log("🚀 ~ file: login.js ~ line 102 ~ .then ~ user", user)
 			if (user) {
 				const redirectUrl = localStorage.getItem('redirectAfterLogin');
 				if (redirectUrl) {
@@ -164,7 +174,7 @@ export default function Login() {
 											</h6>
 										</div>
 										{!loadingAuth ? (
-											<div className='flex flex-col md:flex-row space-y-3 md:space-y-0 md:space-x-3 justify-center mb-6 mx-4 md:mx-3'>
+											<div className='flex flex-col space-y-3 justify-center mb-6 mx-4'>
 												<button
 													onClick={() =>
 														login('facebook')
@@ -192,6 +202,16 @@ export default function Login() {
 														src='/assets/img/google.svg'
 													/>
 													Google
+												</button>
+												<button
+													onClick={() =>
+														login('apple')
+													}
+													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
+													type='button'
+												>
+													<i className="fab fa-apple mr-1 text-xl"></i>
+													Apple
 												</button>
 												<button
 													onClick={() =>
