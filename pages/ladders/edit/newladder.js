@@ -47,6 +47,8 @@ export default function NewLadder() {
     await RevalidatePath(user, `/ladders`);
     toast("Ladder added!");
 
+    router.push(`/ladders/edit/${docRef.id}`);
+
     setSaving(false)
   }
 
