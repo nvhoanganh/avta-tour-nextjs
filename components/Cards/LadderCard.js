@@ -25,7 +25,7 @@ export default function LadderCard({ color, ladders }) {
 							statPercent=''
 							statPercentColor='text-emerald-500'
 							statDescripiron={
-								`Fee: $${ladder.joiningFee}, ${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')}`
+								`Fee: $${ladder.joiningFee}, ${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')} ${!ladder.open ? '(Closed)' : ''}`
 							}
 							statIconName={
 								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate)
