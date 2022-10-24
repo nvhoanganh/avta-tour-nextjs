@@ -2,10 +2,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import cn from 'classnames';
 
-export default function PossibleMatches({ matches }) {
+const _isInFilter = (filter, match) => {
+	return (
+		!!filter.find(u =>
+			u === match.team1.player1.trim() ||
+			u === match.team1.player2.trim() ||
+			u === match.team2.player1.trim() ||
+			u === match.team2.player2.trim()
+		)
+	)
+}
+
+export default function PossibleMatches({ matches, filter }) {
 	return (<>
 		{matches.map((match, index) => (
-			<div className=" border-b text-left py-1 flex items-center space-x-2" key={index}>
+			<div
+				className={cn(' border-b text-left px-2 py-1 my-2 rounded flex items-center space-x-2', {
+					'  bg-green-50': _isInFilter(filter, match),
+				})}
+
+				key={index}>
 				{/* <div className="  text-green-600"
 					className={cn('text-normal', {
 						'  text-green-600': match.pointDiff <= 20,

@@ -13,6 +13,9 @@ const _inFilter = (filter, match) => {
 		!!filter.find(u => u === match.team2.player2.trim())
 	)
 }
+
+
+
 export default function LadderMatches({ matchUps }) {
 	const [filter, setFilter] = useState([]);
 	const onSelectedFilterChanged = (players) => {
@@ -46,7 +49,7 @@ export default function LadderMatches({ matchUps }) {
 	return <>
 		<div className="text-2xl py-3 uppercase font-bold">Play Order</div>
 		<SummaryPossibleMatches onSelectedChange={onSelectedFilterChanged} matches={matchUps}></SummaryPossibleMatches>
-		<div className="italic text-xs text-gray-400 text-center">Hint: Click on 4 or more players to show possible matches</div>
+		<div className="italic text-xs text-gray-400 text-center">Hint: Click on player name to show possible matches</div>
 		{!less20.length && !from20To30.length && !over30.length ? <div className="py-6">No possible matches found with points difference less than 40 😢</div> : <></>}
 		{
 			less20.length > 0
@@ -54,7 +57,7 @@ export default function LadderMatches({ matchUps }) {
 					<div className="text-xl py-3">No Handicap
 						<div className="text-sm text-gray-500">0 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 20 ({less20.length})</div>
 					</div>
-					<PossibleMatches matches={less20}></PossibleMatches>
+					<PossibleMatches matches={less20} filter={filter}></PossibleMatches>
 				</div >
 				: null
 		}
@@ -65,7 +68,7 @@ export default function LadderMatches({ matchUps }) {
 					<div className="text-xl py-3">1-0 Handicap
 						<div className="text-sm text-gray-500">20 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 30 ({from20To30.length})</div>
 					</div>
-					<PossibleMatches matches={from20To30}></PossibleMatches>
+					<PossibleMatches matches={from20To30} filter={filter}></PossibleMatches>
 				</div>
 				: null
 		}
@@ -75,7 +78,7 @@ export default function LadderMatches({ matchUps }) {
 					<div className="text-xl py-3">2-0 Handicap to 7
 						<div className="text-sm text-gray-500">30 <i className="fas fa-less-than text-sm"></i> point <i className="fas fa-less-than-equal text-sm"></i> 40 ({over30.length})</div>
 					</div>
-					<PossibleMatches matches={over30}></PossibleMatches>
+					<PossibleMatches matches={over30} filter={filter}></PossibleMatches>
 				</div>
 				: null
 		}
