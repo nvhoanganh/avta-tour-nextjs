@@ -14,7 +14,7 @@ export default function LadderCard({ color, ladders }) {
 	return (
 		<>
 			<div className='flex flex-wrap'>
-				<div className='w-full lg:w-6/12 xl:w-3/12 px-4'>
+				<div className='w-full lg:w-6/12 xl:w-3/12 px-3'>
 					{ladders.map((ladder) => (
 						<CardStats
 							key={ladder.id}
@@ -25,7 +25,7 @@ export default function LadderCard({ color, ladders }) {
 							statPercent=''
 							statPercentColor='text-emerald-500'
 							statDescripiron={
-								`Fee: $${ladder.joiningFee}, ${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')} ${!ladder.open ? '(Closed)' : ''}`
+								`$${ladder.joiningFee}, ${format(new Date(ladder.startDate), 'LLLL	d, yyyy')} - ${format(new Date(ladder.endDate), 'LLLL	d, yyyy')}`
 							}
 							statIconName={
 								new Date() >= new Date(ladder.startDate) && new Date() <= new Date(ladder.endDate)
