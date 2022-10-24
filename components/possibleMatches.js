@@ -13,14 +13,19 @@ const _isInFilter = (filter, match) => {
 	)
 }
 
+const _isPlayerInFilter = (filter, player) => {
+	return (
+		!!filter.find(u => u === player.trim())
+	)
+}
+
 export default function PossibleMatches({ matches, filter }) {
 	return (<>
 		{matches.map((match, index) => (
 			<div
-				className={cn(' border-b text-left px-2 py-1 my-2 rounded flex items-center space-x-2', {
+				className={cn(' border text-left px-2 py-1 my-2 rounded flex items-center space-x-2', {
 					'  bg-green-50': _isInFilter(filter, match),
 				})}
-
 				key={index}>
 				{/* <div className="  text-green-600"
 					className={cn('text-normal', {
@@ -33,16 +38,29 @@ export default function PossibleMatches({ matches, filter }) {
 				{
 					match.team1.point !== match.team2.point && parseInt(match.team1.point) > parseInt(match.team2.point)
 						? <div>
-							<div>{match.team1.player1} &amp; {match.team1.player2} [<span>{match.team1.point}</span>] <strong>vs.</strong></div>
-							<div>{match.team2.player1} &amp; {match.team2.player2} [<span>{match.team2.point}</span>]</div>
+							<div>
+								<span className={_isPlayerInFilter(filter, match.team1.player1) ? 'font-bold text-blue-800' : ''}>{match.team1.player1}</span> -&nbsp;
+								<span className={_isPlayerInFilter(filter, match.team1.player2) ? 'font-bold text-blue-800' : ''}>{match.team1.player2}</span>&nbsp;
+								[<span>{match.team1.point}</span>]</div>
+							<div>
+								<span className={_isPlayerInFilter(filter, match.team2.player1) ? 'font-bold text-blue-800' : ''}>{match.team2.player1}</span> -&nbsp;
+								<span className={_isPlayerInFilter(filter, match.team2.player2) ? 'font-bold text-blue-800' : ''}>{match.team2.player2}</span>&nbsp;
+								[<span>{match.team2.point}</span>]</div>
 						</div>
 						: <div>
-							<div>{match.team2.player1} &amp; {match.team2.player2} [<span>{match.team2.point}</span>] <strong>vs.</strong></div>
-							<div>{match.team1.player1} &amp; {match.team1.player2} [<span>{match.team1.point}</span>]</div>
+							<div>
+								<span className={_isPlayerInFilter(filter, match.team2.player1) ? 'font-bold text-blue-800' : ''}>{match.team2.player1}</span> -&nbsp;
+								<span className={_isPlayerInFilter(filter, match.team2.player2) ? 'font-bold text-blue-800' : ''}>{match.team2.player2}</span>&nbsp;
+								[<span>{match.team2.point}</span>]</div>
+							<div>
+								<span className={_isPlayerInFilter(filter, match.team1.player1) ? 'font-bold text-blue-800' : ''}>{match.team1.player1}</span> -&nbsp;
+								<span className={_isPlayerInFilter(filter, match.team1.player2) ? 'font-bold text-blue-800' : ''}>{match.team1.player2}</span>&nbsp;
+								[<span>{match.team1.point}</span>]</div>
 						</div>
 				}
 			</div>
-		))}
+		))
+		}
 	</>
 	);
 }
