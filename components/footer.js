@@ -110,7 +110,7 @@ export default function Footer() {
 										<li>
 											<a
 												className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-												href='mailto:nvhoanganh1909@gmail.com'
+												href='mailto:enquiry@avtatour.com'
 											>
 												Contact Us
 											</a>

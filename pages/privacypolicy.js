@@ -109,9 +109,9 @@ export default function Index({
                   <p><span>
                     You can manage your personal profile via <strong>My Profile</strong> page. If you would like to complete remove your profile, please contact us at <a
                       className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-                      href='mailto:nvhoanganh1909@gmail.com'
+                      href='mailto:enquiry@avtatour.com'
                     >
-                      Email
+                      enquiry@avtatour.com
                     </a>
                   </span></p>
 
@@ -123,11 +123,11 @@ export default function Index({
                   <h2><span>Policy Updates</span></h2>
                   <p><span>This Policy may change from time to time and is available on our website.</span></p>
                   <h2><span>Privacy Policy Complaints and Enquiries</span></h2>
-                  <p><span>If you have any queries or complaints about our Privacy Policy please contact us via: <a
+                  <p><span>If you have any queries or complaints about our Privacy Policy please contact us via email at: <a
                     className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-                    href='mailto:nvhoanganh1909@gmail.com'
+                    href='mailto:enquiry@avtatour.com'
                   >
-                    Email
+                    enquiry@avtatour.com
                   </a></span></p>
                 </div >
               </div >

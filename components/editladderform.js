@@ -93,11 +93,11 @@ export default function EditLadderForm({ onSubmit, currentValue, saving }) {
                         href='https://stripe.com'
                       >
                         Stripe.com
-                      </a>. At the end of the ladder, <a
+                      </a>. At the end of the ladder, email us at <a
                         className='text-blue-600 hover:text-gray-800 font-semibold'
-                        href='mailto:nvhoanganh1909@gmail.com'
+                        href='mailto:enquiry@avtatour.com'
                       >
-                        email us
+                        enquiry@avtatour.com
                       </a> and provide your Australian Bank Account details and we will transfer the total registration amount less <strong>3% total + 30c per joined user</strong> platform fee.
                     </p>
 
