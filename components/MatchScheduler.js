@@ -129,8 +129,9 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
 
   return (
     <div>
-      <div className="hidden bg-red-50 bg-green-50 bg-yellow-50 bg-blue-50 bg-indigo-50
-      bg-purple-50 bg-pink-50 bg-yellow-50
+      {/* colors placeholder */}
+      <div className="hidden bg-red-50 bg-green-50 bg-yellow-50 bg-blue-50 bg-purple-50 bg-indigo-50
+      bg-purple-50 bg-pink-50 bg-yellow-50 bg-gray-50
       "></div>
       <div className="flex space-x-1">
         <button
