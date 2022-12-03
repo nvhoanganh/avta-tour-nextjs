@@ -45,9 +45,8 @@ export default function EditApplicationCompetition({ competition, players, rule,
         id: doc.id
       }));
 
-      const avaiPlayers = players.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id));
-
-      setAvaiPlayers(avaiPlayers);
+      // const avaiPlayers = players.filter(x => !registeredTeams.find(p => p.player1Id === x.sys.id) && !registeredTeams.find(p => p.player2Id === x.sys.id));
+      setAvaiPlayers(players);
     }
   }, [competition]);
 
