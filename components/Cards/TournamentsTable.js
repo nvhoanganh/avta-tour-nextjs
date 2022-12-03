@@ -113,7 +113,7 @@ export default function TournamentsTable({ color, competitions }) {
 										</div>
 									</th>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{comp.maxPoint} pt.
+										{comp.maxPoint === 9999 ? 'Open': comp.maxPoint + ' pt.'}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<i

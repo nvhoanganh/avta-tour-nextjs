@@ -324,7 +324,7 @@ export default function Competition({ competition, preview }) {
                             <div className='rounded-full shadow-xl text-green-900 bg-gray-100 h-auto align-middle border border-gray-300 absolute -m-20 -ml-20 lg:-ml-16 max-w-300-px text-4xl p-6 text-center'>
                               <i className='fas fa-trophy text-6xl text-yellow-400'></i>
                               {
-                                competition.maxPoint
+                                competition.maxPoint === 9999 ? 'Open' : competition.maxPoint
                               }
                             </div>
                           </div>

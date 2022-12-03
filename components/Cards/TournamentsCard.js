@@ -21,7 +21,7 @@ export default function TournamentsCard({ color, competitions }) {
 							statSubtitle={comp.club}
 							statTitle={comp.title}
 							statArrow=''
-							statPercent={comp.maxPoint + ' pt.'}
+							statPercent={comp.maxPoint === 9999 ? 'Open': comp.maxPoint + ' pt.'}
 							statPercentColor='text-emerald-500'
 							statDescripiron={
 								(comp.teamsCollection?.items.length || comp.appliedTeams?.length) + ' Teams'
