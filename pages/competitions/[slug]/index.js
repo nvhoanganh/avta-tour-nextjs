@@ -262,8 +262,8 @@ export default function Competition({ competition, preview }) {
           <article>
             <Head>
               <title>
-                {competition.title} - Max {competition.maxPoint}{' '}
-                Point | AVTA.
+                {competition.title} - {competition.maxPoint === 9999 ? 'Open ' : 'Max ' + competition.maxPoint + ' pt. '}
+                | AVTA.
               </title>
               <meta
                 name='description'
