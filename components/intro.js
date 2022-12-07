@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import CompetitionPreview from './competition-preview';
 import { useFirebaseAuth } from './authhook';
+import JoinOurFacebook from '../components/join-our-fb';
 import Spinner from './spinner';
 
 export default function Intro({ upcomingCompetition }) {
@@ -137,9 +138,9 @@ export default function Intro({ upcomingCompetition }) {
 					</div>
 
 					{/* upcomingCompetition */}
-					{upcomingCompetition && (
+					{upcomingCompetition ? (
 						<CompetitionPreview {...upcomingCompetition} />
-					)}
+					) : <JoinOurFacebook></JoinOurFacebook>}
 				</div>
 			</section>
 		</>
