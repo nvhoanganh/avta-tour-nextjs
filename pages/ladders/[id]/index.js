@@ -40,7 +40,21 @@ export default function Competition({ ladder, allPlayers, preview }) {
   }
 
   const registeredPlayersUid = ladder?.players.map(u => u.playerId) || [];
-  const registeredPlayers = allPlayers?.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1) || [];
+  const registeredPlayersWithLadderPoint = ladder?.players?.filter(x => !!x.ladderPoint).map(u => ({ uid: u.playerId, ladderPoint: u.ladderPoint })) || [];
+  const _registeredPlayers = allPlayers?.filter(x => registeredPlayersUid.indexOf(x.uid) !== -1) || [];
+
+  const registeredPlayers = _registeredPlayers.map(x => {
+    const playerWithLadderPoint = registeredPlayersWithLadderPoint.filter(p => p.uid === x.uid);
+    if (playerWithLadderPoint.length > 0) {
+      return {
+        ...x,
+        avtaPoint: playerWithLadderPoint[0].ladderPoint,
+        hasLadderPoint: true
+      };
+    }
+    return x;
+  });
+
   const totalPoints = registeredPlayers.reduce((previousTotal, player) => {
     return (
       previousTotal +

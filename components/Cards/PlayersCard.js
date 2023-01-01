@@ -91,6 +91,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 										className={cn('mt-1 text-xl  uppercase font-semibold', {
 											'text-green-600': !x.unofficialPoint,
 											'text-red-600': x.unofficialPoint,
+											'text-blue-600': x.hasLadderPoint,
 										})}
 									>
 										{x.avtaPoint}
