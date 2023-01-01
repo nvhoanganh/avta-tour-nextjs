@@ -14,6 +14,13 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 		avgPoint, filteredPlayers, filerPlayerStyle, setFilerPlayerStyle
 	} = useFilterPlayers(allPlayers);
 
+	useEffect(async () => {
+		const query = new URLSearchParams(window.location.search);
+		if (query.get('q')) {
+			setFilter(query.get('q'));
+		}
+	}, []);
+
 	return (
 		<>
 			{
@@ -46,6 +53,14 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 						}
 					</div>
 					<PlayerTypeFilter selected={filerPlayerStyle} setState={(val) => setFilerPlayerStyle(val)}></PlayerTypeFilter>
+					<div>
+						<Link href={`/players/map`}>
+							<a className='hover:underline'>
+								<i className="fas fa-map-marked-alt text-blue-700"></i>
+								{' '}Map View
+							</a>
+						</Link>
+					</div>
 				</div>
 
 			}

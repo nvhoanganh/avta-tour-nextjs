@@ -15,8 +15,13 @@ import GoogleMapReact from 'google-map-react';
 
 
 const PlayerMarker = ({ text }) => <div><i className="fas fa-map-marker-alt text-red-700 text-3xl"></i>{text}</div>;
-const ClubMarker = ({ text }) => <div className=' flex justify-center flex-col items-center '><i className="fas fa-map-marker-alt text-red-700 text-2xl"></i>
-	<div className="text-red-600">
+
+const ClubMarker = ({ text, onClick }) => <div
+	className=' flex justify-center flex-col items-center hover:cursor-pointer'
+	title={`View Players who play at ${text}`}
+	onClick={() => onClick(text)}
+><i className="fas fa-map-marker-alt text-red-700 text-3xl"></i>
+	<div className="text-indigoi-600 font-bold">
 		{text}
 	</div>
 </div>;
@@ -29,6 +34,10 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 		toast("Refreshing. Please wait...");
 		await RevalidatePath(user, `/players`);
 		window.location.reload();
+	}
+
+	const onClubClicked = (clubName) => {
+		router.push(`/players?q=${encodeURIComponent(clubName)}`);
 	}
 
 	const defaultProps = {
@@ -57,7 +66,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 
 					<main className='profile-page'>
 						<Intro
-							title='Players Club Locations'
+							title='Players Map'
 							bgImg='https://unsplash.com/photos/vfzfavUZmfc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjcyNTcyMjYz&force=true&w=1920'
 						>
 							<div className='w-full mb-12'>
@@ -77,6 +86,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 											{clubs?.map(club => (
 												<ClubMarker
 													lat={club.lat}
+													onClick={onClubClicked}
 													lng={club.lng}
 													text={club.name}
 												/>
