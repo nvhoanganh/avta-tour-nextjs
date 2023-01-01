@@ -228,3 +228,13 @@ POST http://localhost:3000/api/sendsms?mobile=3333
 
 ###
 POST http://localhost:3000/api/sendsms?mobile=3333
+
+###
+GET https://maps.googleapis.com/maps/api/place/findplacefromtext/json
+  ?fields=formatted_address
+  &input=Kingsbury
+  &inputtype=textquery
+  &key=AIzaSyCtYkMYs3wXrH_y5XjmiAZNd2UrjslujcA
+
+###
+GET https://maps.googleapis.com/maps/api/geocode/json?address=St Albans Tennis club, Australia&key=AIzaSyCtYkMYs3wXrH_y5XjmiAZNd2UrjslujcA
