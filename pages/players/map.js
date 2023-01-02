@@ -23,7 +23,7 @@ const PlayerMarker = ({ text }) => <div><i className="fas fa-map-marker-alt text
 
 const ClubMarker = ({ lat, lng, text, onClick, count, scoreCenter }) => <div
 	className=' flex justify-center flex-col items-center hover:cursor-pointer'
-	title={`View Players who play at ${text}`}
+	title={scoreCenter ? 'AVTA Score marking club' : `View Players who play at ${text}`}
 	onClick={() => onClick(text, lat, lng)}
 >
 	{
@@ -245,7 +245,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 							>
 								<div className='w-full mb-12'>
 									<div className='container mx-auto block px-4'>
-										<div style={{ height: '80vh', width: '100%' }}>
+										<div style={{ height: '70vh', width: '100%' }}>
 											<GoogleMapReact
 												bootstrapURLKeys={{ key: "AIzaSyCtYkMYs3wXrH_y5XjmiAZNd2UrjslujcA" }}
 												defaultCenter={defaultProps.center}
@@ -270,7 +270,13 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 
 											</GoogleMapReact>
 										</div>
+										<div className="pt-2 text-gray-600 text-sm" >
+											Legends: <i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> AVTA Score marking club {' '}
+											<i className="fas fa-map-marker-alt text-indigo-600  hover:text-indigo-700"></i> Member club
+
+										</div>
 									</div>
+
 								</div>
 							</Intro>
 						</main>
