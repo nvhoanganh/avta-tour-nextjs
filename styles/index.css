@@ -16,3 +16,7 @@
 .rsw-editor {
 	min-height: 400px !important;
 }
+
+.mapmarker {
+	font-size: 0.95rem;
+}

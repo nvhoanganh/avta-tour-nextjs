@@ -9,6 +9,7 @@
   "dependencies": {
     "@contentful/rich-text-react-renderer": "^15.6.2",
     "@fortawesome/fontawesome-free": "5.15.3",
+    "@headlessui/react": "^1.7.7",
     "@hookform/resolvers": "^2.9.10",
     "@popperjs/core": "2.10.2",
     "@sendgrid/mail": "^7.6.0",
