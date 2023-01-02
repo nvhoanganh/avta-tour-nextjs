@@ -155,7 +155,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 												<PlayerProfileStatus player={player}></PlayerProfileStatus>
 												{
 													player.canMarkScore
-														? <p className='text-red-500 text-sm font-normal'><i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> Score Marker</p>
+														? <p className='text-blue-500 text-sm font-normal'><i className="fas fa-user-edit text-blue-600  hover:text-blue-700"></i> Score Official</p>
 														: null
 												}
 											</div>

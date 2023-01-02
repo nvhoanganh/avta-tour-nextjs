@@ -353,7 +353,7 @@ export default function Player({ player, preview }) {
 														&&
 														<>
 															{player.canMarkScore && <div className="py-2">
-																<i className="fas fa-user-edit text-red-600  hover:text-red-700"></i>
+																<i className="fas fa-user-edit text-blue-600  hover:text-blue-700"></i>
 																<span className="pl-2">
 																	Contact me for AVTA preliminary score
 																</span>
@@ -369,7 +369,7 @@ export default function Player({ player, preview }) {
 													{showMobile &&
 														<div className="text-center">
 															{player.canMarkScore && <div className="py-2">
-																<i className="fas fa-user-edit text-red-600  hover:text-red-700"></i>
+																<i className="fas fa-user-edit text-blue-600  hover:text-blue-700"></i>
 																<span className="pl-2">
 																	Contact me for AVTA preliminary score
 																</span>

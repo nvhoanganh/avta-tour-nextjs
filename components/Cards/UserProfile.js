@@ -221,7 +221,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles, clubs }) {
                     <p className="pt-5">
                       Otherwise, contact one of our
                       <Link href={`/players/map`}>
-                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">AVTA Score markers</a>
+                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">AVTA Score Officials</a>
                       </Link>
                       close to you to organize a skill check. You will be given a preliminary AVTA Point (Red Point) when you participate in one of our upcoming
                       <Link href={`/competitions`}>

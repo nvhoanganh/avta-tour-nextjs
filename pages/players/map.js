@@ -218,7 +218,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 												</p>
 												{
 													x.canMarkScore
-														? <p className='text-red-500 text-sm'><i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> Score Marker</p>
+														? <p className='text-blue-500 text-sm'><i className="fas fa-user-edit text-blue-600  hover:text-blue-700 mr-1"></i>Score official</p>
 														: null
 												}
 											</div>
@@ -279,7 +279,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 										<div className="pt-2 flex justify-between" >
 											<div className='flex flex-row items-center space-x-1'>
 												<span className="inline-flex items-center justify-center border h-6 w-6 rounded-full  hover:border-gray-800 hover:border-2 hover:shadow-xl hover:cursor-pointer bg-blue-600 border-gray-900"></span>
-												<span>Location with AVTA Score marker
+												<span>Location with AVTA Score Official
 												</span>
 											</div>
 											<div><Link href={`/players`}>

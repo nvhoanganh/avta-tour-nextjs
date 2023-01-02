@@ -113,7 +113,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 									</p>
 									{
 										x.canMarkScore
-											? <p className='text-red-500 text-sm'><i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> Score Marker</p>
+											? <p className='text-blue-500 text-sm'><i className="fas fa-user-edit text-blue-600  hover:text-blue-700"></i> Score Official</p>
 											: null
 									}
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
