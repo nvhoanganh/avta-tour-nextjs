@@ -16,6 +16,9 @@ import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+
 export default function UserProfile() {
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
@@ -116,14 +119,50 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
   const { displayName, email, mobileNumber, suburb,
     allowContact, stopSms, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner, playerId, pointChangeLog } = userProfile;
 
+  const formSchema = Yup.object().shape({
+    displayName: Yup.string()
+      .required('Display name is mandatory')
+      .min(3, 'Must be at 3 char long'),
+    nickName: Yup.string()
+      .required('Nickname is mandatory')
+      .min(3, 'Nickname must be at 3 char long'),
+    mobileNumber: Yup.string().when("mobileNumber", (val, schema) => {
+      if (val?.length > 0) {
+        return Yup.string()
+          .matches(/\+614\d{8}/, 'Enter mobile in format +61412345678');
+      }
+      else {
+        return Yup.string().notRequired();
+      }
+    }),
+    homeClub: Yup.string()
+      .required('Home Club is mandatory')
+      .min(3, 'Home Club must be at 3 char long'),
+    suburb: Yup.string()
+      .required('Suburb is mandatory')
+      .min(3, 'Suburb must be at 3 char long'),
+    email: Yup.string().email()
+      .required('Email is mandatory'),
+    playStyle: Yup.string()
+      .required('Select your play style'),
+    perfectPartner: Yup.string()
+      .required('Select your prefer partner play style'),
+  }, [
+    ["mobileNumber", "mobileNumber"], // cyclic dependencies
+  ]);
+
   const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
+    mode: 'onChange',
     defaultValues: {
       displayName, email, mobileNumber,
       suburb, allowContact, aboutMe, homeClub, nickName,
       playStyle, perfectPartner,
       stopSms: stopSms || false
-    }
+    },
+    resolver: yupResolver(formSchema),
   });
+
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -138,16 +177,34 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Display Name
                 </label>
-                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName", { required: true })} />
+                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName")} />
               </div>
+              {errors?.displayName?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.displayName?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Nick Name
                 </label>
-                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName", { required: true })} />
+                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName")} />
               </div>
+              {errors?.nickName?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.nickName?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
@@ -198,8 +255,17 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   Home Club
                 </label>
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  {...register("homeClub", { required: true })} />
+                  {...register("homeClub")} />
               </div>
+              {errors?.homeClub?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.homeClub?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -212,12 +278,18 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Mobile
                 </label>
-                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber", {
-                  pattern: /\+614\d{8}/
-                })}
+                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("mobileNumber")}
                   placeholder="+61412345678" />
-                {errors.mobileNumber && <span className="text-red-500">Australian Mobile, e.g +614XXXXXXXX</span>}
               </div>
+              {errors?.mobileNumber?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.mobileNumber?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
@@ -225,8 +297,17 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   Suburb
                 </label>
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  {...register("suburb", { required: true })} />
+                  {...register("suburb")} />
               </div>
+              {errors?.suburb?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.suburb?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
@@ -234,12 +315,18 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   Email
                 </label>
                 <input type="email"
-                  {...register("email", {
-                    pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-                    required: true
-                  })}
+                  {...register("email")}
                   className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" />
               </div>
+              {errors?.email?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.email?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-4/12 sm:px-4 py-3">
               <div className="relative w-full mb-3">
@@ -275,7 +362,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 </label>
                 <select className="appearance-none
         border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
-                  {...register("playStyle", { required: true })}
+                  {...register("playStyle")}
                 >
                   <option value={PLAYER_STYLE.AllCourt}>{PLAYER_STYLE.AllCourt}</option>
                   <option value={PLAYER_STYLE.Baseliner}>{PLAYER_STYLE.Baseliner}</option>
@@ -283,6 +370,15 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   <option value={PLAYER_STYLE.Pusher}>{PLAYER_STYLE.Pusher}</option>
                 </select>
               </div>
+              {errors?.playStyle?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.playStyle?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
@@ -291,7 +387,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 </label>
                 <select className="appearance-none
         border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
-                  {...register("perfectPartner", { required: true })}
+                  {...register("perfectPartner")}
                 >
                   <option value={PLAYER_STYLE.AllCourt}>{PLAYER_STYLE.AllCourt}</option>
                   <option value={PLAYER_STYLE.Baseliner}>{PLAYER_STYLE.Baseliner}</option>
@@ -299,6 +395,15 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                   <option value={PLAYER_STYLE.Pusher}>{PLAYER_STYLE.Pusher}</option>
                 </select>
               </div>
+              {errors?.perfectPartner?.message && (
+                <div className='relative bg-gray-300'>
+                  <div className='absolute left-0 top-0 flex justify-end w-full -mt-1'>
+                    <span className='bg-white text-xs text-red-600'>
+                      {errors?.perfectPartner?.message}
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
