@@ -276,7 +276,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 											</GoogleMapReact>
 										</div>
 										<div className="pt-2 text-gray-600 text-sm" >
-											Legends: <i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> AVTA Score marking centers
+											Legend: <i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> AVTA Score marking centers
 										</div>
 									</div>
 

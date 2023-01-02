@@ -279,7 +279,7 @@ export default function Player({ player, preview }) {
 													'text-red-600': player?.unofficialPoint || player.notInContentful,
 												})}
 											>
-													{player?.notInContentful ? 'N/A' : player?.avtaPoint}
+												{player?.notInContentful ? 'N/A' : player?.avtaPoint}
 												{
 													player?.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
 												}
@@ -346,14 +346,37 @@ export default function Player({ player, preview }) {
 														</Link>
 													}
 
+													{
+														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === CLAIMED_BY_OTHER || playerStatus === UNCLAIMED_BUT_USER_ALREADY_CLAIMED || playerStatus === NOT_LOGGEDIN_CLAIMED)
+														&& player?.allowContact
+														&& !showMobile
+														&&
+														<>
+															{player.canMarkScore && <div className="py-2">
+																<i className="fas fa-user-edit text-red-600  hover:text-red-700"></i>
+																<span className="pl-2">
+																	Contact me for AVTA preliminary score
+																</span>
+															</div>}
+															<button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
+																onClick={sendMessageToPlayer}
+															>
+																Show Contact Details
+															</button>
+														</>
+													}
+
 													{showMobile &&
-														<div className="mt-10 py-10 text-center">
+														<div className="text-center">
+															{player.canMarkScore && <div className="py-2">
+																<i className="fas fa-user-edit text-red-600  hover:text-red-700"></i>
+																<span className="pl-2">
+																	Contact me for AVTA preliminary score
+																</span>
+															</div>}
+
 															<div className="flex flex-wrap justify-center">
 																<div className="w-full lg:w-9/12 px-4">
-																	<p className="mb-4 text-lg leading-relaxed text-gray-700">
-																		Contact Me at:
-																	</p>
-
 																	{player.mobileNumber &&
 																		<p className="mb-4 text-lg leading-relaxed text-gray-700">
 																			<i className="fas fa-mobile-alt mx-2 text-green-600"></i> <a className="text-lg text-gray-800">{player.mobileNumber}</a>
@@ -368,17 +391,6 @@ export default function Player({ player, preview }) {
 																</div>
 															</div>
 														</div>}
-													{
-														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === CLAIMED_BY_OTHER || playerStatus === UNCLAIMED_BUT_USER_ALREADY_CLAIMED || playerStatus === NOT_LOGGEDIN_CLAIMED)
-														&& player?.allowContact
-														&& !showMobile
-														&&
-														<button className='get-started text-white font-bold px-6 py-3 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'
-															onClick={sendMessageToPlayer}
-														>
-															Show Contact Details
-														</button>
-													}
 												</div>
 											</div>
 										</div>
