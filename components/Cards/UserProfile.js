@@ -37,6 +37,10 @@ export default function UserProfile() {
       updated = { ...updated, photoURL: user.photoURL };
     }
 
+    if (!updated.playerId) {
+      updated = { ...updated, notInContentful: true, fullName: updated.displayName };
+    }
+
     await setDoc(docRef, updated);
 
     if (updated.playerId) {

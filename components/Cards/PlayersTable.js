@@ -118,14 +118,14 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 						</thead>
 						<tbody>
 							{filteredPlayers.map((player) => (
-								<tr key={player.sys.id}>
+								<tr key={player?.sys?.id}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div
 											className='h-12 w-12 bg-white rounded-full border'
 											alt='...'
 										>
 											<Link
-												href={`/players/${player.sys.id}`}
+												href={`/players/${player?.sys?.id}`}
 											>
 												{
 													player.photoURL || player.coverImage?.url
@@ -146,7 +146,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 												}
 											>
 												<Link
-													href={`/players/${player.sys.id}`}
+													href={`/players/${player?.sys?.id}`}
 												>
 													{player.fullName !== player.nickName ?
 														<a className="hover:underline hover:cursor-pointer">{player.fullName} ({player.nickName})</a>
@@ -164,17 +164,17 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 									<td
 										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4', {
 											'text-green-600': !player?.unofficialPoint,
-											'text-red-600': player?.unofficialPoint,
+											'text-red-600': player?.unofficialPoint || player?.notInContentful,
 										})}
 									>
-										{player?.avtaPoint} pt.
+										{player?.notInContentful ? 'N/A' : player?.avtaPoint}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{player.homeClub || 'Unknown Club'}
+										{player?.homeClub || 'Unknown Club'}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
 										<Link
-											href={`/players/${player.sys.id}`}
+											href={`/players/${player?.sys?.id}`}
 										>
 											<a className='get-started text-white font-bold px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
 												View

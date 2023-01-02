@@ -105,11 +105,11 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 									<p
 										className={cn('mt-1 text-xl  uppercase font-semibold', {
 											'text-green-600': !x.unofficialPoint,
-											'text-red-600': x.unofficialPoint,
+											'text-red-600': x.unofficialPoint || x?.notInContentful,
 											'text-blue-600': x.hasLadderPoint,
 										})}
 									>
-										{x.avtaPoint}
+										{x?.notInContentful ? 'N/A' : x?.avtaPoint}
 									</p>
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
 										{x.homeClub || 'Unknown Club'}

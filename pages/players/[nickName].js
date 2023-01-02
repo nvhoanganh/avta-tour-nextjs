@@ -26,7 +26,7 @@ import SendOtp from '../../components/sendotp';
 import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
-import { findLinkedUsers } from '../../lib/backendapi';
+import { findLinkedUsers, findUserByUid } from '../../lib/backendapi';
 import { getEmbedUrl, getPlayerInitial } from '../../lib/browserapi';
 import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
@@ -40,6 +40,7 @@ const NOT_LOGGEDIN_UNCLAIMED = 'NOT_LOGGEDIN_UNCLAIMED';
 const NOT_LOGGEDIN_CLAIMED = 'NOT_LOGGEDIN_CLAIMED';
 
 export default function Player({ player, preview }) {
+	console.log("🚀 ~ file: [nickName].js:43 ~ Player ~ player", player)
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
 	const [showMobile, setShowMobile] = useState(false);
@@ -48,11 +49,14 @@ export default function Player({ player, preview }) {
 	const { user, loadingAuth } = useFirebaseAuth();
 
 	useEffect(async () => {
-		if (loadingAuth) {
+		if (loadingAuth || !player) {
 			return;
 		}
 
-		const q = query(collection(db, "users"), where("playerId", "==", player?.sys?.id));
+		const q = player.notInContentful ?
+			query(collection(db, "users"), where("uid", "==", player.uid)) :
+			query(collection(db, "users"), where("playerId", "==", player.sys?.id));
+
 		const querySnapshot = await getDocs(q);
 		const claimedPlayer = querySnapshot.size > 0 ? querySnapshot.docs[0].data() : null;
 
@@ -273,10 +277,10 @@ export default function Player({ player, preview }) {
 											<div
 												className={cn('mb-20 mt-10 text-6xl font-bold', {
 													'text-green-600': !player?.unofficialPoint,
-													'text-red-600': player?.unofficialPoint,
+													'text-red-600': player?.unofficialPoint || player.notInContentful,
 												})}
 											>
-												{player?.avtaPoint} pt.
+													{player?.notInContentful ? 'N/A' : player?.avtaPoint}
 												{
 													player?.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
 												}
@@ -458,14 +462,16 @@ function PlayerYoutubeVideo({ player }) {
 
 
 export async function getStaticProps({ params, preview = false }) {
-	let data = await getPlayerById(params.nickName, preview);
-	const linkedUser = await findLinkedUsers(data.sys.id);
-
-	if (linkedUser) {
-		data = {
-			...data,
-			...linkedUser,
-			fullName: linkedUser.displayName || data.fullName
+	let data = await findUserByUid(params.nickName);
+	if (!data) {
+		data = await getPlayerById(params.nickName, preview);
+		const linkedUser = await findLinkedUsers(data.sys.id);
+		if (linkedUser) {
+			data = {
+				...data,
+				...linkedUser,
+				fullName: linkedUser.displayName || data.fullName
+			}
 		}
 	}
 
