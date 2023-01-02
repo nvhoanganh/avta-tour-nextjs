@@ -23,13 +23,13 @@ const PlayerMarker = ({ text }) => <div><i className="fas fa-map-marker-alt text
 
 const ClubMarker2 = ({ lat, lng, text, onClick, count, scoreCenter }) => <span
 	onClick={() => onClick(text, lat, lng)}
-	title={scoreCenter ? 'AVTA Score marking club' : `View Players who play at ${text}`}
+	title={scoreCenter ? `${text} has member who can give AVTA Score` : `View Players who play at ${text}`}
 	className={cn('inline-flex items-center justify-center border h-10 w-10 rounded-full  hover:border-gray-800 hover:border-2 hover:shadow-xl hover:cursor-pointer', {
-		'bg-blue-600 border-gray-900 hover:bg-blue-800': !scoreCenter,
-		'bg-red-600 border-gray-700 hover:bg-red-800': scoreCenter,
+		'bg-yellow-200 border-gray-900 hover:bg-yellow-400': !scoreCenter,
+		'bg-blue-600 border-gray-700 hover:bg-blue-800': scoreCenter,
 	})}
 >
-	<span className=" text-sm leading-none text-white">{count}</span>
+	<span className=" text-sm leading-none text-black font-bold">{count}</span>
 </span>;
 
 export default function PlayersMap({ allPlayers, preview, clubs }) {
@@ -160,7 +160,12 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 										as="h3"
 										className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-2 text-center flex flex-col"
 									>
-										<div>Players at <span className='capitalize'>{filter}</span></div>
+										<div><span className='uppercase'>{filter}</span>
+										</div>
+										<div className='flex space-x-2 justify-center pt-8'>
+											<span className='bg-blue-600 rounded px-2 py-1 text-sm text-white'>{filteredPlayers.length} players</span>
+											<span className='bg-green-600 rounded px-2 py-1 text-sm text-white'>avg. {avgPoint} pt.</span>
+										</div>
 
 										<a className="text-sm text-gray-400 py-2 font-normal hover:underline hover:cursor-pointer"
 											onClick={() => router.push(`/players?q=${encodeURIComponent(filter)}`)}
@@ -237,7 +242,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 
 						<main className='profile-page'>
 							<Intro
-								title='Players Location'
+								title='AVTA Map'
 								bgImg='https://unsplash.com/photos/vfzfavUZmfc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjcyNTcyMjYz&force=true&w=1920'
 							>
 								<div className='w-full mb-12'>
@@ -260,7 +265,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 														onClick={onClubClicked}
 														lng={club.lng}
 														text={club.name}
-														scoreCenter={club.scoreCenter}
+														scoreCenter={club.markersCount > 0}
 														count={club.playersCount}
 													/>
 												))}
@@ -269,7 +274,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 										</div>
 										<div className="pt-2 flex justify-between" >
 											<div className='flex flex-row items-center space-x-1'>
-												<span className="inline-flex items-center justify-center border h-6 w-6 rounded-full  hover:border-gray-800 hover:border-2 hover:shadow-xl hover:cursor-pointer bg-red-600 border-gray-900"></span>
+												<span className="inline-flex items-center justify-center border h-6 w-6 rounded-full  hover:border-gray-800 hover:border-2 hover:shadow-xl hover:cursor-pointer bg-blue-600 border-gray-900"></span>
 												<span>Location with AVTA Score marker
 												</span>
 											</div>
