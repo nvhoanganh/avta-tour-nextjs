@@ -40,6 +40,17 @@ const ClubMarker = ({ lat, lng, text, onClick, count, scoreCenter }) => <div
 	}
 </div>;
 
+const ClubMarker2 = ({ lat, lng, text, onClick, count, scoreCenter }) => <span
+	onClick={() => onClick(text, lat, lng)}
+	title={scoreCenter ? 'AVTA Score marking club' : `View Players who play at ${text}`}
+	className={cn('inline-flex items-center justify-center border h-10 w-10 rounded-full  hover:border-gray-800 hover:border-2 hover:shadow-xl hover:cursor-pointer', {
+		'bg-blue-600 border-gray-900 hover:bg-blue-800': !scoreCenter,
+		'bg-red-600 border-gray-700 hover:bg-red-800': scoreCenter,
+	})}
+>
+	<span className=" text-sm leading-none text-white">{count}</span>
+</span>;
+
 export default function PlayersMap({ allPlayers, preview, clubs }) {
 	const router = useRouter();
 	const { user } = useFirebaseAuth();
@@ -263,7 +274,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 											/> */}
 
 												{clubs?.map(club => (
-													<ClubMarker
+													<ClubMarker2
 														lat={club.lat}
 														onClick={onClubClicked}
 														lng={club.lng}
