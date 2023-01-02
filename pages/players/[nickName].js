@@ -40,7 +40,6 @@ const NOT_LOGGEDIN_UNCLAIMED = 'NOT_LOGGEDIN_UNCLAIMED';
 const NOT_LOGGEDIN_CLAIMED = 'NOT_LOGGEDIN_CLAIMED';
 
 export default function Player({ player, preview }) {
-	console.log("🚀 ~ file: [nickName].js:43 ~ Player ~ player", player)
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
 	const [showMobile, setShowMobile] = useState(false);
