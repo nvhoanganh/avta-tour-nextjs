@@ -111,6 +111,11 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 									>
 										{x?.notInContentful ? 'N/A' : x?.avtaPoint}
 									</p>
+									{
+										x.canMarkScore
+											? <p className='text-red-500 text-sm'><i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> Score Marker</p>
+											: null
+									}
 									<p className='mt-1 text-sm text-gray-400 uppercase font-semibold'>
 										{x.homeClub || 'Unknown Club'}
 									</p>

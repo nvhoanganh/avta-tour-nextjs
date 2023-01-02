@@ -215,6 +215,11 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 												>
 													{x?.notInContentful ? 'N/A' : x?.avtaPoint}
 												</p>
+												{
+													x.canMarkScore
+														? <p className='text-red-500 text-sm'><i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> Score Marker</p>
+														: null
+												}
 											</div>
 										</div>)}
 									</div>
@@ -271,9 +276,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 											</GoogleMapReact>
 										</div>
 										<div className="pt-2 text-gray-600 text-sm" >
-											Legends: <i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> AVTA Score marking club {' '}
-											<i className="fas fa-map-marker-alt text-indigo-600  hover:text-indigo-700"></i> Member club
-
+											Legends: <i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> AVTA Score marking centers
 										</div>
 									</div>
 
