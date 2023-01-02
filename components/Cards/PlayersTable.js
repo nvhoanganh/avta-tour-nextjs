@@ -95,11 +95,9 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										<Link href={`/players/map`}>
 											<a className='hover:underline'>
 												<i className="fas fa-map-marked-alt text-blue-700"></i>
-												{' '} Map
+												{' '} Map View
 											</a>
 										</Link>
-										{' '}|{' '}
-										Search
 										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150 mb-2"
 											placeholder="Search Name, Club or Point"
 											value={filter} onChange={(e) => { setFilter(e.target.value) }}
