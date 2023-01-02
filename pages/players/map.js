@@ -1,5 +1,8 @@
 import { useRouter } from 'next/router';
+import Link from 'next/link';
+import cn from 'classnames';
 import Head from 'next/head';
+import FirebaseImage from '../../components/fb-image';
 import PlayersCard from '../../components/Cards/PlayersCard';
 import PlayersTable from '../../components/Cards/PlayersTable';
 import Layout from '../../components/layout';
@@ -14,18 +17,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import GoogleMapReact from 'google-map-react';
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from 'react';
+import useFilterPlayers from '../../lib/useFilterhook';
 
 const PlayerMarker = ({ text }) => <div><i className="fas fa-map-marker-alt text-red-700 text-3xl"></i>{text}</div>;
 
-const ClubMarker = ({ lat, lng, text, onClick }) => <div
-	className=' flex justify-center flex-col items-center hover:cursor-pointer hover:text-xl'
+const ClubMarker = ({ lat, lng, text, onClick, count }) => <div
+	className=' flex justify-center flex-col items-center hover:cursor-pointer'
 	title={`View Players who play at ${text}`}
 	onClick={() => onClick(text, lat, lng)}
 >
 	<i className="fas fa-map-marker-alt text-red-600 text-3xl hover:text-red-700"></i>
-	{/* <div className="text-indigo-800 whitespace-nowrap mapmarker hover:text-xl">
-		{text}
-	</div> */}
+	{
+		count > 1
+			? <div className=" whitespace-nowrap mapmarker">
+				{count} Clubs
+			</div>
+			: null
+	}
 </div>;
 
 export default function PlayersMap({ allPlayers, preview, clubs }) {
@@ -44,11 +52,13 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 			setClubsAtMarker(list);
 			setIsOpen(true);
 		} else {
-			router.push(`/players?q=${encodeURIComponent(clubName)}`);
+			setFilter(clubName);
+			setPlayerListOpen(true);
 		}
 	}
 
 	const [isOpen, setIsOpen] = useState(false);
+	const [isPlayerListOpen, setPlayerListOpen] = useState(false);
 	const [clubsAtMarker, setClubsAtMarker] = useState([]);
 
 	const defaultProps = {
@@ -59,6 +69,10 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 		zoom: 11
 	};
 
+	const {
+		sortBy, setSortBy, filter, setFilter,
+		avgPoint, filteredPlayers, filerPlayerStyle, setFilerPlayerStyle
+	} = useFilterPlayers(allPlayers);
 
 	return (
 		<Layout preview={preview}>
@@ -90,25 +104,115 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 								<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 									<Dialog.Title
 										as="h3"
-										className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-5 text-center"
+										className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-5 text-center mb-14"
 									>
 										Clubs at this location
-										<div className="text-sm text-gray-400 py-2 font-normal">Click to see list of players</div>
 									</Dialog.Title>
 
-									<div className="grid grid-cols-1 gap-x-10 gap-y-5 mb-32 mt-12 mx-5">
+									<div className="grid grid-cols-1 gap-x-10 gap-y-5 mb-32 mt-16 mx-5">
 										{clubsAtMarker.map((club) => (
 											<div
-												onClick={() => router.push(`/players?q=${encodeURIComponent(club.name)}`)}
+												onClick={() => {
+													setIsOpen(false);
+													setFilter(club.name);
+													setPlayerListOpen(true);
+												}}
 												className="px-6 text-center flex justify-center items-center flex-row border space-x-4 p-3 rounded shadow-sm hover:bg-gray-100 hover:cursor-pointer"
 												key={club.name}
 											>
 												<i className="fas fa-map-marker-alt text-red-600 text-3xl hover:text-red-700"></i>
-												<div className="">
+												<div className=" capitalize">
 													{club.name}
 												</div>
 											</div>
 										))}
+									</div>
+								</Dialog.Panel>
+							</Transition.Child>
+						</div>
+					</div>
+				</Dialog>
+			</Transition>
+
+			<Transition appear show={isPlayerListOpen} as={Fragment}>
+				<Dialog as="div" className="relative z-50" onClose={() => setPlayerListOpen(false)}>
+					<Transition.Child
+						as={Fragment}
+						enter="ease-out duration-300"
+						enterFrom="opacity-0"
+						enterTo="opacity-100"
+						leave="ease-in duration-200"
+						leaveFrom="opacity-100"
+						leaveTo="opacity-0"
+					>
+						<div className="fixed inset-0 bg-black bg-opacity-25" />
+					</Transition.Child>
+
+					<div className="fixed inset-0 overflow-y-auto">
+						<div className="flex min-h-full items-center justify-center p-4 text-center">
+							<Transition.Child
+								as={Fragment}
+								enter="ease-out duration-300"
+								enterFrom="opacity-0 scale-95"
+								enterTo="opacity-100 scale-100"
+								leave="ease-in duration-200"
+								leaveFrom="opacity-100 scale-100"
+								leaveTo="opacity-0 scale-95"
+							>
+								<Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+									<Dialog.Title
+										as="h3"
+										className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-2 text-center flex flex-col"
+									>
+										<div>Players at <span className='capitalize'>{filter}</span></div>
+
+										<a className="text-sm text-gray-400 py-2 font-normal hover:underline hover:cursor-pointer"
+											onClick={() => router.push(`/players?q=${encodeURIComponent(filter)}`)}
+										>Click to see full list</a>
+
+										<div className=' top-5 absolute right-5' onClick={() => setPlayerListOpen(false)}>
+											<i className="fas fa-times text-gray-500 hover:cursor-pointer hover:text-gray-600"></i>
+										</div>
+									</Dialog.Title>
+
+									<div className='grid grid-cols-2 md:grid-cols-3 md:gap-x-10 lg:gap-x-16 gap-y-10 pt-20 mb-16'>
+										{filteredPlayers.map(x => <div key={x.sys.id} className='px-6 text-center'>
+											<Link href={`/players/${x.sys.id}`}>
+												<div className='mx-auto max-w-100-px cursor-pointer'>
+													{
+														x.photoURL || x.coverImage?.url
+															? <FirebaseImage
+																width={100}
+																height={100}
+																className='rounded-full mx-auto max-w-100-px'
+																src={x.photoURL || x.coverImage?.url}
+															/>
+															: <span className="inline-flex items-center justify-center h-28 w-28 rounded-full bg-gray-400">
+																<span className="text-xl font-medium leading-none text-white">{x.fullName.split(" ").map((n) => n[0]).join("")}</span>
+															</span>
+													}
+												</div>
+											</Link>
+
+											<div className='pt-6 text-center'>
+												<h5 className='text-xl font-bold'>
+													<Link href={`/players/${x.sys.id}`}>
+														<a className='hover:underline'>
+															{x.fullName}
+														</a>
+													</Link>
+												</h5>
+												<p
+													className={cn('mt-1 text-xl  uppercase font-semibold', {
+														'text-green-600': !x.unofficialPoint,
+														'text-red-600': x.unofficialPoint || x?.notInContentful,
+														'text-blue-600': x.hasLadderPoint,
+													})}
+												>
+													{x?.notInContentful ? 'N/A' : x?.avtaPoint}
+												</p>
+											</div>
+										</div>)}
 									</div>
 								</Dialog.Panel>
 							</Transition.Child>
@@ -155,6 +259,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 														onClick={onClubClicked}
 														lng={club.lng}
 														text={club.name}
+														count={clubs.filter(c => c.lat === club.lat && c.lng === club.lng).length}
 													/>
 												))}
 

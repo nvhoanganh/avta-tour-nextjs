@@ -95,7 +95,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										<Link href={`/players/map`}>
 											<a className='hover:underline'>
 												<i className="fas fa-map-marked-alt text-blue-700"></i>
-												{' '} Map View
+												{' '} Map
 											</a>
 										</Link>
 										{' '}|{' '}
