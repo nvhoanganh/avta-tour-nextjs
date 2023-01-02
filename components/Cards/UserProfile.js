@@ -1,17 +1,18 @@
 import Link from 'next/link'
 import SaveButton from '../../components/savebutton';
-import { RevalidatePath } from '../../lib/browserapi';
+import { RevalidatePath, getClubs } from '../../lib/browserapi';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
 import { Dialog, Transition } from "@headlessui/react";
 import { useState, Fragment, useEffect } from 'react'
 import Spinner from '../../components/spinner';
+import EditableDropdown from '../../components/EditableDropdown';
 import {
   getPlayerById,
 } from '../../lib/browserapi';
 import { PLAYER_STYLE } from '../../lib/constants';
 import { db } from '../../lib/firebase';
-import { deleteDoc, doc, getDoc, setDoc } from "firebase/firestore";
+import { deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
@@ -24,6 +25,7 @@ export default function UserProfile() {
   const { user, loadingAuth } = useFirebaseAuth();
   const router = useRouter();
   const [saving, setSaving] = useState(false);
+  const [clubs, setClubs] = useState(null);
   const [userProfile, setUserProfile] = useState(null);
   const [userRoles, setUserRoles] = useState(null);
 
@@ -107,19 +109,24 @@ export default function UserProfile() {
     }
   }, [user, loadingAuth]);
 
+  useEffect(async () => {
+    const _clubs = await getClubs();
+    setClubs(_clubs);
+  }, []);
+
   return (
     <>
       <ToastContainer />
       {
-        loadingAuth || !userProfile
+        loadingAuth || !userProfile || !clubs
           ? <div className="text-center py-24"><Spinner size="lg" color="blue" /> Fetching information...</div> :
-          <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} userRoles={userRoles} />
+          <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} userRoles={userRoles} clubs={clubs} />
       }
     </>
   );
 }
 
-function UserForm({ onSubmit, userProfile, saving, userRoles }) {
+function UserForm({ onSubmit, userProfile, saving, userRoles, clubs }) {
   const [showHowToGetPoint, setShowHowToGetPoint] = useState(false);
   const { displayName, email, mobileNumber, suburb,
     allowContact, stopSms, aboutMe, homeClub, nickName, avtaPoint, unofficialPoint, playStyle, perfectPartner, playerId, pointChangeLog } = userProfile;
@@ -156,7 +163,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
     ["mobileNumber", "mobileNumber"], // cyclic dependencies
   ]);
 
-  const { register, reset, handleSubmit, watch, formState: { errors } } = useForm({
+  const { register, reset, handleSubmit, watch, formState: { errors }, control } = useForm({
     mode: 'onChange',
     defaultValues: {
       displayName, email, mobileNumber,
@@ -297,8 +304,12 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
                   Home Club *
                 </label>
-                <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  {...register("homeClub")} />
+                <EditableDropdown
+                  control={control}
+                  name="homeClub"
+                  defaultValue={homeClub}
+                  options={clubs.map(x => x.name)}
+                />
               </div>
               {errors?.homeClub?.message && (
                 <div className='relative bg-gray-300'>
