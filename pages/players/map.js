@@ -21,25 +21,6 @@ import useFilterPlayers from '../../lib/useFilterhook';
 
 const PlayerMarker = ({ text }) => <div><i className="fas fa-map-marker-alt text-red-700 text-3xl"></i>{text}</div>;
 
-const ClubMarker = ({ lat, lng, text, onClick, count, scoreCenter }) => <div
-	className=' flex justify-center flex-col items-center hover:cursor-pointer'
-	title={scoreCenter ? 'AVTA Score marking club' : `View Players who play at ${text}`}
-	onClick={() => onClick(text, lat, lng)}
->
-	{
-		scoreCenter
-			? <i className="fas fa-user-edit text-red-600 text-2xl hover:text-red-700"></i>
-			: <i className="fas fa-map-marker-alt text-indigo-600 text-3xl hover:text-indigo-700"></i>
-	}
-	{
-		count > 1
-			? <div className=" whitespace-nowrap mapmarker">
-				{count} Clubs
-			</div>
-			: null
-	}
-</div>;
-
 const ClubMarker2 = ({ lat, lng, text, onClick, count, scoreCenter }) => <span
 	onClick={() => onClick(text, lat, lng)}
 	title={scoreCenter ? 'AVTA Score marking club' : `View Players who play at ${text}`}
@@ -256,7 +237,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 
 						<main className='profile-page'>
 							<Intro
-								title='Players Map'
+								title='Players Location'
 								bgImg='https://unsplash.com/photos/vfzfavUZmfc/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjcyNTcyMjYz&force=true&w=1920'
 							>
 								<div className='w-full mb-12'>
@@ -280,15 +261,17 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 														lng={club.lng}
 														text={club.name}
 														scoreCenter={club.scoreCenter}
-														count={clubs.filter(c => c.lat === club.lat && c.lng === club.lng).length}
+														count={club.playersCount}
 													/>
 												))}
 
 											</GoogleMapReact>
 										</div>
 										<div className="pt-2 flex justify-between" >
-											<div>
-												<i className="fas fa-user-edit text-red-600  hover:text-red-700"></i> AVTA Score marking centers
+											<div className='flex flex-row items-center space-x-1'>
+												<span className="inline-flex items-center justify-center border h-6 w-6 rounded-full  hover:border-gray-800 hover:border-2 hover:shadow-xl hover:cursor-pointer bg-red-600 border-gray-900"></span>
+												<span>Location with AVTA Score marker
+												</span>
 											</div>
 											<div><Link href={`/players`}>
 												<a className='hover:underline font-bold'>
