@@ -11,6 +11,7 @@ import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
 import { getAllCompetitionsForHome } from '../../lib/api';
+import { getUserProfile } from '../../lib/browserapi';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
@@ -75,51 +76,11 @@ export default function Login() {
 		}
 
 		// return await signInWithRedirect(auth, p);
-		signInWithPopup(auth, p).then((result) => {
+		signInWithPopup(auth, p).then(async (result) => {
 			const user = result.user;
-			console.log("🚀 ~ file: login.js ~ line 102 ~ .then ~ user", result)
 			if (user) {
-				const redirectUrl = localStorage.getItem('redirectAfterLogin');
-				if (redirectUrl) {
-					localStorage.removeItem('redirectAfterLogin');
-					router.push(redirectUrl);
-				} else {
-					router.push('/');
-				}
-			}
-		}).catch((error) => {
-			console.log("🚀 ~ file: login.js:125 ~ useEffect ~ error", error)
-			setLoginError(error.message);
-		});
-	};
-
-	useEffect(() => {
-		console.log("calling getRedirectResult()");
-		getRedirectResult(auth)
-			.then((result) => {
-				const getCredential = () => {
-					const provider = localStorage.getItem('provider');
-					switch (provider) {
-						case 'google':
-							return new GoogleAuthProvider();
-						case 'yahoo':
-							return new OAuthProvider('yahoo.com');
-						case 'apple':
-							return new OAuthProvider('apple.com');
-						case 'facebook':
-							return new FacebookAuthProvider();
-						default:
-							return null;
-					}
-				};
-
-				// This gives you a Facebook Access Token. You can use it to access the Facebook API.
-				const credential = getCredential();
-				if (!credential) return;
-
-				const user = result?.user;
-				console.log("🚀 ~ file: login.js ~ line 102 ~ .then ~ user", result)
-				if (user) {
+				const userP = await getUserProfile(user);
+				if (userP?.suburb) {
 					const redirectUrl = localStorage.getItem('redirectAfterLogin');
 					if (redirectUrl) {
 						localStorage.removeItem('redirectAfterLogin');
@@ -127,13 +88,15 @@ export default function Login() {
 					} else {
 						router.push('/');
 					}
+				} else {
+					router.push('/editmyprofile');
 				}
-			})
-			.catch((error) => {
-				console.log("🚀 ~ file: login.js:125 ~ useEffect ~ error", error)
-				setLoginError(error.message);
-			});
-	}, []);
+			}
+		}).catch((error) => {
+			console.log("🚀 ~ file: login.js:125 ~ useEffect ~ error", error)
+			setLoginError(error.message);
+		});
+	};
 
 	return (
 		<>

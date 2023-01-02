@@ -58,7 +58,6 @@ export default function UserProfile() {
 
   useEffect(async () => {
     if (!loadingAuth && !user) {
-      localStorage.setItem('redirectAfterLogin', window.location.pathname);
       router.push('/auth/login');
       return;
     }
@@ -121,7 +120,8 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
     defaultValues: {
       displayName, email, mobileNumber,
       suburb, allowContact, aboutMe, homeClub, nickName,
-      playStyle, perfectPartner, stopSms
+      playStyle, perfectPartner,
+      stopSms: stopSms || false
     }
   });
 
@@ -172,7 +172,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
 
                     <p className="pt-5">
                       Otherwise, contact one of our
-                      <Link href={`/players`}>
+                      <Link href={`/players/map`}>
                         <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">members</a>
                       </Link>
                       close to you to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
