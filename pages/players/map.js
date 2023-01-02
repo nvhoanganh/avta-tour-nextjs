@@ -21,12 +21,16 @@ import useFilterPlayers from '../../lib/useFilterhook';
 
 const PlayerMarker = ({ text }) => <div><i className="fas fa-map-marker-alt text-red-700 text-3xl"></i>{text}</div>;
 
-const ClubMarker = ({ lat, lng, text, onClick, count }) => <div
+const ClubMarker = ({ lat, lng, text, onClick, count, scoreCenter }) => <div
 	className=' flex justify-center flex-col items-center hover:cursor-pointer'
 	title={`View Players who play at ${text}`}
 	onClick={() => onClick(text, lat, lng)}
 >
-	<i className="fas fa-map-marker-alt text-red-600 text-3xl hover:text-red-700"></i>
+	{
+		scoreCenter
+			? <i className="fas fa-user-edit text-red-600 text-2xl hover:text-red-700"></i>
+			: <i className="fas fa-map-marker-alt text-indigo-600 text-3xl hover:text-indigo-700"></i>
+	}
 	{
 		count > 1
 			? <div className=" whitespace-nowrap mapmarker">
@@ -259,6 +263,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 														onClick={onClubClicked}
 														lng={club.lng}
 														text={club.name}
+														scoreCenter={club.scoreCenter}
 														count={clubs.filter(c => c.lat === club.lat && c.lng === club.lng).length}
 													/>
 												))}
