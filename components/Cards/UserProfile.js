@@ -3,7 +3,8 @@ import SaveButton from '../../components/savebutton';
 import { RevalidatePath } from '../../lib/browserapi';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
-import { useState, useEffect } from 'react'
+import { Dialog, Transition } from "@headlessui/react";
+import { useState, Fragment, useEffect } from 'react'
 import Spinner from '../../components/spinner';
 import {
   getPlayerById,
@@ -166,10 +167,77 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
     resolver: yupResolver(formSchema),
   });
 
-
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <Transition appear show={showHowToGetPoint} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={() => setShowHowToGetPoint(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-5 text-center mb-14"
+                  >
+                    How to get AVTA Score?
+                  </Dialog.Title>
+
+                  <div className="py-3 my-4 px-3 ">
+                    <p>
+                      If you believe a player profile has been created for you. You can find and claim it <Link href={`/players`}>
+                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
+                      </Link>.
+                    </p>
+
+                    <p className="pt-5">
+                      Otherwise, contact one of our
+                      <Link href={`/players/map`}>
+                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">AVTA Score markers</a>
+                      </Link>
+                      close to you to organize a skill check. You will be given a preliminary AVTA Point (Red Point) when you participate in one of our upcoming
+                      <Link href={`/competitions`}>
+                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">competitions</a>
+                      </Link>
+                      . Your official AVTA point (Green) will be given to you by AVTA Skill Review Panel
+
+                      <p className="pt-5">
+                        <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
+                          onClick={() => setShowHowToGetPoint(false)}
+                        >
+                          Got it!
+                        </button>
+                      </p>
+                    </p>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6  border-0">
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
           <h6 className="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
@@ -179,7 +247,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Display Name
+                  Display Name *
                 </label>
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("displayName")} />
               </div>
@@ -196,7 +264,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Nick Name
+                  Nick Name *
                 </label>
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" {...register("nickName")} />
               </div>
@@ -222,41 +290,12 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
                     <a className="underline cursor-pointer text-gray-600 mx-2" onClick={() => setShowHowToGetPoint(true)}>How do I get one?</a>
                   </span>
                 }
-
-                {showHowToGetPoint &&
-                  <div className="py-3 my-4 border rounded shadow-xl px-3 bg-gray-50">
-                    <p>
-                      If you believe a player profile has been created for you. You can find and claim it <Link href={`/players`}>
-                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">here</a>
-                      </Link>.
-                    </p>
-
-                    <p className="pt-5">
-                      Otherwise, contact one of our
-                      <Link href={`/players/map`}>
-                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">AVTA Score markers</a>
-                      </Link>
-                      close to you to organize a skill check match. You will be given a preliminary AVTA Point when you participate in one of our upcoming
-                      <Link href={`/competitions`}>
-                        <a target='_blank' className="underline cursor-pointer text-gray-600 mx-1">competitions</a>
-                      </Link>
-                      . Your official AVTA point will be given to you by AVTA Skill Review Panel
-
-                      <p className="pt-5">
-                        <button className="bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
-                          onClick={() => setShowHowToGetPoint(false)}
-                        >
-                          Got it!
-                        </button>
-                      </p>
-                    </p>
-                  </div>}
               </div>
             </div>
             <div className="w-full lg:w-6/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Home Club
+                  Home Club *
                 </label>
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   {...register("homeClub")} />
@@ -298,7 +337,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Suburb
+                  Suburb *
                 </label>
                 <input type="text" className="border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   {...register("suburb")} />
@@ -316,7 +355,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Email
+                  Email *
                 </label>
                 <input type="email"
                   {...register("email")}
@@ -362,7 +401,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Play Style
+                  Play Style *
                 </label>
                 <select className="appearance-none
         border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
@@ -387,7 +426,7 @@ function UserForm({ onSubmit, userProfile, saving, userRoles }) {
             <div className="w-full lg:w-4/12 sm:px-4">
               <div className="relative w-full mb-3">
                 <label className="block uppercase text-gray-600 text-xs font-bold mb-2" htmlFor="grid-password">
-                  Perfect Partner
+                  Perfect Partner *
                 </label>
                 <select className="appearance-none
         border px-3 py-3 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150" aria-label="Default select example"
