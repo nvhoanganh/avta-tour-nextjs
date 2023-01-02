@@ -57,7 +57,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 						<Link href={`/players/map`}>
 							<a className='hover:underline'>
 								<i className="fas fa-map-marked-alt text-blue-700"></i>
-								{' '}Map
+								{' '}Map View
 							</a>
 						</Link>
 					</div>

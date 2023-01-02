@@ -29,7 +29,11 @@ const ClubMarker2 = ({ lat, lng, text, onClick, count, scoreCenter }) => <span
 		'bg-blue-600 border-gray-700 hover:bg-blue-800': scoreCenter,
 	})}
 >
-	<span className=" text-sm leading-none text-black font-bold">{count}</span>
+	<span  className={cn(' text-sm leading-none  font-bold', {
+		'text-black': !scoreCenter,
+		'text-white': scoreCenter,
+	})}
+	>{count}</span>
 </span>;
 
 export default function PlayersMap({ allPlayers, preview, clubs }) {
