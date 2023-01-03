@@ -12,10 +12,15 @@ export function useFirebaseAuth() {
 	const [user, setUser] = useState(null);
 	const [loadingAuth, setLoadingAuth] = useState(true);
 
-	onAuthStateChanged(auth, (user) => {
-		setUser(user);
-		setLoadingAuth(false);
-	});
+	try {
+		onAuthStateChanged(auth, (user) => {
+			setUser(user);
+			setLoadingAuth(false);
+		});
+	} catch (error) {
+		console.error(error);
+	}
+
 
 	const login = async (redirect = true) => {
 		// Sign in using a redirect.
