@@ -12,7 +12,7 @@ import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
 import { getAllCompetitionsForHome } from '../../lib/api';
 import { getUserProfile } from '../../lib/browserapi';
-import { notifyNewUserSignup } from '../../lib/notificationservice';
+import { notifyNewUserSignup, notifyWelcomeUser } from '../../lib/notificationservice';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
 import IndexNavbar from '../../components/Navbars/IndexNavbar.js';
@@ -92,6 +92,7 @@ export default function Login() {
 				} else {
 					// this is new user signup, send notification
 					await notifyNewUserSignup(user);
+					await notifyWelcomeUser(user);
 					router.push('/editmyprofile');
 				}
 			}
