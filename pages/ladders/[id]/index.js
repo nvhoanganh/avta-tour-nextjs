@@ -404,7 +404,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                   {
                                     showOrder
                                     && <div className="py-8">
-                                      <PlayersSelection user={user} registered={registeredPlayers} players={allPlayers} ladderId={ladder.id}></PlayersSelection>
+                                      <PlayersSelection user={user} registered={registeredPlayers} ladderId={ladder.id}></PlayersSelection>
                                     </div>
                                   }
                                 </div>
@@ -442,7 +442,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                             showOrder
                             &&
                             <div className="py-8 mx-auto flex justify-center">
-                              <PlayersSelection user={user} registered={registeredPlayers} players={allPlayers} ladderId={ladder.id}></PlayersSelection>
+                              <PlayersSelection user={user} registered={registeredPlayers} ladderId={ladder.id}></PlayersSelection>
                             </div>
                           }
                           <div id="players" className="text-2xl pt-10">Registered Players</div>

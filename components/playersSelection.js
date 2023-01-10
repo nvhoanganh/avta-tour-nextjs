@@ -12,7 +12,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import SummaryPossibleMatches from './summaryPossibleMatches';
 var Diacritics = require('diacritic');
 
-export default function PlayersSelection({ players, registered, ladderId, user }) {
+export default function PlayersSelection({ registered, ladderId, user }) {
   const [matchUps, setMatchUps] = useState(null);
   const [saving, setSaving] = useState(false);
 
@@ -23,7 +23,7 @@ export default function PlayersSelection({ players, registered, ladderId, user }
   const selectedPlayers = watch('selected');
 
   const onSubmit = data => {
-    const selectedPlayers = players.filter(x => data.selected.indexOf(x.sys.id) !== -1);
+    const selectedPlayers = registered.filter(x => data.selected.indexOf(x.sys.id) !== -1);
     const matches = getMatchups(selectedPlayers);
     setMatchUps(matches);
   };
@@ -45,10 +45,6 @@ export default function PlayersSelection({ players, registered, ladderId, user }
     window.location.reload();
   }
 
-  const sortedPlayers = players.sort((a, b) => {
-    // todo: sort by registered first
-    return Diacritics.clean(b.fullName) > Diacritics.clean(a.fullName) ? -1 : 1;
-  });
 
   return (
     <>
