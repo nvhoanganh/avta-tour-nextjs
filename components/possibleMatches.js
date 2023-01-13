@@ -29,14 +29,46 @@ const _isPlayerInFilter = (filter, player) => {
 export default function PossibleMatches({ matches, filter, }) {
 	const [showHead2head, setShowHead2Head] = useState(false);
 	const [head2head, setHead2Head] = useState([]);
+	const [title, setTitle] = useState('');
+	const [subTitle, setSubTitle] = useState('');
 
 	const showHead2HeadResults = (match) => {
+		setTitle('Head 2 Head');
+		setSubTitle(`'${match.team1.player1} + ${match.team1.player2}' won ${match.team1Won.length} and lost ${match.team1Lost.length} against '${match.team2.player1} + ${match.team2.player2}'`);
 		setHead2Head([
 			...match.team1Won,
 			...match.team1Lost,
 		]);
 		setShowHead2Head(true);
 	}
+
+	const showPairing = (team) => {
+		setTitle('Match Stats');
+		setSubTitle(`'${team.player1} + ${team.player2}' won ${team.winTogether.length} and lost ${team.lostTogether.length} when playing together`);
+		setHead2Head([
+			...team.winTogether,
+			...team.lostTogether,
+		]);
+		setShowHead2Head(true);
+	}
+
+	const TogetherStats = ({ team }) =>
+		<button type="submit" role="link" className="bg-gray-100 text-white active:bg-blue-600 px-2 ml-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200"
+			onClick={() => showPairing(team)}
+		>
+			{
+				team.winTogether?.length > 0
+					? <span className='text-green-400 mr-2'>{team.winTogether?.length}W</span>
+					: null
+			}
+			{
+				team.lostTogether?.length > 0
+					? <span className='text-red-700'>{team.lostTogether?.length}L</span>
+					: null
+			}
+		</button>;
 
 	return (<>
 		<Transition appear show={showHead2head} as={Fragment}>
@@ -69,8 +101,16 @@ export default function PossibleMatches({ matches, filter, }) {
 									as="h3"
 									className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-5 text-center mb-14"
 								>
-									Head 2 Head
+									{title}
+									{
+										!!subTitle
+											? <div className="text-center text-base mt-6">
+												{subTitle}
+											</div>
+											: null
+									}
 								</Dialog.Title>
+
 
 								<div className="py-2 my-2 px-2">
 									{head2head.map((result) => (
@@ -136,19 +176,19 @@ export default function PossibleMatches({ matches, filter, }) {
 						?
 						<div className='flex flex-row items-center justify-between w-full'>
 							<div className='grow'>
-								<div>
+								<div className='py-2'>
 									<span className={_isPlayerInFilter(filter, match.team1.player1) ? 'font-bold text-blue-800' : ''}>{match.team1.player1.trim()}</span> -&nbsp;
 									<span className={_isPlayerInFilter(filter, match.team1.player2) ? 'font-bold text-blue-800' : ''}>{match.team1.player2.trim()}</span>&nbsp;
 									[<span>{match.team1.point}</span>]
-									<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team1.winTogether?.length}</span>
-									<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team1.lostTogether?.length}</span>
+
+									<TogetherStats team={match.team1}></TogetherStats>
 								</div>
 								<div>
 									<span className={_isPlayerInFilter(filter, match.team2.player1) ? 'font-bold text-blue-800' : ''}>{match.team2.player1.trim()}</span> -&nbsp;
 									<span className={_isPlayerInFilter(filter, match.team2.player2) ? 'font-bold text-blue-800' : ''}>{match.team2.player2.trim()}</span>&nbsp;
 									[<span>{match.team2.point}</span>]
-									<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team2.winTogether?.length}</span>
-									<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team2.lostTogether?.length}</span>
+
+									<TogetherStats team={match.team2}></TogetherStats>
 								</div>
 							</div>
 							{
@@ -167,19 +207,18 @@ export default function PossibleMatches({ matches, filter, }) {
 						</div>
 						: <div className='flex flex-row items-center justify-between w-full'>
 							<div className='grow'>
-								<div>
+								<div className='py-2'>
 									<span className={_isPlayerInFilter(filter, match.team2.player1) ? 'font-bold text-blue-800' : ''}>{match.team2.player1.trim()}</span> -&nbsp;
 									<span className={_isPlayerInFilter(filter, match.team2.player2) ? 'font-bold text-blue-800' : ''}>{match.team2.player2.trim()}</span>&nbsp;
 									[<span>{match.team2.point}</span>]
-									<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team2.winTogether?.length}</span>
-									<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team2.lostTogether?.length}</span>
+
+									<TogetherStats team={match.team2}></TogetherStats>
 								</div>
 								<div>
 									<span className={_isPlayerInFilter(filter, match.team1.player1) ? 'font-bold text-blue-800' : ''}>{match.team1.player1.trim()}</span> -&nbsp;
 									<span className={_isPlayerInFilter(filter, match.team1.player2) ? 'font-bold text-blue-800' : ''}>{match.team1.player2.trim()}</span>&nbsp;
 									[<span>{match.team1.point}</span>]
-									<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team1.winTogether?.length}</span>
-									<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team1.lostTogether?.length}</span>
+									<TogetherStats team={match.team1}></TogetherStats>
 								</div>
 							</div>
 							{
