@@ -60,19 +60,24 @@ export default function PossibleMatches({ matches, filter, }) {
 		>
 			{
 				team.winTogether?.length > 0
-					? <span className='text-green-400 mr-2'>{team.winTogether?.length}W</span>
+					? <span className='text-green-400 font-semibold'>{team.winTogether?.length}</span>
+					: null
+			}
+			{
+				team.winTogether?.length > 0 && team.lostTogether?.length > 0
+					? <span className="text-gray-600 mx-1 text-sm">|</span>
 					: null
 			}
 			{
 				team.lostTogether?.length > 0
-					? <span className='text-red-700'>{team.lostTogether?.length}L</span>
+					? <span className='text-red-700 font-semibold'>{team.lostTogether?.length}</span>
 					: null
 			}
 		</button>;
 
 	return (<>
 		<Transition appear show={showHead2head} as={Fragment}>
-			<Dialog as="div" className="relative z-10" onClose={() => setShowHead2Head(false)}>
+			<Dialog as="div" className="relative z-2" onClose={() => setShowHead2Head(false)}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
@@ -109,12 +114,21 @@ export default function PossibleMatches({ matches, filter, }) {
 											</div>
 											: null
 									}
+									<div className="text-center text-base mt-6">
+										<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200"
+											onClick={() => setShowHead2Head(false)}
+										>
+											Close
+										</button>
+									</div>
 								</Dialog.Title>
 
 
-								<div className="py-2 my-2 px-2">
+								<div className="px-2">
 									{head2head.map((result) => (
-										<div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
+										<div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg my-3">
 											<div className="flex flex-row items-center justify-between w-full p-4">
 												<div>
 													<div className="flex flex-wrap">
