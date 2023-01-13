@@ -41,21 +41,33 @@ export default function PossibleMatches({ matches, filter }) {
 							<div>
 								<span className={_isPlayerInFilter(filter, match.team1.player1) ? 'font-bold text-blue-800' : ''}>{match.team1.player1.trim()}</span> -&nbsp;
 								<span className={_isPlayerInFilter(filter, match.team1.player2) ? 'font-bold text-blue-800' : ''}>{match.team1.player2.trim()}</span>&nbsp;
-								[<span>{match.team1.point}</span>]</div>
+								[<span>{match.team1.point}</span>]
+								<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team1.winTogether.length}</span>
+								<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team1.lostTogether.length}</span>
+							</div>
 							<div>
 								<span className={_isPlayerInFilter(filter, match.team2.player1) ? 'font-bold text-blue-800' : ''}>{match.team2.player1.trim()}</span> -&nbsp;
 								<span className={_isPlayerInFilter(filter, match.team2.player2) ? 'font-bold text-blue-800' : ''}>{match.team2.player2.trim()}</span>&nbsp;
-								[<span>{match.team2.point}</span>]</div>
+								[<span>{match.team2.point}</span>]
+								<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team2.winTogether.length}</span>
+								<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team2.lostTogether.length}</span>
+							</div>
 						</div>
 						: <div>
 							<div>
 								<span className={_isPlayerInFilter(filter, match.team2.player1) ? 'font-bold text-blue-800' : ''}>{match.team2.player1.trim()}</span> -&nbsp;
 								<span className={_isPlayerInFilter(filter, match.team2.player2) ? 'font-bold text-blue-800' : ''}>{match.team2.player2.trim()}</span>&nbsp;
-								[<span>{match.team2.point}</span>]</div>
+								[<span>{match.team2.point}</span>]
+								<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team2.winTogether.length}</span>
+								<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team2.lostTogether.length}</span>
+							</div>
 							<div>
 								<span className={_isPlayerInFilter(filter, match.team1.player1) ? 'font-bold text-blue-800' : ''}>{match.team1.player1.trim()}</span> -&nbsp;
 								<span className={_isPlayerInFilter(filter, match.team1.player2) ? 'font-bold text-blue-800' : ''}>{match.team1.player2.trim()}</span>&nbsp;
-								[<span>{match.team1.point}</span>]</div>
+								[<span>{match.team1.point}</span>]
+								<span className='bg-green-400 px-1 rounded mx-1 text-white'>{match.team1.winTogether.length}</span>
+								<span className='bg-red-400 px-1 rounded mx-1 text-white'>{match.team1.lostTogether.length}</span>
+							</div>
 						</div>
 				}
 			</div>
