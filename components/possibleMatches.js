@@ -77,7 +77,7 @@ export default function PossibleMatches({ matches, filter, }) {
 
 	return (<>
 		<Transition appear show={showHead2head} as={Fragment}>
-			<Dialog as="div" className="relative z-2" onClose={() => setShowHead2Head(false)}>
+			<Dialog as="div" className="relative z-50" onClose={() => setShowHead2Head(false)}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
