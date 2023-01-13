@@ -1,5 +1,3 @@
-import ContentfulImage from './contentful-image'
-import PossibleMatches from './possibleMatches'
 import LadderMatches from './ladderMatches'
 import { useForm } from "react-hook-form";
 import { getMatchups, RevalidatePath } from "../lib/browserapi"
@@ -7,12 +5,11 @@ import useFilterPlayers from '../lib/useFilterhook';
 import { db } from '../lib/firebase';
 import SaveButton from './savebutton';
 import { useState } from 'react'
-import { query, deleteDoc, collection, doc, getDocs, getDoc, where, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
-import SummaryPossibleMatches from './summaryPossibleMatches';
 var Diacritics = require('diacritic');
 
-export default function PlayersSelection({ registered, ladderId, user }) {
+export default function PlayersSelection({ registered, ladderId, user, results }) {
   const [matchUps, setMatchUps] = useState(null);
   const [saving, setSaving] = useState(false);
 
@@ -24,7 +21,7 @@ export default function PlayersSelection({ registered, ladderId, user }) {
 
   const onSubmit = data => {
     const selectedPlayers = registered.filter(x => data.selected.indexOf(x.sys.id) !== -1);
-    const matches = getMatchups(selectedPlayers);
+    const matches = getMatchups(selectedPlayers, results);
     setMatchUps(matches);
   };
 

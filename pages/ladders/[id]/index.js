@@ -404,7 +404,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                   {
                                     showOrder
                                     && <div className="py-8">
-                                      <PlayersSelection user={user} registered={registeredPlayers} ladderId={ladder.id}></PlayersSelection>
+                                      <PlayersSelection results={ladder.scores} user={user} registered={registeredPlayers} ladderId={ladder.id}></PlayersSelection>
                                     </div>
                                   }
                                 </div>
