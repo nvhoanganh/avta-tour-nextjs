@@ -3,6 +3,8 @@ import Image from 'next/image';
 import cn from 'classnames';
 import { Dialog, Transition } from "@headlessui/react";
 import { useState, Fragment } from 'react'
+import LadderMatchResultsCard from './Cards/LadderMatchResultsCard';
+import { format } from 'date-fns'
 
 const _isInFilter = (filter, match) => {
 	return (
@@ -26,7 +28,7 @@ const _isPlayerInFilter = (filter, player) => {
 
 export default function PossibleMatches({ matches, filter, }) {
 	const [showHead2head, setShowHead2Head] = useState(false);
-	const [head2head, setHead2Head] = useState(null);
+	const [head2head, setHead2Head] = useState([]);
 
 	const showHead2HeadResults = (match) => {
 		setHead2Head([
@@ -52,7 +54,7 @@ export default function PossibleMatches({ matches, filter, }) {
 				</Transition.Child>
 
 				<div className="fixed inset-0 overflow-y-auto">
-					<div className="flex min-h-full items-center justify-center p-4 text-center">
+					<div className="flex min-h-full items-center justify-center text-center">
 						<Transition.Child
 							as={Fragment}
 							enter="ease-out duration-300"
@@ -70,8 +72,51 @@ export default function PossibleMatches({ matches, filter, }) {
 									Head 2 Head
 								</Dialog.Title>
 
-								<div className="py-3 my-4 px-3 ">
-									Result goes here
+								<div className="py-2 my-2 px-2">
+									{head2head.map((result) => (
+										<div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
+											<div className="flex flex-row items-center justify-between w-full p-4">
+												<div>
+													<div className="flex flex-wrap">
+														<div className="relative w-full pr-4 max-w-full flex-grow flex-1">
+															<div
+																className=
+																'font-bold  text-gray-600'
+															>
+																{result.winnerUser1?.displayName || result.winnerUser1?.fullName} + {result.winnerUser2?.displayName || result.winnerUser2?.fullName}
+
+																<span className='font-normal mb-2 ml-1 text-green-600'>[{result.winnerUser1?.avtaPoint + result.winnerUser2?.avtaPoint}]</span>
+															</div>
+															<div className='text-sm text-gray-600'>
+																{format(new Date(result.timestamp), 'd/M h:mm a')}
+															</div>
+														</div>
+													</div>
+													<div className="flex flex-wrap mt-2">
+														<div className="relative w-full pr-4 max-w-full flex-grow flex-1">
+															<div
+																className=
+																'font-bold  text-gray-600 '
+															>
+																{result.loserUser1?.displayName || result.loserUser1?.fullName} + {result.loserUser2?.displayName || result.loserUser2?.fullName}
+																<span className='font-normal mb-2 ml-1 text-green-600'>[{result.loserUser1?.avtaPoint + result.loserUser2?.avtaPoint}]</span>
+															</div>
+															<div className='text-sm text-gray-600 italic'>
+																Submitted by: {result.submittedByFullName}
+															</div>
+														</div>
+													</div>
+												</div>
+
+												<div className="">
+													<div className=' text-gray-600 text-lg align-center '
+													>
+														{result.gameWonByWinners}-{result.gameWonByLosers}
+													</div>
+												</div>
+											</div>
+										</div>
+									))}
 								</div>
 							</Dialog.Panel>
 						</Transition.Child>
