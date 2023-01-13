@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import cn from 'classnames';
+import { Dialog, Transition } from "@headlessui/react";
+import { useState, Fragment } from 'react'
 
 const _isInFilter = (filter, match) => {
 	return (
@@ -19,22 +21,71 @@ const _isPlayerInFilter = (filter, player) => {
 	)
 }
 
-export default function PossibleMatches({ matches, filter }) {
+
+
+
+export default function PossibleMatches({ matches, filter, }) {
+	const [showHead2head, setShowHead2Head] = useState(false);
+	const [head2head, setHead2Head] = useState(null);
+
+	const showHead2HeadResults = (match) => {
+		setHead2Head([
+			...match.team1Won,
+			...match.team1Lost,
+		]);
+		setShowHead2Head(true);
+	}
+
 	return (<>
+		<Transition appear show={showHead2head} as={Fragment}>
+			<Dialog as="div" className="relative z-10" onClose={() => setShowHead2Head(false)}>
+				<Transition.Child
+					as={Fragment}
+					enter="ease-out duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="ease-in duration-200"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				>
+					<div className="fixed inset-0 bg-black bg-opacity-25" />
+				</Transition.Child>
+
+				<div className="fixed inset-0 overflow-y-auto">
+					<div className="flex min-h-full items-center justify-center p-4 text-center">
+						<Transition.Child
+							as={Fragment}
+							enter="ease-out duration-300"
+							enterFrom="opacity-0 scale-95"
+							enterTo="opacity-100 scale-100"
+							leave="ease-in duration-200"
+							leaveFrom="opacity-100 scale-100"
+							leaveTo="opacity-0 scale-95"
+						>
+							<Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+								<Dialog.Title
+									as="h3"
+									className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-5 text-center mb-14"
+								>
+									Head 2 Head
+								</Dialog.Title>
+
+								<div className="py-3 my-4 px-3 ">
+									Result goes here
+								</div>
+							</Dialog.Panel>
+						</Transition.Child>
+					</div>
+				</div>
+			</Dialog>
+		</Transition>
+
 		{matches.map((match, index) => (
 			<div
 				className={cn(' border text-left px-2 py-1 my-2 rounded flex items-center space-x-2', {
 					'  bg-green-50': _isInFilter(filter, match),
 				})}
 				key={index}>
-				{/* <div className="  text-green-600"
-					className={cn('text-normal', {
-						'  text-green-600': match.pointDiff <= 20,
-						'  text-pink-400': match.pointDiff > 20 && match.pointDiff <= 30,
-						'  text-red-600': match.pointDiff > 30,
-					})}
-				>{match.pointDiff <= 20 ? '00-20' :
-					match.pointDiff > 20 && match.pointDiff <= 30 ? '20-30' : '30-40'}</div> */}
 				{
 					match.team1.point !== match.team2.point && parseInt(match.team1.point) > parseInt(match.team2.point)
 						?
@@ -58,7 +109,13 @@ export default function PossibleMatches({ matches, filter }) {
 							{
 								match.team1Won?.length > 0 || match.team1Lost?.length > 0
 									? <div className='grow-0 text-right font-semibold'>
-										<span>{match.team1Won?.length}-{match.team1Lost?.length}</span>
+										<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200"
+											onClick={() => showHead2HeadResults(match)}
+										>
+											{match.team1Won?.length}-{match.team1Lost?.length}
+										</button>
 									</div>
 									: null
 							}
@@ -82,7 +139,16 @@ export default function PossibleMatches({ matches, filter }) {
 							</div>
 							{
 								match.team1Lost?.length > 0 || match.team1Won?.length > 0
-									? <div className='grow-0 text-right font-semibold'><span>{match.team1Lost?.length}-{match.team1Won?.length}</span></div>
+									? <div className='grow-0 text-right font-semibold'>
+										<span>
+											<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200"
+												onClick={() => showHead2HeadResults(match)}
+											>
+												{match.team1Lost?.length}-{match.team1Won?.length}
+											</button>
+										</span></div>
 									: null
 							}
 						</div>
