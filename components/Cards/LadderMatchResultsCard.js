@@ -25,28 +25,42 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
         <div className='w-full lg:w-6/12 xl:w-3/12'>
           {getFilteredLadderMatches(results || [], filter).map((result) => (
             <div key={result.timestamp} className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-6 xl:mb-0 shadow-lg">
-              <div className="flex-auto p-4">
-                <div className="flex flex-wrap">
-                  <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-                    <div
-                      className=
-                      'font-bold  text-gray-600'
-                    >
-                      {result.winnerUser1?.displayName || result.winnerUser1?.fullName} + {result.winnerUser2?.displayName || result.winnerUser2?.fullName}
+              <div className="flex flex-row items-center justify-between w-full p-4">
+                <div>
+                  <div className="flex flex-wrap">
+                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
+                      <div
+                        className=
+                        'font-bold  text-gray-600'
+                      >
+                        {result.winnerUser1?.displayName || result.winnerUser1?.fullName} + {result.winnerUser2?.displayName || result.winnerUser2?.fullName}
 
-                      <span className='font-normal mb-2 ml-1 text-green-600'>[{result.winnerUser1?.avtaPoint + result.winnerUser2?.avtaPoint}]</span>
-                    </div>
-                    <div className='text-sm text-gray-600'>
-                      {format(new Date(result.timestamp), 'd/M h:mm a')}
+                        <span className='font-normal mb-2 ml-1 text-green-600'>[{result.winnerUser1?.avtaPoint + result.winnerUser2?.avtaPoint}]</span>
+                      </div>
+                      <div className='text-sm text-gray-600'>
+                        {format(new Date(result.timestamp), 'd/M h:mm a')}
+                      </div>
                     </div>
                   </div>
+                  <div className="flex flex-wrap mt-2">
+                    <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
+                      <div
+                        className=
+                        'font-bold  text-gray-600 '
+                      >
+                        {result.loserUser1?.displayName || result.loserUser1?.fullName} + {result.loserUser2?.displayName || result.loserUser2?.fullName}
+                        <span className='font-normal mb-2 ml-1 text-green-600'>[{result.loserUser1?.avtaPoint + result.loserUser2?.avtaPoint}]</span>
+                      </div>
+                      <div className='text-sm text-gray-600 italic'>
+                        Submitted by: {result.submittedByFullName}
+                      </div>
+                    </div>
 
-                  {/* <div className="relative w-auto pl-4 flex-initial flex">
-                    <TeamAvatar team={{ player1: result.winnerUser1, player2: result.winnerUser2 }} />
-                  </div> */}
+                  </div>
                 </div>
 
-                <div className="flex flex-col items-center justify-center">
+
+                <div className="">
                   {!is_superuser && !is_owner ?
                     (<div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
                       onClick={() => deleteResult(result)}
@@ -64,24 +78,7 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                   }
                 </div>
 
-                <div className="flex flex-wrap mt-2">
-                  <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-                    <div
-                      className=
-                      'font-bold  text-gray-600 '
-                    >
-                      {result.loserUser1?.displayName || result.loserUser1?.fullName} + {result.loserUser2?.displayName || result.loserUser2?.fullName}
-                      <span className='font-normal mb-2 ml-1 text-green-600'>[{result.loserUser1?.avtaPoint + result.loserUser2?.avtaPoint}]</span>
-                    </div>
-                    <div className='text-sm text-gray-600 italic'>
-                      Submitted by: {result.submittedByFullName}
-                    </div>
-                  </div>
 
-                  {/* <div className="relative w-auto pl-4 flex-initial flex">
-                    <TeamAvatar team={{ player1: result.loserUser1, player2: result.loserUser2 }} />
-                  </div> */}
-                </div>
 
               </div>
             </div>
