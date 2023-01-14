@@ -10,6 +10,7 @@ export default class MyDocument extends Document {
           <script type="text/javascript" src="/ga.js" async />
           <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js" async />
           <script type="text/javascript" src="https://www.googletagmanager.com/gtag/js?id=G-KF25F4604L" async />
+          <script type="text/javascript" src="/clarity.js" async />
         </Head>
         <body>
           <div id="fb-root"></div>
