@@ -29,7 +29,7 @@ const ClubMarker2 = ({ lat, lng, text, onClick, count, scoreCenter }) => <span
 		'bg-blue-600 border-gray-700 hover:bg-blue-800': scoreCenter,
 	})}
 >
-	<span  className={cn(' text-sm leading-none  font-bold', {
+	<span className={cn(' text-sm leading-none  font-bold', {
 		'text-black': !scoreCenter,
 		'text-white': scoreCenter,
 	})}
@@ -214,7 +214,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 														'text-blue-600': x.hasLadderPoint,
 													})}
 												>
-													{x?.notInContentful ? 'N/A' : x?.avtaPoint}
+													{!x?.avtaPoint ? 'N/A' : x?.avtaPoint}
 												</p>
 												{
 													x.canMarkScore

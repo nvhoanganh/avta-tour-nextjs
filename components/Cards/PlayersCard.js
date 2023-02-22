@@ -109,7 +109,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 											'text-blue-600': x.hasLadderPoint,
 										})}
 									>
-										{x?.notInContentful ? 'N/A' : x?.avtaPoint}
+										{!x?.avtaPoint ? 'N/A' : x?.avtaPoint}
 									</p>
 									{
 										x.canMarkScore

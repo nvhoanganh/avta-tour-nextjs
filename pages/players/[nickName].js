@@ -279,7 +279,7 @@ export default function Player({ player, preview }) {
 													'text-red-600': player?.unofficialPoint || player.notInContentful,
 												})}
 											>
-												{player?.notInContentful ? 'N/A' : player?.avtaPoint}
+												{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
 												{
 													player?.unofficialPoint && <div className='text-sm pt-3'>Unofficial</div>
 												}

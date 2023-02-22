@@ -170,7 +170,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 											'text-red-600': player?.unofficialPoint || player?.notInContentful,
 										})}
 									>
-										{player?.notInContentful ? 'N/A' : player?.avtaPoint}
+										{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{player?.homeClub || 'Unknown Club'}
