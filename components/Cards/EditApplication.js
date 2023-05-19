@@ -78,7 +78,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
             return {
               ...x,
               ...data,
-              paidOn: data.paidOn instanceof Date ? data.paidOn.toISOString() : data.paidOn.toDate().toISOString(),
+              paidOn: !!data.paidOn && data.paidOn instanceof Date ? data.paidOn.toISOString() : (!data.paidOn ? null : data.paidOn.toDate().toISOString()),
               timestamp: data.timestamp.toDate().toISOString(),
             }
           }
@@ -107,7 +107,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
                 {
                   ...x.between[0],
                   ...data,
-                  paidOn: data.paidOn instanceof Date ? data.paidOn.toISOString() : data.paidOn.toDate().toISOString(),
+                  paidOn: !!data.paidOn && data.paidOn instanceof Date ? data.paidOn.toISOString() : (!data.paidOn ? null : data.paidOn.toDate().toISOString()),
                   timestamp: data.timestamp.toDate().toISOString(),
                 },
                 x.between[1]
@@ -123,7 +123,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
                 {
                   ...x.between[1],
                   ...data,
-                  paidOn: data.paidOn?.toDate()?.toISOString(),
+                  paidOn: !!data.paidOn && data.paidOn instanceof Date ? data.paidOn.toISOString() : (!data.paidOn ? null : data.paidOn.toDate().toISOString()),
                   timestamp: data.timestamp.toDate().toISOString(),
                 },
               ]
