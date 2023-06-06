@@ -110,12 +110,17 @@ export default function Player({ player, preview }) {
 			{ ...docSnap.data(), uid: user.uid, playerId: player?.sys?.id } :
 			{ uid: user.uid, playerId: player?.sys?.id };
 
+		if (updated.notInContentful) {
+			// clear this flag
+			delete updated.notInContentful;
+		}
+
 		await setDoc(docRef, updated);
 
 		setShowOtp(false);
 		setPlayerStatus(CLAIMED_BY_ME);
 
-		toast("Profile successfully linked");
+		toast("Profile successfully claimed");
 	}
 
 	if (!router.isFallback && !player) {
@@ -276,7 +281,7 @@ export default function Player({ player, preview }) {
 											<div
 												className={cn('mb-20 mt-10 text-6xl font-bold', {
 													'text-green-600': !player?.unofficialPoint,
-													'text-red-600': player?.unofficialPoint || player.notInContentful,
+													'text-red-600': player?.unofficialPoint || (player.notInContentful && !player.playerId),
 												})}
 											>
 												{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}

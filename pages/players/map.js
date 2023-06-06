@@ -210,7 +210,7 @@ export default function PlayersMap({ allPlayers, preview, clubs }) {
 												<p
 													className={cn('mt-1 text-xl  uppercase font-semibold', {
 														'text-green-600': !x.unofficialPoint,
-														'text-red-600': x.unofficialPoint || x?.notInContentful,
+														'text-red-600': x.unofficialPoint || (x?.notInContentful && !x?.playerId),
 														'text-blue-600': x.hasLadderPoint,
 													})}
 												>

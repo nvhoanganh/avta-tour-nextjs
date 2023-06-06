@@ -167,7 +167,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 									<td
 										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4', {
 											'text-green-600': !player?.unofficialPoint,
-											'text-red-600': player?.unofficialPoint || player?.notInContentful,
+											'text-red-600': player?.unofficialPoint || (player?.notInContentful && !player?.playerId) ,
 										})}
 									>
 										{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
