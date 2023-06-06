@@ -105,7 +105,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 									<p
 										className={cn('mt-1 text-xl  uppercase font-semibold', {
 											'text-green-600': !x.unofficialPoint,
-											'text-red-600': x.unofficialPoint || (x?.notInContentful && !x?.playerId),
+											'text-red-600': x.unofficialPoint || x?.notInContentful,
 											'text-blue-600': x.hasLadderPoint,
 										})}
 									>

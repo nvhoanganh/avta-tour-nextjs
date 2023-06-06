@@ -281,7 +281,7 @@ export default function Player({ player, preview }) {
 											<div
 												className={cn('mb-20 mt-10 text-6xl font-bold', {
 													'text-green-600': !player?.unofficialPoint,
-													'text-red-600': player?.unofficialPoint || (player.notInContentful && !player.playerId),
+													'text-red-600': player?.unofficialPoint || player?.notInContentful,
 												})}
 											>
 												{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
