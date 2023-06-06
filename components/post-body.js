@@ -32,7 +32,6 @@ function renderOptions(links) {
 
 
 export default function PostBody({ content }) {
-	console.log("🚀 ~ file: post-body.js:24 ~ PostBody ~ content:", JSON.stringify(content.links, null, 2))
 	return (
 		<div className='prose text-lg max-w-none'>
 			{documentToReactComponents(content.json, renderOptions(content.links))}
