@@ -701,7 +701,7 @@ export async function getStaticProps({ params, preview = false }) {
       preview,
       competition: data,
     },
-    revalidate: 3600
+    revalidate: 600
   };
 }
 
