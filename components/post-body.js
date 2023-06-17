@@ -10,8 +10,10 @@ function renderOptions(links) {
 	// create an asset map
 	const assetMap = new Map();
 	// loop through the assets and add them to the map
-	for (const asset of links.assets.block) {
-		assetMap.set(asset.sys.id, asset);
+	if (links?.assets?.block) {
+		for (const asset of links.assets.block) {
+			assetMap.set(asset.sys.id, asset);
+		}
 	}
 
 	return {
