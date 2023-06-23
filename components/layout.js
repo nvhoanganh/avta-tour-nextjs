@@ -9,15 +9,15 @@ export default function Layout({ preview, children }) {
 	useEffect(() => {
 		if (user && window.dataLayer) {
 			window.dataLayer.push({
-				event: 'user_loaded'
-			});
-
-			window.dataLayer.push({
 				email: user.email,
 				displayName: user.displayName,
 				uid: user.uid,
 				createdAt: user.metadata?.creationTime,
 				lastLogin: user.metadata?.lastSignInTime,
+			});
+
+			window.dataLayer.push({
+				event: 'user_loaded'
 			});
 		}
 	}, [user]);
