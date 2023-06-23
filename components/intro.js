@@ -58,14 +58,18 @@ export default function Intro({ upcomingCompetition }) {
 													<span className='mx-3 text-center text-white  px-6 py-4'>
 														Welcome back, {user.displayName}!
 													</span>
-													<div className='pt-8'>
-														<Link href='/editmyprofile'>
-															<a className='bg-blue-600 hover:bg-blue-800 w-9 text-white w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-6 py-4 
-																		rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
-																{userProfile?.homeClub ? 'View your profile' : 'Complete your profile'}
-															</a>
-														</Link>
-													</div>
+													{
+														userProfile
+															? <div className='mt-8'>
+																<Link href='/editmyprofile'>
+																	<a className='bg-blue-600 hover:bg-blue-800 w-9 text-white w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-6 py-4 
+																															rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+																		{userProfile.homeClub ? 'View your profile' : 'Complete your profile'}
+																	</a>
+																</Link>
+															</div>
+															: null
+													}
 												</div>
 
 									}
