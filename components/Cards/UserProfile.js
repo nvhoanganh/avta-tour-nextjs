@@ -73,8 +73,12 @@ export default function UserProfile() {
     }
 
     if (user) {
+      console.log("🚀 ~ file: UserProfile.js:76 ~ useEffect ~ user:", user)
       const docSnap = await getDoc(doc(db, "users", user.uid));
-      let formData = docSnap.exists() ? { ...user, ...docSnap.data() } : { ...user, allowContact: true };
+      let formData = docSnap.exists() ?
+        { ...user, ...docSnap.data(), nickName: user.nickName || user.displayName } :
+        { ...user, allowContact: true };
+
       if (formData.playerId) {
         // get data fron contentful using REST api
         const contentfuldata = await getPlayerById(formData.playerId, false);
@@ -85,7 +89,6 @@ export default function UserProfile() {
           displayName: formData.displayName || contentfuldata.fullName,
           // home club and nick Name comes from what user type in the form, not from contentful
           homeClub: formData.homeClub,
-          nickName: formData.nickName,
         };
 
         const unsubSnap = await getDoc(doc(db, "unsubscribed", formData.playerId));
