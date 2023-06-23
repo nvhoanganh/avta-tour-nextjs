@@ -11,7 +11,7 @@ import Header from '../../components/header';
 import PostHeader from '../../components/post-header';
 import Layout from '../../components/layout';
 import { getAllCompetitionsForHome } from '../../lib/api';
-import { getUserProfile } from '../../lib/browserapi';
+import { getUserProfile, createUserProfile } from '../../lib/browserapi';
 import { notifyNewUserSignup, notifyWelcomeUser } from '../../lib/notificationservice';
 import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
@@ -36,6 +36,8 @@ import Image from 'next/image';
 import Meta from '../../components/meta';
 import { auth } from '../../lib/firebase';
 import { useFirebaseAuth } from '../../components/authhook';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Login() {
 	const { loadingAuth } = useFirebaseAuth();
@@ -43,6 +45,7 @@ export default function Login() {
 	const { reason } = router.query;
 
 	const [loginError, setLoginError] = useState(null);
+	const [loading, setLoading] = useState(false);
 
 	const login = async (provider) => {
 		const getProvider = () => {
@@ -77,11 +80,13 @@ export default function Login() {
 		}
 
 		// return await signInWithRedirect(auth, p);
+		setLoading(true);
 		signInWithPopup(auth, p).then(async (result) => {
 			const user = result.user;
 			if (user) {
 				const userP = await getUserProfile(user);
-				if (userP?.suburb) {
+				if (userP) {
+					setLoading(false);
 					const redirectUrl = localStorage.getItem('redirectAfterLogin');
 					if (redirectUrl) {
 						localStorage.removeItem('redirectAfterLogin');
@@ -90,13 +95,23 @@ export default function Login() {
 						router.push('/');
 					}
 				} else {
+					await createUserProfile(user);
 					// this is new user signup, send notification
 					await notifyNewUserSignup(user);
 					await notifyWelcomeUser(user);
+					setLoading(false);
+					// track event in Datalayer
+					window.dataLayer && window.dataLayer.push({
+						'event': 'new_user_signup',
+						uid: user.uid,
+						email: user.email,
+						displayName: user.displayName
+					});
 					router.push('/editmyprofile');
 				}
 			}
 		}).catch((error) => {
+			setLoading(false);
 			console.log("🚀 ~ file: login.js:125 ~ useEffect ~ error", error)
 			setLoginError(error.message);
 		});
@@ -104,6 +119,7 @@ export default function Login() {
 
 	return (
 		<>
+			<ToastContainer />
 			<Meta />
 			<Navbar transparent />
 
@@ -156,8 +172,8 @@ export default function Login() {
 										}
 										<div className='text-center my-6'>
 											<h6 className='text-gray-500 text-lg font-bold'>
-												{loadingAuth
-													? <div className='text-center'><Spinner color="blue"></Spinner> Logging you in. Please wait..</div>
+												{loading
+													? <div className='text-center'><Spinner color="blue"></Spinner> Logging in...</div>
 													: 'Sign in with'}
 											</h6>
 										</div>
