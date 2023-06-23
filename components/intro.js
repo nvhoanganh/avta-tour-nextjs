@@ -3,10 +3,18 @@ import CompetitionPreview from './competition-preview';
 import { useFirebaseAuth } from './authhook';
 import JoinOurFacebook from '../components/join-our-fb';
 import Spinner from './spinner';
+import { getUserProfile } from '../lib/browserapi';
+import { useEffect, useState } from 'react';
 
 export default function Intro({ upcomingCompetition }) {
 	const { user, loadingAuth } = useFirebaseAuth();
-
+	const [userProfile, setserProfile] = useState(null);
+	useEffect(async () => {
+		if (user) {
+			const userP = await getUserProfile(user);
+			setserProfile(userP);
+		}
+	}, [user]);
 	return (
 		<>
 			<div className='relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-45 '>
@@ -46,12 +54,20 @@ export default function Intro({ upcomingCompetition }) {
 														Join Us Today
 													</a>
 												</Link> :
-												<Link href='/editmyprofile'>
-													<a className='bg-transparent w-9 w-full mx-3 text-center text-white active:bg-gray-50 px-6 py-4 hover:bg-blue-600 hover:cursor-pointer
-																		rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+												<div>
+													<span className='mx-3 text-center text-white  px-6 py-4'>
 														Welcome back, {user.displayName}!
-													</a>
-												</Link>
+													</span>
+													<div className='pt-8'>
+														<Link href='/editmyprofile'>
+															<a className='bg-blue-600 hover:bg-blue-800 w-9 text-white w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-6 py-4 
+																		rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
+																{userProfile?.homeClub ? 'View your profile' : 'Complete your profile'}
+															</a>
+														</Link>
+													</div>
+												</div>
+
 									}
 								</div>
 							</div>
