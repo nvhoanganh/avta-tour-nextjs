@@ -3,9 +3,28 @@ import Footer from '../components/footer';
 import Meta from '../components/meta';
 import { useFirebaseAuth } from '../components/authhook';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Layout({ preview, children }) {
 	const { user } = useFirebaseAuth();
+	const router = useRouter();
+	useEffect(() => {
+		const handleRouteChange = (url, { shallow }) => {
+			if (window.dataLayer) {
+				window.dataLayer.push({
+					event: 'route_changed',
+					newUrl: url
+				});
+			}
+		};
+
+		router.events.on('routeChangeStart', handleRouteChange);
+
+		return () => {
+			router.events.off('routeChangeStart', handleRouteChange);
+		};
+	}, [router]);
+
 	useEffect(() => {
 		if (user && window.dataLayer) {
 			window.dataLayer.push({
