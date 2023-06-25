@@ -6,7 +6,7 @@ import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
 import { GroupsColours, getPlayer } from '../../lib/browserapi';
 
-export default function MatchScheduleGrid({ schedule }) {
+export default function MatchScheduleGrid({ schedule, is_superuser, editTeam }) {
 
   return (
     <div className="flex space-x-4">
@@ -25,7 +25,14 @@ export default function MatchScheduleGrid({ schedule }) {
                       <TeamAvatar team={match.between[0]} />
                       <div>
                         <div className="ml-3 text-sm text-left">{getPlayer(match.between[0], 0)?.fullName} +</div>
-                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[0], 1)?.fullName}</div>
+                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[0], 1)?.fullName}
+                          {is_superuser &&
+                            <button type="button" onClick={() => editTeam(match.between[0])} className="ml-3 text-black cursor-pointer underline text-sm">
+                              Edit
+                            </button>
+                          }
+                        </div>
+
                       </div>
                     </div>
                   </div>
@@ -35,11 +42,16 @@ export default function MatchScheduleGrid({ schedule }) {
                       <TeamAvatar team={match.between[1]} />
                       <div>
                         <div className="ml-3 text-sm text-left">{getPlayer(match.between[1], 0)?.fullName}</div>
-                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[1], 1)?.fullName}</div>
+                        <div className="ml-3 text-sm text-left">{getPlayer(match.between[1], 1)?.fullName}
+                          {is_superuser &&
+                            <button type="button" onClick={() => editTeam(match.between[1])} className="ml-3 text-black cursor-pointer underline text-sm">
+                              Edit
+                            </button>
+                          }
+                        </div>
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
             ))}

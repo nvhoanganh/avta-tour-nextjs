@@ -190,11 +190,15 @@ export default function Competition({ competition, preview }) {
           <div className='hidden md:block'>
             <MatchScheduleGrid
               schedule={competition.schedule}
+              is_superuser={userRoles?.superuser}
+              editTeam={editTeam}
             />
           </div>
           <div className='md:hidden mt-4 '>
             <MatchScheduleCard
               schedule={competition.schedule}
+              is_superuser={userRoles?.superuser}
+              editTeam={editTeam}
             />
           </div>
         </div> :

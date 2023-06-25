@@ -6,7 +6,7 @@ import TeamAvatar from '../TeamAvatarFb';
 import { getPlayer, GroupsColours, getSchedules } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
-export default function MatchScheduleCard({ schedule }) {
+export default function MatchScheduleCard({ schedule, is_superuser, editTeam }) {
   const [filter, setFilter] = useState('');
 
   return (
@@ -33,6 +33,11 @@ export default function MatchScheduleCard({ schedule }) {
                     <div className="relative w-auto pl-1 flex-initial flex items-center">
                       <TeamAvatar team={match.between[0]} />
                       <span className="ml-2">{getPlayer(match.between[0], 0)?.fullName} + {getPlayer(match.between[0], 1)?.fullName}</span>
+                      {is_superuser &&
+                        <button type="button" onClick={() => editTeam(match.between[0])} className="ml-3 text-black cursor-pointer underline">
+                          Edit
+                        </button>
+                      }
                     </div>
                   </div>
 
@@ -40,6 +45,11 @@ export default function MatchScheduleCard({ schedule }) {
                     <div className="relative w-auto pl-1 flex-initial flex items-center">
                       <TeamAvatar team={match.between[1]} />
                       <span className="ml-2">{getPlayer(match.between[1], 0)?.fullName} + {getPlayer(match.between[1], 1)?.fullName}</span>
+                      {is_superuser &&
+                        <button type="button" onClick={() => editTeam(match.between[1])} className="ml-3 text-black cursor-pointer underline">
+                          Edit
+                        </button>
+                      }
                     </div>
                   </div>
 
