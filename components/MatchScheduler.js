@@ -13,7 +13,7 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-function Widget({ widget, index, allColumns, droppableId }) {
+function Widget({ widget, index, allColumns, droppableId, deleteWidget }) {
   const clashed = Object.keys(allColumns).map(court => {
     if (court === droppableId) return null;
 
@@ -56,7 +56,11 @@ function Widget({ widget, index, allColumns, droppableId }) {
                 <div className=" whitespace-nowrap truncate overflow-hidden font-bold">Court </div>
                 <div><span className="font-bold">is Not Avaiable</span>
                 </div>
-                <div className=" whitespace-nowrap truncate overflow-hidden font-bold">at this time</div>
+                <div className=" whitespace-nowrap truncate overflow-hidden">
+                  <button type="button" className="underline" onClick={() => deleteWidget(widget.id)}>
+                    Delete
+                  </button>
+                </div>
               </div>
           }
         </div>
@@ -65,18 +69,18 @@ function Widget({ widget, index, allColumns, droppableId }) {
   );
 }
 
-const WidgetList = React.memo(function WidgetList({ widgets, allColumns, droppableId }) {
+const WidgetList = React.memo(function WidgetList({ widgets, allColumns, droppableId, deleteWidget }) {
   return widgets.map((widget, index) => (
-    <Widget widget={widget} index={index} key={widget.id} allColumns={allColumns} droppableId={droppableId} />
+    <Widget widget={widget} index={index} key={widget.id} allColumns={allColumns} droppableId={droppableId} deleteWidget={deleteWidget} />
   ));
 });
 
-function Column({ droppableId, widgets, readonly, allColumns }) {
+function Column({ droppableId, widgets, readonly, allColumns, deleteWidget }) {
   return (
     <Droppable droppableId={droppableId} isDragDisabled={readonly}>
       {provided => (
         <div className="w-64 border border-solid border-gray-300 rounded shadow-md flex flex-col space-y-2 p-2 py-4 bg-gray-50" ref={provided.innerRef} {...provided.droppableProps}>
-          <WidgetList widgets={widgets} allColumns={allColumns} droppableId={droppableId} />
+          <WidgetList widgets={widgets} allColumns={allColumns} droppableId={droppableId} deleteWidget={deleteWidget} />
           {provided.placeholder}
         </div>
       )}
@@ -136,6 +140,7 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
   const save = () => { saveSchedule && saveSchedule(state.widgets) }
 
   const reset = () => {
+    ;
     const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
     setState({ widgets: allMatches });
   }
@@ -146,6 +151,13 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
       id: (new Date()).getTime().toString(),
       isPlaceholder: true,
       group: '_'
+    });
+    setState({ widgets: { ...state.widgets } });
+  }
+
+  const deleteWidget = (id) => {
+    Object.keys(state.widgets).forEach(court => {
+      state.widgets[court] = state.widgets[court].filter(x => x.id !== id);
     });
     setState({ widgets: { ...state.widgets } });
   }
@@ -184,7 +196,7 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
           {Object.keys(state.widgets).sort().map((group, index) => (
             <div key={group}>
               <div className="text-bold text-xl text-center py-3">{group}</div>
-              <Column widgets={state.widgets[group]} droppableId={group} readonly={readonly} allColumns={state.widgets} />
+              <Column widgets={state.widgets[group]} droppableId={group} readonly={readonly} allColumns={state.widgets} deleteWidget={deleteWidget} />
             </div>
           ))}
         </div>

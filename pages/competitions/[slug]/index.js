@@ -103,6 +103,12 @@ export default function Competition({ competition, preview }) {
     }
   }
 
+  const [showEditSchedule, setshowEditSchedule] = useState(false);
+  const editSchedule = () => {
+    editMatchSchedule();
+    setshowEditSchedule(true);
+  }
+
   const allocateTeamsToGroups = async () => {
     const teamsInEachGroup = prompt('Enter Minimum number of teams per group (e.g. 4)');
     if (!teamsInEachGroup || parseInt(teamsInEachGroup) <= 1) {
@@ -210,6 +216,12 @@ export default function Competition({ competition, preview }) {
                   className="bg-red-500 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
                   Delete Schedule
                 </button>
+                <button
+                  tupe="button"
+                  onClick={editSchedule}
+                  className="bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+                  Edit Schedule
+                </button>
               </div>
               : null
           }
@@ -219,6 +231,16 @@ export default function Competition({ competition, preview }) {
               is_superuser={userRoles?.superuser}
               editTeam={editTeam}
             />
+
+            {
+              courtNames && showEditSchedule &&
+              <div className=' mt-20'>
+                <div className='py-10 text-5xl'>New Schedule</div>
+                <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
+                  saveSchedule={saveSchedule}
+                ></MatchScheduler>
+              </div>
+            }
           </div>
           <div className='md:hidden mt-4 '>
             <MatchScheduleCard
