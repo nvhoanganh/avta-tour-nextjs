@@ -24,36 +24,46 @@ export default function MatchScheduleCard({ schedule, is_superuser, editTeam }) 
           <div className="text-bold text-xl text-center py-3">{court}</div>
           <div className='w-full lg:w-6/12 xl:w-3/12'>
             {getSchedules(schedule[court], filter).map((match, index) => (
-              <div key={match.id} className={`relative flex min-w-0 break-words rounded mb-3 xl:mb-0 shadow bg-${GroupsColours[match.group]}-50`}>
+              <div key={match.id} className={`relative flex min-w-0 break-words rounded mb-3 xl:mb-0 shadow bg-${GroupsColours[match.group]}-50 h-32 ${match.isPlaceholder ? 'bg-gray-400' : ''}`}>
                 <div className={`flex pl-2 pt-1 font-bold tex-xl text-${GroupsColours[match.group]}-600`} >{match.group}
                   <span className="text-sm">{match.matchOrder + 1}</span>
                 </div>
-                <div className="flex-auto py-2">
-                  <div className="flex flex-wrap">
-                    <div className="relative w-auto pl-1 flex-initial flex items-center">
-                      <TeamAvatar team={match.between[0]} />
-                      <span className="ml-2">{getPlayer(match.between[0], 0)?.fullName} + {getPlayer(match.between[0], 1)?.fullName}</span>
-                      {is_superuser &&
-                        <button type="button" onClick={() => editTeam(match.between[0])} className="ml-3 text-black cursor-pointer underline">
-                          Edit
-                        </button>
-                      }
-                    </div>
-                  </div>
+                {
+                  !match.isPlaceholder
+                    ? <div className="flex-auto py-2">
+                      <div className="flex flex-wrap">
+                        <div className="relative w-auto pl-1 flex-initial flex items-center">
+                          <TeamAvatar team={match.between[0]} />
+                          <span className="ml-2">{getPlayer(match.between[0], 0)?.fullName} + {getPlayer(match.between[0], 1)?.fullName}</span>
+                          {is_superuser &&
+                            <button type="button" onClick={() => editTeam(match.between[0])} className="ml-3 text-black cursor-pointer underline">
+                              Edit
+                            </button>
+                          }
+                        </div>
+                      </div>
 
-                  <div className="flex flex-wrap">
-                    <div className="relative w-auto pl-1 flex-initial flex items-center">
-                      <TeamAvatar team={match.between[1]} />
-                      <span className="ml-2">{getPlayer(match.between[1], 0)?.fullName} + {getPlayer(match.between[1], 1)?.fullName}</span>
-                      {is_superuser &&
-                        <button type="button" onClick={() => editTeam(match.between[1])} className="ml-3 text-black cursor-pointer underline">
-                          Edit
-                        </button>
-                      }
-                    </div>
-                  </div>
+                      <div className="flex flex-wrap">
+                        <div className="relative w-auto pl-1 flex-initial flex items-center">
+                          <TeamAvatar team={match.between[1]} />
+                          <span className="ml-2">{getPlayer(match.between[1], 0)?.fullName} + {getPlayer(match.between[1], 1)?.fullName}</span>
+                          {is_superuser &&
+                            <button type="button" onClick={() => editTeam(match.between[1])} className="ml-3 text-black cursor-pointer underline">
+                              Edit
+                            </button>
+                          }
+                        </div>
+                      </div>
 
-                </div>
+                    </div>
+                    :
+                    <div className="flex justify-end items-center py-2">
+                      <div className="flex flex-col mx-auto">
+                        <div className="ml-3 text-left font-bold uppercase">Court </div>
+                        <div className="ml-3 text-left font-bold uppercase">Not Available</div>
+                      </div>
+                    </div>
+                }
               </div>
             ))}
           </div>

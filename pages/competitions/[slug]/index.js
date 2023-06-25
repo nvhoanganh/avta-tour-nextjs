@@ -41,6 +41,7 @@ import { query, collection, doc, getDocs, getDoc, where, setDoc, deleteDoc } fro
 import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
+  console.log("🚀 ~ file: index.js:44 ~ Competition ~ competition:", competition)
   const { user, loadingAuth, fullProfile } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
@@ -584,6 +585,16 @@ export default function Competition({ competition, preview }) {
                               )}
                             </div>
 
+                            {
+                              userRoles?.superuser
+                              && <div className='mx-0 py-4'>
+                                <div>Admin Information:</div>
+                                <div className='flex space-x-2 items-center'>
+                                  <span className='text-sm text-gray-500 ml-3'>- Competition Id: {competition?.sys?.id}</span>
+                                </div>
+                              </div>
+                            }
+
                             <div className="py-5">
                               <ToggleContactDetails competition={competition} />
                               <ToggleTournamentRule competition={competition} />
@@ -598,6 +609,16 @@ export default function Competition({ competition, preview }) {
                                   .json
                               )}
                             </div>
+
+                            {
+                              userRoles?.superuser
+                              && <div className='mx-0 py-4'>
+                                <div>Admin Information:</div>
+                                <div className='flex space-x-2 items-center'>
+                                  <span className='text-sm text-gray-500 ml-3'>- Competition Id: {competition?.sys?.id}</span>
+                                </div>
+                              </div>
+                            }
 
                             <div className="py-5">
                               <ToggleContactDetails competition={competition} />

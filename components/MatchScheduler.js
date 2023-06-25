@@ -19,7 +19,8 @@ function Widget({ widget, index, allColumns, droppableId }) {
 
     const sameMatch = allColumns[court][index];
     if (!sameMatch) return null;
-    if (sameMatch.id.indexOf(widget.between[0].id) >= 0 || sameMatch.id.indexOf(widget.between[1].id) >= 0) {
+    if (sameMatch.isPlaceholder) return null;
+    if (widget.between && (sameMatch.id.indexOf(widget.between[0].id) >= 0 || sameMatch.id.indexOf(widget.between[1].id) >= 0)) {
       return { court, match: allColumns[court][index], index }
     }
     return null;
@@ -28,7 +29,7 @@ function Widget({ widget, index, allColumns, droppableId }) {
   return (
     <Draggable draggableId={widget.id} index={index}>
       {provided => (
-        <div className={`border border-solid border-gray-300 p-2 shadow bg-${GroupsColours[widget.group]}-50 w-60`}
+        <div className={`border border-solid border-gray-300 p-2 shadow bg-${GroupsColours[widget.group]}-50 w-60 h-32`}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
@@ -36,15 +37,28 @@ function Widget({ widget, index, allColumns, droppableId }) {
           <div className={`flex pl-2 pt-1 font-bold text-xl text-${GroupsColours[widget.group]}-600 `} >{widget.group}
             <span className="text-sm">{index + 1}</span>
           </div>
-          <div className=" whitespace-nowrap truncate overflow-hidden">{widget.between[0].player1.fullName} + {widget.between[0].player2.fullName}</div>
-          <div><span className="font-bold">vs.</span>
-            {
-              clashed.length > 0
-                ? <span className="ml-2 text-red-600 font-bold">❌ Clashed</span>
-                : null
-            }
-          </div>
-          <div className=" whitespace-nowrap truncate overflow-hidden">{widget.between[1].player1.fullName} + {widget.between[1].player2.fullName}</div>
+          {
+            !widget.isPlaceholder
+              ?
+              <>
+                <div className=" whitespace-nowrap truncate overflow-hidden">{widget.between[0].player1.fullName} + {widget.between[0].player2.fullName}</div>
+                <div><span className="font-bold">vs.</span>
+                  {
+                    clashed.length > 0
+                      ? <span className="ml-2 text-red-600 font-bold">❌ Clashed</span>
+                      : null
+                  }
+                </div>
+                <div className=" whitespace-nowrap truncate overflow-hidden">{widget.between[1].player1.fullName} + {widget.between[1].player2.fullName}</div>
+              </>
+              :
+              <div>
+                <div className=" whitespace-nowrap truncate overflow-hidden font-bold">Court </div>
+                <div><span className="font-bold">is Not Avaiable</span>
+                </div>
+                <div className=" whitespace-nowrap truncate overflow-hidden font-bold">at this time</div>
+              </div>
+          }
         </div>
       )}
     </Draggable>
@@ -56,7 +70,6 @@ const WidgetList = React.memo(function WidgetList({ widgets, allColumns, droppab
     <Widget widget={widget} index={index} key={widget.id} allColumns={allColumns} droppableId={droppableId} />
   ));
 });
-
 
 function Column({ droppableId, widgets, readonly, allColumns }) {
   return (
@@ -127,6 +140,16 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
     setState({ widgets: allMatches });
   }
 
+  const addGap = () => {
+    const firstCourt = Object.keys(state.widgets)[0];
+    const firstCourtMatch = state.widgets[firstCourt].push({
+      id: (new Date()).getTime().toString(),
+      isPlaceholder: true,
+      group: '_'
+    });
+    setState({ widgets: { ...state.widgets } });
+  }
+
   return (
     <div>
       {/* colors placeholder */}
@@ -146,6 +169,13 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
           onClick={reset}
           className="bg-gray-500 active:bg-gray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
           Reset
+        </button>
+
+        <button
+          tupe="button"
+          onClick={addGap}
+          className="bg-gray-500 active:bg-gray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+          Add Gap
         </button>
 
       </div>
