@@ -90,6 +90,19 @@ export default function Competition({ competition, preview }) {
     setCourtNames(courts.split(',').filter(x => !!x).join(','));
   }
 
+  const deleteSchedule = async () => {
+    if (!userRoles?.superuser) return;
+
+    if (confirm('Are you sure you want to delete entire schedule? This action is non reversible')) {
+      try {
+        await deleteDoc(doc(db, "competition_schedule", competition.sys.id));
+        toast("Schedule Deleted! Refresh now");
+      } catch (error) {
+        toast.error("Delete failed! Reload page and try again, this record might be already deleted");
+      }
+    }
+  }
+
   const allocateTeamsToGroups = async () => {
     const teamsInEachGroup = prompt('Enter Minimum number of teams per group (e.g. 4)');
     if (!teamsInEachGroup || parseInt(teamsInEachGroup) <= 1) {
@@ -188,6 +201,18 @@ export default function Competition({ competition, preview }) {
     <>
       {competition?.schedule ?
         <div>
+          {
+            userRoles?.superuser
+              ? <div className='py-6'>
+                <button
+                  tupe="button"
+                  onClick={deleteSchedule}
+                  className="bg-red-500 active:bg-red-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+                  Delete Schedule
+                </button>
+              </div>
+              : null
+          }
           <div className='hidden md:block'>
             <MatchScheduleGrid
               schedule={competition.schedule}
