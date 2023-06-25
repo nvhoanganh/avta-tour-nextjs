@@ -172,6 +172,13 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
     setState({ widgets: { ...state.widgets } });
   }
 
+  const deleteCourt = (court) => {
+    const firstCourt = Object.keys(state.widgets).sort()[0];
+    state.widgets[firstCourt].push(...state.widgets[court]);
+    delete state.widgets[court];
+    setState({ widgets: { ...state.widgets } });
+  }
+
   return (
     <div>
       {/* colors placeholder */}
@@ -223,7 +230,13 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
         <div className="flex space-x-3">
           {Object.keys(state.widgets).sort().map((group, index) => (
             <div key={group}>
-              <div className="text-bold text-xl text-center py-3">{group}</div>
+              <div className="text-bold text-xl text-center py-3">{group}
+                {
+                  index > 0
+                    ? <button type="button" className="text-sm" onClick={() => deleteCourt(group)}>❌</button>
+                    : null
+                }
+              </div>
               <Column widgets={state.widgets[group]} droppableId={group} readonly={readonly} allColumns={state.widgets} deleteWidget={deleteWidget} />
             </div>
           ))}
