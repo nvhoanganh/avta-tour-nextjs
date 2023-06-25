@@ -8,7 +8,6 @@ import { getFilteredLadderMatches } from '../../lib/browserapi';
 import { format } from 'date-fns'
 
 export default function LadderMatchResultsCard({ results, is_superuser, deleteResult, is_owner }) {
-  console.log("🚀 ~ file: LadderMatchResultsCard.js ~ line 11 ~ LadderMatchResultsCard ~ is_owner", is_owner)
   const [filter, setFilter] = useState(null);
 
   return (

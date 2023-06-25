@@ -48,8 +48,6 @@ export default function SubmitScore({ competition, groupsAllocation }) {
       winner2: data.selectedWinner.player2.sys.id,
     };
 
-    console.log("🚀 ~ file: SubmitScore.js:27 ~ onSubmit ~ data:", data)
-
     const docRef = await addDoc(collection(db, "competition_results"), data);
     await RevalidatePath(user, `/competitions/${competition?.slug}`);
 

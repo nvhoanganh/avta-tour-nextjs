@@ -73,7 +73,6 @@ export default function UserProfile() {
     }
 
     if (user) {
-      console.log("🚀 ~ file: UserProfile.js:76 ~ useEffect ~ user:", user)
       const docSnap = await getDoc(doc(db, "users", user.uid));
       let formData = docSnap.exists() ?
         { ...user, ...docSnap.data(), nickName: user.nickName || user.displayName } :
