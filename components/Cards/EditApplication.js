@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import PlayerCard from '../../components/PlayerCard';
 import { useFirebaseAuth } from '../../components/authhook';
 import PlayersPicker from '../../components/Cards/PlayersPicker';
-import { RevalidatePath } from '../../lib/browserapi';
+import { RevalidatePath, getEntriesByQuery } from '../../lib/browserapi';
 import { db } from '../../lib/firebase';
 import { query, collection, doc, setDoc, deleteDoc, getDocs, getDoc, where } from "firebase/firestore";
 
@@ -51,7 +51,6 @@ export default function EditApplicationCompetition({ competition, players, rule,
   }, [competition]);
 
   const onSubmit = async data => {
-
     setSaving(true)
 
     data = {
@@ -142,7 +141,53 @@ export default function EditApplicationCompetition({ competition, players, rule,
       await setDoc(scheduleRef, updatedSchedule);
     }
 
+    // update results
+    console.log(`finding results by competition ${competition.sys.id} and team Id ${editTeamId}`);
+    const resultsByTeam = await getEntriesByQuery(collection(db, "competition_results"), where("competitionId", "==", competition.sys.id));
 
+    // find the losts first
+    const matchedLosers = resultsByTeam.filter(x => x.loserTeamId === editTeamId);
+    console.log("matches where this team lost: ", matchedLosers)
+    matchedLosers.forEach(async (match) => {
+      match = {
+        ...match,
+        loser1: data.player1Id,
+        loser2: data.player2Id,
+        losers: {
+          ...match.losers,
+          player1: data.player1,
+          player2: data.player2,
+          player1Id: data.player1Id,
+          player2Id: data.player2Id,
+        }
+      }
+      // update
+      console.log(`New losing match to update is`, match);
+      const matchRef = doc(db, "competition_results", match.id);
+      await setDoc(matchRef, match);
+    });
+
+    // find the wins
+    const matchedWinners = resultsByTeam.filter(x => x.winnerTeamId === editTeamId);
+    console.log("matches where this team won: ", matchedWinners)
+    matchedWinners.forEach(async (match) => {
+      match = {
+        ...match,
+        winner1: data.player1Id,
+        winner2: data.player2Id,
+        winners: {
+          ...match.winners,
+          player1: data.player1,
+          player2: data.player2,
+          player1Id: data.player1Id,
+          player2Id: data.player2Id,
+        }
+      }
+      // update
+      console.log(`New winning match to update is`, match);
+      const matchRef = doc(db, "competition_results", match.id);
+      await setDoc(matchRef, match);
+    });
 
     // update application
     const appRef = doc(db, "competition_applications", editTeamId);
