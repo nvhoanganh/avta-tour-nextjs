@@ -88,13 +88,15 @@ function Column({ droppableId, widgets, readonly, allColumns, deleteWidget }) {
   );
 }
 
-export default function DashboardApp({ groupsAllocation, courts, saveSchedule, readonly }) {
-  const [state, setState] = useState({ widgets: {} });
+export default function DashboardApp({ groupsAllocation, courts, saveSchedule, readonly, schedule, editMode, cancelEdit }) {
+  const [state, setState] = useState({ widgets: schedule ? { ...JSON.parse(JSON.stringify(schedule)) } : {} });
 
   useEffect(() => {
-    const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
-    setState({ widgets: allMatches });
-  }, [courts, groupsAllocation]);
+    if (!editMode) {
+      const allMatches = getAllGroupMatchesfull(groupsAllocation, courts);
+      setState({ widgets: allMatches });
+    }
+  }, [courts, groupsAllocation, schedule, editMode]);
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -146,13 +148,21 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
   }
 
   const addGap = () => {
-    const firstCourt = Object.keys(state.widgets)[0];
+    const firstCourt = Object.keys(state.widgets).sort()[0];
     const firstCourtMatch = state.widgets[firstCourt].push({
       id: (new Date()).getTime().toString(),
       isPlaceholder: true,
-      group: '_'
+      group: ''
     });
     setState({ widgets: { ...state.widgets } });
+  }
+
+  const addCourt = () => {
+    const newCourt = prompt('Enter new court name. E.g Court 8');
+    if (!newCourt) {
+      return;
+    }
+    setState({ widgets: { ...state.widgets, [newCourt]: [] } });
   }
 
   const deleteWidget = (id) => {
@@ -189,6 +199,24 @@ export default function DashboardApp({ groupsAllocation, courts, saveSchedule, r
           className="bg-gray-500 active:bg-gray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
           Add Gap
         </button>
+
+        <button
+          tupe="button"
+          onClick={addCourt}
+          className="bg-gray-500 active:bg-gray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+          Add Court
+        </button>
+
+        {
+          editMode
+            ? <button
+              tupe="button"
+              onClick={cancelEdit}
+              className="bg-gray-500 active:bg-gray-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+              Cancel
+            </button>
+            : null
+        }
 
       </div>
       <DragDropContext onDragEnd={onDragEnd}>

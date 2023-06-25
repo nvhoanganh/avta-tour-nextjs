@@ -41,7 +41,6 @@ import { query, collection, doc, getDocs, getDoc, where, setDoc, deleteDoc } fro
 import fileDownload from 'js-file-download';
 
 export default function Competition({ competition, preview }) {
-  console.log("🚀 ~ file: index.js:44 ~ Competition ~ competition:", competition)
   const { user, loadingAuth, fullProfile } = useFirebaseAuth({});
   const router = useRouter();
   const { view } = router.query;
@@ -105,7 +104,7 @@ export default function Competition({ competition, preview }) {
 
   const [showEditSchedule, setshowEditSchedule] = useState(false);
   const editSchedule = () => {
-    editMatchSchedule();
+    setCourtNames(Object.keys(competition.schedule).join(','));
     setshowEditSchedule(true);
   }
 
@@ -146,8 +145,6 @@ export default function Competition({ competition, preview }) {
         ...doc.data(),
         id: doc.id
       }));
-      console.log("🚀 ~ file: index.js ~ line 127 ~ useEffect ~ interestedPlayers", interestedPlayers)
-
       setLookingPartners(interestedPlayers);
     }
   }, [competition, reloadToken]);
@@ -236,8 +233,13 @@ export default function Competition({ competition, preview }) {
               courtNames && showEditSchedule &&
               <div className=' mt-20'>
                 <div className='py-10 text-5xl'>New Schedule</div>
-                <MatchScheduler courts={courtNames} groupsAllocation={competition.groupsAllocation}
+                <MatchScheduler
+                  courts={courtNames}
+                  groupsAllocation={competition.groupsAllocation}
                   saveSchedule={saveSchedule}
+                  editMode={true}
+                  cancelEdit={() => setshowEditSchedule(false)}
+                  schedule={competition.schedule}
                 ></MatchScheduler>
               </div>
             }
