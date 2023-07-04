@@ -7,6 +7,7 @@ import FirebaseImage from '../../components/fb-image';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
 import TournamentResultCard from '../../components/Cards/TournamentResultCard';
+import TournamentSummaryResultCard from '../../components/Cards/TournamentSummaryResultCard';
 import Tabs from '../../components/tabs';
 import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
@@ -51,10 +52,12 @@ export default function Player({ player, preview }) {
 	const { user, loadingAuth } = useFirebaseAuth();
 
 	useEffect(async () => {
-		setloadingCompResult(true);
-		const results = await getCompetionResults(player.sys.id);
-		setCompResults(results);
-		setloadingCompResult(false);
+		if (player?.sys?.id) {
+			setloadingCompResult(true);
+			const results = await getCompetionResults(player.sys.id);
+			setCompResults(results);
+			setloadingCompResult(false);
+		}
 	}, [player]);
 
 	useEffect(async () => {
@@ -422,7 +425,7 @@ export default function Player({ player, preview }) {
 
 										<div className='flex flex-wrap justify-center mx-0 md:mx-10'>
 											<Tabs
-												titles="Results,Skill,Stats"
+												titles="Results,Media"
 												contents={[
 													<>
 														{
@@ -431,8 +434,7 @@ export default function Player({ player, preview }) {
 																: <div className='text-center py-4'><Spinner color="blue"></Spinner> Loading...</div>
 														}
 													</>,
-													<PlayerYoutubeVideo player={player} />,
-													<KeyStats player={player} />,
+													<PlayerYoutubeVideo player={player} />
 												]}
 											>
 											</Tabs>
@@ -451,25 +453,20 @@ export default function Player({ player, preview }) {
 
 function PastResults({ player, compResults }) {
 	return <div>
-		<div className="font-bold py-3">Tournament Results</div>
 		<div className='mx-auto'>
+		<div className="font-bold py-3 uppercase text-lg text-gray-700">Stats</div>
+			<TournamentSummaryResultCard player={player} compResults={compResults}></TournamentSummaryResultCard>
+			<div className="font-bold py-3 uppercase text-lg pt-12 text-gray-700">Tournament Results</div>
 			<TournamentResultCard
 				competitions={compResults}
 			/>
 		</div>
-		<div className="font-bold py-10">Ladder Results</div>
-		<div className="italic">Coming soon..</div>
 	</div>
 }
 
-function KeyStats({ player }) {
+function KeyStats({ player, compResults }) {
 	return <div>
-		<div className="font-bold py-3">Match Won</div>
-		<div className="italic">Coming soon..</div>
-		<div className="font-bold py-3">Best Partners</div>
-		<div className="italic">Coming soon..</div>
-		<div className="font-bold py-3">Worst Partners</div>
-		<div className="italic">Coming soon..</div>
+		<TournamentSummaryResultCard compResults={compResults}></TournamentSummaryResultCard>
 	</div>
 }
 
