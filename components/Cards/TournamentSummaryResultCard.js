@@ -16,13 +16,13 @@ import CardStats from '../Cards/CardStats.js';
 
 export default function TournamentSummaryResultCard({ compResults, player }) {
 	return (
-		<>
+		<div className=" max-w-xl">
 			<CardMatchWin compResults={compResults} player={player} ></CardMatchWin>
 			{/* <div className='flex flex-wrap'>
 				<div className='grid grid-cols-1 w-full md:grid-cols-2 md:gap-x-10 lg:gap-x-16 gap-y-4'>
 
 				</div>
 			</div> */}
-		</>
+		</div>
 	);
 }
