@@ -13,7 +13,7 @@ export default function Navbar(props) {
 
 	return (
 		<>
-			<nav className='top-0 absolute z-2 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg'>
+			<nav className='top-0 absolute z-10 w-full flex flex-wrap items-center justify-between px-2 py-3 navbar-expand-lg'>
 				<div className='container px-4 mx-auto flex flex-wrap items-center justify-between'>
 					<div className='w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start'>
 						<Link href='/'>
@@ -50,6 +50,7 @@ export default function Navbar(props) {
 									className='lg:text-white lg:hover:text-gray-200 text-gray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold'
 									href='https://www.facebook.com/groups/464135091348911'
 									target='_blank'
+									onClick={() => setNavbarOpen(false)}
 								>
 									<i className='lg:text-gray-200 text-gray-400 fab fa-facebook text-lg leading-lg ' />
 									<span className='lg:hidden inline-block ml-2'>
@@ -63,6 +64,7 @@ export default function Navbar(props) {
 									className='lg:text-white lg:hover:text-gray-200 text-gray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold'
 									href='https://twitter.com/intent/tweet?url=http://avtatour.com&text=Join%20biggest%20Vietnamese%20Tennis%20Community%20in%20Australia%20now'
 									target='_blank'
+									onClick={() => setNavbarOpen(false)}
 								>
 									<i className='lg:text-gray-200 text-gray-400 fab fa-twitter text-lg leading-lg ' />
 									<span className='lg:hidden inline-block ml-2'>
@@ -76,6 +78,7 @@ export default function Navbar(props) {
 									className='lg:text-white lg:hover:text-gray-200 text-gray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold'
 									href='https://github.com/nvhoanganh/avta-tour-nextjs'
 									target='_blank'
+									onClick={() => setNavbarOpen(false)}
 								>
 									<i className='lg:text-gray-200 text-gray-400 fab fa-github text-lg leading-lg ' />
 									<span className='lg:hidden inline-block ml-2'>
@@ -84,28 +87,28 @@ export default function Navbar(props) {
 								</a>
 							</li>
 
-							<Link href='/players'>
+							<Link href='/players' onClick={() => setNavbarOpen(false)}>
 								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Players</a>
 							</Link>
 
-							<Link href='/competitions'>
+							<Link href='/competitions' onClick={() => setNavbarOpen(false)}>
 								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Comps</a>
 							</Link>
 
-							<Link href='/ladders'>
+							<Link href='/ladders' onClick={() => setNavbarOpen(false)}>
 								<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>Ladders</a>
 							</Link>
 
 							{
 								user
-								&& <Link href='/editmyprofile'>
+								&& <Link href='/editmyprofile' onClick={() => setNavbarOpen(false)}>
 									<a className='flex items-center lg:text-white hover:underline px-3 py-4 lg:py-2'>My Profile</a>
 								</Link>
 							}
 
 							<li className='flex items-center'>
 								{!user ? (
-									<Link href='/auth/login'>
+									<Link href='/auth/login' onClick={() => setNavbarOpen(false)}>
 										<a className='bg-blue-600 text-white md:bg-gray-200 md:text-black w-full mx-3 text-center text-gray-700 active:bg-gray-50 text-xs font-bold uppercase px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none lg:mr-1 lg:mb-0 ml-3 mb-3 ease-linear transition-all duration-150'>
 											<i className='fas fa-arrow-alt-circle-down'></i>{' '}
 											Log in
