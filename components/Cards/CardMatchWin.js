@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { uniqBy, prop, path, last, take } from "ramda";
+import { uniqBy, prop, path, last, take, repeat } from "ramda";
 import cn from 'classnames';
 import PlayerAvatar from '../Cards/PlayerAvatar';
 
@@ -43,6 +43,7 @@ export default function CardMatchWin({ compResults, player }) {
       runnerUp: compResults.filter(x => !x.wonLastMatch && x.reached === 'Final').length,
       semi: compResults.filter(x => !x.wonLastMatch && x.reached === 'Semi').length,
       quarter: compResults.filter(x => !x.wonLastMatch && x.reached === 'Quarter').length,
+      third: compResults.filter(x => !!x.wonLastMatch && x.reached === '3rdPlace').length,
       uniquePartners,
       pointsHistory: pointsHistory,
       winPercent: Math.round((wins / (wins + losts)) * 100)
@@ -55,40 +56,50 @@ export default function CardMatchWin({ compResults, player }) {
         <div className="block w-full overflow-x-auto">
           {/* Projects table */}
           <table className="items-center w-full bg-transparent border-collapse">
-            <thead className="thead-light">
-              <tr>
-                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3  uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                </th>
-                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3  uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                  Value
-                </th>
-                <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3  uppercase border-t-0 border-l-0 border-r-0 whitespace-nowrap font-semibold text-left min-w-140-px">
-                  Win Rate
-                </th>
-              </tr>
-            </thead>
             <tbody>
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
                   Comps Played
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                  {compResults.length}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                  {stats.tourWon} / {compResults.length}
+                  <div className='flex items-center space-x-2'>
+                    <div>
+                      {compResults.length}
+                    </div>
+                  </div>
                 </td>
               </tr>
+              {
+                (stats.tourWon > 0 ||
+                  stats.runnerUp > 0 ||
+                  stats.semi > 0 ||
+                  stats.third > 0 ||
+                  stats.quarter > 0)
+                  ?
+                  <tr>
+                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
+                      Best Results
+                    </th>
+                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                      <div className="flex space-x-1 text-sm">
+                        {stats.tourWon > 0 && <span className='bg-yellow-200 text-black  px-1 rounded outline-none'>{stats.tourWon} <i className="fas fa-trophy text-yellow-400 pr-1"></i></span>}
+                        {stats.runnerUp > 0 && <span className='bg-gray-200 text-black  px-1 rounded outline-none'>{stats.runnerUp} <i className="fas fa-medal text-gray-400 pr-1"></i></span>}
+                        {stats.third > 0 && <span className='bg-yellow-200 text-black  px-1 rounded outline-none'>{stats.third} <i className="fas fa-medal text-yellow-800 pr-1"></i></span>}
+                        {stats.semi > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.semi} SM</span>}
+                        {stats.quarter > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.quarter} QF</span>}
+                      </div>
+                    </td>
+                  </tr>
+                  : null
+              }
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
                   Match Played
                 </th>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                  {stats.wins + stats.losts}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+
                   <div className="flex items-center">
-                    <span className="mr-2">{stats.winPercent}%</span>
+                    <span className="mr-2 text-sm">{stats.wins + stats.losts}, Won {stats.winPercent}%</span>
                     <div className="relative w-full">
                       <div className="overflow-hidden h-2  flex rounded bg-red-200">
                         <div
@@ -100,43 +111,23 @@ export default function CardMatchWin({ compResults, player }) {
                   </div>
                 </td>
               </tr>
-              {
-                (stats.tourWon > 0 ||
-                  stats.runnerUp > 0 ||
-                  stats.semi > 0 ||
-                  stats.quarter > 0)
-                  ? <tr>
-                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
-                      Best Results
-                    </th>
-                    <td colSpan={2} className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                      <div className="flex space-x-1 text-xs">
-                        {stats.tourWon > 0 && <span className='bg-yellow-500 text-white  px-1 rounded outline-none'>{stats.tourWon} Win</span>}
-                        {stats.runnerUp > 0 && <span className='bg-gray-500 text-white  px-1 rounded outline-none'>{stats.runnerUp} R.Up</span>}
-                        {stats.semi > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.semi} SM</span>}
-                        {stats.quarter > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.quarter} QF</span>}
-                      </div>
-                    </td>
-                  </tr>
-                  : null
-              }
-
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
                   Points History
                 </th>
-                <td colSpan={2} className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                  <div className='flex space-x-2'>
+                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                  <div className='grid grid-cols-4 lg:grid-cols-8 w-full gap-x-2 gap-y-2'>
                     {stats.pointsHistory?.map((x, index) => (
                       <div className="flex space-x-1">
-                        {
-                          index > 0
-                            ? <>
-                              {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-xs fa-arrow-up text-green-500"></i> : <i className="fas fa-arrow-down text-red-500 text-xs"></i>}
-                            </>
-                            : null
-                        }
-                        <span className={` text-white text-center text-xs rounded px-1 outline-none ${index === 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+
+                        <span className={` text-white text-center text-sm rounded px-1 outline-none ${index === 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                          {
+                            index > 0
+                              ? <>
+                                {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-sm fa-arrow-up text-blue-100 mr-1"></i> : <i className="fas fa-arrow-down text-red-300 mr-1 text-sm"></i>}
+                              </>
+                              : <i className="far fa-circle text-white mr-1 text-sm"></i>
+                          }
                           {x}</span>
                       </div>
                     ))}
@@ -144,10 +135,10 @@ export default function CardMatchWin({ compResults, player }) {
                 </td>
               </tr>
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left">
+                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
                   Partners
                 </th>
-                <td colSpan={2} className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
                   <div className=''>
                     <div className='grid grid-cols-4 lg:grid-cols-8 w-full gap-x-2 gap-y-2'>
                       {stats.uniquePartners?.map(x => (
