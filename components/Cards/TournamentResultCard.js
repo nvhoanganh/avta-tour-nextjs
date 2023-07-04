@@ -6,6 +6,7 @@ import ContentfulImage from '../contentful-image';
 import PlayerAvatar from '../Cards/PlayerAvatar';
 import { format } from 'date-fns'
 import PlayerPoint from '../PlayerPoint';
+import { getDescription } from '../../lib/browserapi';
 
 // components
 
@@ -21,9 +22,8 @@ export default function TournamentResultCard({ competitions }) {
 						<CardStats
 							key={comp.slug}
 							link={`/competitions/${comp.slug}`}
-							statSubtitle={`#${index + 1}. ${comp.title}`}
-							statTitle={comp.reached.length === 1 ? `Lost ${comp.losts} matches in Group ${comp.reached}` :
-								`${comp.wonLastMatch ? 'Won' : 'Lost'} in the ${comp.reached}`}
+							statSubtitle={`${comp.title}`}
+							statTitle={getDescription(comp)}
 							statArrow=''
 							statPercentColor='text-emerald-500'
 							statPercent={<div className='flex items-center space-x-2 justify-between'>
@@ -38,13 +38,17 @@ export default function TournamentResultCard({ competitions }) {
 							</div>}
 							statIconName={
 								comp.reached === 'Final'
-									? 'fas fa-trophy text-white-400'
-									: 'fas fa-check'
+									? (comp.wonLastMatch ? 'fas fa-trophy text-white' : 'fas fa-medal text-gray-200')
+									: (
+										comp.reached === '3rdPlace' && comp.wonLastMatch ? 'fas fa-medal text-yellow-400' : 'far fa-calendar-check text-green-400'
+									)
 							}
 							statIconColor={
-								comp.reached === 'Final' ?
-									(comp.wonLastMatch ? 'bg-yellow-500' : 'bg-gray-400') :
-									'bg-green-500'
+								comp.reached === 'Final'
+									? (comp.wonLastMatch ? 'bg-yellow-400' : 'bg-gray-400')
+									: (
+										comp.reached === '3rdPlace' && comp.wonLastMatch ? 'bg-yellow-700' : 'bg-gray-200'
+									)
 							}
 						/>
 					))}

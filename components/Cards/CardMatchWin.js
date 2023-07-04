@@ -7,7 +7,6 @@ import PlayerAvatar from '../Cards/PlayerAvatar';
 // components
 
 export default function CardMatchWin({ compResults, player }) {
-  console.log("🚀 ~ file: CardMatchWin.js:10 ~ CardMatchWin ~ player:", player)
   const [stats, setStats] = useState({});
   useEffect(() => {
     if (!player) return;
@@ -66,32 +65,26 @@ export default function CardMatchWin({ compResults, player }) {
                     <div>
                       {compResults.length}
                     </div>
+                    {
+                      (stats.tourWon > 0 ||
+                        stats.runnerUp > 0 ||
+                        stats.semi > 0 ||
+                        stats.third > 0 ||
+                        stats.quarter > 0)
+                        ?
+                        <div className="flex space-x-1 text-sm">
+                          {stats.tourWon > 0 && <span className='bg-yellow-200 text-black  px-1 rounded outline-none'>{stats.tourWon} <i className="fas fa-trophy text-yellow-400 pr-1"></i></span>}
+                          {stats.runnerUp > 0 && <span className='bg-gray-200 text-black  px-1 rounded outline-none'>{stats.runnerUp} <i className="fas fa-medal text-gray-400 pr-1"></i></span>}
+                          {stats.third > 0 && <span className='bg-yellow-200 text-black  px-1 rounded outline-none'>{stats.third} <i className="fas fa-medal text-yellow-800 pr-1"></i></span>}
+                          {stats.semi > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.semi} SM</span>}
+                          {stats.quarter > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.quarter} QF</span>}
+                        </div>
+                        : null
+                    }
                   </div>
                 </td>
               </tr>
-              {
-                (stats.tourWon > 0 ||
-                  stats.runnerUp > 0 ||
-                  stats.semi > 0 ||
-                  stats.third > 0 ||
-                  stats.quarter > 0)
-                  ?
-                  <tr>
-                    <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
-                      Best Results
-                    </th>
-                    <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                      <div className="flex space-x-1 text-sm">
-                        {stats.tourWon > 0 && <span className='bg-yellow-200 text-black  px-1 rounded outline-none'>{stats.tourWon} <i className="fas fa-trophy text-yellow-400 pr-1"></i></span>}
-                        {stats.runnerUp > 0 && <span className='bg-gray-200 text-black  px-1 rounded outline-none'>{stats.runnerUp} <i className="fas fa-medal text-gray-400 pr-1"></i></span>}
-                        {stats.third > 0 && <span className='bg-yellow-200 text-black  px-1 rounded outline-none'>{stats.third} <i className="fas fa-medal text-yellow-800 pr-1"></i></span>}
-                        {stats.semi > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.semi} SM</span>}
-                        {stats.quarter > 0 && <span className='bg-blue-500 text-white  px-1 rounded outline-none'>{stats.quarter} QF</span>}
-                      </div>
-                    </td>
-                  </tr>
-                  : null
-              }
+
               <tr>
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
                   Match Played
@@ -120,13 +113,13 @@ export default function CardMatchWin({ compResults, player }) {
                     {stats.pointsHistory?.map((x, index) => (
                       <div className="flex space-x-1">
 
-                        <span className={` text-white text-center text-sm rounded px-1 outline-none ${index === 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                        <span className={` text-white text-center text-xs rounded px-1 outline-none ${index === 0 ? 'bg-red-500' : 'bg-green-500'}`}>
                           {
                             index > 0
                               ? <>
-                                {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-sm fa-arrow-up text-blue-100 mr-1"></i> : <i className="fas fa-arrow-down text-red-300 mr-1 text-sm"></i>}
+                                {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-xs fa-arrow-up text-blue-100 mr-1"></i> : <i className="fas text-xs fa-arrow-down text-red-300 mr-1"></i>}
                               </>
-                              : <i className="far fa-circle text-white mr-1 text-sm"></i>
+                              : <i className="far fa-circle text-white mr-1 text-xs"></i>
                           }
                           {x}</span>
                       </div>
