@@ -94,10 +94,10 @@ export default function CardMatchWin({ compResults, player }) {
                   <div className="flex items-center">
                     <span className="mr-2 text-sm">{stats.wins + stats.losts}, Won {stats.winPercent}%</span>
                     <div className="relative w-full">
-                      <div className="overflow-hidden h-2  flex rounded bg-red-200">
+                      <div className="overflow-hidden h-2  flex rounded bg-green-200">
                         <div
                           style={{ width: `${stats.winPercent}%` }}
-                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-red-500"
+                          className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-green-500"
                         ></div>
                       </div>
                     </div>
@@ -113,13 +113,13 @@ export default function CardMatchWin({ compResults, player }) {
                     {stats.pointsHistory?.map((x, index) => (
                       <div className="flex space-x-1 my-1 mx-1">
 
-                        <span className={` text-white text-center text-xs rounded px-1 outline-none ${index === 0 ? 'bg-red-500' : 'bg-green-500'}`}>
+                        <span className={` text-white text-center text-sm font-bold rounded px-1 outline-none  ${index === 0 ? 'text-red-500' : 'text-green-500'}`}>
                           {
                             index > 0
                               ? <>
-                                {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-xs fa-arrow-up text-green-200 mr-1"></i> : <i className="fas text-xs fa-arrow-down text-red-500 mr-1"></i>}
+                                <i className="fas fa-angle-right text-gray-400 font-normal"></i> {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-xs fa-arrow-up text-green-500 mr-1"></i> : <i className="fas text-xs fa-arrow-down text-red-500 mr-1"></i>}
                               </>
-                              : <i className="far fa-circle text-white mr-1 text-xs"></i>
+                              : <span></span>
                           }
                           {x}</span>
                       </div>
