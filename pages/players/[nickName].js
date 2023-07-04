@@ -6,6 +6,7 @@ import ErrorPage from 'next/error';
 import FirebaseImage from '../../components/fb-image';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
+import TournamentResultCard from '../../components/Cards/TournamentResultCard';
 import Tabs from '../../components/tabs';
 import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
@@ -43,13 +44,17 @@ export default function Player({ player, preview }) {
 	const router = useRouter();
 	const [showOtp, setShowOtp] = useState(false);
 	const [showMobile, setShowMobile] = useState(false);
+	const [compResults, setCompResults] = useState([]);
+	const [loadingCompResult, setloadingCompResult] = useState(false);
 	const [playerStatus, setPlayerStatus] = useState(null);
 	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
 	const { user, loadingAuth } = useFirebaseAuth();
 
 	useEffect(async () => {
+		setloadingCompResult(true);
 		const results = await getCompetionResults(player.sys.id);
-		console.log("🚀 ~ file: [nickName].js:53 ~ useEffect ~ results:", results)
+		setCompResults(results);
+		setloadingCompResult(false);
 	}, []);
 
 	useEffect(async () => {
@@ -64,6 +69,7 @@ export default function Player({ player, preview }) {
 		const querySnapshot = await getDocs(q);
 		const claimedPlayer = querySnapshot.size > 0 ? querySnapshot.docs[0].data() : null;
 
+		console.log('setting player status');
 		if (user) {
 			if (!claimedPlayer) {
 				const docRef = doc(db, "users", user.uid);
@@ -416,10 +422,16 @@ export default function Player({ player, preview }) {
 
 										<div className='flex flex-wrap justify-center mx-0 md:mx-10'>
 											<Tabs
-												titles="Skill,Results,Stats"
+												titles="Results,Skill,Stats"
 												contents={[
+													<>
+														{
+															!loadingCompResult
+																? <PastResults player={player} compResults={compResults} />
+																: <div className='text-center py-4'><Spinner color="blue"></Spinner> Loading...</div>
+														}
+													</>,
 													<PlayerYoutubeVideo player={player} />,
-													<PastResults player={player} />,
 													<KeyStats player={player} />,
 												]}
 											>
@@ -437,11 +449,15 @@ export default function Player({ player, preview }) {
 	);
 }
 
-function PastResults({ player }) {
+function PastResults({ player, compResults }) {
 	return <div>
 		<div className="font-bold py-3">Tournament Results</div>
-		<div className="italic">Coming soon..</div>
-		<div className="font-bold py-3">Ladder Results</div>
+		<div className='mx-auto'>
+			<TournamentResultCard
+				competitions={compResults}
+			/>
+		</div>
+		<div className="font-bold py-10">Ladder Results</div>
 		<div className="italic">Coming soon..</div>
 	</div>
 }
