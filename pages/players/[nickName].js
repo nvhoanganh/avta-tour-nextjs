@@ -6,8 +6,7 @@ import ErrorPage from 'next/error';
 import FirebaseImage from '../../components/fb-image';
 import Container from '../../components/container';
 import PostBody from '../../components/post-body';
-import TournamentResultCard from '../../components/Cards/TournamentResultCard';
-import TournamentSummaryResultCard from '../../components/Cards/TournamentSummaryResultCard';
+import PlayerResult from '../../components/playerResult';
 import Tabs from '../../components/tabs';
 import MoreStories from '../../components/more-stories';
 import Header from '../../components/header';
@@ -430,7 +429,7 @@ export default function Player({ player, preview }) {
 													<>
 														{
 															!loadingCompResult
-																? <PastResults player={player} compResults={compResults} />
+																? <PlayerResult player={player} compResults={compResults} />
 																: <div className='text-center py-4'><Spinner color="blue"></Spinner> Loading...</div>
 														}
 													</>,
@@ -449,19 +448,6 @@ export default function Player({ player, preview }) {
 			}
 		</Layout >
 	);
-}
-
-function PastResults({ player, compResults }) {
-	return <div>
-		<div className='mx-auto'>
-		<div className="font-bold py-3 uppercase text-lg text-gray-700">Stats</div>
-			<TournamentSummaryResultCard player={player} compResults={compResults}></TournamentSummaryResultCard>
-			<div className="font-bold py-3 uppercase text-lg pt-12 text-gray-700">Tournament Results</div>
-			<TournamentResultCard
-				competitions={compResults}
-			/>
-		</div>
-	</div>
 }
 
 function KeyStats({ player, compResults }) {

@@ -13,7 +13,7 @@ import { useEffect, useState, useRef } from 'react'
 import { db, storage, storageBucketId } from '../../lib/firebase';
 import { uploadBytes, ref } from 'firebase/storage';
 import { setDoc, doc, getDoc } from "firebase/firestore";
-
+import PlayerResult from '../../components/playerResult';
 
 export default function EditMyProfile() {
   const router = useRouter();

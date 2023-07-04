@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import SaveButton from '../../components/savebutton';
-import { RevalidatePath, getClubs } from '../../lib/browserapi';
+import { RevalidatePath, getClubs, getCompetionResults } from '../../lib/browserapi';
 import { useRouter } from 'next/router';
 import { useFirebaseAuth } from '../authhook';
 import { Dialog, Transition } from "@headlessui/react";
@@ -17,7 +17,8 @@ import { deleteDoc, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import PlayerResult from '../../components/playerResult';
+import Tabs from '../../components/tabs';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
@@ -116,13 +117,39 @@ export default function UserProfile() {
     setClubs(_clubs);
   }, []);
 
+  const [compResults, setCompResults] = useState([]);
+  const [loadingCompResult, setloadingCompResult] = useState(false);
+  useEffect(async () => {
+    if (userProfile?.sys?.id) {
+      setloadingCompResult(true);
+      const results = await getCompetionResults(userProfile.sys.id);
+      setCompResults(results);
+      setloadingCompResult(false);
+    }
+  }, [userProfile]);
+
   return (
     <>
       <ToastContainer />
       {
         loadingAuth || !userProfile || !clubs
           ? <div className="text-center py-24"><Spinner size="lg" color="blue" /> Fetching information...</div> :
-          <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} userRoles={userRoles} clubs={clubs} />
+          <>
+            <Tabs
+              titles="Profile,Stats"
+              contents={[
+                <UserForm onSubmit={onSubmit} userProfile={userProfile} saving={saving} userRoles={userRoles} clubs={clubs} />,
+                <>
+                  {
+                    !loadingCompResult
+                      ? <PlayerResult player={userProfile} compResults={compResults} />
+                      : <div className='text-center py-4'><Spinner color="blue"></Spinner> Loading...</div>
+                  }
+                </>
+              ]}
+            >
+            </Tabs>
+          </>
       }
     </>
   );
