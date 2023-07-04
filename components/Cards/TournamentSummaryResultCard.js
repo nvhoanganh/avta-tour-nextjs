@@ -15,6 +15,7 @@ import TableDropdown from '../Dropdowns/TableDropdown.js';
 import CardStats from '../Cards/CardStats.js';
 
 export default function TournamentSummaryResultCard({ compResults, player }) {
+	console.log("🚀 ~ file: TournamentSummaryResultCard.js:18 ~ TournamentSummaryResultCard ~ compResults:", compResults)
 	return (
 		<>
 			<CardMatchWin compResults={compResults} player={player} ></CardMatchWin>

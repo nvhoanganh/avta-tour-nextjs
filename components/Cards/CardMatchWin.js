@@ -132,7 +132,7 @@ export default function CardMatchWin({ compResults, player }) {
                         {
                           index > 0
                             ? <>
-                              {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-xs fa-arrow-up text-blue-500"></i> : <i className="fas fa-arrow-down text-red-500 text-xs"></i>}
+                              {stats.pointsHistory[index] > stats.pointsHistory[index - 1] ? <i className="fas text-xs fa-arrow-up text-green-500"></i> : <i className="fas fa-arrow-down text-red-500 text-xs"></i>}
                             </>
                             : null
                         }

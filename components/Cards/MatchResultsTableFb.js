@@ -161,10 +161,12 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateWithTimeComponent dateString={result.timestamp} />
 										{is_superuser &&
-											<span onClick={() => deleteMatch && deleteMatch(result)}
-												className="ml-3 text-red-500 cursor-pointer p-3 rounded border hover:bg-gray-200">
-												Delete
-											</span>
+											<>
+												<span onClick={() => deleteMatch && deleteMatch(result)}
+													className="ml-3 text-red-500 cursor-pointer p-3 rounded border hover:bg-gray-200">
+													Delete
+												</span>
+											</>
 										}
 										<div className=' text-gray-600 mr-3'>
 											{result.stage === 'Knockout Stage' && result.knockoutRound === 'Final' ? <i className="fas fa-trophy text-yellow-400 pr-1"></i> : ''}
