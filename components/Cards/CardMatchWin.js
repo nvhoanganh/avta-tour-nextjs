@@ -57,10 +57,10 @@ export default function CardMatchWin({ compResults, player }) {
           <table className="items-center w-full bg-transparent border-collapse">
             <tbody>
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
-                  Comps Played
+                <th className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
+                  Comps
                 </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                <td className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
                   <div className='flex items-center space-x-2'>
                     <div>
                       {compResults.length}
@@ -86,10 +86,10 @@ export default function CardMatchWin({ compResults, player }) {
               </tr>
 
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
-                  Match Played
+                <th className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
+                  Matches
                 </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                <td className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
 
                   <div className="flex items-center">
                     <span className="mr-2 text-sm">{stats.wins + stats.losts}, Won {stats.winPercent}%</span>
@@ -105,13 +105,13 @@ export default function CardMatchWin({ compResults, player }) {
                 </td>
               </tr>
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
-                  Points History
+                <th className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
+                  Points
                 </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
-                  <div className='grid grid-cols-4 lg:grid-cols-8 w-full gap-x-2 gap-y-2'>
+                <td className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                  <div className='flex flex-wrap '>
                     {stats.pointsHistory?.map((x, index) => (
-                      <div className="flex space-x-1">
+                      <div className="flex space-x-1 my-1 mx-1">
 
                         <span className={` text-white text-center text-xs rounded px-1 outline-none ${index === 0 ? 'bg-red-500' : 'bg-green-500'}`}>
                           {
@@ -128,14 +128,16 @@ export default function CardMatchWin({ compResults, player }) {
                 </td>
               </tr>
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
+                <th className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4 text-left text-sm">
                   Partners
                 </th>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
+                <td className="border-t-0  align-middle border-l-0 border-r-0  whitespace-nowrap p-4">
                   <div className=''>
-                    <div className='grid grid-cols-4 lg:grid-cols-8 w-full gap-x-2 gap-y-2'>
+                    <div className='flex flex-wrap '>
                       {stats.uniquePartners?.map(x => (
-                        <PlayerAvatar key={x.sys.id} player={x} />
+                        <div className='my-1 mx-1'>
+                          <PlayerAvatar key={x.sys.id} player={x} />
+                        </div>
                       ))}
                     </div>
                   </div>

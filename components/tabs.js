@@ -1,8 +1,18 @@
 import cn from 'classnames';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 export default function Tabs({ contents, titles }) {
   const [activeTab, setActiveTab] = useState(0);
+  const router = useRouter();
+  const { view } = router.query;
+
+  useEffect(() => {
+    if (!!view && titles) {
+      const indx = titles.split(',').map(x => x.toLowerCase()).indexOf(view.toLowerCase());
+      if (indx > 0) { setActiveTab(indx) }
+    }
+  }, [view, titles]);
 
   return (
     <div className="container mx-auto">
