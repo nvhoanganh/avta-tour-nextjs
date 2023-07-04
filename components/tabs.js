@@ -14,6 +14,12 @@ export default function Tabs({ contents, titles }) {
     }
   }, [view, titles]);
 
+  const viewTab = index => {
+    const newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?view=' + encodeURIComponent(titles.split(',')[index]);
+    window.history.pushState({ path: newurl }, '', newurl);
+    setActiveTab(index);
+  }
+
   return (
     <div className="container mx-auto">
       <div className='border-b-2 border-gray-300 mt-10'>
@@ -26,7 +32,7 @@ export default function Tabs({ contents, titles }) {
                   activeTab === index
               }
             )}
-              onClick={(e) => setActiveTab(index)}
+              onClick={(e) => { viewTab(index) }}
             >{title}</li>
           ))}
         </ul>
