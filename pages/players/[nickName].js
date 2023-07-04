@@ -55,7 +55,7 @@ export default function Player({ player, preview }) {
 		const results = await getCompetionResults(player.sys.id);
 		setCompResults(results);
 		setloadingCompResult(false);
-	}, []);
+	}, [player]);
 
 	useEffect(async () => {
 		if (loadingAuth || !player) {

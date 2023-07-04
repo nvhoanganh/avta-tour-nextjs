@@ -17,11 +17,11 @@ export default function TournamentResultCard({ competitions }) {
 		<>
 			<div className='flex flex-wrap'>
 				<div className='grid grid-cols-1 w-full md:grid-cols-3 md:gap-x-10 lg:gap-x-16 gap-y-4'>
-					{competitions.map((comp) => (
+					{competitions.map((comp, index) => (
 						<CardStats
 							key={comp.slug}
 							link={`/competitions/${comp.slug}`}
-							statSubtitle={comp.title}
+							statSubtitle={`#${index + 1}. ${comp.title}`}
 							statTitle={comp.reached.length === 1 ? `Lost ${comp.losts} matches in Group ${comp.reached}` :
 								`${comp.wonLastMatch ? 'Won' : 'Lost'} in the ${comp.reached}`}
 							statArrow=''
