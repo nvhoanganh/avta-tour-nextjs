@@ -27,7 +27,7 @@ import { useFirebaseAuth } from '../../components/authhook';
 import { useEffect, useState } from 'react'
 import { db } from '../../lib/firebase';
 import { findLinkedUsers, findUserByUid } from '../../lib/backendapi';
-import { getEmbedUrl, getPlayerInitial } from '../../lib/browserapi';
+import { getEmbedUrl, getPlayerInitial, getCompetionResults } from '../../lib/browserapi';
 import { setDoc, query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -46,6 +46,11 @@ export default function Player({ player, preview }) {
 	const [playerStatus, setPlayerStatus] = useState(null);
 	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
 	const { user, loadingAuth } = useFirebaseAuth();
+
+	useEffect(async () => {
+		const results = await getCompetionResults(player.sys.id);
+		console.log("🚀 ~ file: [nickName].js:53 ~ useEffect ~ results:", results)
+	}, []);
 
 	useEffect(async () => {
 		if (loadingAuth || !player) {
@@ -240,7 +245,11 @@ export default function Player({ player, preview }) {
 										<div className='text-center mt-12'>
 											<h3 className='text-4xl font-semibold leading-normal mb-2 text-gray-700 mb-2'>
 												{player.fullName}
-
+												{
+													!!player.mobileNumber
+														? <span className="ml-1"><i title="Has mobile number" className="fas text-blue-500 fa-mobile-alt text-sm"></i></span>
+														: <span className="ml-1"><i title="Has mobile number" className="fas text-red-500 fa-mobile-alt text-sm"></i></span>
+												}
 												{
 													playerStatus === CLAIMED_BY_OTHER
 													&& <i title="Profile claimed" title="Profile is claimed" className="far text-blue-500 fa-id-badge text-sm pl-2"></i>
