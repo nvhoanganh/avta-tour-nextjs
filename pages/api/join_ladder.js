@@ -17,6 +17,8 @@ export default async function handler(req, res) {
       .doc(session.metadata.playerId)
       .set({
         paidOn: (new Date()),
+        displayName: session.metadata.displayName,
+        ladderPoint: +session.metadata.avtaPoint,
         playerId: session.metadata.playerId,
         amount_paid: session.amount_total,
         payment_intent: session.payment_intent,

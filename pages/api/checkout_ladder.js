@@ -1,7 +1,7 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
-  const { playerId, ladder, fee } = req.query;
+  const { playerId, ladder, fee, displayName, avtaPoint } = req.query;
   if (req.method === 'POST') {
     try {
       // Create Checkout Sessions from body params.
@@ -14,7 +14,10 @@ export default async function handler(req, res) {
           },
         ],
         metadata: {
-          playerId, ladder
+          playerId,
+          ladder,
+          displayName,
+          avtaPoint
         },
         mode: 'payment',
         success_url: `${req.headers.origin}/ladders/${ladder}/postpayment?success=true&session_id={CHECKOUT_SESSION_ID}&playerId=${playerId}`,

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { useState, Fragment, useEffect } from 'react'
 import Link from 'next/link';
 import Head from 'next/head';
 import Spinner from '../../../components/spinner';
@@ -8,11 +9,23 @@ import Navbar from '../../../components/Navbars/AuthNavbar.js';
 import JoinAndPay from '../../../components/Cards/JoinAndPay';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { getLadderBasicDetails, getAllLadders } from '../../../lib/backendapi';
-
+import {
+  getPlayerById,
+} from '../../../lib/browserapi';
 
 export default function Apply({ ladder, preview }) {
   const router = useRouter();
-  const { fullProfile, loading } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
+  const [profile, setProfile] = useState(null);
+  const { fullProfile } = useFirebaseAuth({ protectedRoute: true, reason: 'apply' });
+  useEffect(async () => {
+    if (fullProfile) {
+      const contentfuldata = await getPlayerById(fullProfile.playerId, false);
+      setProfile({
+        ...fullProfile,
+        ...contentfuldata
+      })
+    }
+  }, [fullProfile]);
 
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
@@ -83,7 +96,7 @@ export default function Apply({ ladder, preview }) {
                     </div>
                     <div className='mt-24'>
                       {
-                        loading
+                        !profile
                           ?
                           <div className='text-center py-28'><Spinner color="blue"></Spinner> Loading...</div> :
                           <div>
@@ -101,7 +114,7 @@ export default function Apply({ ladder, preview }) {
                                       </div>
                                     </div> :
                                     <div>
-                                      <JoinAndPay ladder={ladder} fullProfile={fullProfile}></JoinAndPay>
+                                      <JoinAndPay ladder={ladder} fullProfile={profile}></JoinAndPay>
                                     </div>
                                 }
                               </div> :

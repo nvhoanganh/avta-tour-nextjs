@@ -21,7 +21,7 @@ export default function JoinLadder({ ladder, fullProfile }) {
 
   return (
     <>
-      <form action={`/api/checkout_ladder?playerId=${fullProfile.uid}&ladder=${ladder.id}&fee=${ladder.stripePriceId}`} method="POST"
+      <form action={`/api/checkout_ladder?playerId=${fullProfile.uid}&ladder=${ladder.id}&fee=${ladder.stripePriceId}&displayName=${encodeURIComponent(fullProfile.displayName)}&avtaPoint=${fullProfile.avtaPoint}`} method="POST"
         className="relative flex flex-col min-w-0 break-words mb-6 border-0 justify-center items-center"
       >
         <p className="py-2 h1">Join <span className="font-bold">{ladder.name}</span>
