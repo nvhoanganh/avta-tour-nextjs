@@ -26,6 +26,7 @@
     "google-map-react": "^2.2.0",
     "js-file-download": "^0.4.12",
     "next": "^12.1.0",
+    "p-limit": "^4.0.0",
     "pg": "^8.7.3",
     "prop-types": "^15.7.2",
     "ramda": "^0.27.1",

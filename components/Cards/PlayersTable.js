@@ -171,6 +171,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										})}
 									>
 										{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
+										{!player?.minPoint ? '' : <span className='text-sm text-gray-700 pl-1'>(min.{player?.minPoint})</span>}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{player?.homeClub || 'Unknown Club'}

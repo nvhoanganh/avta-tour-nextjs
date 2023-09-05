@@ -13,6 +13,8 @@ import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
 import { useFirebaseAuth } from '../authhook';
 import { parseMsg, getPlayerInitial } from '../../lib/browserapi';
+import pLimit from 'p-limit';
+import { splitEvery } from 'ramda';
 
 export default function SendInviteViaSms({ players, competition }) {
 	const [avaiPlayersAll, setAvaiPlayersAll] = useState(players);
@@ -74,9 +76,13 @@ export default function SendInviteViaSms({ players, competition }) {
 				msg: parseMsg(x, data.msg)
 			}));
 
-		setSaving(true)
-		user.getIdToken().then(idtoken => {
-			return fetch(
+		setSaving(true);
+		const splits = splitEvery(5, destinations)
+		const idtoken = await user.getIdToken();
+		const limit = pLimit(2);
+		const promises = splits.map(chunk => {
+			// wrap the function we are calling in the limit function we defined above
+			return limit(() => fetch(
 				`/api/bulksendsms`,
 				{
 					method: 'POST',
@@ -85,26 +91,14 @@ export default function SendInviteViaSms({ players, competition }) {
 						Authorization: `Bearer ${idtoken}`,
 					},
 					body: JSON.stringify({
-						destinations,
+						destinations: chunk,
 					})
 				}
-			)
-				.then(response => response.json())
-				.then((rsp) => {
-					console.log('sent complete', rsp);
-					setSaving(false);
-					if (rsp.success) {
-						setSendResult(`Successfully sent SMS to ${rsp.sentTo} players`);
-					} else {
-						setSendResult(`Error sending SMS. ${rsp.message || 'Please try again'}`);
-					}
-				})
-				.catch((err) => {
-					setSendResult(`Error sending SMS. ${err.message || 'Please try again'}`);
-					console.log('error sending SMS', err);
-					setSaving(false);
-				});
-		})
+			));
+		});
+		const result = await Promise.allSettled(promises);
+		setSaving(false);
+		setSendResult(`Successfully sent SMS to ${destinations.length} players`);
 	}
 
 	return (
