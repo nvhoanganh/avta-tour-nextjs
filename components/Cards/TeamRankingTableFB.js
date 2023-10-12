@@ -8,7 +8,7 @@ import DateWithTimeComponent from '../dateWithTime';
 import Avatar from '../avatar';
 import PlayerAvatar from './PlayerAvatar';
 
-export default function TeamRankingTable({ groups, color, is_superuser, editTeam }) {
+export default function TeamRankingTable({ groups, color, is_superuser, editTeam, previewMode }) {
 
 	const getPlayers = (team) => team.players ? team.players : [team.player1, team.player2];
 
@@ -49,26 +49,30 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 										>
 											Team
 										</th>
-										<th
-											className={
-												'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
-												(color === 'light'
-													? 'bg-gray-50 text-gray-500 border-gray-100'
-													: 'bg-blue-800 text-blue-300 border-blue-700')
-											}
-										>
-											Set Won / Lost
-										</th>
-										<th
-											className={
-												'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
-												(color === 'light'
-													? 'bg-gray-50 text-gray-500 border-gray-100'
-													: 'bg-blue-800 text-blue-300 border-blue-700')
-											}
-										>
-											Game Difference
-										</th>
+										{
+											!previewMode
+												? <><th
+													className={
+														'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
+														(color === 'light'
+															? 'bg-gray-50 text-gray-500 border-gray-100'
+															: 'bg-blue-800 text-blue-300 border-blue-700')
+													}
+												>
+													Set Won / Lost
+												</th>
+													<th
+														className={
+															'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center ' +
+															(color === 'light'
+																? 'bg-gray-50 text-gray-500 border-gray-100'
+																: 'bg-blue-800 text-blue-300 border-blue-700')
+														}
+													>
+														Game Difference
+													</th></>
+												: null
+										}
 									</tr>
 								</thead>
 								<tbody>
@@ -124,27 +128,31 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 													</div>
 												</div>
 											</td>
-											<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
-												{team.win + team.lost > 0 ?
-													<>
-														<span className='text-green-600'>{team.win}</span>
-														&nbsp;/&nbsp;<span className='text-red-600'>{team.lost}</span>
-													</> : '-'
-												}
-											</td>
-											<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
-												{team.diff > -1000 &&
-													<span
-														className={cn({
-															'text-gray-600': Number(team.diff) === 0,
-															'text-green-600': Number(team.diff) > 0,
-															'text-red-600': Number(team.diff) < 0,
-														})}
-													>{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span>
-												}
+											{
+												!previewMode
+													? <><td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
+														{team.win + team.lost > 0 ?
+															<>
+																<span className='text-green-600'>{team.win}</span>
+																&nbsp;/&nbsp;<span className='text-red-600'>{team.lost}</span>
+															</> : '-'
+														}
+													</td>
+														<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
+															{team.diff > -1000 &&
+																<span
+																	className={cn({
+																		'text-gray-600': Number(team.diff) === 0,
+																		'text-green-600': Number(team.diff) > 0,
+																		'text-red-600': Number(team.diff) < 0,
+																	})}
+																>{Number(team.diff) > 0 ? "+" : ""}{team.diff}</span>
+															}
 
 
-											</td>
+														</td></>
+													: null
+											}
 										</tr>
 									))}
 								</tbody>

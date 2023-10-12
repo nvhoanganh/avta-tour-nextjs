@@ -22,7 +22,7 @@ import PostHeader from '../../../components/post-header';
 import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding, getRulebyId } from '../../../lib/api';
 import { getCompResults, getAppliedTeams, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
-import { removeRegisteredPlayer, getAllGroupMatches, exportGroupsAllocation, getCompGroups, RevalidatePath } from '../../../lib/browserapi';
+import { removeRegisteredPlayer, getAllGroupMatches, exportGroupsAllocation, getCompGroups, getCompGroupsV2, RevalidatePath } from '../../../lib/browserapi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -34,6 +34,7 @@ import MatchScheduleCard from '../../../components/Cards/MatchScheduleCard';
 import MatchScheduleGrid from '../../../components/Cards/MatchScheduleGrid';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
+import PreviewGroups from '../../../components/previewGroups';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -47,10 +48,12 @@ export default function Competition({ competition, preview }) {
   const [activeTab, setActiveTab] = useState(0);
   const [courtNames, setCourtNames] = useState('');
   const [userRoles, setUserRoles] = useState(null);
+  const [previewAllocationGroups, setPreviewAllocationGroups] = useState(null);
   const [lookingPartners, setLookingPartners] = useState([]);
   const [reloadToken, setReloadToken] = useState(null);
   const [hideRules, setHideRules] = useState(false);
   const [hideContacts, setHideContacts] = useState(false);
+  const [showGroupsPreview, setShowGroupsPreview] = useState(false);
 
 
   const refreshData = async () => {
@@ -109,16 +112,50 @@ export default function Competition({ competition, preview }) {
   }
 
   const allocateTeamsToGroups = async () => {
-    const teamsInEachGroup = prompt('Enter Minimum number of teams per group (e.g. 4)');
-    if (!teamsInEachGroup || parseInt(teamsInEachGroup) <= 1) {
+    const numOfTeams = competition.appliedTeams.length;
+    const numberOfGroups = prompt('Enter number of groups (e.g. 8)');
+    if (!numberOfGroups || parseInt(numberOfGroups) <= 1) {
       alert('Please enter a number larger than 1');
       return;
     }
 
-    const groups = getCompGroups(competition.appliedTeams, parseInt(teamsInEachGroup));
-    await setDoc(doc(db, "competition_groups", competition.sys.id), groups);
-    alert('Groups created, please reload this page again in 15 seconds');
+    const _numberOfGroups = parseInt(numberOfGroups);
+    const numberOfTeamsPerGroup = prompt('Enter number of teams per group (e.g. 4)');
+    if (!numberOfTeamsPerGroup || parseInt(numberOfTeamsPerGroup) <= 1) {
+      alert('Please enter a number larger than 1');
+      return;
+    }
+    const _numberOfTeamsPerGroup = parseInt(numberOfTeamsPerGroup);
 
+    if (numOfTeams % _numberOfGroups > 0) {
+      if (numOfTeams / _numberOfGroups < _numberOfTeamsPerGroup) {
+        const numberOfGroupsWithExact = Math.floor(numOfTeams / _numberOfTeamsPerGroup);
+        // some groups will have less
+        const lastGroup = numOfTeams % _numberOfTeamsPerGroup;
+        const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and 1 group of ${lastGroup}. Are you sure you want to proceed?`);
+        if (!response) {
+          return;
+        }
+      } else {
+        // some groups will have more
+        const numberOfGroupsWithMore = numOfTeams % _numberOfTeamsPerGroup;
+        const numberOfGroupsWithExact = _numberOfGroups - numberOfGroupsWithMore;
+        const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and ${numberOfGroupsWithMore} groups of ${_numberOfTeamsPerGroup + 1}. Are you sure you want to proceed?`);
+        if (!response) {
+          return;
+        }
+      }
+    }
+
+    const groups = getCompGroupsV2(competition.appliedTeams, _numberOfTeamsPerGroup, _numberOfGroups);
+    setPreviewAllocationGroups(groups);
+    setShowGroupsPreview(true);
+  }
+
+  const onSaveGroups = async () => {
+    await setDoc(doc(db, "competition_groups", competition.sys.id), previewAllocationGroups);
+    alert('Groups allocation saved, please reload this page again in 15 seconds');
+    setShowGroupsPreview(false);
     window.location.reload();
   }
 
@@ -305,6 +342,7 @@ export default function Competition({ competition, preview }) {
   return (
     <Layout preview={preview}>
       <ToastContainer />
+      <PreviewGroups groups={previewAllocationGroups} show={showGroupsPreview} onClose={() => setShowGroupsPreview(false)} onSave={onSaveGroups} />
       <Navbar transparent />
 
       {router.isFallback ? (
@@ -706,6 +744,7 @@ export default function Competition({ competition, preview }) {
                                 </div>
                               </section>}
 
+                            {/* has group is allocated */}
                             {competition?.groupsAllocation &&
                               <section>
                                 {competition?.schedule &&
