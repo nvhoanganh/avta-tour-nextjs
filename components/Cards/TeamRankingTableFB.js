@@ -7,8 +7,9 @@ import PlayerPoint from '../PlayerPoint';
 import DateWithTimeComponent from '../dateWithTime';
 import Avatar from '../avatar';
 import PlayerAvatar from './PlayerAvatar';
+import { getPriceId } from '../../lib/browserapi'
 
-export default function TeamRankingTable({ groups, color, is_superuser, editTeam, previewMode }) {
+export default function TeamRankingTable({ groups, color, is_superuser, editTeam, previewMode, competition }) {
 
 	const getPlayers = (team) => team.players ? team.players : [team.player1, team.player2];
 
@@ -119,12 +120,24 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 													<div className='ml-3 text-sm text-gray-600'>
 														{getPlayers(team)[0].homeClub} - {getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.
 
+
+														{!team.paidOn && competition.costPerTeam > 0 && (<form
+															action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}&priceId=${getPriceId(competition, team)}`} method="POST"
+															className="inline-block ml-2"
+														>
+															<button type="submit" className='text-sm text-red-600 flex space-x-2 hover:underline hover:cursor-pointer font-bold'>
+																Pay Now
+															</button>
+														</form>)
+														}
+
 														{is_superuser &&
 															<span onClick={() => editTeam && editTeam(team)}
 																className="ml-2 underline cursor-pointer hover:text-blue-600">
 																Edit
 															</span>
 														}
+
 													</div>
 												</div>
 											</td>

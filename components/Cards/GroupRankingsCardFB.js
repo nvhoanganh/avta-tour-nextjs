@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import CardStats from './CardStats.js';
 import TeamRankingCard from './TeamRankingCardFB';
 
-export default function GroupRankingsCard({ groups, is_superuser, editTeam }) {
+export default function GroupRankingsCard({ groups, is_superuser, editTeam, competition }) {
   return (
     <>
       <div className='flex flex-wrap'>
@@ -21,6 +21,7 @@ export default function GroupRankingsCard({ groups, is_superuser, editTeam }) {
                 <TeamRankingCard
                   key={index}
                   is_superuser={is_superuser}
+                  competition={competition}
                   editTeam={editTeam}
                   team={team}
                   index={index}

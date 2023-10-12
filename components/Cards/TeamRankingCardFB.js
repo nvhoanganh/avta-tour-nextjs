@@ -5,8 +5,9 @@ import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
+import { getPriceId } from '../../lib/browserapi'
 
-export default function TeamRankingCard({ team, index, is_superuser, editTeam }) {
+export default function TeamRankingCard({ team, index, is_superuser, editTeam, competition }) {
   const players = team.players ? team.players : [team.player1, team.player2];
   return (
     <>
@@ -46,6 +47,16 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam })
                     className="ml-2 underline cursor-pointer hover:text-blue-600">
                     Edit
                   </div>
+                }
+
+                {!team.paidOn && competition.costPerTeam > 0 && (<form
+                  action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}&priceId=${getPriceId(competition, team)}`} method="POST"
+                  className="relative flex flex-col min-w-0 break-words mb-6 border-0 justify-center items-center"
+                >
+                  <button type="submit" className='text-sm text-red-600 flex space-x-2 hover:underline hover:cursor-pointer font-bold'>
+                    Pay Now
+                  </button>
+                </form>)
                 }
               </div>
             </div>

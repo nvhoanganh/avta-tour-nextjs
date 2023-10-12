@@ -22,7 +22,7 @@ export default function TeamCard({
           </div>
           <div className='text-sm text-gray-600 flex space-x-2'>
             <span className={team.isOverLimit ? 'text-yellow-600 font-bold' : 'text-green-600'}>{team.player1.avtaPoint + team.player2.avtaPoint} pt.</span>
-            {!team.paidOn && competition.costPerTeam > 0 && (is_superuser || team.player1.uid === uid || team.player2.uid === uid) && (<form
+            {!team.paidOn && competition.costPerTeam > 0 && (<form
               action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}&priceId=${getPriceId(competition, team)}`} method="POST"
               className="relative flex flex-col min-w-0 break-words mb-6 border-0 justify-center items-center"
             >

@@ -758,6 +758,7 @@ export default function Competition({ competition, preview }) {
                                     <TeamRankingTable
                                       is_superuser={userRoles?.superuser}
                                       editTeam={editTeam}
+                                      competition={competition}
                                       groups={
                                         competition.groupsAllocation
                                       }
@@ -767,6 +768,7 @@ export default function Competition({ competition, preview }) {
                                     <GroupRankingsCard
                                       is_superuser={userRoles?.superuser}
                                       editTeam={editTeam}
+                                      competition={competition}
                                       groups={competition.groupsAllocation}
                                     />
                                   </div>
