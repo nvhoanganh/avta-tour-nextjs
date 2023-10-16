@@ -49,7 +49,7 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam, c
                   </div>
                 }
 
-                {!team.paidOn && competition.costPerTeam > 0 && (<form
+                {!team.paidOn && competition?.costPerTeam > 0 && (<form
                   action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}&priceId=${getPriceId(competition, team)}`} method="POST"
                   className="relative flex flex-col min-w-0 break-words mb-6 border-0 justify-center items-center"
                 >

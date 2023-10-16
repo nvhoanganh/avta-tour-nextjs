@@ -121,7 +121,7 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 														{getPlayers(team)[0].homeClub} - {getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.
 
 
-														{!team.paidOn && competition.costPerTeam > 0 && (<form
+														{!team.paidOn && competition?.costPerTeam > 0 && (<form
 															action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}&priceId=${getPriceId(competition, team)}`} method="POST"
 															className="inline-block ml-2"
 														>
