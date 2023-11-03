@@ -13,16 +13,19 @@ export default function Apply({ competition, allPlayers, preview }) {
   const router = useRouter();
   const [applicationState, setApplicationState] = useState(null);
   const [paymentError, setPaymentError] = useState(null);
+  const [checking, setChecking] = useState(false);
 
   useEffect(async () => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
     if (query.get('success')) {
+      setChecking(true);
       const session_id = query.get('session_id');
       const applicationId = query.get('applicationId');
       return fetch(`/api/get_session?session_id=${query.get('session_id')}&competition=${competition.slug}`)
         .then(response => response.json())
         .then((rsp) => {
+          setChecking(false);
           if (rsp.success) {
             setApplicationState({
               applicationId,
@@ -30,6 +33,7 @@ export default function Apply({ competition, allPlayers, preview }) {
             })
           }
         }).catch((err) => {
+          setChecking(false);
           setPaymentError('Oops! Something went wrong. Please try again');
         });
     }
@@ -108,6 +112,13 @@ export default function Apply({ competition, allPlayers, preview }) {
                     </div>
                     <div className='mt-24'>
                       {
+                        checking && <div className='mb-8 text-center'>
+                          <p className="uppercase py-2 h1">Processing...</p>
+                          <p className="text-gray-400 pb-6">Please wait while we process your payment...</p>
+                        </div>
+                      }
+
+                      {
                         applicationState && <div className='mb-8 text-center'>
                           <p className="uppercase py-2 h1">Payment Received</p>
                           <p className="text-gray-400 text-sm pb-6">Thanks {applicationState?.customer?.name}!</p>
@@ -128,7 +139,7 @@ export default function Apply({ competition, allPlayers, preview }) {
                           <p className="uppercase py-2 h1 text-red-500 font-bold">Payment Error</p>
                           <p className="py-6">{paymentError}!</p>
                           <p className="py-6"><ToggleContactDetails competition={competition} message="PayID Information" /></p>
-                          <p className="py-6 pb-12">When making PayID payment, please include <span className="font-bold">AVTA{competition.maxPoint} - YourName</span> as reference</p>
+                          <p className="py-6 pb-12">If you would to pay using PayID, please include <span className="font-bold">AVTA{competition.maxPoint} - YourName</span> as reference</p>
                           <p className="py-6 pb-12">If you would to pay using Credit Card, please go back to competition home page and click on <span className="font-bold">Pay Now</span> try make payment again.</p>
                           <Link href={`/competitions/${competition.slug}?view=teams`}>
                             <a
