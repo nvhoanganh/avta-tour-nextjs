@@ -797,7 +797,7 @@ export async function getStaticProps({ params, preview = false }) {
   const matchScores = await getCompResults(data.sys.id);
   const appliedTeams = await getAppliedTeams(data.sys.id);
   const schedule = await getCompSchedule(data.sys.id);
-  const groupsAllocation = await getCompGroupsAllocation(data.sys.id);
+  const groupsAllocation = await getCompGroupsAllocation(data.sys.id, appliedTeams);
   const rule = await getRulebyId(data.ruleId || process.env.DEFAULT_RULE, preview);
 
   data = {
