@@ -118,8 +118,8 @@ export default function TeamRankingTable({ groups, color, is_superuser, editTeam
 															<i className="ml-1 fas fa-money-bill text-green-600" title={`Paid on ${team.paidOn}`}></i>}
 													</div>
 													<div className='ml-3 text-sm text-gray-600'>
-														{getPlayers(team)[0].homeClub} - {getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.
-
+														{getPlayers(team)[0].homeClub} -{' '}
+														<span className={team.isOverLimit ? 'text-yellow-600' : 'text-green-600'}>{getPlayers(team)[0].avtaPoint + getPlayers(team)[1].avtaPoint} pt.</span>
 
 														{!team.paidOn && competition?.costPerTeam > 0 && (<form
 															action={`/api/checkout_sessions?applicationId=${team.id}&competition=${team.slug}&priceId=${getPriceId(competition, team)}`} method="POST"

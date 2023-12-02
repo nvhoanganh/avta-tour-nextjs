@@ -59,6 +59,7 @@ export default function EditApplicationCompetition({ competition, players, rule,
       player2: data.selectedPlayer2,
       player1Id: data.selectedPlayer1.sys.id,
       player2Id: data.selectedPlayer2.sys.id,
+      isOverLimit: ((data.selectedPlayer1.avtaPoint || 0) + (data.selectedPlayer2.avtaPoint || 0) - competition.maxPoint) > 0,
       changedByUser: currentUser.uid,
       ...(!!data.paid && {
         paid: true,

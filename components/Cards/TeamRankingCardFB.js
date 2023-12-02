@@ -24,7 +24,7 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam, c
                   <i className="fas fa-money-bill text-green-600" title={`Paid on ${team.paidOn}`}></i>}
               </div>
               <div className='text-sm text-gray-600 flex space-x-2'>
-                <span className='text-green-600'>{players[0].avtaPoint + players[1].avtaPoint} pt.</span>
+                <span className={team.isOverLimit ? 'text-yellow-600' : 'text-green-600'}>{players[0].avtaPoint + players[1].avtaPoint} pt.</span>
 
                 {team.win + team.lost > 0 ?
                   <>
