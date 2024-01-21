@@ -1,4 +1,4 @@
-;window.NREUM||(NREUM={});NREUM.init={session_replay:{enabled:true,collect_fonts:true,inline_images:true,inline_stylesheet:true,block_selector:'',mask_text_selector:'*',sampling_rate:100.0,error_sampling_rate:100.0,mask_all_inputs:true,mask_input_options:{}},distributed_tracing:{enabled:true},privacy:{cookies_enabled:true},ajax:{deny_list:["bam.nr-data.net", "test.com"]}};
+;window.NREUM||(NREUM={});NREUM.init={session_replay:{enabled:true,collect_fonts:true,inline_images:true,inline_stylesheet:true,block_selector:'',mask_text_selector:'',sampling_rate:100.0,error_sampling_rate:100.0,mask_all_inputs:false,mask_input_options:{email:true,tel:true,}},privacy:{cookies_enabled:true},ajax:{deny_list:["bam.nr-data.net"]}};
 
 ;NREUM.loader_config={accountID:"3400472",trustKey:"1100964",agentID:"749345769",licenseKey:"NRBR-329bf041afd59d49ab7",applicationID:"749345769"};
 ;NREUM.info={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",licenseKey:"NRBR-329bf041afd59d49ab7",applicationID:"749345769",sa:1};
