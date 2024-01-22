@@ -6,7 +6,7 @@ export default class MyDocument extends Document {
       <Html lang="en">
         <Head>
           <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css"></link>
-          <script type="text/javascript" src="/newrelic.js" async />
+          <script type="text/javascript" src="/newrelic.js" />
           <script type="text/javascript" src="/gtm.js" async />
           <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js" async />
         </Head>
