@@ -32,7 +32,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 						</div>
 					))}
 					{/* players sponsors */}
-					{playerSponsors.map((player) => (
+					{/* {playerSponsors.map((player) => (
 						<div key={player.sys.id}>
 							<PlayerWithIcon player={player} size="lg" hideNickname hidePoint />
 							<div className="flex justify-center pt-2 space-x-1" >
@@ -44,7 +44,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 								}
 							</div>
 						</div>
-					))}
+					))} */}
 				</div>
 			</div>
 			<div className='flex flex-wrap justify-center'>
