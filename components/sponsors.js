@@ -8,7 +8,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 			<div className='flex flex-wrap justify-center text-center mb-24'>
 				<div className='w-full lg:w-6/12 px-4'>
 					<h2 className='text-4xl font-semibold'>
-						Proudly Sponsored by
+						Major Sponsors
 					</h2>
 				</div>
 			</div>
@@ -31,8 +31,18 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 							</div>
 						</div>
 					))}
-					{/* players sponsors */}
-					{/* {playerSponsors.map((player) => (
+				</div>
+			</div>
+			<div className='flex flex-wrap justify-center text-center mb-24'>
+				<div className='w-full lg:w-6/12 px-4'>
+					<h2 className='text-4xl font-semibold'>
+						Invidual Sponsors
+					</h2>
+				</div>
+			</div>
+			<div className='flex flex-wrap justify-center'>
+				<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
+					{playerSponsors.map((player) => (
 						<div key={player.sys.id}>
 							<PlayerWithIcon player={player} size="lg" hideNickname hidePoint />
 							<div className="flex justify-center pt-2 space-x-1" >
@@ -44,7 +54,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 								}
 							</div>
 						</div>
-					))} */}
+					))}
 				</div>
 			</div>
 			<div className='flex flex-wrap justify-center'>
