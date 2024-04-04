@@ -15,7 +15,7 @@ export default function TeamCard({
           <div className='font-bold flex space-x-1 text-gray-600 '>
             <span>{team.player1.fullName} &amp; {team.player2.fullName}</span>
             {team.paidOn &&
-              <i className="fas fa-money-bill text-green-600" title={`Paid on ${team.paidOn}`}></i>}
+              <i className={team.payment_intent ? 'fab fa-cc-stripe text-purple-600' : 'fas fa-money-bill text-green-600'} title={`Paid on ${team.paidOn} ${team.payment_intent || ' - Cash'}`}></i>}
           </div>
           <div className='text-gray-600 '>
             {team.player1.homeClub || team.player2.homeClub || 'Unknown Club'} - {format(new Date(team.timestamp), 'd/MM')}

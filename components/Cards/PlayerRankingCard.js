@@ -20,7 +20,7 @@ export default function PlayerRankingCard({ player, index, registeredPlayers, la
                 </Link>
 
                 {isRegistered &&
-                  <i className="fas fa-money-bill text-green-600" title={`Paid on ${isRegistered.paidOn}`}></i>
+                  <i className={isRegistered.payment_intent ? 'fab fa-cc-stripe text-purple-600' : 'fas fa-money-bill text-green-600'} title={`Paid on ${isRegistered.paidOn} ${isRegistered.payment_intent || ' - Cash'}`}></i>
                 }
               </div>
               <div className='text-sm text-gray-600 flex space-x-1'>
