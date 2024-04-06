@@ -21,6 +21,7 @@ export default function SubmitScore({ competition, groupsAllocation }) {
   const [saving, setSaving] = useState(false);
 
   const onSubmit = async data => {
+    const submitAnotherOne = data.submitAnother;
     setSaving(true)
 
     data = {
@@ -49,7 +50,11 @@ export default function SubmitScore({ competition, groupsAllocation }) {
     };
 
     const docRef = await addDoc(collection(db, "competition_results"), data);
-    await RevalidatePath(user, `/competitions/${competition?.slug}`);
+
+    if (!submitAnotherOne) {
+      console.log('Revalidating competition');
+      await RevalidatePath(user, `/competitions/${competition?.slug}`);
+    }
 
     toast("Result submitted!");
 
@@ -273,6 +278,13 @@ function SubmitScoreForm({ onSubmit, competition, saving, groupsAllocation }) {
                   </span>}
               </div>
             </div>
+          </div>
+
+          <div className="relative w-full mb-3">
+            <label className="inline-flex items-center cursor-pointer">
+              <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150" {...register("submitAnother")} />
+              <span className="ml-2 text-sm font-semibold text-blueGray-600">Submit another after this</span>
+            </label>
           </div>
 
           <div className="flex flex-wrap pt-10">
