@@ -48,6 +48,7 @@ export default function Player({ player, preview }) {
 	const [loadingCompResult, setloadingCompResult] = useState(false);
 	const [playerStatus, setPlayerStatus] = useState(null);
 	const [successfullyClaimed, setSuccessfullyClaimed] = useState(false);
+	const [userRoles, setUserRoles] = useState(null);
 	const { user, loadingAuth } = useFirebaseAuth();
 
 	useEffect(async () => {
@@ -89,6 +90,11 @@ export default function Player({ player, preview }) {
 					setPlayerStatus(CLAIMED_BY_OTHER);
 				}
 			}
+
+			const docSnap = await getDoc(doc(db, "user_roles", user.uid));
+      if (docSnap.exists()) {
+        setUserRoles(docSnap.data());
+      }
 		} else {
 			if (!claimedPlayer) {
 				setPlayerStatus(NOT_LOGGEDIN_UNCLAIMED);
@@ -370,7 +376,7 @@ export default function Player({ player, preview }) {
 
 													{
 														player?.mobileNumber && (playerStatus === UNCLAIMED || playerStatus === CLAIMED_BY_OTHER || playerStatus === UNCLAIMED_BUT_USER_ALREADY_CLAIMED || playerStatus === NOT_LOGGEDIN_CLAIMED)
-														&& player?.allowContact
+														&& (player?.allowContact || userRoles?.superuser)
 														&& !showMobile
 														&&
 														<>
