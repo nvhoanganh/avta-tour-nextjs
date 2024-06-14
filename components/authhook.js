@@ -15,6 +15,14 @@ export function useFirebaseAuth() {
 	try {
 		onAuthStateChanged(auth, (user) => {
 			setUser(user);
+			if (user) {
+				if (window.newrelic) {
+					console.log(`setting user Id in New Relic: ${user.uid}`);
+					window.newrelic.setUserId(user.uid);
+					window.newrelic.setCustomAttribute('user_name', user.displayName);
+				}
+			}
+			// let New Relic now
 			setLoadingAuth(false);
 		});
 	} catch (error) {
@@ -29,12 +37,18 @@ export function useFirebaseAuth() {
 		provider.addScope('profile');
 		provider.addScope('email');
 
+		if (window.newrelic) {
+			window.newrelic.addPageAction('user_login', { result: 'success' });
+		}
 		return redirect
 			? await signInWithRedirect(auth, provider)
 			: await signInWithPopup(auth, provider);
 	};
 
 	const logout = async () => {
+		if (window.newrelic) {
+			window.newrelic.addPageAction('user_logout', { result: 'success' });
+		}
 		await signOut(auth);
 	};
 
