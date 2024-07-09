@@ -33,7 +33,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 					))}
 				</div>
 			</div>
-			<div className='flex flex-wrap justify-center text-center mb-24'>
+			{/* <div className='flex flex-wrap justify-center text-center mb-24'>
 				<div className='w-full lg:w-6/12 px-4'>
 					<h2 className='text-4xl font-semibold'>
 						Individual Sponsors
@@ -56,7 +56,7 @@ export default function Sponsors({ sponsors, playerSponsors }) {
 						</div>
 					))}
 				</div>
-			</div>
+			</div> */}
 			<div className='flex flex-wrap justify-center'>
 				<Link
 					href={`mailto:enquiry@avtatour.com`}

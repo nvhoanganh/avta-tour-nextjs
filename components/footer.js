@@ -86,7 +86,7 @@ export default function Footer() {
 										<li>
 											<a
 												className='text-gray-600 hover:text-gray-800 font-semibold block pb-2 text-sm'
-												href='http://github.com/nvhoanganh'
+												href='mailto:anthony@taasconsulting.com.au'
 												target='_blank'
 											>
 												Github
@@ -124,13 +124,13 @@ export default function Footer() {
 					<div className='flex flex-wrap items-center md:justify-between justify-center'>
 						<div className='w-full md:w-4/12 px-4 mx-auto text-center'>
 							<div className='text-sm text-gray-500 font-semibold py-1'>
-								Copyright © {new Date().getFullYear()} ATVA by{' '}
+								Copyright © {new Date().getFullYear()} AVTA Tour by{' '}
 								<a
-									href='http://github.com/nvhoanganh'
+									href='mailto:anthony@taasconsulting.com.au'
 									target='_blank'
 									className='text-gray-500 hover:text-gray-800'
 								>
-									Anthony Nguyen
+									TAAS Consulting
 								</a>
 								.
 							</div>
