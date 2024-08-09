@@ -41,22 +41,6 @@ export default function PreviewGroups({ groups, show, onClose, onSave }) {
 									className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-2 text-center mb-6"
 								>
 									Groups Allocations
-									<div className="text-center text-base mt-6 flex space-x-3 justify-center">
-										<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
-    disabled:cursor-wait whitespace-nowrap
-             disabled:bg-gray-200"
-											onClick={onSave}
-										>
-											Save
-										</button>
-										<button type="submit" role="link" className="bg-gray-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
-    disabled:cursor-wait whitespace-nowrap
-             disabled:bg-gray-200"
-											onClick={onClose}
-										>
-											Close
-										</button>
-									</div>
 								</Dialog.Title>
 
 
@@ -75,6 +59,22 @@ export default function PreviewGroups({ groups, show, onClose, onSave }) {
 										/>
 									</div>
 								</div>
+								<div className="text-center text-base mt-64 flex space-x-3 justify-center">
+										<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200"
+											onClick={onSave}
+										>
+											Save
+										</button>
+										<button type="submit" role="link" className="bg-gray-500 text-white active:bg-blue-600 font-bold px-3 py-1 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200"
+											onClick={onClose}
+										>
+											Close
+										</button>
+									</div>
 							</Dialog.Panel>
 						</Transition.Child>
 					</div>

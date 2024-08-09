@@ -127,25 +127,25 @@ export default function Competition({ competition, preview }) {
     }
     const _numberOfTeamsPerGroup = parseInt(numberOfTeamsPerGroup);
 
-    if (numOfTeams % _numberOfGroups > 0) {
-      if (numOfTeams / _numberOfGroups < _numberOfTeamsPerGroup) {
-        const numberOfGroupsWithExact = Math.floor(numOfTeams / _numberOfTeamsPerGroup);
-        // some groups will have less
-        const lastGroup = numOfTeams % _numberOfTeamsPerGroup;
-        const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and 1 group of ${lastGroup}. Are you sure you want to proceed?`);
-        if (!response) {
-          return;
-        }
-      } else {
-        // some groups will have more
-        const numberOfGroupsWithMore = numOfTeams % _numberOfTeamsPerGroup;
-        const numberOfGroupsWithExact = _numberOfGroups - numberOfGroupsWithMore;
-        const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and ${numberOfGroupsWithMore} groups of ${_numberOfTeamsPerGroup + 1}. Are you sure you want to proceed?`);
-        if (!response) {
-          return;
-        }
-      }
-    }
+    // if (numOfTeams % _numberOfGroups > 0) {
+    //   if (numOfTeams / _numberOfGroups < _numberOfTeamsPerGroup) {
+    //     const numberOfGroupsWithExact = Math.floor(numOfTeams / _numberOfTeamsPerGroup);
+    //     // some groups will have less
+    //     const lastGroup = numOfTeams % _numberOfTeamsPerGroup;
+    //     const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and 1 group of ${lastGroup}. Are you sure you want to proceed?`);
+    //     if (!response) {
+    //       return;
+    //     }
+    //   } else {
+    //     // some groups will have more
+    //     const numberOfGroupsWithMore = numOfTeams % _numberOfTeamsPerGroup;
+    //     const numberOfGroupsWithExact = _numberOfGroups - numberOfGroupsWithMore;
+    //     const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and ${numberOfGroupsWithMore} groups of ${_numberOfTeamsPerGroup + 1}. Are you sure you want to proceed?`);
+    //     if (!response) {
+    //       return;
+    //     }
+    //   }
+    // }
 
     const groups = getCompGroupsV2(competition.appliedTeams, _numberOfTeamsPerGroup, _numberOfGroups);
     setPreviewAllocationGroups(groups);
