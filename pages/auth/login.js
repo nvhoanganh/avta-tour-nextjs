@@ -181,20 +181,6 @@ export default function Login() {
 											<div className='flex flex-col space-y-3 justify-center mb-6 mx-4'>
 												<button
 													onClick={() =>
-														login('facebook')
-													}
-													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
-													type='button'
-												>
-													<img
-														alt='...'
-														className='w-5 mr-1'
-														src='/assets/img/facebook.svg'
-													/>
-													Facebook
-												</button>
-												<button
-													onClick={() =>
 														login('google')
 													}
 													className='bg-white active:bg-gray-50 text-gray-700 font-normal px-6 py-4 rounded-lg outline-none focus:outline-none uppercase shadow hover:shadow-md inline-flex items-center font-bold ease-linear transition-all duration-150'
