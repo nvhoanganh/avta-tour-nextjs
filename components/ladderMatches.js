@@ -50,7 +50,6 @@ export default function LadderMatches({ matchUps }) {
 		<div className="text-2xl py-3 uppercase font-bold">Play Order</div>
 		<SummaryPossibleMatches onSelectedChange={onSelectedFilterChanged} matches={matchUps}></SummaryPossibleMatches>
 		<div className="italic text-xs text-gray-400 text-center">Hint: Click on player name to show possible matches</div>
-		{!less20.length && !from20To30.length && !over30.length ? <div className="py-6">No possible matches found with points difference less than 40 😢</div> : <></>}
 		{
 			less20.length > 0
 				? <div className="py-6">
