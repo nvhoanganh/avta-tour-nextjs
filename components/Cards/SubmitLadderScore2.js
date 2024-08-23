@@ -70,6 +70,7 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
 }
 
 function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
+  console.log("🚀 ~ SubmitLadderScoreForm ~ allPlayers:", allPlayers)
   const { register, reset, handleSubmit, watch, setValue, errors, getValues } = useForm({ mode: "onBlur" });
   const winners = watch('winners') || [];
   const selectedWinners = allPlayers.filter(x => winners.indexOf(x.sys.id) !== -1);
@@ -104,12 +105,12 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                   {
                     allPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150"
+                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150 mr-2"
                           value={player.sys.id} name={"withIndex." + i * 2}
                           {...register("winners", {
                             required: true,
                           })}
-                        />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                        />{player.fullName}
                       </label>
                     )
                   }
@@ -133,11 +134,11 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                   {
                     allPlayers.map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}
+                        <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150 mr-2" value={player.sys.id} name={"withIndex." + i * 2}
                           {...register("losers", {
                             required: true,
                           })}
-                        />{player.fullName} - {player?.avtaPoint}pt [{player.homeClub || 'Unknown Club'}]
+                        />{player.fullName}
                       </label>
                     )
                   }
