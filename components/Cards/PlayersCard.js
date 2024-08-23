@@ -6,6 +6,7 @@ import FirebaseImage from '../fb-image';
 import DropDown from '../dropdown';
 import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import useFilterPlayers from '../../lib/useFilterhook';
+import { getPlayers, getSortLabel } from '../../lib/browserapi';
 
 
 export default function PlayersCard({ allPlayers, hideSearch, user, refreshData }) {
@@ -32,14 +33,16 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 						/>
 
 						<DropDown buttonText={
-							<span><i className="fas fa-sort-amount-down-alt mr-1"></i>{sortBy}</span>
+							<span><i className="fas fa-sort-amount-down-alt mr-1"></i>{getSortLabel(sortBy)}</span>
 						}
 							items={[
-								<a onClick={() => setSortBy('Point')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Point</a>,
+								<a onClick={() => setSortBy('Point')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">By Point</a>,
 
-								<a onClick={() => setSortBy('Name')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Name</a>,
+								<a onClick={() => setSortBy('Name')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">By Name</a>,
 
-								<a onClick={() => setSortBy('Club')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">Sort by Club</a>,
+								<a onClick={() => setSortBy('Club')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">By Club</a>,
+								<a onClick={() => setSortBy('compsPlayed')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">By # Comp Played</a>,
+								<a onClick={() => setSortBy('monthsSinceLastComp')} className="text-gray-700 cursor-pointer hover:bg-gray-100 block px-4 py-2 text-sm" role="menuitem">By Months since Last Comp</a>,
 							]}
 						>
 						</DropDown>
@@ -71,7 +74,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 					<div className='flex flex-wrap justify-center'>
 
 						<div className='grid grid-cols-2 md:grid-cols-5 md:gap-x-10 lg:gap-x-16 gap-y-20 mb-32'>
-							{filteredPlayers.map(x => <div key={x.sys.id} className='px-6 text-center'>
+							{getPlayers(allPlayers, sortBy, filter, null, filerPlayerStyle).map(x => <div key={x.sys.id} className='px-6 text-center'>
 								<Link href={`/players/${x.sys.id}`}>
 									<div className='mx-auto max-w-120-px cursor-pointer'>
 										{
@@ -102,6 +105,7 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 											({x.nickName})
 										</p>
 									}
+
 									<p
 										className={cn('mt-1 text-xl  uppercase font-semibold', {
 											'text-green-600': !x.unofficialPoint,
@@ -111,6 +115,34 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 									>
 										{!x?.avtaPoint ? 'N/A' : x?.avtaPoint}
 									</p>
+
+									{
+										x?.compsPlayed
+											? <div>
+												<Link
+													className="underline"
+													href={`/competitions/${x?.lastComp?.slug}`}
+												>
+													<a title={x?.lastComp?.slug} className="text-blue-700 hover:underline hover:cursor-pointer"><span
+														className='mt-1 text-sm text-blue-600'
+													>
+														{!x?.compsPlayed ? '-' : x?.compsPlayed} <i className='fas fa-trophy text-gray-400'></i>
+													</span>
+														,
+														<span
+															className='mt-1 text-sm text-blue-600 ml-1'
+														>
+															{!x?.monthsSinceLastComp ? '-' : x?.monthsSinceLastComp} month ago
+														</span>
+
+
+													</a>
+												</Link>
+
+											</div>
+											: null
+									}
+
 									{
 										x.canMarkScore
 											? <p className='text-blue-500 text-sm'><i className="fas fa-user-edit text-blue-600  hover:text-blue-700"></i> Score Official</p>
