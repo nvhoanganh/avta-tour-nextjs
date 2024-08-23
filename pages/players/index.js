@@ -7,10 +7,13 @@ import PostTitle from '../../components/post-title';
 import Intro from '../../components/intro2';
 import Navbar from '../../components/Navbars/AuthNavbar.js';
 import { useFirebaseAuth } from '../../components/authhook';
-import { GetMergedPlayers } from "../../lib/backendapi";
+import { GetMergedPlayers, getCompsRegistrationSummary } from "../../lib/backendapi";
 import { RevalidatePath } from "../../lib/browserapi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { differenceInDays, differenceInMonths } from "date-fns";
+import { last, prop, sortBy } from "ramda";
+
 
 export default function Players({ allPlayers, preview }) {
 	const router = useRouter();
@@ -63,7 +66,29 @@ export default function Players({ allPlayers, preview }) {
 }
 
 export async function getStaticProps({ params, preview = false }) {
-	const allPlayers = await GetMergedPlayers()
+	let allPlayers = await GetMergedPlayers()
+	// console.log("🚀 ~ getStaticProps ~ allPlayers:", allPlayers);
+	const compsReg = await getCompsRegistrationSummary();
+	const sortByCompDate = sortBy(prop('comDate'));
+	allPlayers = allPlayers.reduce((pre, cur) => {
+		const playerId = cur.sys.id;
+		const compsPlayed = compsReg
+			.filter(x => x.player1.sys.id === playerId || x.player2.sys.id === playerId)
+			.map(x => ({
+				competitionId: x.competitionId,
+				title: x.title,
+				maxPoint: x.maxPoint,
+				comDate: x.compDate,
+				slug: x.slug
+			}));
+		cur.competitions = sortByCompDate(compsPlayed);
+		cur.compsPlayed = compsPlayed.length;
+		cur.lastComp = compsPlayed.length > 0 ? last(compsPlayed) : null;
+		cur.monthsSinceLastComp = compsPlayed.length > 0 ? differenceInMonths(new Date(), new Date(last(cur.competitions).comDate)) : null;
+		pre.push(cur);
+		return pre;
+	}, []);
+
 	return {
 		props: {
 			preview,

@@ -7,14 +7,15 @@ import useFilterPlayers from '../../lib/useFilterhook';
 import PlayerProfileStatus from '../../components/playerprofilestatus';
 import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import { getPlayerInitial } from '../../lib/browserapi';
+import { getPlayers } from '../../lib/browserapi';
 
 export default function PlayersTable({ color, players, user, refreshData }) {
+	const [showAdvanced, setShowAdvanced] = useState(false);
+
 	const {
 		sortBy, setSortBy, filter, setFilter,
 		avgPoint, filteredPlayers, filerPlayerStyle, setFilerPlayerStyle
 	} = useFilterPlayers(players);
-
-	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	useEffect(async () => {
 		const query = new URLSearchParams(window.location.search);
@@ -50,6 +51,31 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 								>
 									Name (Nickname)
 									{sortBy === 'Name' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										(color === 'light'
+											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
+									}
+									onClick={() => setSortBy('compsPlayed')}
+								>
+									Played
+									{sortBy === 'compsPlayed' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										(color === 'light'
+											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
+									}
+									onClick={() => setSortBy('monthsSinceLastComp')}
+								>
+									Last Comp
+									{sortBy === 'monthsSinceLastComp' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
+									<div className="text-xs font-normal">(Months ago)</div>
 								</th>
 								<th
 									className={
@@ -115,7 +141,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 							</tr>
 						</thead>
 						<tbody>
-							{filteredPlayers.map((player) => (
+							{getPlayers(players, sortBy, filter, null, filerPlayerStyle).map((player) => (
 								<tr key={player?.sys?.id}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div
@@ -164,6 +190,22 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 											</div>
 										</div>
 									</th>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+										{player?.compsPlayed || ''}
+									</td>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+									
+										{
+											player?.lastComp?.slug
+												? <Link
+													className="underline"
+													href={`/competitions/${player?.lastComp?.slug}`}
+												>
+													<a title={player?.lastComp?.slug} className="text-blue-700 hover:underline hover:cursor-pointer">{player?.monthsSinceLastComp} </a>
+												</Link>
+												: null
+										}
+									</td>
 									<td
 										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4', {
 											'text-green-600': !player?.unofficialPoint,
@@ -171,7 +213,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										})}
 									>
 										{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
-										{!player?.minPoint ? '' : <span className='text-sm text-gray-700 pl-1'>(min.{player?.minPoint})</span>}
+										{/* {!player?.minPoint ? '' : <span className='text-sm text-gray-700 pl-1'>(min.{player?.minPoint})</span>} */}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{player?.homeClub || 'Unknown Club'}
