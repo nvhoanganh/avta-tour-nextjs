@@ -81,11 +81,15 @@ export async function getStaticProps({ params, preview = false }) {
 				comDate: x.compDate,
 				slug: x.slug
 			}));
-		cur.competitions = sortByCompDate(compsPlayed);
-		cur.compsPlayed = compsPlayed.length;
-		cur.lastComp = compsPlayed.length > 0 ? last(compsPlayed) : null;
-		cur.monthsSinceLastComp = compsPlayed.length > 0 ? differenceInMonths(new Date(), new Date(last(cur.competitions).comDate)) : null;
+		const sortedcomps = sortByCompDate(compsPlayed);
+		cur.competitions = sortedcomps;
+		cur.compsPlayed = sortedcomps.length;
+		cur.lastComp = sortedcomps.length > 0 ? last(cur.competitions) : null;
+		cur.monthsSinceLastComp = sortedcomps.length > 0 ? differenceInMonths(new Date(), new Date(last(sortedcomps).comDate)) : null;
 		pre.push(cur);
+		// if (cur.playerId === '1zViVPUkFqzE3jjTzhVeUk') {
+		// 	console.log("🚀 ~ allPlayers=allPlayers.reduce ~ cur:", cur)
+		// }
 		return pre;
 	}, []);
 
