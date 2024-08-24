@@ -201,7 +201,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 													className="underline"
 													href={`/competitions/${player?.lastComp?.slug}`}
 												>
-													<a title={player?.lastComp?.slug} className="text-blue-700 hover:underline hover:cursor-pointer">{player?.monthsSinceLastComp} </a>
+													<a title={player?.lastComp?.slug} className="text-blue-700 hover:cursor-pointer p-1 px-2 hover:bg-gray-500 hover:text-white rounded-lg bg-gray-100 shadow-sm">{player?.monthsSinceLastComp} </a>
 												</Link>
 												: null
 										}

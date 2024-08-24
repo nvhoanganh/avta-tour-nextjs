@@ -46,7 +46,7 @@ export default function Players({ allPlayers, preview }) {
 							bgImg='https://unsplash.com/photos/RNiK93wcz-U/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8Mnx8dGVubmlzJTIwcGxheWVyc3x8MHx8fHwxNjQyMDUxNDk2&force=true&w=1920'
 						>
 							<div className='w-full mb-12'>
-								<div className='hidden mx-auto md:block px-52'>
+								<div className='hidden mx-auto px-52 md:block md:px-32'>
 									<PlayersTable
 										players={allPlayers}
 										user={user}
