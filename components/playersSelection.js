@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { getMatchups, RevalidatePath } from "../lib/browserapi"
 import useFilterPlayers from '../lib/useFilterhook';
 import { db } from '../lib/firebase';
+import { getPlayers, getSortLabel } from '../lib/browserapi';
 import SaveButton from './savebutton';
 import { useState, useEffect } from 'react'
 import { doc, setDoc } from "firebase/firestore";
@@ -19,7 +20,7 @@ export default function PlayersSelection({ registered, ladderId, user, results }
   );
 
   // only include the registered players
-  const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(registered);
+  const { sortBy, setSortBy, filter, setFilter, avgPoint, filerPlayerStyle, filteredPlayers } = useFilterPlayers(registered);
 
   const selectedPlayers = watch('selected');
   useEffect(() => {
@@ -81,7 +82,7 @@ export default function PlayersSelection({ registered, ladderId, user, results }
 
             <div className="flex flex-col space-y-1 pt-4">
               {
-                filteredPlayers.map(
+                getPlayers(registered, 'Name', filter, null, filerPlayerStyle).map(
                   (player, i) =>
                     <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
                       <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 my-2 ml-2 w-5 h-5 ease-linear transition-all duration-150" value={player.sys.id} name={"withIndex." + i * 2}

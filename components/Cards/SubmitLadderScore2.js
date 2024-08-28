@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 import SaveButton from '../../components/savebutton';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { getFBUserIdFromContentfulId, RevalidatePath } from '../../lib/browserapi';
+import { getFBUserIdFromContentfulId, RevalidatePath, getPlayers } from '../../lib/browserapi';
 import Spinner from '../../components/spinner';
 import { db } from '../../lib/firebase';
 import useFilterPlayers from '../../lib/useFilterhook';
@@ -14,7 +14,7 @@ var Diacritics = require('diacritic');
 
 export default function SubmitLadderScore({ ladder, allPlayers, user }) {
   const registeredPlayerIds = ladder.players.map(x => x.playerId);
-  const registeredPlayers = allPlayers.filter(x => registeredPlayerIds.indexOf(x.uid) >= 0);
+  const registeredPlayers = getPlayers(allPlayers.filter(x => registeredPlayerIds.indexOf(x.uid) >= 0), 'Name', null, null, null);
 
   const router = useRouter();
   const [saving, setSaving] = useState(false);
@@ -70,7 +70,6 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
 }
 
 function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
-  console.log("🚀 ~ SubmitLadderScoreForm ~ allPlayers:", allPlayers)
   const { register, reset, handleSubmit, watch, setValue, errors, getValues } = useForm({ mode: "onBlur" });
   const winners = watch('winners') || [];
   const selectedWinners = allPlayers.filter(x => winners.indexOf(x.sys.id) !== -1);

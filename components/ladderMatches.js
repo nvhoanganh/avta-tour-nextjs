@@ -4,8 +4,32 @@ import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
 import SummaryPossibleMatches from './summaryPossibleMatches';
 import PossibleMatches from './possibleMatches'
+import { intersection, without } from "ramda";
 
 const _inFilter = (filter, match) => {
+	if (filter.length === 1) {
+		// 1 player selected -> show all where that player is there
+		return (
+			!!filter.find(u => u === match.team1.player1.trim()) ||
+			!!filter.find(u => u === match.team1.player2.trim()) ||
+			!!filter.find(u => u === match.team2.player1.trim()) ||
+			!!filter.find(u => u === match.team2.player2.trim())
+		)
+	}
+
+	if (filter.length >= 2 && filter.length <= 4) {
+		// 2 players selected -> both players must be in the one match, no point showing 
+		const playersInMatch = [
+			match.team1.player1.trim(),
+			match.team1.player2.trim(),
+			match.team2.player1.trim(),
+			match.team2.player2.trim(),
+		];
+		const intersec = intersection(filter, playersInMatch);
+		return intersec.length === filter.length;
+	}
+
+	// more than 4 then must appears in all
 	return (
 		!!filter.find(u => u === match.team1.player1.trim()) &&
 		!!filter.find(u => u === match.team1.player2.trim()) &&
@@ -14,35 +38,82 @@ const _inFilter = (filter, match) => {
 	)
 }
 
+const _sortBySelection = (matches, filter) => {
+	if (filter.length === 2) {
+		return matches.sort((a, b) => {
+			const inSameTeamMatchA =
+				(
+					!!filter.find(u => u === a.team1.player1.trim()) &&
+					!!filter.find(u => u === a.team1.player2.trim())
+				) ||
+				(
+					!!filter.find(u => u === a.team2.player1.trim()) &&
+					!!filter.find(u => u === a.team2.player2.trim())
+				);
 
+			const inSameTeamMatchB =
+				(
+					!!filter.find(u => u === b.team1.player1.trim()) &&
+					!!filter.find(u => u === b.team1.player2.trim())
+				) ||
+				(
+					!!filter.find(u => u === b.team2.player1.trim()) &&
+					!!filter.find(u => u === b.team2.player2.trim())
+				);
+
+			if (inSameTeamMatchA && !inSameTeamMatchB) return -1
+			if (inSameTeamMatchB && !inSameTeamMatchA) return 1;
+			return 0;
+		})
+
+	}
+
+	return matches;
+}
 
 export default function LadderMatches({ matchUps }) {
 	const [filter, setFilter] = useState([]);
+	const [showPlayed, setShowPlayed] = useState('');
+	const [played, setPlayed] = useState(null);
+
 	const onSelectedFilterChanged = (players) => {
 		setFilter(players);
 	}
 
 	const [less20, setLessThan20Pt] = useState(matchUps.filter(x => x.pointDiff <= 20));
 	const [from20To30, setFrom20To30Pt] = useState(matchUps.filter(x => x.pointDiff > 20 && x.pointDiff <= 30));
-	const [over30, setOver30Pt] = useState(matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40));
+
+	// const [over30, setOver30Pt] = useState(matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40));
 
 	useEffect(() => {
-		if (filter.length >= 4) {
-			const _less20 = matchUps.filter(x => x.pointDiff <= 20 && _inFilter(filter, x)
-			);
+		const showPlayed = filter.indexOf(':Played') >= 0;
+		const showNotPlayed = filter.indexOf(':Not Played') >= 0;
+
+		const _filter = without([':Played', ':Not Played'], filter)
+
+		let _matches = matchUps;
+		if (showPlayed != showNotPlayed) {
+			if (showPlayed) {
+				_matches = matchUps.filter(m => m.team1Won?.length > 0 || m.team1Lost?.length > 0);
+			}
+			if (showNotPlayed) {
+				_matches = matchUps.filter(m => m.team1Won?.length === 0 && m.team1Lost?.length === 0);
+			}
+		}
+
+		if (_filter.length >= 1) {
+			const _less20 = _sortBySelection(_matches.filter(x => x.pointDiff <= 20 && _inFilter(_filter, x)), _filter);
 			setLessThan20Pt(_less20)
 
-			const _from20To30 = matchUps.filter(x => x.pointDiff > 20 && x.pointDiff <= 30 && _inFilter(filter, x)
-			);
+			const _from20To30 = _sortBySelection(_matches.filter(x => x.pointDiff > 20 && x.pointDiff <= 30 && _inFilter(_filter, x)), _filter);
 			setFrom20To30Pt(_from20To30)
 
-			const _more30 = matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40 && _inFilter(filter, x)
-			);
-			setOver30Pt(_more30)
+			// const _more30 = matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40 && _inFilter(filter, x));
+			// setOver30Pt(_more30)
 		} else {
-			setLessThan20Pt(matchUps.filter(x => x.pointDiff <= 20))
-			setFrom20To30Pt(matchUps.filter(x => x.pointDiff > 20 && x.pointDiff <= 30))
-			setOver30Pt(matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40))
+			setLessThan20Pt(_matches.filter(x => x.pointDiff <= 20))
+			setFrom20To30Pt(_matches.filter(x => x.pointDiff > 20 && x.pointDiff <= 30))
+			// setOver30Pt(matchUps.filter(x => x.pointDiff > 30 && x.pointDiff <= 40))
 		}
 	}, [filter]);
 
@@ -71,7 +142,7 @@ export default function LadderMatches({ matchUps }) {
 				</div>
 				: null
 		}
-		{
+		{/* {
 			over30.length > 0
 				? <div className="py-6">
 					<div className="text-xl py-3">2-0 Handicap to 7
@@ -80,6 +151,6 @@ export default function LadderMatches({ matchUps }) {
 					<PossibleMatches matches={over30} filter={filter}></PossibleMatches>
 				</div>
 				: null
-		}
+		} */}
 	</>
 }
