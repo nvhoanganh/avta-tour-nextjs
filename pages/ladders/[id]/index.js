@@ -96,7 +96,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
   const deleteResult = async (record) => {
     if (!fullProfile?.roles?.superuser) return;
 
-    if (confirm('Are you sure you want to delete?')) {
+    if (confirm('Are you sure you want to delete?\nNote: All players will get notification via email')) {
       try {
         await deleteDoc(doc(db, "ladder_results", record.id));
         toast("Deleted!, click on Refresh Data link to see updated results!");
@@ -105,6 +105,8 @@ export default function Competition({ ladder, allPlayers, preview }) {
       }
     }
   }
+
+  const userIsLadderMember = () => ladder.players.map(player => player.playerId).indexOf(fullProfile?.uid) >= 0
 
   return (
     <Layout preview={preview}>
@@ -182,7 +184,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                         <div className='w-full lg:w-4/12 px-4 lg:order-3 lg:text-right text-center lg:self-center'>
                           <div className='py-6 mt-24 sm:mt-0 flex flex-col sm:flex-row justify-end'>
                             {
-                              ladder.players.map(player => player.playerId).indexOf(fullProfile?.uid) < 0 && ladder.open
+                              !userIsLadderMember() && ladder.open
                                 ? <Link href={`/ladders/${ladder.id}/apply`}><a
                                   className='bg-blue-500 active:bg-blue-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                 >
@@ -381,12 +383,14 @@ export default function Competition({ ladder, allPlayers, preview }) {
                                     <LadderResultsTable results={getFilteredLadderMatches(ladder.scores || [], filter)}
                                       deleteResult={deleteResult}
                                       is_owner={ladder.ownerId === user?.uid}
+                                      is_member={userIsLadderMember()}
                                       is_superuser={fullProfile?.roles?.superuser}></LadderResultsTable>
                                   </div>
                                   <div className='md:hidden mt-4'>
                                     <LadderMatchResultsCard
                                       results={ladder.scores}
                                       deleteResult={deleteResult}
+                                      is_member={userIsLadderMember()}
                                       is_owner={ladder.ownerId === user?.uid}
                                       is_superuser={fullProfile?.roles?.superuser}></LadderMatchResultsCard>
                                   </div>

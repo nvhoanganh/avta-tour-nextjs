@@ -8,7 +8,7 @@ import { getFilteredLadderMatches } from '../../lib/browserapi';
 import { highlight } from '../../lib/utils';
 import { format } from 'date-fns'
 
-export default function LadderMatchResultsCard({ results, is_superuser, deleteResult, is_owner }) {
+export default function LadderMatchResultsCard({ results, is_superuser, deleteResult, is_owner, is_member }) {
   const [filter, setFilter] = useState(null);
   useEffect(() => {
     highlight(filter);
@@ -66,7 +66,7 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
 
 
                 <div className="">
-                  {!is_superuser && !is_owner ?
+                  {!is_member && !is_owner ?
                     (<div className=' text-gray-600 text-lg align-center shadow px-4 border rounded border-gray-200'
                       onClick={() => deleteResult(result)}
                     >

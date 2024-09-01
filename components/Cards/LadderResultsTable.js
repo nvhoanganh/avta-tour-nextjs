@@ -4,7 +4,7 @@ import DateWithTimeComponent from '../dateWithTime';
 import PlayerPoint from '../PlayerPoint';
 import PlayerAvatar from '../Cards/PlayerAvatar';
 
-export default function MatchResultsTable({ color, results, is_superuser, deleteResult, is_owner }) {
+export default function MatchResultsTable({ color, results, is_superuser, deleteResult, is_owner, is_member }) {
 	return (
 		<>
 			<div
@@ -147,9 +147,9 @@ export default function MatchResultsTable({ color, results, is_superuser, delete
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
 										<DateWithTimeComponent dateString={result.timestamp} />
-										{is_superuser &&
+										{is_member &&
 											<span onClick={() => deleteResult && deleteResult(result)}
-												className="ml-3 text-red-500 cursor-pointer p-2 rounded border hover:bg-gray-200">
+												className="ml-3 bg-red-500 text-white cursor-pointer p-2 rounded border hover:bg-red-600">
 												Delete
 											</span>
 										}
