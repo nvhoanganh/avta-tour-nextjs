@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import PropTypes from "prop-types";
 import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
 import DropDown from '../dropdown';
 import { getFilteredLadderMatches } from '../../lib/browserapi';
+import { highlight } from '../../lib/utils';
 import { format } from 'date-fns'
 
 export default function LadderMatchResultsCard({ results, is_superuser, deleteResult, is_owner }) {
   const [filter, setFilter] = useState(null);
+  useEffect(() => {
+    highlight(filter);
+  }, [filter]);
 
   return (
     <>
@@ -32,7 +36,8 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                         className=
                         'font-bold  text-gray-600'
                       >
-                        {result.winnerUser1?.displayName || result.winnerUser1?.fullName} + {result.winnerUser2?.displayName || result.winnerUser2?.fullName}
+                        <span className='highlightable'>{result.winnerUser1?.displayName || result.winnerUser1?.fullName} + {result.winnerUser2?.displayName || result.winnerUser2?.fullName}</span>
+                        
 
                         <span className='font-normal mb-2 ml-1 text-green-600'>[{result.winnerUser1?.avtaPoint + result.winnerUser2?.avtaPoint}]</span>
                       </div>
@@ -47,7 +52,8 @@ export default function LadderMatchResultsCard({ results, is_superuser, deleteRe
                         className=
                         'font-bold  text-gray-600 '
                       >
-                        {result.loserUser1?.displayName || result.loserUser1?.fullName} + {result.loserUser2?.displayName || result.loserUser2?.fullName}
+                        <span className='highlightable'>{result.loserUser1?.displayName || result.loserUser1?.fullName} + {result.loserUser2?.displayName || result.loserUser2?.fullName}</span>
+                        
                         <span className='font-normal mb-2 ml-1 text-green-600'>[{result.loserUser1?.avtaPoint + result.loserUser2?.avtaPoint}]</span>
                       </div>
                       <div className='text-sm text-gray-600 italic'>

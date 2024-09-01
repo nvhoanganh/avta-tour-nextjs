@@ -27,3 +27,7 @@ select {
   background-size: 16px 12px;
 	@apply bg-clip-padding bg-no-repeat;
 }
+
+.highlight {
+  background-color: yellow;
+}

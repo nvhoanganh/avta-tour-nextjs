@@ -4,7 +4,7 @@ import PlayerAvatar from './PlayerAvatar';
 import PlayerPoint from '../PlayerPoint';
 export default function PlayerRankingCard({ player, index, registeredPlayers, ladder }) {
   const isRegistered = registeredPlayers?.find(p => p.playerId === player.player.uid);
-  const getFullOrFloat = num => Number.isInteger(num) ? num.toFixed(0) : num.toFixed(2);
+  const getFullOrFloat = num => Number.isInteger(num) ? num.toFixed(0) : num.toFixed(1);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
@@ -27,20 +27,20 @@ export default function PlayerRankingCard({ player, index, registeredPlayers, la
                 {player.win + player.lost > 0 ?
                   <>
                     <span>
-                      <span className="text-xs text-gray-400 mr-0.5">Sets</span>
-                      <span className="rounded-md bg-gray-200 px-1 py-0.5 space-x-0.5">
-                        <span className='text-gray-600'>{player.win + player.lost}</span>
-                        <span className='text-gray-400'>|</span>
-                        <span className='text-green-600'>{player.win}</span>
-                        <span className='text-gray-400'>|</span>
-                        <span className='text-red-600'>{player.lost}</span>
-                        <span className='text-gray-400'>|</span>
-                        <span className={cn('text-sm', {
-                          'text-gray-600': Number(player.win - player.lost) === 0,
-                          'text-green-600': Number(player.win - player.lost) > 0,
-                          'text-red-600': Number(player.win - player.lost) < 0,
-                        })}>{ladder.orderRule === 'GAMEWON' ? getFullOrFloat(player.winPercentage) : getFullOrFloat(player.matchWinPercentage)}
-                          <span className='text-xs'>%</span>
+                      <span className="text-xs text-gray-400 mr-0.5">set</span>
+                      <span className="">
+                        <span className="border-blue-400 border-b-[1px] px-0.5 py-0.5 space-x-0.5 text-xs">
+                          <span className='text-green-600'>{player.win}</span>
+                          <span className='text-gray-400'>|</span>
+                          <span className='text-red-600'>{player.lost}</span>
+                          <span className='text-gray-400'>|</span>
+                          <span className={cn('text-xs', {
+                            'text-gray-600': Number(player.win - player.lost) === 0,
+                            'text-green-600': Number(player.win - player.lost) > 0,
+                            'text-red-600': Number(player.win - player.lost) < 0,
+                          })}>{ladder.orderRule === 'GAMEWON' ? getFullOrFloat(player.winPercentage) : getFullOrFloat(player.matchWinPercentage)}
+                            <span className='text-xs'>%</span>
+                          </span>
                         </span>
                       </span>
                     </span>
@@ -48,11 +48,19 @@ export default function PlayerRankingCard({ player, index, registeredPlayers, la
                 }
 
                 {player.winPercentage > 0 &&
-                  <span><span className="text-xs text-gray-400 mr-0.5">Game</span>
-                    <span className='rounded-md bg-gray-200 px-1 py-0.5 space-x-0.5'>
+                  <span><span className="text-xs text-gray-400 mr-0.5">game</span>
+                    <span className='border-blue-400 border-b-[1px] px-0.5 py-0.5 space-x-0.5 text-xs'>
                       <span className='text-green-600'>{player.gameWin}</span>
                       <span className='text-gray-400'>|</span>
                       <span className='text-red-600'>{player.gameLost}</span>
+                      <span className='text-gray-400'>|</span>
+                      <span className={cn('text-sx', {
+                        'text-gray-600': Number(player.gameWin - player.gameLost) === 0,
+                        'text-green-600': Number(player.gameWin - player.gameLost) > 0,
+                        'text-red-600': Number(player.gameWin - player.gameLost) < 0,
+                      })}>{getFullOrFloat((player.gameWin / (player.gameWin + player.gameLost))*100)}
+                        <span className='text-xs'>%</span>
+                      </span>
                     </span>
                   </span>
                 }
