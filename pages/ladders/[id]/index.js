@@ -11,7 +11,7 @@ import LadderMatches from '../../../components/ladderMatches';
 import Layout from '../../../components/layout';
 import { GetMergedPlayers, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
 import { RevalidatePath, getFilteredLadderMatches } from '../../../lib/browserapi';
-import { highlight } from '../../../lib/utils';
+import { highlight, getLadderNotificationObject } from '../../../lib/utils';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
@@ -25,7 +25,8 @@ import { deleteDoc, doc } from "firebase/firestore";
 import { db } from '../../../lib/firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { sendEmailDeleteLadderResult } from '../../../lib/notificationservice';
+import { format } from 'date-fns'
 
 
 export default function Competition({ ladder, allPlayers, preview }) {
@@ -100,6 +101,13 @@ export default function Competition({ ladder, allPlayers, preview }) {
       try {
         await deleteDoc(doc(db, "ladder_results", record.id));
         toast("Deleted!, click on Refresh Data link to see updated results!");
+
+        // send email
+        let notification = getLadderNotificationObject(ladder, record, registeredPlayers);
+        notification.date = format(new Date(record.timestamp), 'E, LLL d, h:mmaa');
+        notification.deletedBy = user.displayName;
+        await sendEmailDeleteLadderResult(user, notification);
+        return;
       } catch (error) {
         toast.error("Delete failed! Reload page and try again, this record might be already deleted");
       }
@@ -321,8 +329,8 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               ? <div className='sticky py-2 mb-6 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center max-w-xl mx-auto'>
                                 <input type="text"
                                   className="border px-2 py-1 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full mx-3 ease-linear transition-all duration-150"
-                                    placeholder="Filter by multiple player names"
-                                    value={filter} onChange={(e) => { setFilter(e.target.value) }}
+                                  placeholder="Filter by multiple player names"
+                                  value={filter} onChange={(e) => { setFilter(e.target.value) }}
                                 />
                               </div>
                               : null

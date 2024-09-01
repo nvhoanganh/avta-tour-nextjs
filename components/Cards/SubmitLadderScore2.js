@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { getFBUserIdFromContentfulId, RevalidatePath, getPlayers } from '../../lib/browserapi';
 import Spinner from '../../components/spinner';
 import { db } from '../../lib/firebase';
+import { getLadderNotificationObject } from '../../lib/utils';
 import useFilterPlayers from '../../lib/useFilterhook';
 import { sendEmailNewLadderResult } from '../../lib/notificationservice';
 import { collection, addDoc } from "firebase/firestore";
@@ -49,21 +50,7 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
       }
 
       // send email to all players
-      const notificationObj = {
-        submittedBy: toSubmit.submittedByFullName,
-        ladderName: ladder.name,
-        winnerTeam: `${registeredPlayers.find(x => x.playerId === toSubmit.winner1).displayName} + ${registeredPlayers.find(x => x.playerId === toSubmit.winner2).displayName}`,
-        losingTeam: `${registeredPlayers.find(x => x.playerId === toSubmit.loser1).displayName} + ${registeredPlayers.find(x => x.playerId === toSubmit.loser2).displayName}`,
-        score: `${+data.gameWonByWinners} - ${+data.gameWonByLosers}`,
-        // toAddresses: [],
-        toAddresses: [
-          registeredPlayers.find(x => x.playerId === toSubmit.winner1).email,
-          registeredPlayers.find(x => x.playerId === toSubmit.winner2).email,
-          registeredPlayers.find(x => x.playerId === toSubmit.loser1).email,
-          registeredPlayers.find(x => x.playerId === toSubmit.loser2).email,
-        ],
-      };
-      await sendEmailNewLadderResult(user, notificationObj);
+      await sendEmailNewLadderResult(user, getLadderNotificationObject(ladder, toSubmit, registeredPlayers));
 
       toast("Result submitted!");
 
