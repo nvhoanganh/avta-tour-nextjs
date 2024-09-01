@@ -6,7 +6,7 @@ import PlayerAvatar from './PlayerAvatar';
 
 export default function LadderRankingTable({ ranking, color, players, ladder }) {
 	const isRegistered = (player) => players?.find(p => p.playerId === player.player.uid);
-
+	const getFullOrFloat = num => Number.isInteger(num) ? num.toFixed(0) : num.toFixed(1);
 	return (
 		<>
 			<div
@@ -49,7 +49,7 @@ export default function LadderRankingTable({ ranking, color, players, ladder }) 
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
-									Match Won / Lost
+									Match
 								</th>
 								<th
 									className={
@@ -59,7 +59,7 @@ export default function LadderRankingTable({ ranking, color, players, ladder }) 
 											: 'bg-blue-800 text-blue-300 border-blue-700')
 									}
 								>
-									Game Won / Lost
+									Game
 								</th>
 								<th
 									className={
@@ -109,29 +109,42 @@ export default function LadderRankingTable({ ranking, color, players, ladder }) 
 										</div>
 									</td>
 									<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{player.win + player.lost > 0 ?
-											<>
-												{player.win + player.lost} (
-												<span className='text-green-600'>{player.win}</span>
-												&nbsp;/&nbsp;<span className='text-red-600'>{player.lost}</span>)
-											</> : '-'
-										}
+										<span className="border-blue-400 border-b-[1px] px-0.5 py-0.5 space-x-0.5 ">
+											<span className='text-green-600'>{player.win}</span>
+											<span className='text-gray-400'>|</span>
+											<span className='text-red-600'>{player.lost}</span>
+											<span className='text-gray-400'>|</span>
+											<span className={cn('', {
+												'text-gray-600': Number(player.win - player.lost) === 0,
+												'text-green-600': Number(player.win - player.lost) > 0,
+												'text-red-600': Number(player.win - player.lost) < 0,
+											})}>{ladder.orderRule === 'GAMEWON' ? getFullOrFloat(player.winPercentage) : getFullOrFloat(player.matchWinPercentage)}
+												<span className=''>%</span>
+											</span>
+										</span>
 									</td>
 									<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
-										{player.gameWin + player.gameLost > 0 ?
-											<>
-												<span className='text-green-600'>{player.gameWin}</span>
-												&nbsp;/&nbsp;<span className='text-red-600'>{player.gameLost}</span>
-											</> : '-'
-										}
+										<span className='border-blue-400 border-b-[1px] px-0.5 py-0.5 space-x-0.5 '>
+											<span className='text-green-600'>{player.gameWin}</span>
+											<span className='text-gray-400'>|</span>
+											<span className='text-red-600'>{player.gameLost}</span>
+											<span className='text-gray-400'>|</span>
+											<span className={cn('', {
+												'text-gray-600': Number(player.gameWin - player.gameLost) === 0,
+												'text-green-600': Number(player.gameWin - player.gameLost) > 0,
+												'text-red-600': Number(player.gameWin - player.gameLost) < 0,
+											})}>{getFullOrFloat((player.gameWin / (player.gameWin + player.gameLost)) * 100)}
+												<span className=''>%</span>
+											</span>
+										</span>
 									</td>
 									<td className='border-t-0 px-6 align-middle text-center border-l-0 border-r-0 whitespace-nowrap p-4'>
 										{player.winPercentage > 0 &&
 											<span
 												className={cn({
-													'text-gray-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) === 100,
-													'text-green-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) > 100,
-													'text-red-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) < 100,
+													'text-blue-600 font-bold': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) === 100,
+													'text-green-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) >= 50,
+													'text-red-600': Number(ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage) < 50,
 												})}
 											>{ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage}%</span>
 										}

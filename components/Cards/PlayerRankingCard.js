@@ -54,7 +54,7 @@ export default function PlayerRankingCard({ player, index, registeredPlayers, la
                       <span className='text-gray-400'>|</span>
                       <span className='text-red-600'>{player.gameLost}</span>
                       <span className='text-gray-400'>|</span>
-                      <span className={cn('text-sx', {
+                      <span className={cn('text-xs', {
                         'text-gray-600': Number(player.gameWin - player.gameLost) === 0,
                         'text-green-600': Number(player.gameWin - player.gameLost) > 0,
                         'text-red-600': Number(player.gameWin - player.gameLost) < 0,
