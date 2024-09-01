@@ -10,7 +10,8 @@ import CountDownTimer from '../../../components/countdowntimer';
 import LadderMatches from '../../../components/ladderMatches';
 import Layout from '../../../components/layout';
 import { GetMergedPlayers, getLadderDetails, getAllLadders } from '../../../lib/backendapi';
-import { RevalidatePath } from '../../../lib/browserapi';
+import { RevalidatePath, getFilteredLadderMatches } from '../../../lib/browserapi';
+import { highlight } from '../../../lib/utils';
 import PostTitle from '../../../components/post-title';
 import PlayersSelection from '../../../components/playersSelection';
 import LadderMatchResultsCard from '../../../components/Cards/LadderMatchResultsCard';
@@ -33,6 +34,11 @@ export default function Competition({ ladder, allPlayers, preview }) {
   const { view } = router.query;
   const [activeTab, setActiveTab] = useState(0);
   const [showOrder, setShowOrder] = useState(false);
+  const [filter, setFilter] = useState(null);
+  // search and highlight
+  useEffect(() => {
+    highlight(filter);
+  }, [filter]);
 
   if (!router.isFallback && !ladder) {
     return <ErrorPage statusCode={404} />;
@@ -306,9 +312,20 @@ export default function Competition({ ladder, allPlayers, preview }) {
 
 
                       {ladder.scores?.length > 0 &&
-                        <section className="mx-0 md:mx-4">
-                          {/* tabs */}
-                          <div className='border-b-2 border-gray-300 mt-10'>
+                        <section className="mx-0 md:mx-4 mt-10">
+                          {/* tabs - with search filter score */}
+                          {
+                            activeTab === 1
+                              ? <div className='sticky py-2 mb-6 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center max-w-xl mx-auto'>
+                                <input type="text"
+                                  className="border px-2 py-1 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full mx-3 ease-linear transition-all duration-150"
+                                    placeholder="Filter by multiple player names"
+                                    value={filter} onChange={(e) => { setFilter(e.target.value) }}
+                                />
+                              </div>
+                              : null
+                          }
+                          <div className='border-b-2 border-gray-300'>
                             <ul className='flex cursor-pointer justify-around'>
                               <li className={cn(
                                 'py-2 px-8 flex-grow text-center rounded-t-lg',
@@ -361,7 +378,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                               && (
                                 <>
                                   <div className='hidden container md:block'>
-                                    <LadderResultsTable results={ladder.scores}
+                                    <LadderResultsTable results={getFilteredLadderMatches(ladder.scores || [], filter)}
                                       deleteResult={deleteResult}
                                       is_owner={ladder.ownerId === user?.uid}
                                       is_superuser={fullProfile?.roles?.superuser}></LadderResultsTable>
