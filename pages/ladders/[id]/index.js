@@ -326,7 +326,7 @@ export default function Competition({ ladder, allPlayers, preview }) {
                           {/* tabs - with search filter score */}
                           {
                             activeTab === 1
-                              ? <div className='sticky py-2 mb-6 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center max-w-xl mx-auto'>
+                              ? <div className='md:hidden sticky py-2 mb-6 rounded-lg shadow-lg opacity-95 bg-gray-200 flex space-x-1 justify-center items-center max-w-xl mx-auto'>
                                 <input type="text"
                                   className="border px-2 py-1 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full mx-3 ease-linear transition-all duration-150"
                                   placeholder="Filter by multiple player names"
