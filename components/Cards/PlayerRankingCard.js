@@ -4,7 +4,7 @@ import PlayerAvatar from './PlayerAvatar';
 import PlayerPoint from '../PlayerPoint';
 export default function PlayerRankingCard({ player, index, registeredPlayers, ladder }) {
   const isRegistered = registeredPlayers?.find(p => p.playerId === player.player.uid);
-
+  const getFullOrFloat = num => Number.isInteger(num) ? num.toFixed(0) : num.toFixed(2);
   return (
     <>
       <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
@@ -26,30 +26,35 @@ export default function PlayerRankingCard({ player, index, registeredPlayers, la
               <div className='text-sm text-gray-600 flex space-x-1'>
                 {player.win + player.lost > 0 ?
                   <>
-                    <span><span className="text-xs text-gray-400">Match: </span>{player.win + player.lost}
-                      <span
-                        className={cn('', {
+                    <span>
+                      <span className="text-xs text-gray-400 mr-0.5">Sets</span>
+                      <span className="rounded-md bg-gray-200 px-1 py-0.5 space-x-0.5">
+                        <span className='text-gray-600'>{player.win + player.lost}</span>
+                        <span className='text-gray-400'>|</span>
+                        <span className='text-green-600'>{player.win}</span>
+                        <span className='text-gray-400'>|</span>
+                        <span className='text-red-600'>{player.lost}</span>
+                        <span className='text-gray-400'>|</span>
+                        <span className={cn('text-sm', {
                           'text-gray-600': Number(player.win - player.lost) === 0,
                           'text-green-600': Number(player.win - player.lost) > 0,
                           'text-red-600': Number(player.win - player.lost) < 0,
-                        })}
-
-                      >({player.win - player.lost > 0 ? "+" : ''}{player.win - player.lost})</span>
+                        })}>{ladder.orderRule === 'GAMEWON' ? getFullOrFloat(player.winPercentage) : getFullOrFloat(player.matchWinPercentage)}
+                          <span className='text-xs'>%</span>
+                        </span>
+                      </span>
                     </span>
                   </> : '-'
                 }
 
                 {player.winPercentage > 0 &&
-                  <span><span className="text-xs text-gray-400">{ladder.orderRule === 'GAMEWON' ? 'Game' : 'Won'}: </span>
-                    <span
-                      className='text-gray-600'
-                    >{ladder.orderRule === 'GAMEWON' ? player.winPercentage : player.matchWinPercentage}%
-                      <span className='text-xs ml-1'>
-                        (g:<span className='text-green-600'>{player.gameWin}</span>
-                        /<span className='text-red-600'>{player.gameLost}</span>)
-                      </span>
-
-                    </span></span>
+                  <span><span className="text-xs text-gray-400 mr-0.5">Game</span>
+                    <span className='rounded-md bg-gray-200 px-1 py-0.5 space-x-0.5'>
+                      <span className='text-green-600'>{player.gameWin}</span>
+                      <span className='text-gray-400'>|</span>
+                      <span className='text-red-600'>{player.gameLost}</span>
+                    </span>
+                  </span>
                 }
               </div>
             </div>
