@@ -6,6 +6,7 @@ import { getFBUserIdFromContentfulId, RevalidatePath, getPlayers } from '../../l
 import Spinner from '../../components/spinner';
 import { db } from '../../lib/firebase';
 import useFilterPlayers from '../../lib/useFilterhook';
+import { sendEmailNewLadderResult } from '../../lib/notificationservice';
 import { collection, addDoc } from "firebase/firestore";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from 'react-toastify';
@@ -20,7 +21,7 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
   const [saving, setSaving] = useState(false);
 
   const onSubmit = async data => {
-    setSaving(true)
+    setSaving(true);
     try {
       const toSubmit = {
         ladderId: ladder.id,
@@ -47,7 +48,25 @@ export default function SubmitLadderScore({ ladder, allPlayers, user }) {
         await RevalidatePath(user, `/ladders/${ladder.id}`);
       }
 
+      // send email to all players
+      const notificationObj = {
+        submittedBy: toSubmit.submittedByFullName,
+        ladderName: ladder.name,
+        winnerTeam: `${registeredPlayers.find(x => x.playerId === toSubmit.winner1).displayName} + ${registeredPlayers.find(x => x.playerId === toSubmit.winner2).displayName}`,
+        losingTeam: `${registeredPlayers.find(x => x.playerId === toSubmit.loser1).displayName} + ${registeredPlayers.find(x => x.playerId === toSubmit.loser2).displayName}`,
+        score: `${+data.gameWonByWinners} - ${+data.gameWonByLosers}`,
+        // toAddresses: [],
+        toAddresses: [
+          registeredPlayers.find(x => x.playerId === toSubmit.winner1).email,
+          registeredPlayers.find(x => x.playerId === toSubmit.winner2).email,
+          registeredPlayers.find(x => x.playerId === toSubmit.loser1).email,
+          registeredPlayers.find(x => x.playerId === toSubmit.loser2).email,
+        ],
+      };
+      await sendEmailNewLadderResult(user, notificationObj);
+
       toast("Result submitted!");
+
       setSaving(false)
     } catch (error) {
       toast.error("Failed to submit result: " + error.message);
@@ -102,7 +121,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                 {winners?.length < 2 ? <div className="flex flex-col space-y-1">
                   <div className="text-sm italic text-gray-500">{winners?.length} selected</div>
                   {
-                    allPlayers.map(
+                    allPlayers.filter(x => losers.indexOf(x.sys.id) < 0).map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150 mr-2"
                           value={player.sys.id} name={"withIndex." + i * 2}
@@ -131,7 +150,7 @@ function SubmitLadderScoreForm({ onSubmit, ladder, saving, allPlayers }) {
                 {losers?.length < 2 ? <div className="flex flex-col space-y-1">
                   <div className="text-sm italic text-gray-500">{losers?.length} selected</div>
                   {
-                    allPlayers.map(
+                    allPlayers.filter(x => winners.indexOf(x.sys.id) < 0).map(
                       (player, i) => <label key={player.sys.id} className="inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="form-checkbox border rounded text-blueGray-700 ml-2 w-5 h-8 ease-linear transition-all duration-150 mr-2" value={player.sys.id} name={"withIndex." + i * 2}
                           {...register("losers", {
