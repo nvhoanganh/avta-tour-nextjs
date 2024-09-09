@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function Intro2({ children, bgImg, title, subtitle }) {
 	const img =
 		bgImg ||
-		'https://images.unsplash.com/photo-1601646761285-65bfa67cd7a3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2970&q=80';
+		'/assets/img/backgroundsplash.jpeg';
 
 	return (
 		<>
