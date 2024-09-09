@@ -14,8 +14,8 @@ export default function JoinOurFacebook() {
 							<div className="aspect-w-10 aspect-h-6 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-w-1">
 								<img
 									className="rounded-3xl object-cover object-center shadow-2xl"
-									src="https://images.ctfassets.net/012zf22jz69j/HnKoycYeEd48H24x4ngQt/7469cfdc6d6ac147d456edf5ca19a6a0/AvtaMetaImgResize.png?w=3840&q=75"
-									alt=""
+									src="/assets/img/AvtaMetaImg.png"
+									alt="AVTA Tour"
 								/>
 							</div>
 						</div>
