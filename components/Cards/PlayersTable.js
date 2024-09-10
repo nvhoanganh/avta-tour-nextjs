@@ -42,19 +42,39 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 							<tr>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:cursor-pointer hover:underline ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
-									onClick={() => setSortBy('Name')}
 								>
-									Name (Nickname)
-									{sortBy === 'Name' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
+									{/* Name (Nickname)
+									{sortBy === 'Name' && <i className="fas fa-sort text-blue-600 ml-1"></i>} */}
+									<div className='text-left'>
+										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}
+											{
+												user &&
+												<a className='underline ml-2 hover:cursor-pointer' onClick={refreshData}>
+													Refresh data
+												</a>
+											}
+										</div>
+										<input type="text" className="border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150 mb-2"
+											placeholder="Search Name, Club or Point"
+											value={filter} onChange={(e) => { setFilter(e.target.value) }}
+										/>
+										<a onClick={() => setShowAdvanced(!showAdvanced)} className='text-sm italic pl-1 underline cursor-pointer font-normal'><i className="fas fa-angle-double-down"></i></a>
+										{
+											showAdvanced
+											&& <div className="font-normal flex justify-start items-center">
+												<PlayerTypeFilter selected={filerPlayerStyle} setState={(val) => setFilerPlayerStyle(val)}></PlayerTypeFilter>
+											</div>
+										}
+									</div>
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center hover:underline hover:cursor-pointer ' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
@@ -66,7 +86,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center hover:underline hover:cursor-pointer ' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
@@ -79,73 +99,45 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center hover:underline hover:cursor-pointer ' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 									onClick={() => setSortBy('Point')}
 								>
-									AVTA Point
+									Point
 									{sortBy === 'Point' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
 								</th>
 								<th
 									className={
-										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer ' +
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left  truncate max-w-[180px]' +
 										(color === 'light'
 											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
 									}
 									onClick={() => setSortBy('Club')}
 								>
-									Club
+									<span className="hover:underline hover:cursor-pointer ">Club</span>
+									
 									{sortBy === 'Club' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
-								</th>
-								<th
-									className={
-										'px-6 align-middle border border-solid py-3  border-l-0 border-r-0 whitespace-nowrap text-left ' +
-										(color === 'light'
-											? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
-											: 'bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700')
-									}
-								>
-									<div className='text-right'>
-										<div className="italic text-gray-500 text-xs font-normal">Found {filteredPlayers.length} Players, Avg Point: {avgPoint}
-											{
-												user &&
-												<a className='underline ml-2 hover:cursor-pointer' onClick={refreshData}>
-													Refresh data
-												</a>
-											}
-										</div>
+									<div className="float-right">
 										<Link href={`/players/map`}>
 											<a className='hover:underline'>
 												<i className="fas fa-map-marked-alt text-blue-700"></i>
-												{' '} Map View
+												{' '} Map
 											</a>
 										</Link>
-										<input type="text" className="ml-2 border px-3 py-2 placeholder-gray-300 text-gray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-56 ease-linear transition-all duration-150 mb-2"
-											placeholder="Search Name, Club or Point"
-											value={filter} onChange={(e) => { setFilter(e.target.value) }}
-										/>
-										<a onClick={() => setShowAdvanced(!showAdvanced)} className='text-sm italic pl-1 underline cursor-pointer font-normal'><i className="fas fa-angle-double-down"></i></a>
-										{
-											showAdvanced
-											&& <div className="font-normal flex justify-end items-center">
-												<PlayerTypeFilter selected={filerPlayerStyle} setState={(val) => setFilerPlayerStyle(val)}></PlayerTypeFilter>
-											</div>
-										}
 									</div>
-
 								</th>
 							</tr>
 						</thead>
 						<tbody>
 							{getPlayers(players, sortBy, filter, null, filerPlayerStyle).map((player) => (
 								<tr key={player?.sys?.id}>
-									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
+									<td className='border-t-0 px-6 align-middle border-l-0 whitespace-nowrap p-4 text-left flex items-center truncate max-w-[400px]'>
 										<div
-											className='h-12 w-12 bg-white rounded-full border'
+											className='h-12 w-12 bg-white rounded-full border min-w-12 min-h-12'
 											alt='...'
 										>
 											<Link
@@ -163,10 +155,9 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										<div className='flex flex-col'>
 											<div
 												className={
-													'ml-3 font-bold ' +
-													+(color === 'light'
-														? 'text-blueGray-600'
-														: 'text-white')
+													'ml-3 truncate max-w-[270px]' + (color === 'light'
+														? ' text-blueGray-600'
+														: ' text-white')
 												}
 											>
 												<Link
@@ -189,11 +180,11 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 												{player.club}
 											</div>
 										</div>
-									</th>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+									</td>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center'>
 										{player?.compsPlayed || ''}
 									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center'>
 									
 										{
 											player?.lastComp?.slug
@@ -207,7 +198,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										}
 									</td>
 									<td
-										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4', {
+										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center', {
 											'text-green-600': !player?.unofficialPoint,
 											'text-red-600': player?.unofficialPoint || player?.notInContentful,
 										})}
@@ -215,17 +206,8 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										{!player?.avtaPoint ? 'N/A' : player?.avtaPoint}
 										{/* {!player?.minPoint ? '' : <span className='text-sm text-gray-700 pl-1'>(min.{player?.minPoint})</span>} */}
 									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4'>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4  truncate max-w-[180px]'>
 										{player?.homeClub || 'Unknown Club'}
-									</td>
-									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-right'>
-										<Link
-											href={`/players/${player?.sys?.id}`}
-										>
-											<a className='get-started text-white font-bold px-6 py-2 rounded outline-none focus:outline-none mr-1 mb-2 bg-blue-500 active:bg-blue-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150'>
-												View
-											</a>
-										</Link>
 									</td>
 								</tr>
 							))}
