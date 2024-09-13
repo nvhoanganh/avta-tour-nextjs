@@ -8,8 +8,10 @@ import PlayerProfileStatus from '../../components/playerprofilestatus';
 import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import { getPlayerInitial } from '../../lib/browserapi';
 import { getPlayers } from '../../lib/browserapi';
+import { format } from 'date-fns';
 
 export default function PlayersTable({ color, players, user, refreshData }) {
+	console.log("🚀 ~ PlayersTable ~ players:", players)
 	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	const {
@@ -189,10 +191,15 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										{
 											player?.lastComp?.slug
 												? <Link
-													className="underline"
+													className='underline'
 													href={`/competitions/${player?.lastComp?.slug}`}
 												>
-													<a title={player?.lastComp?.slug} className="text-blue-700 hover:cursor-pointer p-1 px-2 hover:bg-gray-500 hover:text-white rounded-lg bg-gray-100 shadow-sm">{player?.monthsSinceLastComp} </a>
+													<a title={player?.lastComp?.slug}
+														className={cn('hover:cursor-pointer p-1 px-2 hover:bg-gray-500 hover:text-white rounded-lg shadow-sm', {
+															'bg-yellow-600 text-white': player?.monthsSinceLastComp < 0,
+															'bg-gray-200 text-blue': player?.monthsSinceLastComp > 0,
+														})}
+														>{player?.monthsSinceLastComp < 0 ? `${player?.lastComp?.maxPoint}` : player?.monthsSinceLastComp} </a>
 												</Link>
 												: null
 										}
