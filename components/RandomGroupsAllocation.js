@@ -11,11 +11,8 @@ import WheelSpinner from './WheelSpinner';
 export default function RandomGroupsAllocation({ groups, teams, show, onClose, onSave }) {
 	const [remaingTeams, setRemainingTeams] = useState(teams);
 	const [updatedGroups, setUpdatedGroups] = useState(groups);
-	console.log("🚀 ~ RandomGroupsAllocation ~ updatedGroups:", updatedGroups)
 
 	const onTeamSelected = (team) => {
-		console.log("🚀 ~ onTeamSelected ~ team:", team);
-
 		allocateTeam(team);
 
 		// take away from remaining team
@@ -35,9 +32,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 			let found = false;
 			for (let u = 0; u < updatedGroups[groupName].length; u++) {
 				const currentteam = updatedGroups[groupName][u];
-				console.log("🚀 ~ onTeamSelected ~ team:", currentteam);
 				if (typeof currentteam === 'number') {
-					console.log(`replacing team at index ${currentteam} with`, team);
 					updatedGroups[groupName][u] = team;
 					found = true;
 					break;
@@ -51,7 +46,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 
 	return (<>
 		<Transition appear show={show} as={Fragment}>
-			<Dialog as="div" className="relative z-50" onClose={onClose}>
+			<Dialog as="div" className="relative z-50 max-h-50vh" onClose={onClose}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
