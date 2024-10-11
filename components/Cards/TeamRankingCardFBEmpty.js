@@ -25,7 +25,7 @@ export default function TeamRankingCard({ index, isCurrent }) {
               >
                 {
                   isCurrent
-                    ? <span>{index + 1}. <Spinner size="sm" color="blue" /> Spin the wheel to draw a team</span>
+                    ? <span>{index + 1}. <Spinner size="sm" color="blue" /> Spin the wheel to draw a team <Spinner size="sm" color="blue" /></span>
                     : <span>{index + 1}.</span>
                 }
 

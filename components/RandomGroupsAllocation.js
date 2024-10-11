@@ -8,7 +8,7 @@ import { format } from 'date-fns'
 import GroupRankingsCard from './Cards/GroupRankingsCardFB';
 import WheelSpinner from './WheelSpinner';
 
-export default function RandomGroupsAllocation({ groups, teams, show, onClose, onSave }) {
+export default function RandomGroupsAllocation({ groups, teams, show, onClose, onSave, competition }) {
 	const [remaingTeams, setRemainingTeams] = useState(teams);
 	const [updatedGroups, setUpdatedGroups] = useState(groups);
 
@@ -93,7 +93,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 									as="h3"
 									className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-2 text-center mb-6"
 								>
-									Groups Allocations
+									AVTA Tour {competition.maxPoint} - {format(new Date(competition.date), 'do MMMM yyyy')}
 								</Dialog.Title>
 
 

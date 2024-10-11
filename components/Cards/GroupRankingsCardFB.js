@@ -10,7 +10,6 @@ import TeamRankingCardEmpty from './TeamRankingCardFBEmpty';
 export default function GroupRankingsCard({ groups, is_superuser, editTeam, competition, fullWidth }) {
   const [currentIndex, setCurrentIndex] = useState(null);
   useEffect(() => {
-    console.log('group changed', groups);
     const groupNames = (Object.keys(groups)).sort();
     let foundGroup = '';
     let foundIndex = 0;

@@ -134,8 +134,8 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
               </button>
               {
                 clickCount > 0
-                  ? <div className="italic text-xs text-gray-600">{clickCount} clicks</div>
-                  : null
+                  ? <div className="italic text-xs text-gray-600 pt-2">{clickCount} clicks</div>
+                  : <div className="italic text-xs text-gray-600 pt-2">{teams.length} teams remaining</div>
               }
             </>
             :
