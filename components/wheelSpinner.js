@@ -18,18 +18,19 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
   const props = {
     name: 'Workout',
     radius: 0.84,
+    isInteractive: false,
     itemLabelRadius: 0.93,
-    itemLabelRadiusMax: 0.35,
+    itemLabelRadiusMax: 0.30,
     itemLabelRotation: 180,
     itemLabelAlign: 'left',
     itemLabelColors: ['#fff'],
     itemLabelBaselineOffset: -0.07,
     // itemLabelFont: 'Amatic SC',
-    itemLabelFontSizeMax: 30,
+    itemLabelFontSizeMax: 200,
     itemBackgroundColors: ['#ffc93c', '#66bfbf', '#a2d5f2', '#515070', '#43658b', '#ed6663', '#d54062'],
     rotationSpeedMax: 500,
     rotationResistance: -100,
-    lineWidth: 1,
+    lineWidth: 0.4,
     lineColor: '#fff',
     image: imgRef.current,
     overlayImage: img2Ref.current,
@@ -103,13 +104,13 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
         setselectedTeam(_team);
         setTimeout(() => {
           if (onTeamSelected) onTeamSelected(_team);
-        }, 2000);
+        }, 1000);
       };
     }
   }, [teams, wheel]);
 
   return (
-    <>
+    <div className="flex flex-col">
       <img
         className="hidden"
         ref={imgRef}
@@ -139,15 +140,15 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
               }
             </>
             :
-            <div className="mx-10">
-              <TeamRankingCard
+            <div className="">
+              {/* <TeamRankingCard
                 team={selectedTeam}
                 index={0}
-              />
-              <div className="pt-2">Adding in <Countdown date={Date.now() + 2000} renderer={renderer} /> seconnds</div>
+              /> */}
+              {/* <div className="pt-2">Adding in <Countdown date={Date.now() + 1000} renderer={renderer} /> seconnds</div> */}
             </div>
         }
       </div>
-    </>
+    </div>
   )
 }
