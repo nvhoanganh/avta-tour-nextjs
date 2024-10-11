@@ -6,7 +6,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { useState, Fragment } from 'react'
 import { format } from 'date-fns'
 import GroupRankingsCard from './Cards/GroupRankingsCardFB';
-import WheelSpinner from './WheelSpinner';
+import WheelSpinner from './wheelSpinner';
 
 export default function RandomGroupsAllocation({ groups, teams, show, onClose, onSave, competition }) {
 	const [remaingTeams, setRemainingTeams] = useState(teams);
