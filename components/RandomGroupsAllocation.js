@@ -1,0 +1,123 @@
+import { useEffect, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import cn from 'classnames';
+import { Dialog, Transition } from "@headlessui/react";
+import { useState, Fragment } from 'react'
+import { format } from 'date-fns'
+import GroupRankingsCard from './Cards/GroupRankingsCardFB';
+import WheelSpinner from './WheelSpinner';
+
+export default function RandomGroupsAllocation({ groups, teams, show, onClose, onSave }) {
+	const [remaingTeams, setRemainingTeams] = useState(teams);
+	const [updatedGroups, setUpdatedGroups] = useState(groups);
+	console.log("🚀 ~ RandomGroupsAllocation ~ updatedGroups:", updatedGroups)
+
+	const onTeamSelected = (team) => {
+		console.log("🚀 ~ onTeamSelected ~ team:", team);
+
+		allocateTeam(team);
+
+		// take away from remaining team
+		const remaining = remaingTeams.filter(x => x.id !== team.id);
+		if (remaining.length === 1) {
+			allocateTeam(remaining[0]);
+			setRemainingTeams([]);
+		} else {
+			setRemainingTeams(remaining);
+		}
+	}
+
+	function allocateTeam(team) {
+		const groupNames = (Object.keys(updatedGroups)).sort();
+		for (let index = 0; index < groupNames.length; index++) {
+			const groupName = groupNames[index];
+			let found = false;
+			for (let u = 0; u < updatedGroups[groupName].length; u++) {
+				const currentteam = updatedGroups[groupName][u];
+				console.log("🚀 ~ onTeamSelected ~ team:", currentteam);
+				if (typeof currentteam === 'number') {
+					console.log(`replacing team at index ${currentteam} with`, team);
+					updatedGroups[groupName][u] = team;
+					found = true;
+					break;
+				}
+			}
+			if (found) break;
+		}
+
+		setUpdatedGroups(updatedGroups);
+	}
+
+	return (<>
+		<Transition appear show={show} as={Fragment}>
+			<Dialog as="div" className="relative z-50" onClose={onClose}>
+				<Transition.Child
+					as={Fragment}
+					enter="ease-out duration-300"
+					enterFrom="opacity-0"
+					enterTo="opacity-100"
+					leave="ease-in duration-200"
+					leaveFrom="opacity-100"
+					leaveTo="opacity-0"
+				>
+					<div className="fixed inset-0 bg-black bg-opacity-25" />
+				</Transition.Child>
+
+				<div className="fixed inset-0 overflow-y-auto">
+					<div className="flex min-h-full items-center justify-center text-center">
+						<Transition.Child
+							as={Fragment}
+							enter="ease-out duration-300"
+							enterFrom="opacity-0 scale-95"
+							enterTo="opacity-100 scale-100"
+							leave="ease-in duration-200"
+							leaveFrom="opacity-100 scale-100"
+							leaveTo="opacity-0 scale-95"
+						>
+							<Dialog.Panel className="w-full max-w-max lg:max-w-7xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+								<Dialog.Title
+									as="h3"
+									className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-2 text-center mb-6"
+								>
+									Groups Allocations
+								</Dialog.Title>
+
+
+								<div className="px-2 lg:flex-row flex">
+									<div>
+										<div className='mt-4 w-[400px]'>
+											<GroupRankingsCard
+												is_superuser={false}
+												fullWidth={true}
+												groups={groups}
+											/>
+										</div>
+									</div>
+									{
+										remaingTeams?.length > 1
+											? <div className="w-full">
+												<WheelSpinner teams={remaingTeams} onTeamSelected={onTeamSelected} />
+											</div>
+											: <div className="flex justify-center items-center mx-auto">
+												<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
+    disabled:cursor-wait whitespace-nowrap
+             disabled:bg-gray-200 uppercase"
+													onClick={onSave}
+												>
+													Complete Draw
+												</button>
+											</div>
+									}
+								</div>
+							</Dialog.Panel>
+						</Transition.Child>
+					</div>
+				</div>
+			</Dialog>
+		</Transition>
+	</>
+	);
+
+
+}

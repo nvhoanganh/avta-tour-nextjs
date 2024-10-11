@@ -23,6 +23,7 @@ import Layout from '../../../components/layout';
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllCompetitionsForHome, getCompetitionBySlug, getGroupStageStanding, getRulebyId } from '../../../lib/api';
 import { getCompResults, getAppliedTeams, getCompSchedule, getCompGroupsAllocation } from '../../../lib/backendapi';
 import { removeRegisteredPlayer, getAllGroupMatches, exportGroupsAllocation, getCompGroups, getCompGroupsV2, RevalidatePath } from '../../../lib/browserapi';
+import { getCompGroupsV3 } from '../../../lib/groupAllocationApi';
 import { db } from '../../../lib/firebase';
 import PostTitle from '../../../components/post-title';
 import Intro from '../../../components/intro';
@@ -35,6 +36,7 @@ import MatchScheduleGrid from '../../../components/Cards/MatchScheduleGrid';
 import GroupRankingsCard from '../../../components/Cards/GroupRankingsCardFB';
 import TeamRankingTable from '../../../components/Cards/TeamRankingTableFB';
 import PreviewGroups from '../../../components/previewGroups';
+import RandomGroupsAllocation from '../../../components/RandomGroupsAllocation';
 import { useFirebaseAuth } from '../../../components/authhook2';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -49,6 +51,7 @@ export default function Competition({ competition, preview }) {
   const [courtNames, setCourtNames] = useState('');
   const [userRoles, setUserRoles] = useState(null);
   const [previewAllocationGroups, setPreviewAllocationGroups] = useState(null);
+  const [previewAllocationGroups2, setPreviewAllocationGroups2] = useState(null);
   const [lookingPartners, setLookingPartners] = useState([]);
   const [reloadToken, setReloadToken] = useState(null);
   const [hideRules, setHideRules] = useState(false);
@@ -111,7 +114,7 @@ export default function Competition({ competition, preview }) {
     setshowEditSchedule(true);
   }
 
-  const allocateTeamsToGroups = async () => {
+  const allocateTeamsToGroups_XX = async () => {
     const numOfTeams = competition.appliedTeams.length;
     const numberOfGroups = prompt('Enter number of groups (e.g. 8)');
     if (!numberOfGroups || parseInt(numberOfGroups) <= 1) {
@@ -149,6 +152,37 @@ export default function Competition({ competition, preview }) {
 
     const groups = getCompGroupsV2(competition.appliedTeams, _numberOfTeamsPerGroup, _numberOfGroups);
     setPreviewAllocationGroups(groups);
+    setShowGroupsPreview(true);
+  }
+
+  const allocateTeamsToGroups = async () => {
+    const numOfTeams = competition.appliedTeams.length;
+    const numberOfGroups = prompt('Enter group allocation. e.g: 4,4,4,3 for 4 groups');
+
+
+    // if (numOfTeams % _numberOfGroups > 0) {
+    //   if (numOfTeams / _numberOfGroups < _numberOfTeamsPerGroup) {
+    //     const numberOfGroupsWithExact = Math.floor(numOfTeams / _numberOfTeamsPerGroup);
+    //     // some groups will have less
+    //     const lastGroup = numOfTeams % _numberOfTeamsPerGroup;
+    //     const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and 1 group of ${lastGroup}. Are you sure you want to proceed?`);
+    //     if (!response) {
+    //       return;
+    //     }
+    //   } else {
+    //     // some groups will have more
+    //     const numberOfGroupsWithMore = numOfTeams % _numberOfTeamsPerGroup;
+    //     const numberOfGroupsWithExact = _numberOfGroups - numberOfGroupsWithMore;
+    //     const response = confirm(`${numOfTeams} Teams will be randomly allocated into ${numberOfGroupsWithExact} groups of ${_numberOfTeamsPerGroup} and ${numberOfGroupsWithMore} groups of ${_numberOfTeamsPerGroup + 1}. Are you sure you want to proceed?`);
+    //     if (!response) {
+    //       return;
+    //     }
+    //   }
+    // }
+
+    const groups = getCompGroupsV3(numberOfGroups);
+    console.log("🚀 ~ allocateTeamsToGroups ~ groups:", groups);
+    setPreviewAllocationGroups2(groups);
     setShowGroupsPreview(true);
   }
 
@@ -342,7 +376,13 @@ export default function Competition({ competition, preview }) {
   return (
     <Layout preview={preview}>
       <ToastContainer />
-      <PreviewGroups groups={previewAllocationGroups} show={showGroupsPreview} onClose={() => setShowGroupsPreview(false)} onSave={onSaveGroups} />
+      {
+        previewAllocationGroups2
+          ? <RandomGroupsAllocation groups={previewAllocationGroups2} show={showGroupsPreview}
+            teams={competition?.appliedTeams}
+            onClose={() => setShowGroupsPreview(false)} onSave={onSaveGroups} />
+          : null
+      }
       <Navbar transparent />
 
       {router.isFallback ? (

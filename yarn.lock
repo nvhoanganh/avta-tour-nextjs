@@ -3632,10 +3632,10 @@ react-beautiful-dnd@^13.1.0:
     redux "^4.0.4"
     use-memo-one "^1.1.1"
 
-react-countdown@^2.3.2:
-  version "2.3.2"
-  resolved "https://registry.npmjs.org/react-countdown/-/react-countdown-2.3.2.tgz"
-  integrity sha512-Q4SADotHtgOxNWhDdvgupmKVL0pMB9DvoFcxv5AzjsxVhzOVxnttMbAywgqeOdruwEAmnPhOhNv/awAgkwru2w==
+react-countdown@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.npmjs.org/react-countdown/-/react-countdown-2.3.6.tgz"
+  integrity sha512-ZfX6S08Hb6x6W6eCn1hMDvxPICI/T30fd+gaeVTCR/2cGZ2WJ3f26e4ImNIMX1fHkopJrUdnRpWXP13/D39+gg==
   dependencies:
     prop-types "^15.7.2"
 
@@ -3996,6 +3996,13 @@ spdx-license-ids@^3.0.0:
   version "3.0.10"
   resolved "https://registry.npmjs.org/spdx-license-ids/-/spdx-license-ids-3.0.10.tgz"
   integrity sha512-oie3/+gKf7QtpitB0LYLETe+k8SifzsX4KixvpOsbI6S0kRiRQ5MKOio8eMSAKQ17N06+wdEOXRiId+zOxo0hA==
+
+spin-wheel@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.npmjs.org/spin-wheel/-/spin-wheel-5.0.2.tgz"
+  integrity sha512-H8C4ygjzKD8DbnaWelwvU/mB5qTVp5p9A9FGTQJqYKA1OJVs837L1f5M0g1jHhjw5U2WBY+V0Qksx8muXZ8qzA==
+  optionalDependencies:
+    canvas "^2.11.2"
 
 split2@^4.1.0:
   version "4.1.0"

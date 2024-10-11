@@ -31,3 +31,8 @@ select {
 .highlight {
   background-color: yellow;
 }
+
+.wheel {
+	width: 620px !important;
+	height: 620px !important;
+}

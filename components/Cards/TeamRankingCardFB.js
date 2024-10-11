@@ -11,7 +11,7 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam, c
   const players = team.players ? team.players : [team.player1, team.player2];
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 xl:mb-0 shadow-lg">
+      <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 shadow-lg">
         <div className="flex-auto p-4">
           <div className="flex flex-wrap ">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
