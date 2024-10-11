@@ -32,8 +32,9 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
     rotationResistance: -100,
     lineWidth: 0.4,
     lineColor: '#fff',
-    image: imgRef.current,
-    overlayImage: img2Ref.current,
+    // image: imgRef.current,
+    image: document.getElementById('spinwheelimage0'),
+    overlayImage: document.getElementById('spinwheelimage1'),
   }
 
   const spinNow = () => {
@@ -112,16 +113,6 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
 
   return (
     <div className="flex flex-col">
-      <img
-        className="hidden"
-        ref={imgRef}
-        src='/assets/img/example-0-image.svg'
-      />
-      <img
-        className="hidden"
-        ref={img2Ref}
-        src='/assets/img/example-0-overlay.svg'
-      />
       <div ref={wheelRef} className="wheel">
       </div>
       <div className="text-center pt-3">

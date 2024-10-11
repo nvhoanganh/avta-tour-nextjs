@@ -14,6 +14,16 @@ export default class MyDocument extends Document {
           <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMT2XNM"
             height="0" width="0" style={{ display: 'none', visibility: 'hidden' }}></iframe></noscript>
           <div id="fb-root"></div>
+          <img
+            className="hidden"
+            id="spinwheelimage0"
+            src='/assets/img/example-0-image.svg'
+          />
+          <img
+            className="hidden"
+            id="spinwheelimage1"
+            src='/assets/img/example-0-overlay.svg'
+          />
           <script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v13.0&appId=955095205088132&autoLogAppEvents=1" nonce="AcLzT9WI"></script>
           <Main />
           <NextScript />
