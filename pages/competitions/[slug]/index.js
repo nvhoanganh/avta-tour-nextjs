@@ -186,8 +186,8 @@ export default function Competition({ competition, preview }) {
     setShowGroupsPreview(true);
   }
 
-  const onSaveGroups = async () => {
-    await setDoc(doc(db, "competition_groups", competition.sys.id), previewAllocationGroups);
+  const onSaveGroups = async (data) => {
+    await setDoc(doc(db, "competition_groups", competition.sys.id), data);
     alert('Groups allocation saved, please reload this page again in 15 seconds');
     setShowGroupsPreview(false);
     window.location.reload();

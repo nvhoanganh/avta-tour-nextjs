@@ -9,6 +9,7 @@ import Countdown from "react-countdown";
 export default function WheelSpinner({ teams, onTeamSelected }) {
   const [wheel, setWheel] = useState(null);
   const [modifier, setModifier] = useState(0);
+  const [clickCount, setClickCount] = useState(0);
   const [selectedTeam, setselectedTeam] = useState(null);
   const wheelRef = useRef(null);
   const imgRef = useRef(null);
@@ -36,9 +37,8 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
 
   const spinNow = () => {
     const { duration, winningItemRotaion } = calcSpinToValues();
-    console.log("🚀 ~ spinNow ~ winningItemRotaion:", winningItemRotaion);
     wheel.spinTo(winningItemRotaion, duration);
-
+    setClickCount(v => v + 1);
     // calcSpinToItem();
   }
 
@@ -85,6 +85,7 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
 
   useEffect(() => {
     if (wheel) {
+      setClickCount(0);
       console.log('configuring wheel again...');
       setselectedTeam(null);
       // 1. Configure the wheel's properties:
@@ -124,11 +125,19 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
       <div className="text-center pt-3">
         {
           !selectedTeam
-            ? <button className="bg-blue-500 text-white hover:bg-blue-600 uppercase text-xs px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
-              onClick={() => spinNow()}
-            >
-              Spin Now
-            </button>
+            ?
+            <>
+              <button className="bg-blue-500 text-white hover:bg-blue-600 uppercase text-xs px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" type="button"
+                onClick={() => spinNow()}
+              >
+                Spin Now
+              </button>
+              {
+                clickCount > 0
+                  ? <div className="italic text-xs text-gray-600">{clickCount} clicks</div>
+                  : null
+              }
+            </>
             :
             <div className="mx-10">
               <TeamRankingCard

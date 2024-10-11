@@ -41,12 +41,30 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 			if (found) break;
 		}
 
-		setUpdatedGroups(updatedGroups);
+		setUpdatedGroups(JSON.parse(JSON.stringify(updatedGroups)));
 	}
+
+	useEffect(() => {
+		const onBeforeUnload = (ev) => {
+
+			//#############     
+			console.log("SOME CODE HERE");
+			//#############
+
+			ev.returnValue = "You sure you want to stop the draw? \nAll current changes will be lost";
+			return "You sure you want to stop the draw?";
+		};
+
+		window.addEventListener("beforeunload", onBeforeUnload);
+
+		return () => {
+			window.removeEventListener("beforeunload", onBeforeUnload);
+		};
+	}, []);
 
 	return (<>
 		<Transition appear show={show} as={Fragment}>
-			<Dialog as="div" className="relative z-50 max-h-50vh" onClose={onClose}>
+			<Dialog as="div" className="relative z-50 max-h-50vh" onClose={() => { }}>
 				<Transition.Child
 					as={Fragment}
 					enter="ease-out duration-300"
@@ -85,7 +103,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 											<GroupRankingsCard
 												is_superuser={false}
 												fullWidth={true}
-												groups={groups}
+												groups={updatedGroups}
 											/>
 										</div>
 									</div>
@@ -98,7 +116,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 												<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150
     disabled:cursor-wait whitespace-nowrap
              disabled:bg-gray-200 uppercase"
-													onClick={onSave}
+													onClick={() => onSave(updatedGroups)}
 												>
 													Complete Draw
 												</button>

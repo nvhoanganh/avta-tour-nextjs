@@ -6,11 +6,16 @@ import DateWithTimeComponent from '../dateWithTime';
 import TeamAvatar from '../TeamAvatarFb';
 import { format } from 'date-fns'
 import { getPriceId } from '../../lib/browserapi'
+import Spinner from '../spinner'
 
-export default function TeamRankingCard({ index }) {
+export default function TeamRankingCard({ index, isCurrent }) {
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 shadow-lg">
+      <div className=""
+        className={cn('relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 shadow-lg border-green-700', {
+          'border-dashed border-2 bg-green-200': isCurrent,
+        })}
+      >
         <div className="flex-auto p-4">
           <div className="flex flex-wrap ">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
@@ -18,7 +23,12 @@ export default function TeamRankingCard({ index }) {
                 className=
                 'flex space-x-1 text-gray-600 '
               >
-                <span>{index + 1}.</span>
+                {
+                  isCurrent
+                    ? <span>{index + 1}. <Spinner size="sm" color="blue" /> Spin the wheel to draw a team</span>
+                    : <span>{index + 1}.</span>
+                }
+
               </div>
             </div>
           </div>
