@@ -7,10 +7,30 @@ import { useState, Fragment } from 'react'
 import { format } from 'date-fns'
 import GroupRankingsCard from './Cards/GroupRankingsCardFB';
 import WheelSpinner from './wheelSpinner';
+import { arrayShuffle } from '/lib/browserapi';
+
+// const WheelColours = ['#ffc93c', '#66bfbf', '#a2d5f2', '#515070', '#43658b', '#ed6663', '#d54062'];
+const WheelColours = [
+	"#FF5733", "#33FF57", "#3357FF", "#FF33A6", "#FF8C33", "#33FFDA", "#A633FF", "#33A6FF",
+	"#FFC233", "#33FFC2", "#DA33FF", "#FF3368", "#8CFF33", "#57FF33", "#FF3333", "#33FF8C",
+	"#FF33FF", "#5733FF", "#FF3357", "#33FFC2", "#FF33C2", "#33A633", "#A6FF33", "#33FF33",
+	"#FF9933", "#33D1FF", "#9933FF", "#FF338C", "#338CFF", "#FF33DA", "#33FF99", "#FF33D1"
+];
 
 export default function RandomGroupsAllocation({ groups, teams, show, onClose, onSave, competition }) {
-	const [remaingTeams, setRemainingTeams] = useState(teams);
+	const [remaingTeams, setRemainingTeams] = useState([]);
 	const [updatedGroups, setUpdatedGroups] = useState(groups);
+
+	useEffect(() => {
+		let coloured = teams.map((x, index) => ({
+			...x,
+			// backgroundColor: x.isOverLimit ? '#d97706' : WheelColours[index % WheelColours.length]
+			backgroundColor: WheelColours[index % WheelColours.length]
+		}));
+
+		coloured = arrayShuffle(coloured);
+		setRemainingTeams(coloured);
+	}, [teams]);
 
 	const onTeamSelected = (team) => {
 		allocateTeam(team);

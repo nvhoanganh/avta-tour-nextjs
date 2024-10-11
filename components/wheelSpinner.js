@@ -14,7 +14,7 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
   const wheelRef = useRef(null);
   const imgRef = useRef(null);
   const img2Ref = useRef(null);
-
+  
   const props = {
     name: 'Workout',
     radius: 0.84,
@@ -94,7 +94,8 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
         ...props,
         rotation: wheel.rotation,
         items: teams.map(x => ({
-          label: `${x.player1.fullName} + ${x.player2.fullName}`
+          label: `${x.player1.fullName} + ${x.player2.fullName}`,
+          backgroundColor: x.backgroundColor
         }))
       }
       wheel.init(_props);

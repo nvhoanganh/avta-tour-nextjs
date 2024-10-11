@@ -11,13 +11,17 @@ export default function TeamRankingCard({ team, index, is_superuser, editTeam, c
   const players = team.players ? team.players : [team.player1, team.player2];
   return (
     <>
-      <div className="relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 shadow-lg">
+      <div className={cn('relative flex flex-col min-w-0 break-words  bg-white rounded mb-3 shadow-lg', {
+        ' border-l-4': !!team.backgroundColor,
+      })}
+        style={{ borderColor: team.backgroundColor || '' }}
+      >
         <div className="flex-auto p-4">
           <div className="flex flex-wrap ">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
               <div
                 className=
-                'flex space-x-1 text-gray-600 '
+                'flex space-x-1 text-gray-600'
               >
                 <span>{index + 1}. {players[0].fullName} + {players[1].fullName}</span>
                 {team.paidOn &&
