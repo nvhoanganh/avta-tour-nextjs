@@ -21,7 +21,7 @@ import { useEffect, useState } from 'react'
 import { db } from '../../../lib/firebase';
 import { query, collection, doc, getDocs, getDoc, where } from "firebase/firestore";
 import { downloadTournamentRankingResults, downloadTournamentResults, getAllPlayers, getAllCompetitionsForHome, getCompetitionBySlug, getRulebyId } from '../../../lib/api';
-import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
+import { mergeUsersAndPlayersData, getCompsRegistrationSummary } from "../../../lib/backendapi";
 
 
 export default function Apply({ competition, allPlayers, rule, preview }) {
@@ -127,7 +127,7 @@ export async function getStaticProps({ params, preview = false }) {
 
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
-
+  allPlayers = await getCompsRegistrationSummary(allPlayers);
   const rule = await getRulebyId(data.ruleId || process.env.DEFAULT_RULE, preview);
 
   return {

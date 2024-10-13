@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import FirebaseImage from '../fb-image';
 import useFilterPlayers from '../../lib/useFilterhook';
 import PlayerProfileStatus from '../../components/playerprofilestatus';
+import PlayerLastComp from '../../components/playerLastComp';
 import PlayerTypeFilter from '../../components/Cards/PlayerTypeFilter';
 import { getPlayerInitial } from '../../lib/browserapi';
 import { getPlayers } from '../../lib/browserapi';
@@ -192,19 +193,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 													className='underline'
 													href={`/competitions/${player?.lastComp?.slug}`}
 												>
-													<a title={player?.lastComp?.slug}
-														className={cn('hover:cursor-pointer p-1 px-2 hover:bg-gray-500 hover:text-white rounded-lg shadow-sm', {
-															'bg-yellow-600 text-white': player?.monthsSinceLastComp <= 0,
-															'bg-gray-200 text-blue': player?.monthsSinceLastComp > 0,
-														})}
-													>
-														{
-															player?.monthsSinceLastComp <= 0
-																? <i className="far fa-calendar-check"></i>
-																: null
-														}
-														{player?.monthsSinceLastComp <= 0 ? ` ${player?.lastComp?.maxPoint}${player?.lastComp2 ? ' & ' : ''}${player?.lastComp2?.maxPoint || ''}` :
-															player?.monthsSinceLastComp} </a>
+													<PlayerLastComp player={player} />
 												</Link>
 												: null
 										}

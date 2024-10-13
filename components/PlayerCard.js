@@ -2,7 +2,9 @@ import React from "react";
 import ContentfulImage from './contentful-image';
 import Link from 'next/link';
 import PlayerPoint from './PlayerPoint';
+import cn from 'classnames';
 import PlayerProfileStatus from './playerprofilestatus';
+import PlayerLastComp from './playerLastComp';
 import { getPlayerInitial } from '../lib/browserapi';
 
 export default function PlayerCard({
@@ -45,12 +47,16 @@ export default function PlayerCard({
         <PlayerProfileStatus player={player}></PlayerProfileStatus>
       </div>
 
-      {
-        player.playStyle &&
-        <div className='text-sm py-1 flex space-x-1'>
+
+
+
+      <div className='text-sm py-1 flex space-x-1'>
+        {
+          player.playStyle &&
           <span className='bg-gray-200 px-1 rounded' >{player.playStyle}</span>
-        </div>
-      }
+        }
+        <PlayerLastComp player={player} prefix="Played "/>
+      </div>
 
       {showSelect &&
         <div>
