@@ -12,7 +12,7 @@ import useFilterPlayers from '../../lib/useFilterhook';
 import { query, collection, getDocs, where, addDoc } from "firebase/firestore";
 import PlayerProfileStatus from '../../components/playerprofilestatus';
 import { useFirebaseAuth } from '../authhook';
-import { parseMsg, getPlayerInitial } from '../../lib/browserapi';
+import { parseMsg, getPlayerInitial, getPlayers } from '../../lib/browserapi';
 import pLimit from 'p-limit';
 import { splitEvery } from 'ramda';
 
@@ -157,7 +157,7 @@ export default function SendInviteViaSms({ players, competition }) {
 }
 
 function PlayersTable({ players, toggle, selected, unsubscribed }) {
-	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers } = useFilterPlayers(players);
+	const { sortBy, setSortBy, filter, setFilter, avgPoint, filteredPlayers, filerPlayerStyle } = useFilterPlayers(players);
 
 	return (
 		<>
@@ -231,7 +231,7 @@ function PlayersTable({ players, toggle, selected, unsubscribed }) {
 							</tr>
 						</thead>
 						<tbody>
-							{filteredPlayers.map((player) => (
+							{getPlayers(players, sortBy, filter, null, filerPlayerStyle).map((player) => (
 								<tr key={player.sys.id}>
 									<th className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-left flex items-center'>
 										<div
