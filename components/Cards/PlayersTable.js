@@ -11,7 +11,6 @@ import { getPlayers } from '../../lib/browserapi';
 import { format } from 'date-fns';
 
 export default function PlayersTable({ color, players, user, refreshData }) {
-	console.log("🚀 ~ PlayersTable ~ players:", players)
 	const [showAdvanced, setShowAdvanced] = useState(false);
 
 	const {
@@ -121,7 +120,7 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 									onClick={() => setSortBy('Club')}
 								>
 									<span className="hover:underline hover:cursor-pointer ">Club</span>
-									
+
 									{sortBy === 'Club' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
 									<div className="float-right">
 										<Link href={`/players/map`}>
@@ -187,7 +186,6 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 										{player?.compsPlayed || ''}
 									</td>
 									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center'>
-									
 										{
 											player?.lastComp?.slug
 												? <Link
@@ -196,10 +194,17 @@ export default function PlayersTable({ color, players, user, refreshData }) {
 												>
 													<a title={player?.lastComp?.slug}
 														className={cn('hover:cursor-pointer p-1 px-2 hover:bg-gray-500 hover:text-white rounded-lg shadow-sm', {
-															'bg-yellow-600 text-white': player?.monthsSinceLastComp < 0,
+															'bg-yellow-600 text-white': player?.monthsSinceLastComp <= 0,
 															'bg-gray-200 text-blue': player?.monthsSinceLastComp > 0,
 														})}
-														>{player?.monthsSinceLastComp < 0 ? `${player?.lastComp?.maxPoint}` : player?.monthsSinceLastComp} </a>
+													>
+														{
+															player?.monthsSinceLastComp <= 0
+																? <i className="far fa-calendar-check"></i>
+																: null
+														}
+														{player?.monthsSinceLastComp <= 0 ? ` ${player?.lastComp?.maxPoint}${player?.lastComp2 ? ' & ' : ''}${player?.lastComp2?.maxPoint || ''}` :
+															player?.monthsSinceLastComp} </a>
 												</Link>
 												: null
 										}

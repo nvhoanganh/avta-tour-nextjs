@@ -183,6 +183,25 @@ function PlayersTable({ players, toggle, selected, unsubscribed }) {
 								</th>
 								<th
 									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center hover:underline hover:cursor-pointer bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+									}
+									onClick={() => setSortBy('compsPlayed')}
+								>
+									Played
+									{sortBy === 'compsPlayed' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
+								</th>
+								<th
+									className={
+										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center hover:underline hover:cursor-pointer bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+									}
+									onClick={() => setSortBy('monthsSinceLastComp')}
+								>
+									Last Comp
+									{sortBy === 'monthsSinceLastComp' && <i className="fas fa-sort text-blue-600 ml-1"></i>}
+									<div className="text-xs font-normal">(Months ago)</div>
+								</th>
+								<th
+									className={
 										'px-6 align-middle border border-solid py-3 uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left hover:underline hover:cursor-pointer bg-blueGray-50 text-blueGray-500 border-blueGray-100'
 									}
 									onClick={() => setSortBy('Point')}
@@ -253,6 +272,33 @@ function PlayersTable({ players, toggle, selected, unsubscribed }) {
 											</div>
 										</div>
 									</th>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center'>
+										{player?.compsPlayed || ''}
+									</td>
+									<td className='border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4 text-center'>
+										{
+											player?.lastComp?.slug
+												? <Link
+													className='underline'
+													href={`/competitions/${player?.lastComp?.slug}`}
+												>
+													<a title={player?.lastComp?.slug}
+														className={cn('hover:cursor-pointer p-1 px-2 hover:bg-gray-500 hover:text-white rounded-lg shadow-sm', {
+															'bg-yellow-600 text-white': player?.monthsSinceLastComp <= 0,
+															'bg-gray-200 text-blue': player?.monthsSinceLastComp > 0,
+														})}
+													>
+														{
+															player?.monthsSinceLastComp <= 0
+																? <i className="far fa-calendar-check"></i>
+																: null
+														}
+														{player?.monthsSinceLastComp <= 0 ? ` ${player?.lastComp?.maxPoint}${player?.lastComp2 ? ' & ' : ''}${player?.lastComp2?.maxPoint || ''}` :
+															player?.monthsSinceLastComp} </a>
+												</Link>
+												: null
+										}
+									</td>
 									<td
 										className={cn('border-t-0 px-6 align-middle border-l-0 border-r-0 whitespace-nowrap p-4', {
 											'text-green-600': !player?.unofficialPoint,

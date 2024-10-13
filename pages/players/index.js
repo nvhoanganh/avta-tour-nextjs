@@ -67,31 +67,7 @@ export default function Players({ allPlayers, preview }) {
 
 export async function getStaticProps({ params, preview = false }) {
 	let allPlayers = await GetMergedPlayers()
-	// console.log("🚀 ~ getStaticProps ~ allPlayers:", allPlayers);
-	const compsReg = await getCompsRegistrationSummary();
-	const sortByCompDate = sortBy(prop('comDate'));
-	allPlayers = allPlayers.reduce((pre, cur) => {
-		const playerId = cur.sys.id;
-		const compsPlayed = compsReg
-			.filter(x => x.player1.sys.id === playerId || x.player2.sys.id === playerId)
-			.map(x => ({
-				competitionId: x.competitionId,
-				title: x.title,
-				maxPoint: x.maxPoint,
-				comDate: x.compDate,
-				slug: x.slug
-			}));
-		const sortedcomps = sortByCompDate(compsPlayed);
-		cur.competitions = sortedcomps;
-		cur.compsPlayed = sortedcomps.length;
-		cur.lastComp = sortedcomps.length > 0 ? last(cur.competitions) : null;
-		cur.monthsSinceLastComp = sortedcomps.length > 0 ? differenceInMonths(new Date(), new Date(last(sortedcomps).comDate)) : null;
-		pre.push(cur);
-		// if (cur.playerId === '1zViVPUkFqzE3jjTzhVeUk') {
-		// 	console.log("🚀 ~ allPlayers=allPlayers.reduce ~ cur:", cur)
-		// }
-		return pre;
-	}, []);
+	allPlayers = await getCompsRegistrationSummary(allPlayers);
 
 	return {
 		props: {

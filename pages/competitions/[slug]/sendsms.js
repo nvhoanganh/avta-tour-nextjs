@@ -14,7 +14,7 @@ import {
   getCompetitionBySlug,
   getRulebyId,
 } from '../../../lib/api';
-import { mergeUsersAndPlayersData } from "../../../lib/backendapi";
+import { mergeUsersAndPlayersData, getCompsRegistrationSummary } from "../../../lib/backendapi";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -122,8 +122,10 @@ export async function getStaticProps({ params, preview = false }) {
 
   let allPlayers = (await getAllPlayers(preview)) ?? [];
   allPlayers = await mergeUsersAndPlayersData(allPlayers);
+  allPlayers = await getCompsRegistrationSummary(allPlayers);
 
   const rule = await getRulebyId(data.ruleId || process.env.DEFAULT_RULE, preview);
+
 
   return {
     props: {

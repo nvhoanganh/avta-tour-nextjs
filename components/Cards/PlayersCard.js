@@ -131,11 +131,16 @@ export default function PlayersCard({ allPlayers, hideSearch, user, refreshData 
 														,
 														<span
 															className={cn('mt-1 text-sm ml-1 rounded-md px-1', {
-																'bg-yellow-600 text-white': x?.monthsSinceLastComp < 0,
+																'bg-yellow-600 text-white': x?.monthsSinceLastComp <= 0,
 																'bg-gray-200 text-blue': x?.monthsSinceLastComp > 0,
 															})}
 														>
-															{x?.monthsSinceLastComp < 0 ? `Playing next ${x?.lastComp?.maxPoint}` : `${x?.monthsSinceLastComp || '-'} month ago`} 															
+															{
+																x?.monthsSinceLastComp <= 0
+																	? <i className="far fa-calendar-check mr-1"></i>
+																	: null
+															}
+															{x?.monthsSinceLastComp <= 0 ? `${x?.lastComp?.maxPoint}${x?.lastComp2 ? ' & ' : ''}${x?.lastComp2?.maxPoint || ''}` : `${x?.monthsSinceLastComp || '-'}`}
 														</span>
 
 
