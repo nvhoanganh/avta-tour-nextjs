@@ -456,7 +456,7 @@ export default function Competition({ competition, preview }) {
                                     <Link href={`/competitions/${competition.slug}/findpartner`}><a
                                       className='bg-indigo-500 active:bg-indigo-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-3 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150'
                                     >
-                                      Find a partner
+                                      Register interest
                                     </a></Link>
                                   }
 
