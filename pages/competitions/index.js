@@ -36,7 +36,7 @@ export default function Competitions({ competitions, preview }) {
 
 					<main className='profile-page'>
 						<Intro
-							title='AVTA Tournaments'
+							title='Tournaments'
 							bgImg='https://unsplash.com/photos/HkN64BISuQA/download?ixid=MnwxMjA3fDB8MXxhbGx8fHx8fHx8fHwxNjM2OTU1MTkw&force=true&w=1920'
 						>
 							<div className='w-full mb-12'>

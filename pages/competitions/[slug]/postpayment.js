@@ -13,6 +13,7 @@ export default function Apply({ competition, allPlayers, preview }) {
   const router = useRouter();
   const [applicationState, setApplicationState] = useState(null);
   const [paymentError, setPaymentError] = useState(null);
+  const [paymentErrorDetails, setPaymentErrorDetails] = useState(null);
   const [checking, setChecking] = useState(false);
 
   useEffect(async () => {
@@ -33,7 +34,11 @@ export default function Apply({ competition, allPlayers, preview }) {
             })
           }
         }).catch((err) => {
+          if (window.newrelic) {
+            window.newrelic.noticeError(err, { session_id, applicationId });
+          }
           setChecking(false);
+          setPaymentErrorDetails(err.toString());
           setPaymentError('Oops! Something went wrong. Please try again');
         });
     }
@@ -137,7 +142,8 @@ export default function Apply({ competition, allPlayers, preview }) {
                       {
                         paymentError && <div className='mb-8 text-center'>
                           <p className="uppercase py-2 h1 text-red-500 font-bold">Payment Error</p>
-                          <p className="py-6">{paymentError}!</p>
+                          <p className="pt-6 pb-2">{paymentError}!</p>
+                          <p className="pb-6 italic text-xs text-gray-400">{paymentErrorDetails}!</p>
                           <p className="py-6"><ToggleContactDetails competition={competition} message="PayID Information" /></p>
                           <p className="py-6 pb-12">If you would to pay using PayID, please include <span className="font-bold">AVTA{competition.maxPoint} - YourName</span> as reference</p>
                           <p className="py-6 pb-12">If you would to pay using Credit Card, please go back to competition home page and click on <span className="font-bold">Pay Now</span> try make payment again.</p>

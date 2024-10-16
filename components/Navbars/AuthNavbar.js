@@ -20,7 +20,7 @@ export default function Navbar(props) {
 							<span className='text-white text-sm font-bold leading-relaxed inline-block mr-4 py-2 whitespace-nowrap uppercase'>
 								<a className='hover:underline'>
 									<img
-										src='/assets/img/AvtaLogoSmall.png'
+										src='/assets/img/AVTATransparentTrimmed.png'
 										alt='AVTA Tour'
 										width='120'
 									/>

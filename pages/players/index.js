@@ -42,7 +42,7 @@ export default function Players({ allPlayers, preview }) {
 
 					<main className='profile-page'>
 						<Intro
-							title='AVTA Players'
+							title='Players'
 							bgImg='https://unsplash.com/photos/RNiK93wcz-U/download?ixid=MnwxMjA3fDB8MXxzZWFyY2h8Mnx8dGVubmlzJTIwcGxheWVyc3x8MHx8fHwxNjQyMDUxNDk2&force=true&w=1920'
 						>
 							<div className='w-full mb-12'>

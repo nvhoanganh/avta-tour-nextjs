@@ -34,7 +34,7 @@ export default function Meta() {
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <meta
         name="description"
-        content={`Australia Vietnamese Tennis Association`}
+        content={`Australia Vietnamese Tennis Association - Fun, Competitive, Fair`}
       />
       <meta property="og:image" content="assets/img/AvtaMetaImgResize.png" />
 Ï    </Head>
