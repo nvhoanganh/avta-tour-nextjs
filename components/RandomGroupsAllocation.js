@@ -108,7 +108,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 							leaveFrom="opacity-100 scale-100"
 							leaveTo="opacity-0 scale-95"
 						>
-							<Dialog.Panel className="w-full mx-64 transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+							<Dialog.Panel className="w-full transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
 								<Dialog.Title
 									as="h3"
 									className="text-3xl font-medium leading-6 text-gray-900 px-4 pt-2 text-center mb-6"
