@@ -6,6 +6,7 @@ import { Wheel } from 'spin-wheel';
 import TeamRankingCard from './Cards/TeamRankingCardFB';
 import Countdown from "react-countdown";
 
+
 export default function WheelSpinner({ teams, onTeamSelected }) {
   const [wheel, setWheel] = useState(null);
   const [modifier, setModifier] = useState(0);
@@ -14,7 +15,8 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
   const wheelRef = useRef(null);
   const imgRef = useRef(null);
   const img2Ref = useRef(null);
-  
+  const [soundInstance, setSoundInstance] = useState(null);
+
   const props = {
     name: 'Workout',
     radius: 0.84,
@@ -83,6 +85,12 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
   useEffect(() => {
     console.log('initializing wheel');
     setWheel(new Wheel(wheelRef.current));
+    // init soundjs
+    if (window.createjs?.Sound) {
+      window.createjs.Sound.registerSound('/trimmedclick.mp3', "clickSound");
+      console.log('Sound registered');
+    }
+
   }, []);
 
   useEffect(() => {
@@ -100,6 +108,12 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
         }))
       }
       wheel.init(_props);
+      wheel.onCurrentIndexChange = e => {
+        console.log('playing click sound');
+        if (window.createjs?.Sound) {
+          window.createjs.Sound.play("clickSound");
+        }
+      };
       wheel.onRest = e => {
         console.log(`Wheel stopped`, e);
         const _team = teams[e.currentIndex];

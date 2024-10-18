@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
           <script type="text/javascript" src="/newrelic.js" />
           <script type="text/javascript" src="/gtm.js" async />
           <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js" async />
+          <script type="text/javascript" src="https://code.createjs.com/1.0.0/soundjs.min.js"></script>
         </Head>
         <body>
           <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PMT2XNM"
