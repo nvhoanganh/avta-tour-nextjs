@@ -130,7 +130,7 @@ export default function RandomGroupsAllocation({ groups, teams, show, onClose, o
 									{
 										remaingTeams?.length > 1
 											? <div className="w-full flex justify-center">
-												<WheelSpinner teams={remaingTeams} onTeamSelected={onTeamSelected} />
+												<WheelSpinner teams={remaingTeams} onTeamSelected={onTeamSelected} compPoint={competition.maxPoint} />
 											</div>
 											: <div className="flex justify-center items-center mx-auto">
 												<button type="submit" role="link" className="bg-blue-500 text-white active:bg-blue-600 font-bold px-8 py-5 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150

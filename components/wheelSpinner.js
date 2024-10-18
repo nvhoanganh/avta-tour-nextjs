@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import Spinner from './spinner';
 import { arrayShuffle } from '../lib/browserapi';
+import { shortName } from '../lib/utils';
 import { Wheel } from 'spin-wheel';
 import TeamRankingCard from './Cards/TeamRankingCardFB';
 import Countdown from "react-countdown";
 
 
-export default function WheelSpinner({ teams, onTeamSelected }) {
+export default function WheelSpinner({ teams, onTeamSelected, compPoint }) {
   const [wheel, setWheel] = useState(null);
   const [modifier, setModifier] = useState(0);
   const [clickCount, setClickCount] = useState(0);
@@ -25,7 +26,7 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
     itemLabelRadiusMax: 0.30,
     itemLabelRotation: 180,
     itemLabelAlign: 'left',
-    itemLabelColors: ['#fff'],
+    itemLabelColors: ['black'],
     itemLabelBaselineOffset: -0.07,
     // itemLabelFont: 'Amatic SC',
     itemLabelFontSizeMax: 200,
@@ -103,7 +104,7 @@ export default function WheelSpinner({ teams, onTeamSelected }) {
         ...props,
         rotation: wheel.rotation,
         items: teams.map(x => ({
-          label: `${x.player1.fullName} + ${x.player2.fullName}`,
+          label: `${(x.player1.avtaPoint + x.player2.avtaPoint) >= compPoint ? '🌶️ ' : ''}${shortName(x.player1.fullName)} + ${shortName(x.player2.fullName)}`,
           backgroundColor: x.backgroundColor
         }))
       }
